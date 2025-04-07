@@ -1,12 +1,13 @@
+import AdminHeader from '@/components/adminUI/AdminHeader'
 import '../globals.css'
 
 const AdminLayout = ({ children }) => {
   return (
     <html lang='uk'>
       <body>
-        <header className='text-2xl'>RW-Trade Admin Panel</header>
+        <AdminHeader />
         <main>{children}</main>
-        <footer>admin footer</footer>
+        <footer>Admin Footer</footer>
       </body>
     </html>
   )
