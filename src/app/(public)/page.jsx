@@ -1,9 +1,12 @@
 import React from 'react'
 
+const mockData = [1,2,3,4,5]
+
 const Main = () => {
   return (
-    <div>
-      <h1 className='text-blue-700'>Main Page</h1>
+    <div className=''>
+      <h1 className='text-txt-dark'>Main Page</h1>
+
     </div>
   )
 }
