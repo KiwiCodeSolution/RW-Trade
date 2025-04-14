@@ -1,4 +1,31 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+/* font Roboto local */
+@font-face {
+  font-family: "Roboto";
+  src: url('/fonts/Roboto-Regular.ttf');
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url('/fonts/Roboto-Medium.ttf');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url('/fonts/Roboto-SemiBold.ttf');
+  font-weight: 600;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Roboto";
+  src: url('/fonts/Roboto-Bold.ttf');
+  font-weight: 700;
+  font-style: normal;
+}
 
 @import "tailwindcss";
 
@@ -21,7 +48,9 @@
   --color-gr-10: #b4dffe;
 
   /* colors for background */
-  --color-bg-green: #0aaa6c;
+  /* green */
+  --color-bg-green: #0aaa6c; 
+  
   --color-bg-light: #f6feff;
 
   /* colors for text and links */

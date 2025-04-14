@@ -1,7 +1,11 @@
-import Button from '@/components/commonUI/Button'
-import React from 'react'
+import CardStateLabel from '@/components/commonUI/CardStateLable'
+import BtnGost from '@/components/commonUI/BtnGost'
+import BtnSolid from '@/components/commonUI/BtnSolid'
+import CategoryIcon from '@/components/commonUI/CategoryIcon'
+import DemoSection from '@/components/commonUI/DemoSection'
 
 const DemoPage = () => {
+
   return (
     <div className='max-w-[900px] mx-auto'>
       <h1 className='text-2xl mb-8'>Demo Page</h1>
@@ -17,28 +21,76 @@ const DemoPage = () => {
           </div>
       </section>
       <section>
-        <h2 className='text-xl mb-4'>Buttons</h2>
+        <h2 className='text-xl mb-4'>BtnSolid</h2>
         <div className='grid grid-cols-3 gap-4'>
           <div className='flex flex-col gap-2'>
-            <Button size='xxl'>XXL Button</Button>
-            <Button variant='bronze' size='xxl'>XXL Button</Button>
-            <Button variant='green' size='xxl' >XXL Button</Button>
-            <Button variant='gost' size='xxl'>XXL Button</Button>
-            <Button variant='outlined' size='xxl'>XXL Button</Button>
+            <BtnSolid size='xxl'>XXL BtnSolid</BtnSolid>
+            <BtnSolid variant='bronze' size='xxl'>XXL BtnSolid</BtnSolid>
+            <BtnSolid variant='green' size='xxl' >XXL BtnSolid</BtnSolid>
           </div>
           <div className='flex flex-col gap-2'>
-            <Button size='m'>M Button</Button>
-            <Button variant='bronze' size='m'>M Button</Button>
-            <Button variant='green' size='m' >M Button</Button>
-            <Button variant='gost' size='m'>M Button</Button>
-            <Button variant='outlined' size='m'>M Button</Button>
+            <BtnSolid size='m'>M BtnSolid</BtnSolid>
+            <BtnSolid variant='bronze' size='m'>M BtnSolid</BtnSolid>
+            <BtnSolid variant='green' size='m' >M BtnSolid</BtnSolid>
           </div>
           <div className='flex flex-col gap-2'>
-            <Button size='s'>S Button</Button>
-            <Button variant='bronze' size='s'>S Button</Button>
-            <Button variant='green' size='s' >S Button</Button>
-            <Button variant='gost' size='s'>S Button</Button>
-            <Button variant='outlined' size='s'>S Button</Button>
+            <BtnSolid size='s'>S BtnSolid</BtnSolid>
+            <BtnSolid variant='bronze' size='s'>S BtnSolid</BtnSolid>
+            <BtnSolid variant='green' size='s' >S BtnSolid</BtnSolid>
+          </div>
+        </div>
+      </section>
+      <section>
+        <h2 className='text-xl mb-4'>BtnGost</h2>
+        <div className='grid grid-cols-3 gap-4'>
+          <div className='flex flex-col gap-2'>
+            <BtnGost>BtnGost</BtnGost>
+          </div>
+          <div className='flex flex-col gap-2'>
+            <BtnGost variant='outlined'>BtnGost Outlined</BtnGost>
+          </div>
+          <div className='flex flex-col gap-2'>
+            <BtnGost variant='block'>BtnGost Block</BtnGost>
+          </div>
+        </div>
+      </section>
+      <DemoSection>
+        <h2 className="text-xl mb-4">
+          Buttons for cards
+        </h2>
+        <div className='flex gap-8'>
+          <CardStateLabel size='m'/>
+          <CardStateLabel size='m' variant='yellow' />
+          <CardStateLabel size='m' variant='grey'/>
+          <CardStateLabel />
+          <CardStateLabel variant='yellow' />
+          <CardStateLabel variant='grey'/>
+        </div>
+      </DemoSection>
+      <section>
+        <h2 className='text-xl mb-8'>
+          Category Icons
+        </h2>
+        <div className='grid grid-cols-2 gap-4'>
+          <div className="grid grid-cols-4 gap-2">
+            <CategoryIcon size='m' category='light' />
+            <CategoryIcon size='m' category='tools' />
+            <CategoryIcon size='m' category='electric' />
+            <CategoryIcon size='m' category='control' />
+            <CategoryIcon size='m' category='repair' />
+            <CategoryIcon size='m' category='diagnostics' />
+            <CategoryIcon size='m' category='radio' />
+            <CategoryIcon size='m' category='persent' bg='bronze'/>
+          </div>
+          <div className="grid grid-cols-4">
+            <CategoryIcon category='light' />
+            <CategoryIcon category='tools' />
+            <CategoryIcon category='electric' />
+            <CategoryIcon category='control' />
+            <CategoryIcon category='repair' />
+            <CategoryIcon category='diagnostics'/>
+            <CategoryIcon category='radio' />
+            <CategoryIcon category='persent' bg='bronze' />
           </div>
         </div>
       </section>
