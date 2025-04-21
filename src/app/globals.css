@@ -59,6 +59,9 @@
   --color-link-blue: #058fe2;
   --color-link-bronze: #b76b00;
 
+  /* colors for header nav */
+  --color-nav: #5E74C9;
+
   /* other colors */
   --color-sc-1: #aab9e4;
   --color-sc-2: #c7c7c7;
@@ -89,4 +92,21 @@
 
 .bg-other-4 {
   @apply bg-linear-180 from-[#e2fcff] to-[#b4dffe];
+}
+
+/* user pages */
+.user-container {
+  @apply relative max-w-[1920px] mx-auto px-4 sm:px-8
+}
+
+.header-shadow {
+  @apply absolute bg-linear-0 from-[#ffffff] to-[#5e75c8] w-full h-1
+}
+
+.page-title {
+  @apply text-[40px] font-bold py-5
+}
+/* gradient text */
+.gradient-text {
+  @apply bg-linear-to-r from-[#5dafb1] to-[#5e73c9] bg-clip-text text-transparent w-fit
 }

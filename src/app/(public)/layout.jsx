@@ -1,5 +1,6 @@
 import UserHeader from '@/components/userUI/UserHeader'
 import '../globals.css'
+import UserFooter from '@/components/userUI/UserFooter'
 
 const PublicLayout = ({ children }) => {
 
@@ -8,7 +9,7 @@ const PublicLayout = ({ children }) => {
       <body className='text-txt-dark bg-bg-light'>
         <UserHeader />
         <main>{children}</main>
-        <footer>Public Footer</footer>
+        <UserFooter />
       </body>
     </html>
   )
