@@ -100,7 +100,7 @@
 }
 
 .header-shadow {
-  @apply absolute bg-linear-0 from-[#ffffff] to-[#5e75c8] w-full h-1
+  @apply absolute bg-linear-0 from-[#ffffff] to-[rgba(94,117,200,0.5)] w-full h-1
 }
 
 .page-title {

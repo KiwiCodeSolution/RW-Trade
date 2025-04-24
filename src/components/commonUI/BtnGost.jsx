@@ -3,16 +3,16 @@ import '../../app/globals.css'
 
 const BtnGost = ({variant = 'gost', children, className = '', action = null}) => {
 
-  const baseStyle ='block border-box cursor-pointer flex justify-center items-center p-[2px] transition-all duration-300 hover:shadow-lg hover:scale-103 overflow-hidden font-bold min-h-[48px]'
+  const baseStyle ='block border-box cursor-pointer flex justify-center items-center transition-all duration-300 hover:shadow-lg hover:scale-103 overflow-hidden font-bold min-h-[48px]'
 
   const variants = {
-    gost: 'text-gr-2 w-[160px] rounded-full',
-    outlined: 'bg-primary w-[204px] rounded-full', 
-    block: 'bg-primary w-full min-w-[162px] rounded-lg'
+    gost: 'bg-bg-light text-gr-2 min-w-[160px] rounded-full',
+    outlined: 'bg-primary min-w-[204px] rounded-full p-[2px]', 
+    block: 'bg-primary w-full min-w-[162px] rounded-lg p-[2px]'
   }
 
   const divStyle = {
-    gost: '',
+    gost: 'rounded-full',
     outlined: 'rounded-full',
     block: 'rounded-md'
   }
@@ -26,9 +26,9 @@ const BtnGost = ({variant = 'gost', children, className = '', action = null}) =>
   return (
     <button className={combined} onClick={handleClick} >
       <div className={`bg-bg-light w-full h-full flex justify-center items-center ${divStyle[variant]}`} >
-        <span className='bg-primary bg-clip-text text-transparent'>
+        <div className='bg-primary bg-clip-text text-transparent flex gap-2 justify-center items-center'>
           {children}
-        </span>
+        </div>
       </div>
     </button>
   )

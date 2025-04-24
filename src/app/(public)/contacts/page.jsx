@@ -14,8 +14,8 @@ const Contacts = () => {
             <div className='mx-auto w-fit mb-20'>
               <Logo className='w-[240px ] sm:w-[320px] h-auto' />
             </div>
-            <div>
-              <BabyImg />
+            <div className='w-full max-w-[600px]'>
+              <BabyImg className='w-full h-auto' />
             </div>
           </div>
 

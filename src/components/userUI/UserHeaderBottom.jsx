@@ -11,13 +11,13 @@ const UserHeaderBottom = () => {
     <div className='w-full'>
       <div className='user-container'>
         <div className='flex items-center h-[72px]'>
-          <Link href='/' className='mr-4'>
+          <Link href='/' className='hidden sm:block mr-4'>
             <Logo className='w-[200px] h-auto'/>
           </Link>
-          <div className='grow mr-6'>
+          <div className='grow sm:mr-6'>
             <HeaderSearch />
           </div>
-          <div className='flex items-center gap-6'>
+          <div className='hidden sm:flex items-center gap-6'>
             <Link href='/favorites' className='rounded-full hover:shadow-lg hover:scale-102 duration-200'>
               <HeartIcon />
             </Link>

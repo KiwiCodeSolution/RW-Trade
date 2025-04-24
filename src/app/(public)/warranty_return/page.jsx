@@ -6,9 +6,7 @@ const WarrantyAndReturn = () => {
     <div>
       <div className='header-shadow'></div>
       <div className="user-container">
-        <h1 className="page-title text-center">
-        Гарантія та повернення
-        </h1>
+        <h1 className="page-title text-center">Гарантія та повернення</h1>
         <div className='grid grid-cols-2 py-4 gap-10 sm:gap-24'>
           <div>
             <h2 className='text-2xl font-semibold mb-2 sm:mb-10'>Гарантія:</h2>

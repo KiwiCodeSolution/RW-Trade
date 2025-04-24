@@ -3,12 +3,26 @@ import Link from 'next/link'
 import Person from '../../../public/icons/person-16.svg'
 import RetailWholesale from './RetailWholesale'
 import Language from './Language'
+import Logo from '../../../public/logos/LOGO 1.svg'
+import BurgerIcon from '../../../public/icons/burger-primary-24.svg'
+import CartIcon from '../../../public/icons/cart-bronze-24.svg'
 
 const UserHeaderTop = () => {
   return (
-    <div className='w-full bg-nav'>
-      <div className='user-container h-9'>
-        <nav className='flex justify-between items-center h-full text-white'>
+    <div className='w-full sm:bg-nav'>
+      <div className='user-container sm:h-9'>
+        <div className='sm:hidden h-[60px] flex justify-between items-center'>
+          <div className='w-10 h-10 p-2'>
+            <BurgerIcon />
+          </div>
+          <Link href='/' className='block' >
+            <Logo className='w-[120px]'/>
+          </Link>
+          <div className='w-10 h-10 p-2'>
+            <CartIcon />
+          </div>
+        </div>
+        <nav className='hidden sm:flex justify-between items-center h-full text-white'>
           <div className='flex gap-8'>
           <Link href='/about' className='hover:text-gr-5 duration-200'>Про компанію</Link>
           <Link href='/payment_delivery' className='hover:text-gr-5 duration-200' >Оплата та доставка</Link>
