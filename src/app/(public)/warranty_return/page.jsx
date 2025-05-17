@@ -1,4 +1,3 @@
-import Logo from '../../../../public/logos/LOGO 1.svg'
 import BabyImg from '../../../../public/images/baby.svg'
 
 const WarrantyAndReturn = () => {
@@ -17,7 +16,7 @@ const WarrantyAndReturn = () => {
           </div>
           <div className='flex flex-col items-center'>
             <div className='mx-auto w-fit mb-20'>
-              <Logo className='w-[240px ] sm:w-[320px] h-auto' />
+              <img src="logos/LOGO 252 orange.png" alt="logo" />
             </div>
             <div className='w-full max-w-[600px]'>
               <BabyImg className='w-full h-auto'/>

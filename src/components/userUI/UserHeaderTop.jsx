@@ -3,7 +3,7 @@ import Link from 'next/link'
 import Person from '../../../public/icons/person-16.svg'
 import RetailWholesale from './RetailWholesale'
 import Language from './Language'
-import Logo from '../../../public/logos/LOGO 1.svg'
+import Logo from '../../../public/logos/LOGO_blue.svg'
 import BurgerIcon from '../../../public/icons/burger-primary-24.svg'
 import CartIcon from '../../../public/icons/cart-bronze-24.svg'
 

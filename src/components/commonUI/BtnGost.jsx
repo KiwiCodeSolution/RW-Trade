@@ -1,9 +1,9 @@
 'use client'
 import '../../app/globals.css'
 
-const BtnGost = ({variant = 'gost', children, className = '', action = null}) => {
+const BtnGost = ({variant = 'gost', children, className = '', action = null, btnType = 'button'}) => {
 
-  const baseStyle ='block border-box cursor-pointer flex justify-center items-center transition-all duration-300 hover:shadow-lg hover:scale-103 overflow-hidden font-bold min-h-[48px]'
+  const baseStyle ='block border-box cursor-pointer flex justify-center items-center transition-all duration-300 hover:shadow-lg hover:scale-101 overflow-hidden font-bold min-h-[48px]'
 
   const variants = {
     gost: 'bg-bg-light text-gr-2 min-w-[160px] rounded-full',
@@ -24,8 +24,8 @@ const BtnGost = ({variant = 'gost', children, className = '', action = null}) =>
   }
 
   return (
-    <button className={combined} onClick={handleClick} >
-      <div className={`bg-bg-light w-full h-full flex justify-center items-center ${divStyle[variant]}`} >
+    <button className={combined} onClick={handleClick} type={btnType} >
+      <div className={`bg-bg-light w-full h-[44px] flex justify-center items-center ${divStyle[variant]}`} >
         <div className='bg-primary bg-clip-text text-transparent flex gap-2 justify-center items-center'>
           {children}
         </div>

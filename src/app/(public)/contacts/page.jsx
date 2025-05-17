@@ -1,4 +1,3 @@
-import Logo from '../../../../public/logos/LOGO 1.svg'
 import BabyImg from '../../../../public/images/baby.svg'
 
 const Contacts = () => {
@@ -12,7 +11,7 @@ const Contacts = () => {
         <div className="grid grid-cols-2 py-4 gap-10 sm:gap-24">
           <div className='flex flex-col items-center'>
             <div className='mx-auto w-fit mb-20'>
-              <Logo className='w-[240px ] sm:w-[320px] h-auto' />
+              <img src="logos/LOGO 252 orange.png" alt="logo" />
             </div>
             <div className='w-full max-w-[600px]'>
               <BabyImg className='w-full h-auto' />

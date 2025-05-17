@@ -1,7 +1,7 @@
 'use client'
 import '../../app/globals.css'
 
-const BtnSolid = ({variant = 'primary', size = 's', children, className = '', action = null}) => {
+const BtnSolid = ({variant = 'primary', size = 's', children, className = '', action = null, btnType = 'button'}) => {
 
   const baseStyle ='block border-box cursor-pointer flex justify-center items-center p-[2px] rounded-full  transition-all duration-300 hover:shadow-lg hover:scale-103 overflow-hidden font-bold'
 
@@ -23,11 +23,11 @@ const BtnSolid = ({variant = 'primary', size = 's', children, className = '', ac
   const combined = `${baseStyle} ${variants[variant]} ${sizes[size]} ${className}`.trim()
 
   const handleClick = (e) => {
-    alert('Click!')
+    console.log('Click!')
   }
 
   return (
-    <button className={combined} onClick={handleClick} >
+    <button className={combined} onClick={handleClick} type={btnType} >
       {children}
     </button>
   )
