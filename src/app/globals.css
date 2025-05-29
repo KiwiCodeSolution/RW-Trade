@@ -110,3 +110,6 @@
 .gradient-text {
   @apply bg-linear-to-r from-[#5dafb1] to-[#5e73c9] bg-clip-text text-transparent w-fit
 }
+.bronze-text {
+  @apply bg-linear-to-r from-[#e1a755] to-[#b76b00] bg-clip-text text-transparent w-fit
+}

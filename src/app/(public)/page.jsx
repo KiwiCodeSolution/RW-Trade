@@ -6,25 +6,27 @@ import PopularProducts from '@/components/userUI/PopularProducts'
 import FormSection from '@/components/userUI/FormSection'
 import React from 'react'
 import TestimonialsSection from '@/components/userUI/TestimonialsSection'
+import NewsSection from '@/components/userUI/NewsSection'
 
 const mockData = [1,2,3,4,5]
 
 const Main = () => {
   return (
     <>
-    <div className='user-container'>
-      <AddSectionFirst />
-      <PopularProducts />
-    </div>
-    <AddSectionSecond />
-    <div className='user-container'>
-      <DiscountsSection />
-      <PopularCategories />
-    </div>
-    <FormSection />
-    <div className="user-container">
-      <TestimonialsSection />
-    </div>
+      <div className='user-container'>
+        <AddSectionFirst />
+        <PopularProducts />
+      </div>
+      <AddSectionSecond />
+      <div className='user-container'>
+        <DiscountsSection />
+        <PopularCategories />
+      </div>
+      <FormSection />
+      <div className="user-container">
+        <TestimonialsSection />
+        <NewsSection />
+      </div>
     </>
   )
 }

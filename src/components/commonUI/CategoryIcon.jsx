@@ -30,7 +30,7 @@ const CategoryIcon = ({category = 'light', size = 's', bg = 'primary'}) => {
       repair: <RepairIcom />,
       diagnostics: <DiagnosticsIcom />,
       radio: <RadioIcon />,
-      persent: <PersentIcon />
+      discount: <PersentIcon />
     },
     m: {
       light: <LightIconM />,
@@ -40,7 +40,7 @@ const CategoryIcon = ({category = 'light', size = 's', bg = 'primary'}) => {
       repair: <RepairIcomM />,
       diagnostics: <DiagnosticsIcomM />,
       radio: <RadioIconM />,
-      persent: <PersentIconM />
+      discount: <PersentIconM />
     }
   }
 

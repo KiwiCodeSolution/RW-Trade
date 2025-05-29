@@ -80,7 +80,7 @@ const DemoPage = () => {
             <CategoryIcon size='m' category='repair' />
             <CategoryIcon size='m' category='diagnostics' />
             <CategoryIcon size='m' category='radio' />
-            <CategoryIcon size='m' category='persent' bg='bronze'/>
+            <CategoryIcon size='m' category='discount' bg='bronze'/>
           </div>
           <div className="grid grid-cols-4">
             <CategoryIcon category='light' />
@@ -90,7 +90,7 @@ const DemoPage = () => {
             <CategoryIcon category='repair' />
             <CategoryIcon category='diagnostics'/>
             <CategoryIcon category='radio' />
-            <CategoryIcon category='persent' bg='bronze' />
+            <CategoryIcon category='discount' bg='bronze' />
           </div>
         </div>
       </section>

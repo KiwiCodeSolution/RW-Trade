@@ -23,6 +23,9 @@ const BtnSolid = ({variant = 'primary', size = 's', children, className = '', ac
   const combined = `${baseStyle} ${variants[variant]} ${sizes[size]} ${className}`.trim()
 
   const handleClick = (e) => {
+    if(!!action) {
+      action()
+    }
     console.log('Click!')
   }
 
