@@ -13,7 +13,7 @@ const CategoryControl = ({ categories, setCategory }) => {
 
   const thumbWidth = 100
 
-  const [selected, setSelected] = useState('')
+  const [selected, setSelected] = useState('any')
   const [isDragging, setIsDragging] = useState(false)
   const containerRef = useRef(null)
   const thumbRef = useRef(null)
@@ -113,10 +113,10 @@ const CategoryControl = ({ categories, setCategory }) => {
               type="radio"
               name="categoryControl"
               id="control_0"
-              value=""
+              value="any"
               className="hidden"
               onChange={handleChange}
-              checked={selected === ''}
+              checked={selected === 'any'}
             />
           </label>
 

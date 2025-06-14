@@ -16,6 +16,7 @@ const SubCategoryControl = ({ category, setSubCategory }) => {
   const [thumbLeft, setThumbLeft] = useState(0)
   const [startX, setStartX] = useState(0)
   const [startLeft, setStartLeft] = useState(0)
+  const [showScroll, setShowScroll] = useState(false)
 
   const handleChange = (e) => {
     setSelected(e.target.value)
@@ -83,7 +84,15 @@ const SubCategoryControl = ({ category, setSubCategory }) => {
   }, [isDragging, startX, startLeft])
 
   useEffect(() => {
-    setSelected('')
+    setSelected('any')
+    const container = containerRef.current
+    const maxScroll = container.scrollWidth - container.clientWidth
+    if (maxScroll <= 0) {
+      setShowScroll(false)
+      return
+    } else {
+      setShowScroll(true)
+    }
   }, [category])
 
   return (
@@ -127,24 +136,28 @@ const SubCategoryControl = ({ category, setSubCategory }) => {
         </div>
       </div>
       
-      <div 
-        ref={trackRef}
-        className="relative w-full h-1 bg-sc-1 rounded-sm z-10"
-        role="scrollbar"
-        aria-controls="categoryContainer"
-        aria-orientation="horizontal"
-      >
-        <div
-          ref={thumbRef}
-          className={`absolute h-[300%] -top-[100%] bg-bronze rounded-full ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-          style={{
-            width: `${thumbWidth}px`,
-            left: `${thumbLeft}px`,
-          }}
-          onMouseDown={handleThumbMouseDown}
-          role="presentation"
-        />
-      </div>
+        <div 
+          ref={trackRef}
+          className="relative w-full h-1 bg-sc-1 rounded-sm z-10"
+          role="scrollbar"
+          aria-controls="categoryContainer"
+          aria-orientation="horizontal"
+        >
+          {showScroll && (
+            <div
+              ref={thumbRef}
+              className={`absolute h-[300%] -top-[100%] bg-bronze rounded-full ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
+              style={{
+                width: `${thumbWidth}px`,
+                left: `${thumbLeft}px`,
+              }}
+              onMouseDown={handleThumbMouseDown}
+              role="presentation"
+            />
+          )}
+
+        </div>
+
     </div>
   )
 }
