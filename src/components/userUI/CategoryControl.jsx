@@ -73,6 +73,9 @@ const CategoryControl = ({ categories, setCategory }) => {
   }
 
   useEffect(() => {
+
+    console.log('category control rendered')
+    
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
     

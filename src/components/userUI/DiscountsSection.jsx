@@ -11,9 +11,9 @@ const DiscountsSection = () => {
 
   const [selected, setSelected] = useState('')
 
-  useEffect(() => {
-    console.log(selected)
-  }, [selected])
+  // useEffect(() => {
+  //   console.log('discount section')
+  // }, [selected])
 
   return (
     <section className='py-9'>

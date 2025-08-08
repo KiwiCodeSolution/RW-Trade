@@ -8,8 +8,6 @@ import React from 'react'
 import TestimonialsSection from '@/components/userUI/TestimonialsSection'
 import NewsSection from '@/components/userUI/NewsSection'
 
-const mockData = [1,2,3,4,5]
-
 const Main = () => {
   return (
     <>
@@ -25,7 +23,7 @@ const Main = () => {
       <FormSection />
       <div className="user-container">
         <TestimonialsSection />
-        <NewsSection />
+        <NewsSection isMain={true} />
       </div>
     </>
   )

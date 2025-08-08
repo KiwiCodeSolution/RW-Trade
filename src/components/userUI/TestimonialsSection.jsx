@@ -14,7 +14,7 @@ const TestimonialsSection = () => {
         <h3 className='text-[40px] font-bold mb-6'>Відгуки про нас</h3>
         <p className='mb-6'>Що пишуть про нашу роботу</p>
         <div className='grow'>
-          <TestimonialsCarousel />
+          {/* <TestimonialsCarousel /> */}
         </div>
       </div>
     </section>

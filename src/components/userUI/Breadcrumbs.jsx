@@ -9,26 +9,26 @@ const Breadcrumbs = () => {
   const [breadcrumbs, setBreadcrumbs] = useState([]);
 
   useEffect(() => {
-    if (router.asPath !== '/') {
-      const pathArray = router.asPath.split('/').filter((x) => x !== '');
-      const breadcrumbItems = pathArray.map((path, index) => {
-        const href = '/' + pathArray.slice(0, index + 1).join('/');
-        const text = path
-          .split('-')
-          .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
-          .join(' ');
-        return { href, text };
-      });
+    // if (router.asPath !== '/') {
+    //   const pathArray = router.asPath.split('/').filter((x) => x !== '');
+    //   const breadcrumbItems = pathArray.map((path, index) => {
+    //     const href = '/' + pathArray.slice(0, index + 1).join('/');
+    //     const text = path
+    //       .split('-')
+    //       .map((s) => s.charAt(0).toUpperCase() + s.substring(1))
+    //       .join(' ');
+    //     return { href, text };
+    //   });
 
-      setBreadcrumbs([{ href: '/', text: 'Home' }, ...breadcrumbItems]);
-    }
+    //   setBreadcrumbs([{ href: '/', text: 'Home' }, ...breadcrumbItems]);
+    // }
   }, [router.asPath]);
 
   if (breadcrumbs.length === 0) return null;
 
   return (
     <nav className="breadcrumb">
-      {breadcrumbs.map((crumb, index) => (
+      {/* {breadcrumbs.map((crumb, index) => (
         <span key={crumb.href} className="breadcrumb-item">
           {index < breadcrumbs.length - 1 ? (
             <Link href={crumb.href}>
@@ -39,7 +39,7 @@ const Breadcrumbs = () => {
           )}
           {index < breadcrumbs.length - 1 && <span> / </span>}
         </span>
-      ))}
+      ))} */}
     </nav>
   );
 };

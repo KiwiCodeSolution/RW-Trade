@@ -1,5 +1,6 @@
 import '../../app/globals.css'
 import Link from 'next/link' 
+import Image from 'next/image'
 import HeartIcon from '../../../public/icons/heart-primary-50.svg'
 import PhoneIcon from '../../../public/icons/phone-primary-50.svg' 
 import CartIcon from '../../../public/icons/cart-bronze-50.svg' 
@@ -11,7 +12,7 @@ const UserHeaderBottom = () => {
       <div className='user-container'>
         <div className='flex items-center h-[72px]'>
           <Link href='/' className='hidden sm:block mr-4'>
-            <img src='logos/LOGO 152 blue.png' />
+            <Image src='/logos/LOGO 152 blue.png' width={152} height={72} alt='rw-logo'/>
           </Link>
           <div className='grow sm:mr-6'>
             <HeaderSearch />

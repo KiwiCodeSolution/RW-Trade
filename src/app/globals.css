@@ -96,20 +96,24 @@
 
 /* user pages */
 .user-container {
-  @apply relative max-w-[1920px] mx-auto px-4 sm:px-8
+  @apply relative max-w-[1920px] mx-auto px-4 sm:px-8;
 }
 
 .header-shadow {
-  @apply absolute bg-linear-0 from-[#ffffff] to-[rgba(94,117,200,0.5)] w-full h-1
+  @apply absolute bg-linear-0 from-[#ffffff] to-[rgba(94,117,200,0.5)] w-full h-1;
 }
 
 .page-title {
-  @apply text-[40px] font-bold py-5
+  @apply text-[40px] font-bold py-5;
 }
 /* gradient text */
 .gradient-text {
-  @apply bg-linear-to-r from-[#5dafb1] to-[#5e73c9] bg-clip-text text-transparent w-fit
+  @apply bg-linear-to-r from-[#5dafb1] to-[#5e73c9] bg-clip-text text-transparent w-fit;
 }
 .bronze-text {
-  @apply bg-linear-to-r from-[#e1a755] to-[#b76b00] bg-clip-text text-transparent w-fit
+  @apply bg-linear-to-r from-[#e1a755] to-[#b76b00] bg-clip-text text-transparent w-fit;
+}
+
+.link-solid {
+  @apply cursor-pointer flex justify-center items-center p-[2px] rounded-full  transition-all duration-300 hover:shadow-lg hover:scale-103 overflow-hidden font-bold text-white w-[242px] min-h-[56px] text-xl bg-linear-to-r from-[#5dafb1] to-[#5e73c9];
 }

@@ -5,9 +5,15 @@ const AdminLayout = ({ children }) => {
   return (
     <html lang='uk'>
       <body className='text-txt-dark bg-bg-light'>
-        <AdminHeader />
-        <main>{children}</main>
-        <footer>Admin Footer</footer>
+        <div className='flex'>
+          <div className='w-[320px]'>
+            <AdminHeader />
+          </div>
+          <div className='flex flex-col grow'>
+            <main className='w-full grow p-8'>{children}</main>
+            <footer>Admin Footer</footer>
+          </div>
+        </div>
       </body>
     </html>
   )

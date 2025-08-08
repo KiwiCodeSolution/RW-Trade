@@ -1,8 +1,11 @@
-import React from 'react'
 
 const Notifications = () => {
   return (
-    <div>Admin Notifications Page</div>
+    <div className='w-full'>
+      <h1 className='text-center text-2xl font-bold'>Сповіщення</h1>
+      <div className="h-0.5 w-full bg-primary"></div>
+
+    </div>
   )
 }
 

@@ -29,12 +29,14 @@ const AllItemsSection = () => {
   }
 
   useEffect(() => {
+    console.log('all items section rendered first useEffect')
     const selected = subCategories.find(item => item.category === category)
     setSelectedCategoriy(selected || null)
     setSubCategory('any')
   }, [category])
 
   useEffect(() => {
+    console.log('all items section rendered second useEffect')
     const fakeProds = fakeProducts(numberOfItems, category, subCategory)
     setProducts(fakeProds)
   }, [numberOfItems, category, subCategory, currentPage])

@@ -28,7 +28,6 @@ const UserHeaderTop = () => {
           <Link href='/payment_delivery' className='hover:text-gr-5 duration-200' >Оплата та доставка</Link>
           <Link href='/warranty_return' className='hover:text-gr-5 duration-200' >Гарантія та повернення</Link>
           <Link href='/contacts' className='hover:text-gr-5 duration-200' >Контакти</Link>
-          <Link href='/demo' className='hover:text-gr-5 duration-200'>Demo</Link>
           </div>
           <div className='flex gap-8'>
             <RetailWholesale />
