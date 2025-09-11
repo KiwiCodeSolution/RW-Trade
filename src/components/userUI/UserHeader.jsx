@@ -1,11 +1,10 @@
-import Link from "next/link"
 import UserHeaderTop from "./UserHeaderTop"
 import UserHeaderBottom from "./UserHeaderBottom"
 
-const UserHeader = () => {
+const UserHeader = ({ currentLang }) => {
   return (
     <header>
-      <UserHeaderTop />
+      <UserHeaderTop currentLang={currentLang} />
       <UserHeaderBottom />
     </header>
   )

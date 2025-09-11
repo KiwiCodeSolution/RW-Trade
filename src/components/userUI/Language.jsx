@@ -1,23 +1,42 @@
 'use client'
 import { useState } from "react" 
-import WorldIcon from '../../../public/icons/world-16.svg' 
+import Image from 'next/image'
+import WorldIcon from '../../../public/icons/world-16.svg'
 
-const Language = () => {
-
-  const [current, setCurrent] = useState('ukr')
-  const [option, setOption] = useState('eng')
+const LanguageSwitcher = ({ currentLang }) => {
+  const [current, setCurrent] = useState(currentLang || 'uk')
+  
+  const languages = [
+    { code: 'en', name: 'eng' },
+    { code: 'uk', name: 'ukr' }
+  ]
 
   const handleClick = () => {
-    setCurrent(option)
-    setOption(current)
+    // Get current language index
+    const currentIndex = languages.findIndex(lang => lang.code === current)
+    // Get next language (cycle through)
+    const nextIndex = (currentIndex + 1) % languages.length
+    const nextLang = languages[nextIndex].code
+    
+    setCurrent(nextLang)
+    
+    // Update URL
+    const path = window.location.pathname
+    const newPath = path.replace(/^\/[^/]+/, `/${nextLang}`)
+    window.location.href = newPath
   }
 
+  const currentLanguage = languages.find(lang => lang.code === current)
+
   return (
-    <div className='flex gap-2 items-center cursor-pointer hover:text-gr-5 duration-200' onClick={handleClick} >
+    <div 
+      className='flex gap-2 items-center cursor-pointer hover:text-gr-5 duration-200' 
+      onClick={handleClick}
+    >
       <WorldIcon />
-      <div className="min-w-8">{current}</div>
+      <div className="min-w-8">{currentLanguage?.name || current}</div>
     </div>
   )
 }
 
-export default Language
+export default LanguageSwitcher

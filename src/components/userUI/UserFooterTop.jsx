@@ -1,4 +1,5 @@
 import Link from "next/link"
+import Image from "next/image"
 import FacebookLogo from '../../../public/icons/facebook-32.svg' 
 import MessangerLogo from '../../../public/icons/messanger-32.svg' 
 import YoutubeLogo from '../../../public/icons/youtube-32.svg' 
@@ -8,7 +9,7 @@ const UserFooterTop = () => {
     <div className="grid grid-cols-[3fr_3fr_3fr_3fr_1fr] py-5">
       <div className="h-full flex justify-center items-center">
         <Link href='/'>
-          <img src="logos/LOGO 152 blue.png" />
+          <Image src="/logos/LOGO 152 blue.png" width={156} height={58} alt="logo"/>
         </Link>
       </div>
       <div className="flex justify-center">

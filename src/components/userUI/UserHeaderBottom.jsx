@@ -12,7 +12,7 @@ const UserHeaderBottom = () => {
       <div className='user-container'>
         <div className='flex items-center h-[72px]'>
           <Link href='/' className='hidden sm:block mr-4'>
-            <Image src='/logos/LOGO 152 blue.png' width={152} height={72} alt='rw-logo'/>
+            <Image src='/logos/LOGO 152 blue.png' width={156} height={58} alt='rw-logo'/>
           </Link>
           <div className='grow sm:mr-6'>
             <HeaderSearch />

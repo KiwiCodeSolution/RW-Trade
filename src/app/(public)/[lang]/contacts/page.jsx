@@ -1,4 +1,5 @@
-import BabyImg from '../../../../public/images/baby.svg'
+import BabyImg from '../../../../../public/images/baby.svg'
+import Image from 'next/image'
 
 const Contacts = () => {
   return (
@@ -11,7 +12,7 @@ const Contacts = () => {
         <div className="grid grid-cols-2 py-4 gap-10 sm:gap-24">
           <div className='flex flex-col items-center'>
             <div className='mx-auto w-fit mb-20'>
-              <img src="logos/LOGO 252 orange.png" alt="logo" />
+              <Image src="/logos/LOGO 252 orange.png" width={252} height={96} alt="logo" />
             </div>
             <div className='w-full max-w-[600px]'>
               <BabyImg className='w-full h-auto' />

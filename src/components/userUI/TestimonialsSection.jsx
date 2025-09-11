@@ -11,10 +11,14 @@ const TestimonialsSection = () => {
         <BabyImg className='max-w-[600px] h-auto' />
       </div>
       <div className='flex flex-col'>
-        <h3 className='text-[40px] font-bold mb-6'>Відгуки про нас</h3>
-        <p className='mb-6'>Що пишуть про нашу роботу</p>
+        <h3 className='text-[40px] font-bold mb-6'>
+          {lang === 'uk' ? 'Відгуки про нас' : 'Reviews about us'}
+        </h3>
+        <p className='mb-6'>
+          {lang === 'uk' ? 'Що пишуть про нашу роботу' : 'What people are saying about our work'}
+        </p>
         <div className='grow'>
-          {/* <TestimonialsCarousel /> */}
+          <TestimonialsCarousel />
         </div>
       </div>
     </section>

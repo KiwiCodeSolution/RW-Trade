@@ -69,7 +69,7 @@ const SubCategoryControl = ({ category, setSubCategory }) => {
   }
 
   useEffect(() => {
-    console.log('subcategory control 1')
+    console.log('subcategory control 1 rendered')
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
     
@@ -85,7 +85,7 @@ const SubCategoryControl = ({ category, setSubCategory }) => {
   }, [isDragging, startX, startLeft])
 
   useEffect(() => {
-    console.log('subcategory control 2')
+    console.log('subcategory control 2 rendered')
     setSelected('any')
     const container = containerRef.current
     const maxScroll = container.scrollWidth - container.clientWidth

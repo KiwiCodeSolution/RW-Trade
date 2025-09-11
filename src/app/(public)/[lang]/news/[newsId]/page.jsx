@@ -14,7 +14,7 @@ const OneNews = async ({params}) => {
         <div className='flex items-center mb-8'>
           <div className='w-[100px] h-[100px] min-w-[100px] flex justify-center items-center mr-8'>
             {!!post?.imgUrl ? (
-              <img src={imgUrl} alt={post.title} />
+              <img src={post.imgUrl} alt={post.title} />
             ) : (
               <img src="/logos/LOGO 152 blue.png" alt={post.title} />
             )}

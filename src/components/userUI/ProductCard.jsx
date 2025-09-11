@@ -1,5 +1,7 @@
 'use client'
 
+import Image from "next/image"
+
 const ProductCard = ({product}) => {
 
   const products = [
@@ -23,7 +25,7 @@ const ProductCard = ({product}) => {
         {!!product?.imgUrl ? (
           <img src={imgUrl} alt={product?.name} />
         ) : (
-          <img src="logos/LOGO 152 blue.png" alt={product?.name} />
+          <Image src="/logos/LOGO 152 blue.png" width={156} height={58} alt='logo' />
         )}
       </div>
       <p className="text-link-blue">

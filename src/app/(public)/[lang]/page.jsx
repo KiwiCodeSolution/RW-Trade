@@ -7,8 +7,21 @@ import FormSection from '@/components/userUI/FormSection'
 import React from 'react'
 import TestimonialsSection from '@/components/userUI/TestimonialsSection'
 import NewsSection from '@/components/userUI/NewsSection'
+import { getDictionary } from '@/app/dictionaries/get-dictionary'
 
-const Main = () => {
+// export async function generateStaticParams() {
+//   return [
+//     { lang: "en" },
+//     { lang: "uk" },
+//   ];
+// }
+
+const Main = async ({ params }) => {
+
+  const {lang} = await params
+
+  // const dictionary = await getDictionary(lang)
+
   return (
     <>
       <div className='user-container'>
@@ -23,7 +36,7 @@ const Main = () => {
       <FormSection />
       <div className="user-container">
         <TestimonialsSection />
-        <NewsSection isMain={true} />
+        <NewsSection isMain={true} lang={lang}/>
       </div>
     </>
   )
