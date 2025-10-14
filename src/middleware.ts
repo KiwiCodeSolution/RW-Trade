@@ -1,13 +1,11 @@
-// middleware.js
-import { NextResponse } from 'next/server'
+import { routing } from '@/i18n/routing'
 
-const supportedLanguages = ['en', 'uk']
-const defaultLanguage = 'en'
+import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware(request) {
+export function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl
 
-	// Skip static files
+	// 1. Пропускаємо статику та API
 	if (
 		pathname.includes('.') ||
 		pathname.includes('_next') ||
@@ -17,32 +15,24 @@ export function middleware(request) {
 		return NextResponse.next()
 	}
 
-	// Get language from cookie or pathname
-	const cookieHeader = request.headers.get('cookie') || ''
-	const cookieLang = cookieHeader
-		.split(';')
-		.find(c => c.trim().startsWith('NEXT_LOCALE='))
-		?.split('=')[1]
-
+	// 2. Обробка локалі
 	const pathSegments = pathname.split('/').filter(Boolean)
-	const firstSegment = pathSegments[0]
+	const firstSegmentRaw = pathSegments[0]
 
-	// If at root, check for cookie language
-	if (pathname === '/') {
-		if (cookieLang && supportedLanguages.includes(cookieLang)) {
-			return NextResponse.redirect(new URL(`/${cookieLang}`, request.url))
-		}
-		return NextResponse.redirect(new URL(`/${defaultLanguage}`, request.url))
-	}
+	const rawCookieLang = request.cookies.get('NEXT_LOCALE')?.value
+	const cookieLang =
+		rawCookieLang && routing.locales.includes(rawCookieLang as any)
+			? (rawCookieLang as (typeof routing.locales)[number])
+			: undefined
 
-	// If first segment is a supported language
-	if (supportedLanguages.includes(firstSegment)) {
-		// Set cookie if it doesn't match
+	if (firstSegmentRaw && routing.locales.includes(firstSegmentRaw as any)) {
+		const firstSegment = firstSegmentRaw as (typeof routing.locales)[number]
+
 		if (cookieLang !== firstSegment) {
 			const response = NextResponse.next()
 			response.cookies.set('NEXT_LOCALE', firstSegment, {
 				path: '/',
-				maxAge: 60 * 60 * 24 * 365, // 1 year
+				maxAge: 60 * 60 * 24 * 365,
 				sameSite: 'strict'
 			})
 			return response
@@ -50,11 +40,16 @@ export function middleware(request) {
 		return NextResponse.next()
 	}
 
-	// If no language in path, use cookie or default
-	const langToUse =
-		cookieLang && supportedLanguages.includes(cookieLang) ? cookieLang : defaultLanguage
+	const langToUse = cookieLang || routing.defaultLocale
+	const response = NextResponse.redirect(new URL(`/${langToUse}${pathname}`, request.url))
 
-	return NextResponse.redirect(new URL(`/${langToUse}${pathname}`, request.url))
+	// 3. Тут можна вставити авторизацію
+	// const token = request.cookies.get('AUTH_TOKEN')?.value
+	// if (!token && pathname.startsWith('/protected')) {
+	//     return NextResponse.redirect(new URL(`/${langToUse}/login`, request.url))
+	// }
+
+	return response
 }
 
 export const config = {
