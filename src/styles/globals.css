@@ -1,0 +1,118 @@
+/* font Roboto local */
+@font-face {
+	font-family: 'Roboto';
+	src: url('/fonts/Roboto-Regular.ttf');
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	src: url('/fonts/Roboto-Medium.ttf');
+	font-weight: 500;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	src: url('/fonts/Roboto-SemiBold.ttf');
+	font-weight: 600;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	src: url('/fonts/Roboto-Bold.ttf');
+	font-weight: 700;
+	font-style: normal;
+}
+
+@import 'tailwindcss';
+
+@theme {
+	/* font roboto as default */
+	--font-sans: 'Roboto', sans-serif;
+
+	/* colors for gradients */
+	--color-gr-1: #5dafb1;
+	--color-gr-2: #5e73c9;
+	--color-gr-3: #e1a755;
+	--color-gr-4: #b76b00;
+	--color-gr-white: #ffffff;
+	--color-gr-5: #b4dffe;
+	--color-gr-6: #a9bbff;
+	--color-gr-7: #ff9326;
+	--color-gr-8: #9654e5;
+	--color-gr-9: #e2fcff;
+	--color-gr-10: #b4dffe;
+
+	/* colors for background */
+	/* green */
+	--color-bg-green: #0aaa6c;
+
+	--color-bg-light: #f6feff;
+
+	/* colors for text and links */
+	--color-txt-white: #ffffff;
+	--color-txt-dark: #282828;
+	--color-link-blue: #058fe2;
+	--color-link-bronze: #b76b00;
+
+	/* colors for header nav */
+	--color-nav: #5e74c9;
+
+	/* other colors */
+	--color-sc-1: #aab9e4;
+	--color-sc-2: #c7c7c7;
+	--color-sc-3: #ffe190;
+	--color-sc-4: #ffc700;
+	--color-sc-5: #ff0000;
+}
+
+.bg-primary {
+	@apply bg-linear-to-r from-[#5dafb1] to-[#5e73c9];
+}
+
+.bg-bronze {
+	@apply bg-linear-to-r from-[#e1a755] to-[#b76b00];
+}
+
+.bg-other-1 {
+	@apply bg-linear-180 from-[#ffffff] to-[#b4dffe];
+}
+
+.bg-other-2 {
+	@apply bg-linear-180 from-[#ffffff] to-[#a9bbff];
+}
+
+.bg-other-3 {
+	@apply bg-linear-180 from-[#ff9326] to-[#9654e5];
+}
+
+.bg-other-4 {
+	@apply bg-linear-180 from-[#e2fcff] to-[#b4dffe];
+}
+
+/* user pages */
+.user-container {
+	@apply relative max-w-[1920px] mx-auto px-4 sm:px-8;
+}
+
+.header-shadow {
+	@apply absolute bg-linear-0 from-[#ffffff] to-[rgba(94,117,200,0.5)] w-full h-1;
+}
+
+.page-title {
+	@apply text-[40px] font-bold py-5;
+}
+/* gradient text */
+.gradient-text {
+	@apply bg-linear-to-r from-[#5dafb1] to-[#5e73c9] bg-clip-text text-transparent w-fit;
+}
+.bronze-text {
+	@apply bg-linear-to-r from-[#e1a755] to-[#b76b00] bg-clip-text text-transparent w-fit;
+}
+
+.link-solid {
+	@apply cursor-pointer flex justify-center items-center p-[2px] rounded-full  transition-all duration-300 hover:shadow-lg hover:scale-103 overflow-hidden font-bold text-white w-[242px] min-h-[56px] text-xl bg-linear-to-r from-[#5dafb1] to-[#5e73c9];
+}
