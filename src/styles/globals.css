@@ -1,38 +1,6 @@
-/* font Roboto local */
-@font-face {
-	font-family: 'Roboto';
-	src: url('/fonts/Roboto-Regular.ttf');
-	font-weight: 400;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'Roboto';
-	src: url('/fonts/Roboto-Medium.ttf');
-	font-weight: 500;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'Roboto';
-	src: url('/fonts/Roboto-SemiBold.ttf');
-	font-weight: 600;
-	font-style: normal;
-}
-
-@font-face {
-	font-family: 'Roboto';
-	src: url('/fonts/Roboto-Bold.ttf');
-	font-weight: 700;
-	font-style: normal;
-}
-
 @import 'tailwindcss';
 
 @theme {
-	/* font roboto as default */
-	--font-sans: 'Roboto', sans-serif;
-
 	/* colors for gradients */
 	--color-gr-1: #5dafb1;
 	--color-gr-2: #5e73c9;
