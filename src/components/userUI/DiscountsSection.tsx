@@ -1,24 +1,33 @@
 'use client'
 
-import { categories } from '@/data/categories'
+import { Category, Locale } from '@/types/baseTypes'
 
 import BtnSolid from '../commonUI/BtnSolid'
 
+import CardRow from './CardRow'
 import CategoryControl from './CategoryControl'
-import ProductCard from './ProductCard'
 import BaseSection from './baseComponents/BaseSection'
 import Title from './baseComponents/Title'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-const DiscountsSection = ({ title, btn }: { title: string; btn: string }) => {
-	const setOfCategories = categories.slice(0, categories.length - 1)
+const DiscountsSection = ({
+	title,
+	btn,
+	locale
+}: {
+	title: string
+	btn: string
+	locale: Locale
+}) => {
+	const [selectedCategory, setSelectedCategory] = useState<Category | undefined>(undefined)
+	const [mounted, setMounted] = useState(false)
 
-	const [selected, setSelected] = useState('')
+	useEffect(() => {
+		setMounted(true)
+	}, [])
 
-	// useEffect(() => {
-	//   console.log('discount section')
-	// }, [selected])
+	if (!mounted) return null
 
 	return (
 		<BaseSection className='py-9'>
@@ -26,17 +35,9 @@ const DiscountsSection = ({ title, btn }: { title: string; btn: string }) => {
 				{title}
 			</Title>
 
-			<div className='mb-7'>
-				<CategoryControl categories={setOfCategories} setCategory={setSelected} />
-			</div>
-			<div className='grid h-[505px] min-[940px]:grid-cols-3 min-[1230px]:grid-cols-4 min-[1530px]:grid-cols-5 min-[1840px]:grid-cols-6 gap-6 overflow-hidden'>
-				<ProductCard />
-				<ProductCard />
-				<ProductCard />
-				<ProductCard />
-				<ProductCard />
-				<ProductCard />
-			</div>
+			<CategoryControl setCategory={setSelectedCategory} />
+
+			<CardRow category={selectedCategory} locale={locale} section='discounts' />
 			<div className='mt-9 flex justify-center items-center'>
 				<BtnSolid variant='bronze' size='m' as='link' href='/catalog/discount'>
 					{btn}

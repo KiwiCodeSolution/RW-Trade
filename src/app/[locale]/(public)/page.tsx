@@ -23,7 +23,7 @@ const Main = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
 			<AddSectionSecond />
 
-			<DiscountsSection btn={t('btn')} title={t('title')} />
+			<DiscountsSection btn={t('btn')} title={t('title')} locale={locale} />
 			<PopularCategories />
 
 			<FormSection />

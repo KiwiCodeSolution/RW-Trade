@@ -1,7 +1,7 @@
 import Icon from '../../../public/icons/btn-icon-01-32.svg'
 import BtnSolid from '../commonUI/BtnSolid'
 
-import CardRow from './CardRow'
+import PopularProductsSectionWithCategory from './PopularProductsSectionWithCategory'
 import BaseSection from './baseComponents/BaseSection'
 import Title from './baseComponents/Title'
 
@@ -14,12 +14,7 @@ const PopularProducts = () => {
 			<Title tag='h2' styles='mb-7'>
 				{t('title')}
 			</Title>
-
-			<div className='grid grid-rows-3 gap-9 mb-9'>
-				<CardRow />
-				<CardRow />
-				<CardRow />
-			</div>
+			<PopularProductsSectionWithCategory />
 			<div className='flex justify-center items-center'>
 				<BtnSolid size='m' variant='bronze' as='link' href='/catalog'>
 					<Icon />

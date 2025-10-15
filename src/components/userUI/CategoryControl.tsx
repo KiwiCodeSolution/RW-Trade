@@ -1,34 +1,45 @@
 'use client'
 
+import { Category, Locale } from '@/types/baseTypes'
+
+import { categoryStore } from '@/store/CategoryStore'
+
+import { observer } from 'mobx-react-lite'
+import { useLocale } from 'next-intl'
 import { useEffect, useRef, useState } from 'react'
 
-const CategoryControl = ({ categories, setCategory }) => {
-	const lang = 'uk'
+interface CategoryControlProps {
+	setCategory: React.Dispatch<React.SetStateAction<Category | undefined>>
+}
 
-	const content = {
+const CategoryControl = observer(({ setCategory }: CategoryControlProps) => {
+	const locale = useLocale() as Locale
+	const { categories } = categoryStore
+	const setOfCategories = categories
+
+	const content: Record<Locale, string> = {
 		uk: 'Всі категорії',
 		en: 'All Categories'
 	}
 
 	const thumbWidth = 100
-
-	const [selected, setSelected] = useState('any')
+	const [selected, setSelected] = useState<Category | undefined>(undefined)
 	const [isDragging, setIsDragging] = useState(false)
-	const containerRef = useRef(null)
-	const thumbRef = useRef(null)
-	const trackRef = useRef(null)
 	const [thumbLeft, setThumbLeft] = useState(0)
 	const [startX, setStartX] = useState(0)
 	const [startLeft, setStartLeft] = useState(0)
 
-	const handleChange = e => {
-		setSelected(e.target.value)
-		setCategory(e.target.value)
+	const containerRef = useRef<HTMLDivElement | null>(null)
+	const trackRef = useRef<HTMLDivElement | null>(null)
+	const thumbRef = useRef<HTMLDivElement | null>(null)
+
+	const handleSelect = (category?: Category) => {
+		setSelected(category)
+		setCategory(category) // тепер завжди Category або undefined
 	}
 
 	const handleScroll = () => {
 		if (!containerRef.current || !trackRef.current) return
-
 		const container = containerRef.current
 		const track = trackRef.current
 
@@ -37,29 +48,25 @@ const CategoryControl = ({ categories, setCategory }) => {
 
 		const scrollRatio = container.scrollLeft / maxScroll
 		const maxThumbTravel = track.clientWidth - thumbWidth
-
-		const newThumbLeft = scrollRatio * maxThumbTravel
-		setThumbLeft(newThumbLeft)
+		setThumbLeft(scrollRatio * maxThumbTravel)
 	}
 
-	const handleThumbMouseDown = e => {
+	const handleThumbMouseDown = (e: React.MouseEvent) => {
 		e.preventDefault()
 		setStartX(e.clientX)
 		setStartLeft(thumbLeft)
 		setIsDragging(true)
 	}
 
-	const handleMouseMove = e => {
+	const handleMouseMove = (e: MouseEvent) => {
 		if (!isDragging || !containerRef.current || !trackRef.current) return
 
 		const container = containerRef.current
 		const track = trackRef.current
 
 		const deltaX = e.clientX - startX
-
 		const maxThumbTravel = track.clientWidth - thumbWidth
 		const newThumbLeft = Math.max(0, Math.min(startLeft + deltaX, maxThumbTravel))
-
 		setThumbLeft(newThumbLeft)
 
 		const scrollRatio = newThumbLeft / maxThumbTravel
@@ -67,19 +74,13 @@ const CategoryControl = ({ categories, setCategory }) => {
 		container.scrollLeft = scrollRatio * maxScroll
 	}
 
-	const handleMouseUp = () => {
-		setIsDragging(false)
-	}
+	const handleMouseUp = () => setIsDragging(false)
 
 	useEffect(() => {
-		console.log('category control rendered')
-
 		document.addEventListener('mousemove', handleMouseMove)
 		document.addEventListener('mouseup', handleMouseUp)
-
-		handleScroll()
-
 		window.addEventListener('resize', handleScroll)
+		handleScroll()
 
 		return () => {
 			document.removeEventListener('mousemove', handleMouseMove)
@@ -89,7 +90,7 @@ const CategoryControl = ({ categories, setCategory }) => {
 	}, [isDragging, startX, startLeft])
 
 	return (
-		<div className='relative'>
+		<div className='relative mb-7'>
 			<div
 				className='overflow-hidden mb-6'
 				onScroll={handleScroll}
@@ -98,55 +99,41 @@ const CategoryControl = ({ categories, setCategory }) => {
 				aria-label='Categories navigation'
 			>
 				<div className='flex gap-2 whitespace-nowrap'>
-					<label
-						className={`p-0.5 rounded-md w-fit cursor-pointer ${selected === '' && 'bg-primary'}`}
+					<button
+						className={`p-0.5 rounded-md w-fit cursor-pointer ${
+							selected === undefined ? 'bg-primary' : ''
+						}`}
+						onClick={() => handleSelect(undefined)}
 					>
 						<div className='bg-bg-light w-full h-full flex justify-center items-center rounded-sm'>
 							<div
 								className={`text-nowrap px-4 py-2 bg-primary bg-clip-text hover:text-transparent ${
-									selected === '' && 'text-transparent'
+									selected === undefined ? 'text-transparent' : ''
 								}`}
 							>
-								{content[lang]}
+								{content[locale]}
 							</div>
 						</div>
-						<input
-							type='radio'
-							name='categoryControl'
-							id='control_0'
-							value='any'
-							className='hidden'
-							onChange={handleChange}
-							checked={selected === 'any'}
-						/>
-					</label>
+					</button>
 
-					{categories.map((item, index) => (
-						<label
-							key={index}
+					{setOfCategories.map(item => (
+						<button
+							key={item._id}
 							className={`p-0.5 rounded-md w-fit cursor-pointer ${
-								selected === item.category && 'bg-primary'
+								selected?._id === item._id ? 'bg-primary' : ''
 							}`}
+							onClick={() => handleSelect(item)}
 						>
 							<div className='bg-bg-light w-full h-full flex justify-center items-center rounded-sm'>
 								<div
 									className={`text-nowrap px-4 py-2 bg-primary bg-clip-text hover:text-transparent ${
-										selected === item.category && 'text-transparent'
+										selected?._id === item._id ? 'text-transparent' : ''
 									}`}
 								>
-									{item[lang]}
+									{item.title[locale]}
 								</div>
 							</div>
-							<input
-								type='radio'
-								name='categoryControl'
-								id={`control_${item.category}`}
-								value={item.category}
-								className='hidden'
-								onChange={handleChange}
-								checked={selected === item.category}
-							/>
-						</label>
+						</button>
 					))}
 				</div>
 			</div>
@@ -160,17 +147,16 @@ const CategoryControl = ({ categories, setCategory }) => {
 			>
 				<div
 					ref={thumbRef}
-					className={`absolute h-[300%] -top-[100%] bg-bronze rounded-full ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-					style={{
-						width: `${thumbWidth}px`,
-						left: `${thumbLeft}px`
-					}}
+					className={`absolute h-[300%] -top-[100%] bg-bronze rounded-full ${
+						isDragging ? 'cursor-grabbing' : 'cursor-grab'
+					}`}
+					style={{ width: `${thumbWidth}px`, left: `${thumbLeft}px` }}
 					onMouseDown={handleThumbMouseDown}
 					role='presentation'
 				/>
 			</div>
 		</div>
 	)
-}
+})
 
 export default CategoryControl

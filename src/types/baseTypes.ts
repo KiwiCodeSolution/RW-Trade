@@ -46,6 +46,7 @@ export interface Category {
 	_id?: string
 	title: LangField
 	description?: LangField
+	subcategories?: Subcategory[]
 }
 
 export interface Subcategory {

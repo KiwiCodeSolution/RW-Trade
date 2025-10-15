@@ -47,18 +47,25 @@ const UserForm = ({ formTexts }: UserFormProps) => {
 		<div>
 			<h3 className='text-2xl text-center font-bold'>{formTexts.title}</h3>
 
-			<form onSubmit={handleSubmit(onSubmit)} className='py-7 flex flex-col text-white'>
+			<form
+				onSubmit={handleSubmit(onSubmit)}
+				className='py-7 flex flex-col gap-y-3 text-white'
+			>
 				{/* name */}
-				<label htmlFor='username'>{formTexts.item_1}</label>
-				<input
-					id='username'
-					className='h-9 bg-white rounded-md mb-2 outline-0 text-txt-dark px-2'
-					placeholder={formTexts.placeholder_1}
-					{...register('username', { required: true })}
-				/>
-				{errors.username && (
-					<span className='text-sm text-yellow-300 mb-3'>{formTexts.placeholder_1}</span>
-				)}
+				<div className='flex flex-col relative'>
+					<label htmlFor='username'>{formTexts.item_1}</label>
+					<input
+						id='username'
+						className='h-9 bg-white rounded-md mb-2 outline-0 text-txt-dark px-2'
+						placeholder={formTexts.placeholder_1}
+						{...register('username', { required: true })}
+					/>
+					{errors.username && (
+						<span className='absolute -bottom-[10px] left-0 text-[12px] text-sc-5 italic'>
+							{formTexts.placeholder_1}
+						</span>
+					)}
+				</div>
 
 				{/* honeypot */}
 				<label htmlFor='surname' className='hidden'>
@@ -74,32 +81,40 @@ const UserForm = ({ formTexts }: UserFormProps) => {
 				/>
 
 				{/* email */}
-				<label htmlFor='email'>{formTexts.item_2}</label>
-				<input
-					id='email'
-					type='email'
-					className='h-9 bg-white rounded-md mb-2 outline-0 text-txt-dark px-2'
-					placeholder={formTexts.placeholder_2}
-					{...register('email', {
-						required: true,
-						pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-					})}
-				/>
-				{errors.email && (
-					<span className='text-sm text-yellow-300 mb-3'>{formTexts.placeholder_2}</span>
-				)}
+				<div className='flex flex-col relative'>
+					<label htmlFor='email'>{formTexts.item_2}</label>
+					<input
+						id='email'
+						type='email'
+						className='h-9 bg-white rounded-md mb-2 outline-0 text-txt-dark px-2'
+						placeholder={formTexts.placeholder_2}
+						{...register('email', {
+							required: true,
+							pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+						})}
+					/>
+					{errors.email && (
+						<span className='absolute -bottom-[10px] left-0 text-[12px] text-sc-5 italic'>
+							{formTexts.placeholder_2}
+						</span>
+					)}
+				</div>
 
 				{/* message */}
-				<label htmlFor='message'>{formTexts.item_3}</label>
-				<textarea
-					id='message'
-					className='min-h-[100px] bg-white rounded-md mb-3 outline-0 text-txt-dark px-2 py-1 resize-none'
-					placeholder={formTexts.placeholder_3}
-					{...register('message', { required: true })}
-				/>
-				{errors.message && (
-					<span className='text-sm text-yellow-300 mb-3'>{formTexts.placeholder_3}</span>
-				)}
+				<div className='flex flex-col relative'>
+					<label htmlFor='message'>{formTexts.item_3}</label>
+					<textarea
+						id='message'
+						className='min-h-[100px] bg-white rounded-md mb-3 outline-0 text-txt-dark px-2 py-1 resize-none'
+						placeholder={formTexts.placeholder_3}
+						{...register('message', { required: true })}
+					/>
+					{errors.message && (
+						<span className='absolute -bottom-[10px] left-0 text-[12px] text-sc-5 italic'>
+							{formTexts.placeholder_3}
+						</span>
+					)}
+				</div>
 
 				<div className='flex justify-center'>
 					<BtnSolid variant='bronze' btnType='submit' as='button' disabled={isLoading}>
