@@ -1,96 +1,88 @@
-import { Locale } from '@/types/baseTypes'
+import BabyAndLogo from '@/components/userUI/BabyAndLogo'
+import BaseSection from '@/components/userUI/baseComponents/BaseSection'
+import Title from '@/components/userUI/baseComponents/Title'
 
-import BabyImg from '../../../../../public/images/baby.svg'
+import { getTranslations } from 'next-intl/server'
 
-import Image from 'next/image'
+export default async function PaymentAndDelivery() {
+	const t = await getTranslations('PaymentAndDeliveryPage')
 
-const PaymentAndDelivery = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
-	const { locale } = await params
+	const deliveryMethods = [
+		{
+			title: t('delivery.novaPoshta.title'),
+			description: t('delivery.novaPoshta.desc')
+		},
+		{
+			title: t('delivery.ukrPoshta.title'),
+			description: t('delivery.ukrPoshta.desc')
+		},
+		{
+			title: t('delivery.pickup.title'),
+			description: t('delivery.pickup.desc')
+		},
+		{
+			title: t('delivery.meest.title'),
+			description: t('delivery.meest.desc')
+		}
+	]
+
+	const paymentMethods = [
+		{
+			title: t('payment.cashOnDelivery.title'),
+			description: t('payment.cashOnDelivery.desc')
+		},
+		{
+			title: t('payment.privatBank.title'),
+			description: t('payment.privatBank.desc')
+		},
+		{
+			title: t('payment.cash.title'),
+			description: t('payment.cash.desc')
+		},
+		{
+			title: t('payment.nonCash.title'),
+			description: t('payment.nonCash.desc')
+		},
+		{
+			title: t('payment.card.title'),
+			description: t('payment.card.desc')
+		}
+	]
+
 	return (
-		<div>
-			<div className='header-shadow'></div>
-			<div className='user-container'>
-				<h1 className='page-title text-center'>Оплата и доствака</h1>
+		<main className='min-h-[80vh]'>
+			<div className='header-shadow' />
+			<BaseSection>
+				<Title tag='h1' isPageTitle styles='text-center my-5'>
+					{t('title')}
+				</Title>
+
 				<div className='grid grid-cols-2 py-4 gap-10 sm:gap-24'>
 					<div>
-						<h2 className='text-2xl font-semibold mb-2 sm:mb-10'>Способи доставки:</h2>
-						<p className='font-semibold mb-2 ml-1'>&#183; Нова Пошта</p>
-						<p className='mb-2 sm:mb-8'>
-							Доставка від 1 до 5 днів (в залежності від віддаленості населеного
-							пункту). Для отримання посилки необхідно пред'явити паспорт і повідомити
-							номер декларації, який ми надішлемо у вигляді SMS-повідомлення на
-							вказану номер телефону.
-						</p>
-						<p className='font-semibold mb-2 ml-1'>&#183; Укрпошта </p>
-						<p className='mb-2 sm:mb-8'>
-							Безкоштовно за умови <br />
-							Безкоштовно при вартості замовлення від 1500 ₴.Ми відправляємо посилки
-							Укрпоштою за умови 100% передоплати з урахуванням вартості доставки
-							(орієнтовно 30 грн). Час відправлення 1-2 дні + доставка орієнтовно від
-							3 до 7 днів (в залежності від віддаленості населеного пункту).
-						</p>
-						<p className='font-semibold mb-2 ml-1'>&#183; Самовивіз</p>
-						<p className='mb-2 sm:mb-8'>
-							вул. Державінська, 38 (поряд із станцією метро "Метробудівників").
-							Магазин працює Пн-Пт з 10:00 до 17:00, Сб з 10:00 до 16:00. Нд -
-							вихідний. ОБОВЯЗКОВО! Попередньо потрібно оформити замовлення, т.к. не
-							весь асортимент представлений у магазині.
-						</p>
-						<p className='font-semibold mb-2 ml-1'>&#183; Meest ПОШТА</p>
-						<p className='mb-4 sm:mb-20'>
-							Доставка кур'єром (м. Харків) Вартість доставки 100.00 ₴.Наш кур'єр
-							доставить замовлення 6 днів на тиждень з 9.00 до 20.00. Більш точний час
-							обговорюється з менеджером при оформленні замовлення. Вартість доставки
-							по Харкову 100 грн (по області обговорюється індивідуально).
-						</p>
+						<h2 className='text-2xl font-semibold mb-6'>{t('delivery.title')}</h2>
+						<ul className='list-disc ml-5 mb-10 space-y-7'>
+							{deliveryMethods.map((d, idx) => (
+								<li key={idx}>
+									<span className='font-semibold'>{d.title}</span>
+									<p>{d.description}</p>
+								</li>
+							))}
+						</ul>
 
-						<h2 className='text-2xl font-semibold mb-2 sm:mb-10'>Способи оплати:</h2>
-						<p className='font-semibold mb-2 sm:mb-8 ml-1'>&#183; Післяплата</p>
-						<p className='font-semibold mb-2 ml-1'>
-							&#183; Оплата на картку Приватбанку
-						</p>
-						<p className='mb-2 sm:mb-8'>
-							При виборі оплати на карту банку, клієнт сплачує зазначену суму за товар
-							на картковий рахунок магазину (номер картки для оплати приходить СМС
-							повідомленням після обробки замовлення). Після підтвердження отримання
-							грошей, ми висилаємо посилку клієнту.
-						</p>
-						<p className='font-semibold mb-2 ml-1'>&#183; Готівкою</p>
-						<p className='mb-2 sm:mb-8'>
-							Оплата здійснюється готівкою в нашому магазині, або, при доставці
-							кур'єром, безпосередньо кур'єру.
-						</p>
-						<p className='font-semibold mb-2 ml-1'>
-							&#183; Безготівковий розрахунок (ПП ЄП 2-3 групи)
-						</p>
-						<p className='mb-2 sm:mb-8'>
-							Після прийому замовлення ми надамо рахунок-фактуру, який Ви зможете
-							оплатити зі свого рахунку або у відділенні будь-якого банку.
-						</p>
-						<p className='font-semibold mb-2 ml-1'>
-							&#183; Оплата картою Visa, Mastercard - WayForPay
-						</p>
-						<p className='mb-2 sm:mb-8'>
-							Перед оплатою замовлення уточніть наявність товару на складі!
-						</p>
+						<h2 className='text-2xl font-semibold mb-6'>{t('payment.title')}</h2>
+						<ul className='list-disc ml-5 space-y-7'>
+							{paymentMethods.map((p, idx) => (
+								<li key={idx}>
+									<span className='font-semibold'>{p.title}</span>
+									<p>{p.description}</p>
+								</li>
+							))}
+						</ul>
 					</div>
-					<div className='flex flex-col items-center'>
-						<div className='mx-auto w-fit mb-20'>
-							<Image
-								src='/logos/LOGO_252_orange.png'
-								width={252}
-								height={96}
-								alt='logo'
-							/>
-						</div>
-						<div className='w-full max-w-[600px]'>
-							<BabyImg className='w-full h-auto' />
-						</div>
-					</div>
+
+					<BabyAndLogo styles='mt-[45px]' />
 				</div>
-			</div>
-		</div>
+			</BaseSection>
+		</main>
 	)
 }
-
-export default PaymentAndDelivery

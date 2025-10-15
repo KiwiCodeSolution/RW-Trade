@@ -1,76 +1,48 @@
-import BabyImg from '../../../../../public/images/baby.svg'
+import BabyAndLogo from '@/components/userUI/BabyAndLogo'
+import BaseSection from '@/components/userUI/baseComponents/BaseSection'
+import Title from '@/components/userUI/baseComponents/Title'
 
-import Image from 'next/image'
+import { getTranslations } from 'next-intl/server'
 
-const About = () => {
+export default async function AboutPage() {
+	const t = await getTranslations('AboutPage')
+
 	return (
-		<div>
-			<div className='header-shadow'></div>
-			<div className='user-container'>
-				<h1 className='page-title text-center'>Про компанию</h1>
-				<h2 className='pt-4 font-bold text-2xl'>
-					Ласкаво просимо в наш інтернет-магазин «RWTrade»!
-				</h2>
+		<main className='min-h-[80vh]'>
+			<div className='header-shadow' />
+			<BaseSection>
+				<Title tag='h1' isPageTitle styles='text-center my-5'>
+					{t('title')}
+				</Title>
+				<Title tag='h3' styles='pt-4'>
+					{t('welcome')}
+				</Title>
+
 				<div className='grid grid-cols-2 pt-4 pb-4 gap-10 sm:gap-24'>
 					<div>
-						<p className='mb-2 sm:mb-6'>
-							Наш магазин спеціалізується на гуртово-роздрібній продаж автотоварів,
-							автоелектроніки і автоинструмента. Наша діяльність розпочалася більше
-							дев'яти років тому як інтернет-магазин автоелектроніки. Поступово
-							розвиваючись, ми істотно розширили асортимент нашого магазину, додаючи
-							актуальний і затребуваний товар. Результатом нашої багаторічної роботи
-							стало створення ряду інтернет-магазинів з різною тематикою і
-							асортиментом.
-						</p>
-						<h2 className='font-semibold mb-2 sm:mb-6'>Автотовари оптом і в роздріб</h2>
-						<p className='mb-2 sm:mb-6'>
-							У нашому інтернет-магазині ми пропонуємо якісну і популярну
-							автоелектроніку за конкурентними цінами!
-						</p>
-						<h2 className='font-semibold mb-2 sm:mb-6'>Асортимент нашого магазину</h2>
-						<p>У нас ви зможете придбати такі товари як:</p>
+						<p className='mb-2 sm:mb-6'>{t('p1')}</p>
+
+						<h2 className='font-semibold mb-2 sm:mb-6'>{t('h2_1')}</h2>
+						<p className='mb-2 sm:mb-6'>{t('p2')}</p>
+
+						<h2 className='font-semibold mb-2 sm:mb-6'>{t('h2_2')}</h2>
 						<ul className='list-disc ml-5 mb-2 sm:mb-6'>
-							<li>Автомагнітоли</li>
-							<li>Ксенон, LED лампи LED балки</li>
-							<li>Перехідні рамки для автомагнітол</li>
-							<li>Відеореєстратори</li>
-							<li>Навігатори</li>
-							<li>Компресори для авто і автопилососи</li>
-							<li>Портативні DVD і ТБ програвачі</li>
-							<li>Допоміжну автоелектроніку та аксесуари</li>
-							<li>Автоінструмент та багато інші товари...</li>
+							{t.raw('list_products').map((item: string, i: number) => (
+								<li key={i}>{item}</li>
+							))}
 						</ul>
-						<h2 className='font-semibold'>Особливості та переваги купівлі у нас</h2>
+
+						<h2 className='font-semibold mb-2 sm:mb-6'>{t('h2_3')}</h2>
 						<ul className='list-disc ml-5 mb-2 sm:mb-6'>
-							<li>Весь представлений товар тільки від перевірених постачальників;</li>
-							<li>
-								Працюємо як оптом так і в роздріб без обмежень за сумою і кількістю;
-							</li>
-							<li>Індивідуальна гарантія на товар від 14 днів до року; </li>
-							<li>Індивідуальний підхід до кожного клієнта;</li>
-							<li>Широкий оновлюваний асортимент популярних товарів;</li>
-							<li>Ми цінуємо і поважаємо кожного клієнта;</li>
-							<li>Можливість роботи за безготівковим розрахунком;</li>
-							<li>Оперативна доставка - зазвичай займає не більше 2-3 днів.</li>
+							{t.raw('list_advantages').map((item: string, i: number) => (
+								<li key={i}>{item}</li>
+							))}
 						</ul>
 					</div>
-					<div className='flex flex-col items-center'>
-						<div className='mx-auto w-fit mb-20'>
-							<Image
-								src='/logos/LOGO_252_orange.png'
-								width={252}
-								height={96}
-								alt='logo'
-							/>
-						</div>
-						<div className='w-full max-w-[600px]'>
-							<BabyImg className='w-full h-auto' />
-						</div>
-					</div>
+
+					<BabyAndLogo />
 				</div>
-			</div>
-		</div>
+			</BaseSection>
+		</main>
 	)
 }
-
-export default About
