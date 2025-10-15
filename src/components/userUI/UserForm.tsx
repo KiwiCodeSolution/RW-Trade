@@ -1,17 +1,14 @@
 'use client'
 
+import { Feedback } from '@/types/baseTypes'
+
+import { sendFeedback } from '@/api/feedback'
+
 import BtnSolid from '../commonUI/BtnSolid'
 import Spinner from '../commonUI/loader/Spinner'
 
 import { useState } from 'react'
 import { SubmitHandler, useForm } from 'react-hook-form'
-
-type FormInputs = {
-	name: string
-	surname: string // honeypot
-	email: string
-	message: string
-}
 
 type UserFormProps = {
 	formTexts: Record<string, string>
@@ -24,22 +21,26 @@ const UserForm = ({ formTexts }: UserFormProps) => {
 		handleSubmit,
 		reset,
 		formState: { errors }
-	} = useForm<FormInputs>()
+	} = useForm<Feedback>()
 
-	const onSubmit: SubmitHandler<FormInputs> = data => {
+	const onSubmit: SubmitHandler<Feedback> = async (data: Feedback) => {
+		if (data.surname) return // антиспам
 		setIsLoading(true)
-		// антиспам — якщо поле surname заповнене, нічого не відправляємо
-		if (data.surname) return
-		console.log({
-			name: data.name,
-			email: data.email,
-			message: data.message
-		})
-		setTimeout(() => {
-			setIsLoading(false)
+
+		try {
+			await sendFeedback({
+				username: data.username,
+				email: data.email,
+				message: data.message
+			})
 			reset()
-		}, 2000)
-		reset()
+		} catch (err: any) {
+			console.log(err)
+			// помилка вже оброблена в sendFeedback через toast
+			setIsLoading(false)
+		} finally {
+			setIsLoading(false)
+		}
 	}
 
 	return (
@@ -48,14 +49,14 @@ const UserForm = ({ formTexts }: UserFormProps) => {
 
 			<form onSubmit={handleSubmit(onSubmit)} className='py-7 flex flex-col text-white'>
 				{/* name */}
-				<label htmlFor='name'>{formTexts.item_1}</label>
+				<label htmlFor='username'>{formTexts.item_1}</label>
 				<input
-					id='name'
+					id='username'
 					className='h-9 bg-white rounded-md mb-2 outline-0 text-txt-dark px-2'
 					placeholder={formTexts.placeholder_1}
-					{...register('name', { required: true })}
+					{...register('username', { required: true })}
 				/>
-				{errors.name && (
+				{errors.username && (
 					<span className='text-sm text-yellow-300 mb-3'>{formTexts.placeholder_1}</span>
 				)}
 

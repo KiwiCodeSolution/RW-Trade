@@ -25,9 +25,11 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
 	return (
 		<html lang={locale} suppressHydrationWarning className={roboto.className}>
 			<body>
-				<UserHeader locale={locale} />
-				<NextIntlClientProvider>{children}</NextIntlClientProvider>
-				<UserFooter />
+				<NextIntlClientProvider>
+					<UserHeader locale={locale} />
+					{children}
+					<UserFooter />
+				</NextIntlClientProvider>
 			</body>
 		</html>
 	)
