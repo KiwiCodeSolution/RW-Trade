@@ -21,3 +21,5 @@ const Title = ({ tag = 'h3', isPageTitle = false, styles = '', children }: Title
 			return <h3 className={`xl:text-[22px] ${baseStyles}`}>{children}</h3>
 	}
 }
+
+export default Title

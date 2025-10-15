@@ -6,10 +6,12 @@ import BtnSolid from '../commonUI/BtnSolid'
 
 import CategoryControl from './CategoryControl'
 import ProductCard from './ProductCard'
+import BaseSection from './baseComponents/BaseSection'
+import Title from './baseComponents/Title'
 
 import { useState } from 'react'
 
-const DiscountsSection = () => {
+const DiscountsSection = ({ title, btn }: { title: string; btn: string }) => {
 	const setOfCategories = categories.slice(0, categories.length - 1)
 
 	const [selected, setSelected] = useState('')
@@ -19,8 +21,11 @@ const DiscountsSection = () => {
 	// }, [selected])
 
 	return (
-		<section className='py-9'>
-			<h2 className='font-bold text-[40px] mb-7'>Акції та скидки</h2>
+		<BaseSection className='py-9'>
+			<Title tag='h2' styles='mb-7'>
+				{title}
+			</Title>
+
 			<div className='mb-7'>
 				<CategoryControl categories={setOfCategories} setCategory={setSelected} />
 			</div>
@@ -33,11 +38,11 @@ const DiscountsSection = () => {
 				<ProductCard />
 			</div>
 			<div className='mt-9 flex justify-center items-center'>
-				<BtnSolid variant='bronze' size='m'>
-					Переглянути всі
+				<BtnSolid variant='bronze' size='m' as='link' href='/catalog/discount'>
+					{btn}
 				</BtnSolid>
 			</div>
-		</section>
+		</BaseSection>
 	)
 }
 

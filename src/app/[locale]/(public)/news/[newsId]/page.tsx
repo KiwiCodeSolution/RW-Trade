@@ -17,7 +17,7 @@ const OneNews = async ({ params }: { params: Promise<{ locale: Locale; newsId: s
 						{!!post?.imgUrl ? (
 							<img src={post.imgUrl} alt={post.title} />
 						) : (
-							<img src='/logos/LOGO 152 blue.png' alt={post.title} />
+							<img src='/logos/LOGO_152_blue.png' alt={post.title} />
 						)}
 					</div>
 					<h2 className='text-5xl'>{post.title}</h2>

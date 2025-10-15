@@ -1,5 +1,7 @@
 'use client'
 
+import BaseSection from './baseComponents/BaseSection'
+
 import React, { useEffect, useState } from 'react'
 
 const slideStyle =
@@ -26,7 +28,7 @@ const AddSectionFirst = () => {
 	}, [])
 
 	return (
-		<section>
+		<BaseSection>
 			<div className='hidden sm:grid sm:grid-cols-2 sm:gap-12 sm:py-14'>
 				{slides.map((item, index) => (
 					<div key={index}>{item}</div>
@@ -45,7 +47,7 @@ const AddSectionFirst = () => {
 					))}
 				</div>
 			</div>
-		</section>
+		</BaseSection>
 	)
 }
 

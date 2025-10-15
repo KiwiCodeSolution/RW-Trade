@@ -1,26 +1,31 @@
-import { Locale } from '@/types/baseTypes'
-
 import NewsCard from './NewsCard'
+import BaseSection from './baseComponents/BaseSection'
+import Title from './baseComponents/Title'
 import { getRandomNews } from '@/helpers'
 import '@/styles/globals.css'
 
-import Link from 'next/link'
+import { getTranslations } from 'next-intl/server'
 
 type NewsSectionProps = {
-	isMain: boolean
-	locale: Locale
+	section: string
 }
 
-const NewsSection = async ({ isMain, locale }: NewsSectionProps) => {
-	const res = await fetch('https://jsonplaceholder.typicode.com/posts')
+const NewsSection = async ({ section }: NewsSectionProps) => {
+	const t = await getTranslations('NewsSectionAllPages')
+
+	const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
+		cache: 'no-store' // щоб не кешувався при SSR
+	})
 	const posts = await res.json()
 	const randomNews = getRandomNews(posts)
 
 	return (
-		<section className='py-14'>
-			<h3 className='font-bold text-[40px] text-center'>
-				{/* {isMain ? content[0][lang].title : content[1][lang].title } */}
-			</h3>
+		<BaseSection className='py-14'>
+			<Title tag='h2' styles='text-center'>
+				{section === 'main' ? t('title_homePage') : t('title_newsPage')}
+			</Title>
+			{section === 'main' && <p className='mt-4 text-center'>{t('subtitle_homePage')}</p>}
+
 			<div className='grid lg:grid-cols-2 gap-10 py-10'>
 				{randomNews.map((item, index) => (
 					<div key={index}>
@@ -28,12 +33,15 @@ const NewsSection = async ({ isMain, locale }: NewsSectionProps) => {
 					</div>
 				))}
 			</div>
-			<div className='flex justify-center items-center'>
-				<Link href='/news' className='link-solid'>
-					{/* Всі новини та статті */}
-				</Link>
-			</div>
-		</section>
+
+			{/* {section === 'main' && (
+				<div className='flex justify-center items-center'>
+					<Link href='/news' className='link-solid'>
+						{t('btn_homePage')}
+					</Link>
+				</div>
+			)} */}
+		</BaseSection>
 	)
 }
 

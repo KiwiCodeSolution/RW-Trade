@@ -24,7 +24,7 @@ const ProductCard = ({ product }) => {
 				{!!product?.imgUrl ? (
 					<img src={imgUrl} alt={product?.name} />
 				) : (
-					<Image src='/logos/LOGO 152 blue.png' width={156} height={58} alt='logo' />
+					<Image src='/logos/LOGO_152_blue.png' width={156} height={58} alt='logo' />
 				)}
 			</div>
 			<p className='text-link-blue'>{product?.name}</p>

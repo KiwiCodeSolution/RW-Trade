@@ -10,7 +10,7 @@ const UserFooterTop = () => {
 		<div className='grid grid-cols-[3fr_3fr_3fr_3fr_1fr] py-5'>
 			<div className='h-full flex justify-center items-center'>
 				<Link href='/'>
-					<Image src='/logos/LOGO 152 blue.png' width={156} height={58} alt='logo' />
+					<Image src='/logos/LOGO_152_blue.png' width={156} height={58} alt='logo' />
 				</Link>
 			</div>
 			<div className='flex justify-center'>

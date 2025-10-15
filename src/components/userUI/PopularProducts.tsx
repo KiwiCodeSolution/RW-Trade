@@ -1,34 +1,32 @@
-'use client'
-
 import Icon from '../../../public/icons/btn-icon-01-32.svg'
 import BtnSolid from '../commonUI/BtnSolid'
 
 import CardRow from './CardRow'
+import BaseSection from './baseComponents/BaseSection'
+import Title from './baseComponents/Title'
 
-import { useRouter } from 'next/navigation'
+import { useTranslations } from 'next-intl'
 
 const PopularProducts = () => {
-	const router = useRouter()
-
-	const goToCatalog = () => {
-		router.push('/catalog')
-	}
-
+	const t = useTranslations('HomePage.popular_products')
 	return (
-		<section className='py-9'>
-			<h2 className='font-bold text-[40px] mb-7'>Популяні товари</h2>
+		<BaseSection className='py-9'>
+			<Title tag='h2' styles='mb-7'>
+				{t('title')}
+			</Title>
+
 			<div className='grid grid-rows-3 gap-9 mb-9'>
 				<CardRow />
 				<CardRow />
 				<CardRow />
 			</div>
 			<div className='flex justify-center items-center'>
-				<BtnSolid size='m' variant='bronze' action={goToCatalog}>
+				<BtnSolid size='m' variant='bronze' as='link' href='/catalog'>
 					<Icon />
-					<span>Дивитись каталог</span>
+					<span>{t('btn')}</span>
 				</BtnSolid>
 			</div>
-		</section>
+		</BaseSection>
 	)
 }
 

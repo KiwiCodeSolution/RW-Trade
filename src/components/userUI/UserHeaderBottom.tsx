@@ -15,7 +15,7 @@ const UserHeaderBottom = () => {
 				<div className='flex items-center h-[72px]'>
 					<Link href='/' className='hidden sm:block mr-4'>
 						<Image
-							src='/logos/LOGO 152 blue.png'
+							src='/logos/LOGO_152_blue.png'
 							width={156}
 							height={58}
 							alt='rw-logo'

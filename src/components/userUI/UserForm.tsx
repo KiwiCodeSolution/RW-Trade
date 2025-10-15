@@ -1,104 +1,108 @@
 'use client'
 
 import BtnSolid from '../commonUI/BtnSolid'
+import Spinner from '../commonUI/loader/Spinner'
 
 import { useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
 
-const UserForm = () => {
-	const lang = 'uk'
+type FormInputs = {
+	name: string
+	surname: string // honeypot
+	email: string
+	message: string
+}
 
-	const content = {
-		uk: {
-			title: 'Заповніть дані',
-			item_0: 'Прізвище',
-			placeholder_0: 'Введіть своє прізвище',
-			item_1: "Ім'я",
-			placeholder_1: "Введіть своє ім'я",
-			item_2: 'Ел. пошта',
-			placeholder_2: 'Введіть свою пошту',
-			item_3: 'Повідомлення',
-			placeholder_3: 'Напишіть повідомлення тут',
-			btnText: 'Надіслати'
-		},
-		en: {
-			title: 'Fill in the details',
-			item_0: 'Surname',
-			placeholder_0: 'Enter your surname',
-			item_1: 'Name',
-			placeholder_1: 'Enter your name',
-			item_2: 'Email',
-			placeholder_2: 'Enter your email',
-			item_3: 'Message',
-			placeholder_3: 'Type your message here',
-			btnText: 'Send'
-		}
-	}
+type UserFormProps = {
+	formTexts: Record<string, string>
+}
 
-	const [name, setName] = useState('')
-	const [surname, setSurname] = useState('')
-	const [email, setEmail] = useState('')
-	const [message, setMessage] = useState('')
+const UserForm = ({ formTexts }: UserFormProps) => {
+	const [isLoading, setIsLoading] = useState<boolean>(false)
+	const {
+		register,
+		handleSubmit,
+		reset,
+		formState: { errors }
+	} = useForm<FormInputs>()
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		if (!!surname) return
-		const userMessage = {
-			name,
-			email,
-			message
-		}
-		console.log(userMessage)
-		setName('')
-		setEmail('')
-		setMessage('')
+	const onSubmit: SubmitHandler<FormInputs> = data => {
+		setIsLoading(true)
+		// антиспам — якщо поле surname заповнене, нічого не відправляємо
+		if (data.surname) return
+		console.log({
+			name: data.name,
+			email: data.email,
+			message: data.message
+		})
+		setTimeout(() => {
+			setIsLoading(false)
+			reset()
+		}, 2000)
+		reset()
 	}
 
 	return (
 		<div>
-			<h3 className='text-2xl text-center font-bold'>{content[lang].title}</h3>
-			<form onSubmit={handleSubmit} className='py-7 flex flex-col'>
-				<label htmlFor='name'>{content[lang].item_1}</label>
+			<h3 className='text-2xl text-center font-bold'>{formTexts.title}</h3>
+
+			<form onSubmit={handleSubmit(onSubmit)} className='py-7 flex flex-col text-white'>
+				{/* name */}
+				<label htmlFor='name'>{formTexts.item_1}</label>
 				<input
 					id='name'
-					className='h-9 bg-white rounded-md mb-7 outline-0 text-txt-dark px-2'
-					value={name}
-					placeholder={content[lang].placeholder_1}
-					onChange={e => setName(e.target.value)}
+					className='h-9 bg-white rounded-md mb-2 outline-0 text-txt-dark px-2'
+					placeholder={formTexts.placeholder_1}
+					{...register('name', { required: true })}
 				/>
+				{errors.name && (
+					<span className='text-sm text-yellow-300 mb-3'>{formTexts.placeholder_1}</span>
+				)}
+
+				{/* honeypot */}
 				<label htmlFor='surname' className='hidden'>
-					{content[lang].item_0}
+					{formTexts.item_0}
 				</label>
 				<input
 					id='surname'
+					type='text'
 					className='hidden'
-					value={surname}
-					placeholder={content[lang].placeholder_0}
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-						setSurname(e.target.value)
-					}
+					tabIndex={-1}
+					autoComplete='off'
+					{...register('surname')}
 				/>
-				<label htmlFor='email'>{content[lang].item_2}</label>
+
+				{/* email */}
+				<label htmlFor='email'>{formTexts.item_2}</label>
 				<input
 					id='email'
-					className='h-9 bg-white rounded-md mb-7 outline-0 text-txt-dark px-2'
-					value={email}
-					placeholder={content[lang].placeholder_2}
 					type='email'
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+					className='h-9 bg-white rounded-md mb-2 outline-0 text-txt-dark px-2'
+					placeholder={formTexts.placeholder_2}
+					{...register('email', {
+						required: true,
+						pattern: /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+					})}
 				/>
-				<label htmlFor='message'>{content[lang].item_3}</label>
-				<input
+				{errors.email && (
+					<span className='text-sm text-yellow-300 mb-3'>{formTexts.placeholder_2}</span>
+				)}
+
+				{/* message */}
+				<label htmlFor='message'>{formTexts.item_3}</label>
+				<textarea
 					id='message'
-					className='h-9 bg-white rounded-md mb-7 outline-0 text-txt-dark px-2'
-					value={message}
-					placeholder={content[lang].placeholder_3}
-					onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-						setMessage(e.target.value)
-					}
+					className='min-h-[100px] bg-white rounded-md mb-3 outline-0 text-txt-dark px-2 py-1 resize-none'
+					placeholder={formTexts.placeholder_3}
+					{...register('message', { required: true })}
 				/>
+				{errors.message && (
+					<span className='text-sm text-yellow-300 mb-3'>{formTexts.placeholder_3}</span>
+				)}
+
 				<div className='flex justify-center'>
-					<BtnSolid variant='bronze' btnType='submit'>
-						{content[lang].btnText}
+					<BtnSolid variant='bronze' btnType='submit' as='button' disabled={isLoading}>
+						{isLoading ? <Spinner /> : formTexts.btnText}
 					</BtnSolid>
 				</div>
 			</form>

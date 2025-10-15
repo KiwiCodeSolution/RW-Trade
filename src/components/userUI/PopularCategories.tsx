@@ -2,35 +2,42 @@ import BtnIcon from '../../../public/icons/btn-icon-02-prim.svg'
 import BtnGost from '../commonUI/BtnGost'
 import CategoryIcon from '../commonUI/CategoryIcon'
 
-import Link from 'next/link'
-import React from 'react'
+import BaseSection from './baseComponents/BaseSection'
+import Title from './baseComponents/Title'
+import { Link } from '@/i18n/navigation'
+
+import { useTranslations } from 'next-intl'
 
 const PopularCategories = () => {
+	const t = useTranslations('HomePage.popular_categories')
 	const content = [
 		{
 			category: 'light',
-			name: 'Автосвітло',
-			text: 'Фары, лампы, LED-освещение, ходовые огни. Все для безопасности и стиля.'
+			name: t('categories.0.name'),
+			text: t('categories.0.text')
 		},
 		{
 			category: 'tools',
-			name: 'Інструменти та обладнання',
-			text: 'Инструменты, наборы, ключи, головки и многое другое для сервиса авто.'
+			name: t('categories.1.name'),
+			text: t('categories.1.text')
 		},
 		{
 			category: 'control',
-			name: 'Системи контроля у шинах',
-			text: 'Датчики давления, температурные индикаторы, TPMS-комплекты.'
+			name: t('categories.2.name'),
+			text: t('categories.2.text')
 		},
 		{
 			category: 'electric',
-			name: 'Автоелектроніка',
-			text: 'Камеры, парктроники, сигнализации, гаджеты для комфорта и безопасности.'
+			name: t('categories.3.name'),
+			text: t('categories.3.text')
 		}
 	]
 	return (
-		<section className='py-9'>
-			<h2 className='font-bold text-[40px] mb-7 text-center'>Популяні категорії</h2>
+		<BaseSection className='py-9'>
+			<Title tag='h2' styles='mb-7 text-center'>
+				{t('title')}
+			</Title>
+
 			<div className='grid grid-cols-4 gap-10 mb-10 pt-10'>
 				{content.map((item, index) => (
 					<Link key={index} href={`category/${item.category}`}>
@@ -47,12 +54,12 @@ const PopularCategories = () => {
 				))}
 			</div>
 			<div className='flex justify-center'>
-				<BtnGost variant='outlined'>
+				<BtnGost variant='outlined' as='link' href='/catalog'>
 					<BtnIcon />
-					<span>Всі категорії</span>
+					<span>{t('btn')}</span>
 				</BtnGost>
 			</div>
-		</section>
+		</BaseSection>
 	)
 }
 

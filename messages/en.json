@@ -1,6 +1,57 @@
 {
-	"news": {
-		"title": "News and Articles",
-		"viewAll": "More News and Articles"
+	"news": { "title": "News and Articles", "viewAll": "More News and Articles" },
+	"Root": { "nav": {} },
+	"HomePage": {
+		"popular_products": { "title": "Popular products", "btn": "View catalog" },
+		"advertising": { "btn": "Catalog" },
+		"discounts": { "title": "Promotions and discounts", "btn": "View all" },
+		"popular_categories": {
+			"title": "Popular categories",
+			"btn": "All categories",
+			"categories": [
+				{
+					"name": "Autolight",
+					"text": "Headlights, lamps, LED lighting, running lights. Everything for safety and style."
+				},
+				{
+					"name": "Tools and Equipment",
+					"text": "Tools, sets, keys, heads and much more for car service."
+				},
+				{
+					"name": "Tyre monitoring systems",
+					"text": "Pressure sensors, temperature indicators, TPMS kits."
+				},
+				{
+					"name": "Autoelectronics",
+					"text": "Cameras, parking sensors, alarms, gadgets for comfort and safety."
+				}
+			]
+		},
+		"form_section": {
+			"title": "Car products",
+			"item_1": "Prices / wholesale prices",
+			"item_2": "Cooperation / dropshipping",
+			"item_3": "Custom-made spare parts / accessories",
+			"item_4": "Help in choosing / selection for a specific car brand",
+			"form_fields": {
+				"title": "Fill in the details",
+
+				"item_0": "Surname",
+				"placeholder_0": "Enter your surname",
+				"item_1": "Name",
+				"placeholder_1": "Enter your name",
+				"item_2": "Email",
+				"placeholder_2": "Enter your email",
+				"item_3": "Message",
+				"placeholder_3": "Type your message here",
+				"btnText": "Send"
+			}
+		}
+	},
+	"NewsSectionAllPages": {
+		"title_homePage": "News & Articles",
+		"subtitle_homePage": "Various interests and news in the world of cars, novelties, technologies, life hacks",
+		"title_newsPage": "Read our other articles",
+		"btn_homePage": "All news"
 	}
 }

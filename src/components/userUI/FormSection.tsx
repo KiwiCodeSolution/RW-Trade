@@ -2,65 +2,63 @@ import FormIcon_1 from '../../../public/icons/form_1.svg'
 import FormIcon_2 from '../../../public/icons/form_2.svg'
 import FormIcon_3 from '../../../public/icons/form_3.svg'
 import FormIcon_4 from '../../../public/icons/form_4.svg'
+import LogoWhite from '../../../public/logos/LOGO_152_white.png'
 
 import UserForm from './UserForm'
+import BaseSection from './baseComponents/BaseSection'
+import Title from './baseComponents/Title'
+
+import { useTranslations } from 'next-intl'
+import Image from 'next/image'
+
+const icons = [FormIcon_1, FormIcon_2, FormIcon_3, FormIcon_4]
 
 const FormSection = () => {
-	const lang = 'uk'
+	const t = useTranslations('HomePage.form_section')
 
-	const content = {
-		uk: {
-			title: 'Товари для автомобілів',
-			item_1: 'Прайси / оптові ціни',
-			item_2: 'Співпраця / дропшипінг',
-			item_3: 'Запчастини / аксесуари на замовлення',
-			item_4: 'Допомога у виборі / підбір для конкретної марки авто'
-		},
-		en: {
-			title: 'Товари для автомобілів',
-			item_1: 'Прайси / оптові ціни',
-			item_2: 'Співпраця / дропшипінг',
-			item_3: 'Запчастини / аксесуари на замовлення',
-			item_4: 'Допомога у виборі / підбір для конкретної марки авто'
-		}
+	const items = [t('item_1'), t('item_2'), t('item_3'), t('item_4')]
+
+	const formTexts = {
+		title: t('form_fields.title'),
+
+		item_0: t('form_fields.item_0'),
+		placeholder_0: t('form_fields.placeholder_0'),
+		item_1: t('form_fields.item_1'),
+		placeholder_1: t('form_fields.placeholder_1'),
+		item_2: t('form_fields.item_2'),
+		placeholder_2: t('form_fields.placeholder_2'),
+		item_3: t('form_fields.item_3'),
+		placeholder_3: t('form_fields.placeholder_3'),
+		btnText: t('form_fields.btnText')
 	}
 
 	return (
-		<section className='bg-primary h-[488px] text-white'>
+		<BaseSection className='bg-primary h-[488px] text-white'>
 			<div className='w-full h-full grid grid-cols-2 gap-4 py-14'>
 				<div className='items-center max-w-[500px] mx-auto'>
 					<div className='flex justify-center'>
-						<img src='logos/LOGO 152 white.png' alt='logo' />
+						<Image src={LogoWhite} alt='logo' width={156} height={58} />
 					</div>
-					<h3 className='text-center text-[32px] font-bold border-b-2 border-white mb-4'>
-						{content[lang].title}
-					</h3>
+					<Title tag='h3' styles='text-center border-b-2 border-white mb-4'>
+						{t('title')}
+					</Title>
 
-					<div className='flex gap-6 mb-4 mx-8'>
-						<FormIcon_1 className='min-w-[33px] h-auto' />
-						<p className='text-xl leading-8'>{content[lang].item_1}</p>
-					</div>
-
-					<div className='flex gap-6 mb-4 mx-8'>
-						<FormIcon_2 className='min-w-[33px] h-auto' />
-						<p className='text-xl leading-8'>{content[lang].item_2}</p>
-					</div>
-
-					<div className='flex gap-6 mb-4 mx-8'>
-						<FormIcon_3 className='min-w-[33px] h-auto' />
-						<p className='text-xl leading-8'>{content[lang].item_3}</p>
-					</div>
-
-					<div className='flex gap-6 mb-4 mx-8'>
-						<FormIcon_4 className='min-w-[33px] h-auto' />
-						<p className='text-xl leading-8'>{content[lang].item_4}</p>
-					</div>
+					{items.map((text, index) => {
+						const Icon = icons[index]
+						return (
+							<div key={index} className='flex gap-6 mb-4 mx-8'>
+								<Icon className='min-w-[33px] h-auto' />
+								<p className='text-xl leading-8'>{text}</p>
+							</div>
+						)
+					})}
 				</div>
+
 				<div className='items-center w-full max-w-[580px] mx-auto'>
-					<UserForm />
+					<UserForm formTexts={formTexts} />
 				</div>
 			</div>
-		</section>
+		</BaseSection>
 	)
 }
 

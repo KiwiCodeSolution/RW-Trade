@@ -8,7 +8,7 @@ const NewsCard = ({ article }) => {
 					{!!article?.imgUrl ? (
 						<img src={imgUrl} alt={article.title} />
 					) : (
-						<img src='/logos/LOGO 152 blue.png' alt={article.title} />
+						<img src='/logos/LOGO_152_blue.png' alt={article.title} />
 					)}
 				</div>
 				<div className='text-white'>

@@ -9,25 +9,27 @@ import TestimonialsSection from '@/components/userUI/TestimonialsSection'
 
 import { Locale } from '@/types/baseTypes'
 
+import { getTranslations } from 'next-intl/server'
+
 const Main = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 	const { locale } = await params
 
+	const t = await getTranslations({ locale, namespace: 'HomePage.discounts' })
+
 	return (
-		<main>
-			<div className='user-container'>
-				<AddSectionFirst />
-				<PopularProducts />
-			</div>
+		<main className='min-h-[80vh]'>
+			<AddSectionFirst />
+			<PopularProducts />
+
 			<AddSectionSecond />
-			<div className='user-container'>
-				<DiscountsSection />
-				<PopularCategories />
-			</div>
+
+			<DiscountsSection btn={t('btn')} title={t('title')} />
+			<PopularCategories />
+
 			<FormSection />
-			<div className='user-container'>
-				<TestimonialsSection locale={locale} />
-				<NewsSection isMain={true} locale={locale} />
-			</div>
+
+			<TestimonialsSection locale={locale} />
+			<NewsSection section='main' />
 		</main>
 	)
 }

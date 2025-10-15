@@ -77,7 +77,7 @@ const PaymentAndDelivery = async ({ params }: { params: Promise<{ locale: Locale
 					<div className='flex flex-col items-center'>
 						<div className='mx-auto w-fit mb-20'>
 							<Image
-								src='/logos/LOGO 252 orange.png'
+								src='/logos/LOGO_252_orange.png'
 								width={252}
 								height={96}
 								alt='logo'
