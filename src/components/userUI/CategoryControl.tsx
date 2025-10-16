@@ -2,7 +2,7 @@
 
 import { Category, Locale } from '@/types/baseTypes'
 
-import { categoryStore } from '@/store/CategoryStore'
+import { categoryStore } from '../../store/CategoryStore'
 
 import { observer } from 'mobx-react-lite'
 import { useLocale } from 'next-intl'

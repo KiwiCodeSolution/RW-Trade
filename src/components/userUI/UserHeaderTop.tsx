@@ -1,3 +1,5 @@
+'use client'
+
 import { Locale } from '@/types/baseTypes'
 
 import BurgerIcon from '../../../public/icons/burger-primary-24.svg'
@@ -7,15 +9,23 @@ import Logo from '../../../public/logos/LOGO_blue.svg'
 
 import Language from './Language'
 import RetailWholesale from './RetailWholesale'
+import { Link } from '@/i18n/navigation'
 import '@/styles/globals.css'
 
-import Link from 'next/link'
+const UserHeaderTop = ({ locale }: { locale: Locale }) => {
+	const navLinks = [
+		{ title: { uk: 'Про компанію', en: 'About us' }, href: '/about' },
+		{
+			title: { uk: 'Оплата та доставка', en: 'Payment & Delivery' },
+			href: '/payment_delivery'
+		},
+		{
+			title: { uk: 'Гарантія та повернення', en: 'Warranty & Returns' },
+			href: '/warranty_return'
+		},
+		{ title: { uk: 'Контакти', en: 'Contacts' }, href: '/contacts' }
+	]
 
-interface UserHeaderTopProps {
-	locale: Locale
-}
-
-const UserHeaderTop = ({ locale }: UserHeaderTopProps) => {
 	return (
 		<div className='w-full sm:bg-nav'>
 			<div className='user-container sm:h-9'>
@@ -32,18 +42,15 @@ const UserHeaderTop = ({ locale }: UserHeaderTopProps) => {
 				</div>
 				<nav className='hidden sm:flex justify-between items-center h-full text-white'>
 					<div className='flex gap-8'>
-						<Link href='/about' className='hover:text-gr-5 duration-200'>
-							Про компанію
-						</Link>
-						<Link href='/payment_delivery' className='hover:text-gr-5 duration-200'>
-							Оплата та доставка
-						</Link>
-						<Link href='/warranty_return' className='hover:text-gr-5 duration-200'>
-							Гарантія та повернення
-						</Link>
-						<Link href='/contacts' className='hover:text-gr-5 duration-200'>
-							Контакти
-						</Link>
+						{navLinks.map(link => (
+							<Link
+								key={link.href}
+								href={link.href}
+								className='hover:text-gr-5 duration-200'
+							>
+								{link.title[locale]}
+							</Link>
+						))}
 					</div>
 					<div className='flex gap-8'>
 						<RetailWholesale />

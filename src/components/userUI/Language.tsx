@@ -4,42 +4,41 @@ import { Locale } from '@/types/baseTypes'
 
 import WorldIcon from '../../../public/icons/world-16.svg'
 
-import { usePathname, useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { Link, usePathname } from '@/i18n/navigation'
+import { routing } from '@/i18n/routing'
 
-type LanguageSwitcherProps = { locale: Locale }
+import { useMemo } from 'react'
 
-const LanguageSwitcher = ({ locale }: LanguageSwitcherProps) => {
-	const [current, setCurrent] = useState(locale || 'uk')
-	const router = useRouter()
+const LanguageSwitcher = ({ locale }: { locale: Locale }) => {
 	const pathname = usePathname()
 
-	const languages = [
-		{ code: 'en', name: 'eng' },
-		{ code: 'uk', name: 'ukr' }
-	]
+	const languages = { en: 'eng', uk: 'ukr' }
 
-	const handleClick = () => {
-		const currentIndex = languages.findIndex(lang => lang.code === current)
-		const nextLang = languages[(currentIndex + 1) % languages.length].code
+	// Поточна локаль з URL
+	const segments = pathname.split('/').filter(Boolean)
+	const firstSegment = segments[0]
+	// const currentLocale = routing.locales.includes(firstSegment as Locale)
+	// 	? (firstSegment as Locale)
+	// 	: routing.defaultLocale
 
-		setCurrent(nextLang as Locale)
+	const pathWithoutLocale = routing.locales.includes(firstSegment as Locale)
+		? `/${segments.slice(1).join('/')}`
+		: pathname
 
-		// Замінюємо першу частину шляху на нову мову
-		const newPath = pathname.replace(/^\/[^/]+/, `/${nextLang}`)
-		router.push(newPath)
-	}
+	const nextLocale = locale === 'en' ? 'uk' : 'en'
+	const nextLanguageName = languages[nextLocale]
 
-	const currentLanguage = languages.find(lang => lang.code === current)
+	const href = useMemo(() => pathWithoutLocale || '/', [pathWithoutLocale])
 
 	return (
-		<div
+		<Link
+			href={href}
+			locale={nextLocale}
 			className='flex gap-2 items-center cursor-pointer hover:text-gr-5 duration-200'
-			onClick={handleClick}
 		>
 			<WorldIcon />
-			<div className='min-w-8'>{currentLanguage?.name || current}</div>
-		</div>
+			<div className='min-w-8'>{nextLanguageName}</div>
+		</Link>
 	)
 }
 

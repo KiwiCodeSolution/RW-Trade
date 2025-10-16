@@ -3,7 +3,7 @@ import UserHeader from '@/components/userUI/UserHeader'
 
 import { Locale } from '@/types/baseTypes'
 
-import { roboto } from '@/app/fonts'
+import { roboto } from './fonts'
 import '@/styles/globals.css'
 
 import { Metadata } from 'next'
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 type RootLayoutProps = {
 	children: React.ReactNode
-	params: Promise<{ locale: Locale }>
+	params: { locale: Locale } // НЕ Promise
 }
 
 export default async function RootLayout({ children, params }: RootLayoutProps) {

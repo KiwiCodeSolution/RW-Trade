@@ -41,6 +41,21 @@
 			],
 			"@/styles/*": [
 				"./src/styles/*"
+			],
+			"@/images/*": [
+				"./public/images/*"
+			],
+			"@/helpers/*": [
+				"./src/helpers/*"
+			],
+			"@/lib/*": [
+				"./src/lib/*"
+			],
+			"@/store/*": [
+				"./src/store/*"
+			],
+			"@/utils/*": [
+				"./src/utils/*"
 			]
 		}
 	},
