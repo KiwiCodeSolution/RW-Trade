@@ -12,7 +12,7 @@ export interface SeoBlock {
 }
 
 export interface Product {
-	_id?: string // якщо приходить з бекенду після створення
+	_id: string // якщо приходить з бекенду після створення
 	title: LangField
 	description: LangField
 	price: number
@@ -40,6 +40,9 @@ export interface Product {
 	initialRatingCount?: number
 	isPublished?: boolean
 	seo?: SeoBlock
+	slugUk: string
+	slugEn: string
+	isFavorite?: boolean
 }
 
 export interface Category {

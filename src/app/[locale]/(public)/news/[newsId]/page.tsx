@@ -31,7 +31,7 @@ const OneNews = async ({ params }: { params: Promise<{ locale: Locale; newsId: s
 					</p>
 				))}
 			</div>
-			<NewsSection isMain={false} locale={locale} />
+			<NewsSection section='news' />
 		</div>
 	)
 }
