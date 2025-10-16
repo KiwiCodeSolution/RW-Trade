@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 type RootLayoutProps = {
 	children: React.ReactNode
-	params: { locale: Locale } // НЕ Promise
+	params: { locale: Locale }
 }
 
 export default async function RootLayout({ children, params }: RootLayoutProps) {
@@ -27,7 +27,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
 			<body>
 				<NextIntlClientProvider>
 					<UserHeader locale={locale} />
-					{children}
+					<div className='min-h-screen flex flex-col justify-between'>{children}</div>
 					<UserFooter />
 				</NextIntlClientProvider>
 			</body>

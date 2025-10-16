@@ -4,21 +4,24 @@ import { WHOLESALE_DISCOUNT } from '@/utils/config'
 
 import { Locale, Product } from '@/types/baseTypes'
 
-import { useEffect, useState } from 'react'
+import { productStore } from '@/store/ProductsStore'
+
+import { observer } from 'mobx-react-lite'
 
 interface PriceComponentProps {
 	price: Product['price']
-	exchangeRate: number
+
 	locale: Locale
 }
 
-const PriceComponent = ({ price, exchangeRate, locale }: PriceComponentProps) => {
-	const [isWholesale, setIsWholesale] = useState(false)
+const PriceComponent = observer(({ price, locale }: PriceComponentProps) => {
+	const { exchangeRate, isWholesale } = productStore
+	// const [isWholesale, setIsWholesale] = useState(false)
 
-	useEffect(() => {
-		const saved = localStorage.getItem('isWholesale')
-		setIsWholesale(saved === 'true')
-	}, [])
+	// useEffect(() => {
+	// 	const saved = localStorage.getItem('isWholesale')
+	// 	setIsWholesale(saved === 'true')
+	// }, [])
 
 	let priceUSD = price
 	if (isWholesale) priceUSD *= 1 - WHOLESALE_DISCOUNT
@@ -30,6 +33,6 @@ const PriceComponent = ({ price, exchangeRate, locale }: PriceComponentProps) =>
 			{locale === 'en' ? 'Price:' : 'Ціна:'} {priceLocal.toFixed(2)}₴
 		</p>
 	)
-}
+})
 
 export default PriceComponent

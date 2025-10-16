@@ -1,30 +1,26 @@
 'use client'
 
+import { productStore } from '@/store/ProductsStore'
+
 import BagIcon from '../../../public/icons/bag-16.svg'
 import BoxIcon from '../../../public/icons/box-16.svg'
 
-import { useState } from 'react'
+import { observer } from 'mobx-react-lite'
 
-// import DownIcon from '../../../public/icons/down-16.svg'
+const RetailWholesale = observer(() => {
+	const { isWholesale, toggleWholesale } = productStore
 
-const RetailWholesale = () => {
-	const [current, setCurrent] = useState('Роздріб')
-	const [option, setOption] = useState('Опт')
-
-	const handleClick = () => {
-		setCurrent(option)
-		setOption(current)
-	}
+	const current = isWholesale ? 'Опт' : 'Роздріб'
 
 	return (
 		<div
 			className='flex gap-2 items-center cursor-pointer hover:text-gr-5 duration-200'
-			onClick={handleClick}
+			onClick={toggleWholesale}
 		>
-			{current === 'Опт' ? <BoxIcon /> : <BagIcon />}
+			{isWholesale ? <BoxIcon /> : <BagIcon />}
 			<div>{current}</div>
 		</div>
 	)
-}
+})
 
 export default RetailWholesale

@@ -2,11 +2,18 @@ import NewsCard from '@/components/userUI/NewsCard'
 
 import { Locale } from '@/types/baseTypes'
 
+export type NewsArticle = {
+	id: string | number
+	title: string
+	body: string
+	imgUrl: string
+}
+
 const News = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 	const { locale } = await params
 
 	const res = await fetch('https://jsonplaceholder.typicode.com/posts')
-	const posts = await res.json()
+	const posts = (await res.json()) as NewsArticle[]
 
 	return (
 		<div className='user-container'>

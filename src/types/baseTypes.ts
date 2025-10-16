@@ -98,6 +98,7 @@ export interface DeliveryInfo {
 	novaposhta?: Record<string, any>
 	ukrposhta?: Record<string, any>
 	meest?: Record<string, any>
+	payer?: string
 }
 
 export interface OrderItem {
@@ -110,19 +111,20 @@ export interface OrderItem {
 	sku?: string
 }
 
-export type OrderStatus = 'pending' | 'shipped' | 'delivered' | 'cancelled'
-
 export interface Order {
 	_id?: string
 	fullName: string
 	phone: string
 	delivery: DeliveryInfo
+	paymentMethod: string
 	items: OrderItem[]
 	totalPrice: number
 	status: OrderStatus
-	deliveryDate?: string
 	comment?: string
-	orderNumber: string
+	deliveryDate?: string
+	orderNumber?: string
 	createdAt?: string
 	updatedAt?: string
 }
+
+export type OrderStatus = 'pending' | 'shipped' | 'delivered' | 'cancelled'
