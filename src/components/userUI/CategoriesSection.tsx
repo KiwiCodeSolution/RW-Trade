@@ -1,3 +1,5 @@
+import { Category } from '@/types/baseTypes'
+
 import { categories } from '../../data/categories'
 import CategoryIcon from '../commonUI/CategoryIcon'
 
@@ -31,7 +33,7 @@ const CategoriesSection = () => {
 					<div key={index} className='flex flex-col pt-2 py-8 pb-8 bg-bg-light'>
 						<div className='flex flex-col items-center'>
 							<CategoryIcon
-								category={item.category}
+								category={item.category as unknown as Category}
 								size='m'
 								bg={categories.length === index + 1 ? 'bronze' : 'primary'}
 							/>

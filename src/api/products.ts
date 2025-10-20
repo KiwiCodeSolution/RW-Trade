@@ -14,3 +14,12 @@ export async function getProducts() {
 		throw err
 	}
 }
+
+export async function getExchangeRate() {
+	try {
+		const rate = await axios.get(`${BASE_URL}/currency/latest`)
+		return rate
+	} catch (error) {
+		console.error('Failed to fetch exchange rate', error)
+	}
+}

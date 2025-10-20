@@ -1,10 +1,6 @@
 'use client'
 
-import { Locale } from '@/types/baseTypes'
-
-import { categories } from '@/data/categories'
-import { fakeProducts } from '@/data/fakeData'
-import { subCategories } from '@/data/subCategories'
+import { Category, Locale } from '@/types/baseTypes'
 
 import Pagination from '../commonUI/Pagination'
 
@@ -13,11 +9,11 @@ import NumberOfProducts from './NumberOfProducts'
 import ProductCard from './ProductCard'
 import SubCategoryControl from './SubCategoryControl'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
-interface Category {
-	id: string
-	name: string
+interface CategoryControlProps {
+	categories: { category: string; uk: string; en: string }[]
+	setCategory: React.Dispatch<React.SetStateAction<Category | undefined>>
 }
 
 interface SubCategory {
@@ -39,7 +35,7 @@ interface Props {
 }
 
 const AllItemsSection: React.FC<Props> = ({ locale }) => {
-	const [category, setCategory] = useState<string>('any')
+	const [category, setCategory] = useState<Category | undefined>(undefined)
 	const [selectedCategory, setSelectedCategory] = useState<SubCategory | null>(null)
 	const [subCategory, setSubCategory] = useState<string>('any')
 	const [numberOfItems, setNumberOfItems] = useState<string>('10')
@@ -51,25 +47,19 @@ const AllItemsSection: React.FC<Props> = ({ locale }) => {
 		en: 'All products on the site'
 	}
 
-	useEffect(() => {
-		console.log('first useEffect')
-		const selected = subCategories.find(item => item.category === category)
-		setSelectedCategory(selected || null)
-		setSubCategory('any')
-	}, [category])
-
-	useEffect(() => {
-		console.log('second useEffect')
-		const fakeProds = fakeProducts(numberOfItems, category, subCategory)
-		setProducts(fakeProds)
-	}, [numberOfItems, category, subCategory, currentPage])
+	// useEffect(() => {
+	// 	console.log('first useEffect')
+	// 	const selected = subCategories.find(item => category && item.category === category.id)
+	// 	setSelectedCategory(selected || null)
+	// 	setSubCategory('any')
+	// }, [category])
 
 	return (
 		<section>
 			<h2 className='font-bold text-[40px] mb-7'>{title[locale]}</h2>
 
 			<div className='mb-7'>
-				<CategoryControl categories={categories} setCategory={setCategory} />
+				<CategoryControl setCategory={setCategory} />
 			</div>
 
 			{!!selectedCategory && (
@@ -87,7 +77,7 @@ const AllItemsSection: React.FC<Props> = ({ locale }) => {
 
 			<div className='mb-7 grid min-[940px]:grid-cols-3 min-[1230px]:grid-cols-4 min-[1530px]:grid-cols-5 min-[1840px]:grid-cols-6 gap-6'>
 				{products.map((item, index) => (
-					<ProductCard key={index} product={item} />
+					<ProductCard key={index} locale={locale} />
 				))}
 			</div>
 

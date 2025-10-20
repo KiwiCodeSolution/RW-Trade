@@ -15,7 +15,7 @@ const RetailWholesale = observer(() => {
 	return (
 		<div
 			className='flex gap-2 items-center cursor-pointer hover:text-gr-5 duration-200'
-			onClick={toggleWholesale}
+			onClick={() => toggleWholesale()}
 		>
 			{isWholesale ? <BoxIcon /> : <BagIcon />}
 			<div>{current}</div>

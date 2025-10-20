@@ -5,15 +5,26 @@ import RightIcon from '../../../public/icons/chevron-right-32.svg'
 
 import { useState } from 'react'
 
+type PaginationProps = {
+	numberOfItems: number
+	itemsPerPage: number
+	currentPage?: number
+	onPageChange?: (page: number) => void
+}
+
 const Pagination = ({
 	numberOfItems,
 	itemsPerPage,
 	currentPage: initialPage = 1,
 	onPageChange
-}) => {
+}: PaginationProps) => {
 	const [currentPage, setCurrentPage] = useState(initialPage)
 
-	const handlePageChange = page => {
+	interface HandlePageChange {
+		(page: number): void
+	}
+
+	const handlePageChange: HandlePageChange = page => {
 		setCurrentPage(page)
 		if (onPageChange) {
 			onPageChange(page)
@@ -91,7 +102,7 @@ const Pagination = ({
 				) : (
 					<button
 						key={pageNumber}
-						onClick={() => handlePageChange(pageNumber)}
+						onClick={() => handlePageChange(pageNumber as number)}
 						aria-label={`Go to page ${pageNumber}`}
 						aria-current={currentPage === pageNumber ? 'page' : undefined}
 						className={`w-8 h-8 flex justify-center items-center cursor-pointer border-2 rounded-lg ${currentPage === pageNumber ? 'font-bold text-link-blue border-link-blue' : 'border-transparent'}`}

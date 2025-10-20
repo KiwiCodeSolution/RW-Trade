@@ -1,44 +1,43 @@
 import { Product } from '@/types/baseTypes'
 
-import { getProducts } from '@/api/products'
+import { getExchangeRate, getProducts } from '@/api/products'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 
 class ProductStore {
 	products: Product[] = []
 	isLoading = false
-	exchangeRate = 0
+	exchangeRate = 0 // Початкове значення курсу, маємо отримати з беку
 	isWholesale = false
 
 	constructor() {
 		makeAutoObservable(this)
 
 		if (typeof window !== 'undefined') {
-			this.isWholesale = localStorage.getItem('isWholesale') === 'true'
+			const saved = localStorage.getItem('isWholesale')
+
+			// якщо ще немає ключа — створюємо зі значенням false
+			if (saved === null) {
+				localStorage.setItem('isWholesale', 'false')
+				this.isWholesale = false
+			} else {
+				this.isWholesale = saved === 'true'
+			}
+
 			this.fetchExchangeRate()
 			this.fetchProducts()
 		}
 	}
 
-	// async fetchExchangeRate() {
-	// 	try {
-	// 		const res = await fetch('/api/exchange-rate')
-	// 		const data = await res.json()
-	// 		runInAction(() => {
-	// 			this.exchangeRate = data.rate
-	// 		})
-	// 	} catch (error) {
-	// 		console.error('Failed to fetch exchange rate', error)
-	// 	}
-	// }
-
 	async fetchExchangeRate() {
 		try {
-			// Мокове значення курсу
-			const mockRate = 40.5
-			await new Promise(resolve => setTimeout(resolve, 300)) // імітація затримки
+			this.isLoading = true
+			const res = await getExchangeRate()
+
+			if (!res) return
 			runInAction(() => {
-				this.exchangeRate = mockRate
+				this.exchangeRate = res.data.rate
+				this.isLoading = false
 			})
 		} catch (error) {
 			console.error('Failed to fetch exchange rate', error)
@@ -74,12 +73,12 @@ class ProductStore {
 		this.updateFavoritesStorage()
 	}
 
-	setWholesale(isWholesale: boolean) {
+	setWholesale = (isWholesale: boolean) => {
 		this.isWholesale = isWholesale
 		localStorage.setItem('isWholesale', String(isWholesale))
 	}
 
-	toggleWholesale() {
+	toggleWholesale = () => {
 		this.setWholesale(!this.isWholesale)
 	}
 

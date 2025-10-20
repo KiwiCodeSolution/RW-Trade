@@ -1,7 +1,5 @@
 'use client'
 
-import { WHOLESALE_DISCOUNT } from '@/utils/config'
-
 import { Locale, Product } from '@/types/baseTypes'
 
 import { productStore } from '@/store/ProductsStore'
@@ -10,23 +8,18 @@ import { observer } from 'mobx-react-lite'
 
 interface PriceComponentProps {
 	price: Product['price']
-
+	wholesalePrice: Product['wholesalePrice']
 	locale: Locale
 }
 
-const PriceComponent = observer(({ price, locale }: PriceComponentProps) => {
+const PriceComponent = observer(({ price, wholesalePrice, locale }: PriceComponentProps) => {
 	const { exchangeRate, isWholesale } = productStore
-	// const [isWholesale, setIsWholesale] = useState(false)
 
-	// useEffect(() => {
-	// 	const saved = localStorage.getItem('isWholesale')
-	// 	setIsWholesale(saved === 'true')
-	// }, [])
-
-	let priceUSD = price
-	if (isWholesale) priceUSD *= 1 - WHOLESALE_DISCOUNT
-
-	const priceLocal = priceUSD * exchangeRate
+	const priceLocal = isWholesale
+		? wholesalePrice
+			? wholesalePrice * exchangeRate
+			: price * exchangeRate
+		: price * exchangeRate
 
 	return (
 		<p className='text-xl font-medium'>

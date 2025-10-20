@@ -19,7 +19,27 @@ import ToolsIcon from '../../../public/icons/tools.svg'
 
 import '@/styles/globals.css'
 
-const CategoryIcon = ({ category = 'light', size = 's', bg = 'primary' }) => {
+type Category =
+	| 'light'
+	| 'tools'
+	| 'electric'
+	| 'control'
+	| 'repair'
+	| 'diagnostics'
+	| 'radio'
+	| 'discount'
+
+type Size = 's' | 'm'
+
+type Background = 'primary' | 'bronze' | 'green'
+
+type PropsCategoryIcon = {
+	category?: Category
+	size?: Size
+	bg?: Background
+}
+
+const CategoryIcon = ({ category = 'light', size = 's', bg = 'primary' }: PropsCategoryIcon) => {
 	const baseStyle = 'flex justify-center items-center rounded-2xl'
 
 	const categories = {
@@ -52,7 +72,8 @@ const CategoryIcon = ({ category = 'light', size = 's', bg = 'primary' }) => {
 
 	const background = {
 		primary: 'bg-primary',
-		bronze: 'bg-bronze'
+		bronze: 'bg-bronze',
+		green: 'bg-green'
 	}
 
 	const combined = `${baseStyle} ${sizes[size]} ${background[bg]}`.trim()

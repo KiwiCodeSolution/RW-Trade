@@ -98,7 +98,11 @@ const ProductCard = ({ locale, type }: ProductCardProps) => {
 				</Link>
 				<div className='h-7'>rating</div>
 				<div className='w-full h-[64px] flex items-center justify-between'>
-					<PriceComponent price={product.price} locale={locale} />
+					<PriceComponent
+						price={product.price}
+						locale={locale}
+						wholesalePrice={product.wholesalePrice}
+					/>
 					<AddCartBtn product={product} />
 				</div>
 				<p>Код товару:{product.sku}</p>
