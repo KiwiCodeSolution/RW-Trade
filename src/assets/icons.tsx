@@ -157,3 +157,76 @@ export const Cart = ({
 		</svg>
 	)
 }
+
+export const Timer = ({
+	className,
+	color = 'currentColor'
+}: {
+	className?: string
+	color?: string
+}) => {
+	return (
+		<svg
+			width='30'
+			height='30'
+			viewBox='0 0 36 36'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<path
+				d='M2 18C2 20.1012 2.41385 22.1817 3.21793 24.1229C4.022 26.0641 5.20055 27.828 6.68629 29.3137C8.17203 30.7994 9.93586 31.978 11.8771 32.7821C13.8183 33.5861 15.8989 34 18 34C20.1012 34 22.1817 33.5861 24.1229 32.7821C26.0641 31.978 27.828 30.7994 29.3137 29.3137C30.7994 27.828 31.978 26.0641 32.7821 24.1229C33.5861 22.1817 34 20.1012 34 18C34 13.7565 32.3143 9.68687 29.3137 6.68629C26.3131 3.68571 22.2435 2 18 2C13.7565 2 9.68687 3.68571 6.68629 6.68629C3.68571 9.68687 2 13.7565 2 18Z'
+				stroke={color}
+				strokeWidth='2.5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M18 9.11133V18.0002L23.3333 23.3336'
+				stroke={color}
+				strokeWidth='2.5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+		</svg>
+	)
+}
+
+export const GradientBtn = ({
+	className,
+	width,
+	height
+}: {
+	className?: string
+	width?: number
+	height?: number
+}) => {
+	return (
+		<svg
+			width={width || 32}
+			height={height || 32}
+			viewBox='0 0 32 32'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<path
+				d='M8.5 15C7.94772 15 7.5 15.4477 7.5 16C7.5 16.5523 7.94772 17 8.5 17L8.5 15ZM25.2071 16.7071C25.5976 16.3166 25.5976 15.6834 25.2071 15.2929L18.8431 8.92893C18.4526 8.53841 17.8195 8.53841 17.4289 8.92893C17.0384 9.31946 17.0384 9.95262 17.4289 10.3431L23.0858 16L17.4289 21.6569C17.0384 22.0474 17.0384 22.6805 17.4289 23.0711C17.8195 23.4616 18.4526 23.4616 18.8431 23.0711L25.2071 16.7071ZM8.5 17L24.5 17L24.5 15L8.5 15L8.5 17Z'
+				fill='url(#paint0_linear_4031_6551)'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4031_6551'
+					x1='8.5'
+					y1='16.5'
+					x2='24.5'
+					y2='16.5'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}

@@ -99,6 +99,10 @@ class ProductStore {
 		const favorites = this.products.filter(p => p.isFavorite).map(p => p._id ?? '')
 		localStorage.setItem('favorites', JSON.stringify(favorites))
 	}
+
+	get favoriteProducts() {
+		return this.products.filter(p => p.isFavorite)
+	}
 }
 
 export const productStore = new ProductStore()

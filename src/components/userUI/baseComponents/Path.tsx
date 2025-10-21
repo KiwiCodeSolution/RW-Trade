@@ -36,7 +36,7 @@ const Path = ({ firstName = 'home', secondName, thirdName }: PathProps) => {
 	)
 
 	return (
-		<div className='flex items-center gap-x-2'>
+		<div className='flex items-center gap-x-2 h-7 my-4'>
 			{pathItems.map((item, index) => (
 				<span key={index} className='flex items-center gap-x-2'>
 					<Link

@@ -3,10 +3,10 @@ import HeartIcon from '../../../public/icons/heart-primary-50.svg'
 import PhoneIcon from '../../../public/icons/phone-primary-50.svg'
 
 import HeaderSearch from './HeaderSearch'
+import { Link } from '@/i18n/navigation'
 import '@/styles/globals.css'
 
 import Image from 'next/image'
-import Link from 'next/link'
 
 const UserHeaderBottom = () => {
 	return (

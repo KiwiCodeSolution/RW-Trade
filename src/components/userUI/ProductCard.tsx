@@ -1,11 +1,10 @@
-import { Locale } from '@/types/baseTypes'
+import { Locale, ProductStatus } from '@/types/baseTypes'
 
-import AddCartBtn from './AddCartBtn'
-import PriceComponent from './PriceComponent'
+import OtherStatusesProductBtnComponents from './OtherStatusesProductBtnComponents'
+import PriceAndAddCartComponent from './PriceAndAddCartComponent'
 import ToggleFavoriteButton from './ToggleFavoriteButton'
+import BaseImageItem from './baseComponents/BaseImageItem'
 import { Link } from '@/i18n/navigation'
-
-import Image from 'next/image'
 
 type ProductCardProps = {
 	// product?: Product
@@ -54,7 +53,8 @@ const ProductCard = ({ locale, type }: ProductCardProps) => {
 		},
 		slugUk: 'avtomobilnyi-zaryadnyi-prystriy',
 		slugEn: 'car-charger',
-		isFavorite: false
+		isFavorite: false,
+		status: ProductStatus.IN_STOCK
 	}
 	const bgColor = type === 'partners' ? 'bg-other-2' : 'bg-other-1'
 
@@ -78,8 +78,8 @@ const ProductCard = ({ locale, type }: ProductCardProps) => {
 			</div>
 
 			<div className='h-[265px] w-full overflow-hidden'>
-				<Image
-					src={(product.images && product.images[0]) ?? '/public/logos/LOGO_252_blue.png'}
+				<BaseImageItem
+					src={product.images && product.images[0]}
 					alt={product.title[locale]}
 					width={300}
 					height={300}
@@ -98,12 +98,16 @@ const ProductCard = ({ locale, type }: ProductCardProps) => {
 				</Link>
 				<div className='h-7'>rating</div>
 				<div className='w-full h-[64px] flex items-center justify-between'>
-					<PriceComponent
-						price={product.price}
-						locale={locale}
-						wholesalePrice={product.wholesalePrice}
-					/>
-					<AddCartBtn product={product} />
+					{product.status === ProductStatus.IN_STOCK ? (
+						<PriceAndAddCartComponent product={product} locale={locale} />
+					) : (
+						<OtherStatusesProductBtnComponents
+							status={product.status}
+							locale={locale}
+						/>
+					)}
+
+					{/* <AddCartBtn product={product} /> */}
 				</div>
 				<p>Код товару:{product.sku}</p>
 			</div>

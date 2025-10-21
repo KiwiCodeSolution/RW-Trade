@@ -1,5 +1,11 @@
 export type Locale = 'uk' | 'en'
 
+export enum ProductStatus {
+	IN_STOCK = 'in_stock',
+	EXPECTED = 'expected',
+	ON_ORDER = 'on_order'
+}
+
 export interface LangField {
 	uk: string
 	en: string
@@ -43,6 +49,8 @@ export interface Product {
 	slugUk: string
 	slugEn: string
 	isFavorite?: boolean
+	status: ProductStatus
+	isPartner?: boolean
 }
 
 export interface Category {

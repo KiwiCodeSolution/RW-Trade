@@ -1,82 +1,92 @@
-import Link from 'next/link'
+'use client'
 
+import BaseImageItem from '../userUI/baseComponents/BaseImageItem'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+
+const AdminLink = ({ href, title }: { href: string; title: string }) => {
+	const pathname = usePathname()
+
+	const isActive = pathname === `/uk${href}`
+
+	return (
+		<Link
+			href={href}
+			className={`text-txt-white transition-colors ${
+				isActive
+					? 'underline underline-offset-4 text-primary font-semibold'
+					: 'hover:underline hover:underline-offset-2'
+			}`}
+		>
+			{title}
+		</Link>
+	)
+}
 const AdminHeader = () => {
 	return (
-		<header className='flex flex-col gap-12 bg-txt-dark text-txt-white p-2'>
+		<header className='flex flex-col gap-7 bg-[#3C4447] text-txt-white p-2 min-h-screen rounded-tr-4xl rounded-br-4xl '>
 			<div className='flex justify-center pt-4'>
 				<Link href='/admin' className='mx-auto'>
-					<img src='logos/LOGO 252 white.png' />
+					<BaseImageItem src={'/logos/LOGO_252_white.png'} />
 				</Link>
 			</div>
 
-			<div className='flex flex-col gap-10 px-2'>
+			<div className='flex flex-col gap-7 px-2 overflow-y-auto'>
 				<div className='flex flex-col gap-2'>
 					<h2 className='text-2xl'>Зворотній зв'язок</h2>
-					<div className='h-0.5 w-full bg-primary'></div>
-					<Link href='/admin/notifications' className='text-txt-white'>
-						Сповіщення
-					</Link>
-					<Link href='/admin/messages' className='text-txt-white'>
-						Повідомлення
-					</Link>
+					<div className='h-0.5 w-full bg-primary' />
+					<AdminLink href='/admin/notifications' title='Сповіщення' />
+					<AdminLink href='/admin/messages' title='Повідомлення' />
 				</div>
 
 				<div className='flex flex-col gap-2'>
 					<h2 className='text-2xl'>Замовлення</h2>
-					<div className='h-0.5 w-full bg-primary'></div>
-					<Link href='/admin/orders' className='text-txt-white'>
-						Нові
-					</Link>
-					<Link href='/admin/orders' className='text-txt-white'>
-						Історія замовлень
-					</Link>
+					<div className='h-0.5 w-full bg-primary' />
+
+					<AdminLink href='/admin/orders' title='Нові' />
+					<AdminLink href='/admin/orders' title='Історія замовлень' />
 				</div>
 
 				<div className='flex flex-col gap-2'>
 					<h2 className='text-2xl'>Товари та послуги</h2>
-					<div className='h-0.5 w-full bg-primary'></div>
-					<Link href='/admin/categories_filters' className='text-txt-white'>
-						Категорії та фільтри
-					</Link>
-					<Link href='/admin/cards' className='text-txt-white'>
-						Картки товарів
-					</Link>
-					<Link href='/admin/create_card' className='text-txt-white'>
-						Створити нову картку
-					</Link>
+					<div className='h-0.5 w-full bg-primary' />
+
+					<AdminLink href='/admin/categories_filters' title='Категорії та фільтри' />
+					<AdminLink href='/admin/cards' title='Картки товарів' />
+					<AdminLink href='/admin/create_card' title='Створити нову картку' />
 				</div>
 
 				<div className='flex flex-col gap-2'>
 					<h2 className='text-2xl'>Новини та статті</h2>
-					<div className='h-0.5 w-full bg-primary'></div>
-					<Link href='/admin/orders' className='text-txt-white'>
-						Додати / редагувати
-					</Link>
+					<div className='h-0.5 w-full bg-primary' />
+
+					<AdminLink href='/admin/news' title='Додати / редагувати' />
 				</div>
 
 				<div className='flex flex-col gap-2'>
 					<h2 className='text-2xl'>Статистика</h2>
-					<div className='h-0.5 w-full bg-primary'></div>
-					<Link href='/admin/statistics' className='text-txt-white'>
-						Категорії товарів
-					</Link>
+					<div className='h-0.5 w-full bg-primary' />
+
+					<AdminLink href='/admin/statistics' title='Категорії товарів' />
 				</div>
 
 				<div className='flex flex-col gap-2'>
 					<h2 className='text-2xl'> Налаштування</h2>
-					<div className='h-0.5 w-full bg-primary'></div>
-					<Link href='/admin/profile' className='text-txt-white'>
-						Профілі користувачів
-					</Link>
+					<div className='h-0.5 w-full bg-primary' />
+
+					<AdminLink href='/admin/profile' title='Профілі користувачів' />
 				</div>
 
-				<div className='flex flex-col gap-2'>
+				<button>LogOut</button>
+
+				{/* <div className='flex flex-col gap-2'>
 					<h2 className='text-2xl'>Сторінки сайта</h2>
 					<div className='h-0.5 w-full bg-primary'></div>
 					<Link href='/' className='text-link-bronze'>
 						Головна
 					</Link>
-				</div>
+				</div> */}
 			</div>
 		</header>
 	)

@@ -1,3 +1,4 @@
+import ScrollToTopButton from '@/components/userUI/ScrollToTopButton'
 import UserFooter from '@/components/userUI/UserFooter'
 import UserHeader from '@/components/userUI/UserHeader'
 
@@ -27,8 +28,9 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
 			<body>
 				<NextIntlClientProvider>
 					<UserHeader locale={locale} />
-					<div className='min-h-screen flex flex-col justify-between'>{children}</div>
+					<div className='min-h-[50vh] flex flex-col justify-between'>{children}</div>
 					<UserFooter />
+					<ScrollToTopButton />
 				</NextIntlClientProvider>
 			</body>
 		</html>
