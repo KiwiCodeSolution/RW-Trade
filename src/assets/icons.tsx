@@ -127,13 +127,27 @@ export const CartBronze = ({ className }: { className?: string }) => {
 	)
 }
 
-export const Cart = ({
-	className,
-	color = 'currentColor'
-}: {
+type CartProps = {
 	className?: string
-	color?: string
-}) => {
+	variant?: 'default' | 'white' | 'gradient'
+	type?: 'cart' | 'notice'
+}
+
+export const Cart = ({ className, variant = 'default', type = 'cart' }: CartProps) => {
+	const stroke =
+		variant === 'white'
+			? 'white'
+			: variant === 'gradient'
+				? 'url(#cartGradient)'
+				: 'currentColor'
+
+	const fill =
+		variant === 'white'
+			? 'white'
+			: variant === 'gradient'
+				? 'url(#cartGradient)'
+				: 'currentColor'
+
 	return (
 		<svg
 			width='35'
@@ -145,15 +159,33 @@ export const Cart = ({
 		>
 			<path
 				d='M3.16797 5H5.16797L5.56797 7M5.56797 7H21.168L17.168 15H7.16797M5.56797 7L7.16797 15M7.16797 15L4.87497 17.293C4.24497 17.923 4.69097 19 5.58197 19H17.168M17.168 19C16.6375 19 16.1288 19.2107 15.7538 19.5858C15.3787 19.9609 15.168 20.4696 15.168 21C15.168 21.5304 15.3787 22.0391 15.7538 22.4142C16.1288 22.7893 16.6375 23 17.168 23C17.6984 23 18.2071 22.7893 18.5822 22.4142C18.9573 22.0391 19.168 21.5304 19.168 21C19.168 20.4696 18.9573 19.9609 18.5822 19.5858C18.2071 19.2107 17.6984 19 17.168 19ZM9.16797 21C9.16797 21.5304 8.95725 22.0391 8.58218 22.4142C8.20711 22.7893 7.6984 23 7.16797 23C6.63754 23 6.12883 22.7893 5.75376 22.4142C5.37868 22.0391 5.16797 21.5304 5.16797 21C5.16797 20.4696 5.37868 19.9609 5.75376 19.5858C6.12883 19.2107 6.63754 19 7.16797 19C7.6984 19 8.20711 19.2107 8.58218 19.5858C8.95725 19.9609 9.16797 20.4696 9.16797 21Z'
-				stroke={color}
+				stroke={stroke}
 				strokeWidth='2'
 				strokeLinecap='round'
 				strokeLinejoin='round'
 			/>
-			<path
-				d='M31.6758 13.373V15.0723H21.9297V13.373H31.6758ZM27.7109 9.22266V19.5742H25.9043V9.22266H27.7109Z'
-				fill={color}
-			/>
+			{type !== 'notice' && (
+				<path
+					d='M31.6758 13.373V15.0723H21.9297V13.373H31.6758ZM27.7109 9.22266V19.5742H25.9043V9.22266H27.7109Z'
+					fill={fill}
+				/>
+			)}
+
+			{variant === 'gradient' && (
+				<defs>
+					<linearGradient
+						id='cartGradient'
+						x1='3'
+						y1='14'
+						x2='32'
+						y2='14'
+						gradientUnits='userSpaceOnUse'
+					>
+						<stop stopColor='#5DAFB1' />
+						<stop offset='1' stopColor='#5E73C9' />
+					</linearGradient>
+				</defs>
+			)}
 		</svg>
 	)
 }
@@ -230,3 +262,68 @@ export const GradientBtn = ({
 		</svg>
 	)
 }
+
+export const Bell = () => {
+	return (
+		<svg
+			width='16'
+			height='20'
+			viewBox='0 0 16 20'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				fillRule='evenodd'
+				clipRule='evenodd'
+				d='M11.085 2.853C11.2039 2.40837 11.4431 2.00515 11.7764 1.68775C12.1097 1.37035 12.5241 1.15107 12.974 1.05405C13.4239 0.957039 13.8918 0.98605 14.3263 1.13789C14.7608 1.28974 15.1449 1.55852 15.4365 1.91466C15.728 2.2708 15.9156 2.70048 15.9786 3.15638C16.0416 3.61229 15.9776 4.07675 15.7937 4.49862C15.6097 4.92049 15.3128 5.28341 14.9359 5.54743C14.5589 5.81145 14.1163 5.96632 13.657 5.995C13.8846 6.63894 14.0006 7.31702 14 8V14H15C15.55 14 16 14.45 16 15C16 15.55 15.55 16 15 16H11V17C11 17.7956 10.6839 18.5587 10.1213 19.1213C9.55871 19.6839 8.79565 20 8 20C7.20435 20 6.44129 19.6839 5.87868 19.1213C5.31607 18.5587 5 17.7956 5 17V16H1C0.45 16 0 15.55 0 15C0 14.45 0.45 14 1 14H2V8C1.99978 6.58192 2.50184 5.20959 3.41713 4.12645C4.33241 3.0433 5.60175 2.31935 7 2.083V1C7 0.734784 7.10536 0.48043 7.29289 0.292893C7.48043 0.105357 7.73478 0 8 0C8.26522 0 8.51957 0.105357 8.70711 0.292893C8.89464 0.48043 9 0.734784 9 1V2.083C9.73689 2.20758 10.444 2.46872 11.085 2.853ZM8 18C8.26522 18 8.51957 17.8946 8.70711 17.7071C8.89464 17.5196 9 17.2652 9 17V16H7V17C7 17.2652 7.10536 17.5196 7.29289 17.7071C7.48043 17.8946 7.73478 18 8 18ZM4 14H12V8C12 6.93913 11.5786 5.92172 10.8284 5.17157C10.0783 4.42143 9.06087 4 8 4C6.93913 4 5.92172 4.42143 5.17157 5.17157C4.42143 5.92172 4 6.93913 4 8V14Z'
+				fill='white'
+			/>
+		</svg>
+	)
+}
+
+type EnvelopeProps = {
+	variant?: 'white' | 'gradient'
+}
+
+export const Envelope = ({ variant = 'white' }: EnvelopeProps) => (
+	<svg width='22' height='18' viewBox='0 0 22 18' fill='none' xmlns='http://www.w3.org/2000/svg'>
+		<path
+			d='M1 9C1 5.229 1 3.343 2.172 2.172C3.344 1.001 5.229 1 9 1H13C16.771 1 18.657 1 19.828 2.172C20.999 3.344 21 5.229 21 9C21 12.771 21 14.657 19.828 15.828C18.656 16.999 16.771 17 13 17H9C5.229 17 3.343 17 2.172 15.828C1.001 14.656 1 12.771 1 9Z'
+			stroke={variant === 'white' ? 'white' : 'url(#paint0_linear)'}
+			strokeWidth='2'
+		/>
+		<path
+			d='M5 5L7.159 6.8C8.996 8.33 9.914 9.095 11 9.095C12.086 9.095 13.005 8.33 14.841 6.799L17 5'
+			stroke={variant === 'white' ? 'white' : 'url(#paint1_linear)'}
+			strokeWidth='2'
+			strokeLinecap='round'
+		/>
+		{variant === 'gradient' && (
+			<defs>
+				<linearGradient
+					id='paint0_linear'
+					x1='1'
+					y1='9'
+					x2='21'
+					y2='9'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+				<linearGradient
+					id='paint1_linear'
+					x1='5'
+					y1='7.0475'
+					x2='17'
+					y2='7.0475'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		)}
+	</svg>
+)

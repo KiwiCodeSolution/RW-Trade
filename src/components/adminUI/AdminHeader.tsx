@@ -1,7 +1,5 @@
 'use client'
 
-import BaseImageItem from '../userUI/baseComponents/BaseImageItem'
-
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -11,28 +9,26 @@ const AdminLink = ({ href, title }: { href: string; title: string }) => {
 	const isActive = pathname === `/uk${href}`
 
 	return (
-		<Link
-			href={href}
-			className={`text-txt-white transition-colors ${
-				isActive
-					? 'underline underline-offset-4 text-primary font-semibold'
-					: 'hover:underline hover:underline-offset-2'
-			}`}
-		>
-			{title}
-		</Link>
+		<div className={`w-full h-fit px-2 py-1 rounded-lg ${isActive ? 'bg-primary' : ''}`}>
+			<Link
+				href={href}
+				className={`text-txt-white transition-colors hover:underline hover:underline-offset-2`}
+			>
+				{title}
+			</Link>
+		</div>
 	)
 }
 const AdminHeader = () => {
 	return (
-		<header className='flex flex-col gap-7 bg-[#3C4447] text-txt-white p-2 min-h-screen rounded-tr-4xl rounded-br-4xl '>
-			<div className='flex justify-center pt-4'>
+		<header className='flex flex-col gap-7 bg-[#3C4447] text-txt-white p-2 min-h-screen rounded-tr-4xl rounded-br-4xl justify-center'>
+			{/* <div className='flex justify-center pt-4'>
 				<Link href='/admin' className='mx-auto'>
 					<BaseImageItem src={'/logos/LOGO_252_white.png'} />
 				</Link>
-			</div>
+			</div> */}
 
-			<div className='flex flex-col gap-7 px-2 overflow-y-auto'>
+			<div className='flex flex-col gap-7 px-2 overflow-y-auto '>
 				<div className='flex flex-col gap-2'>
 					<h2 className='text-2xl'>Зворотній зв'язок</h2>
 					<div className='h-0.5 w-full bg-primary' />

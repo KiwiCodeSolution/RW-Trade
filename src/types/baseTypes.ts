@@ -136,3 +136,18 @@ export interface Order {
 }
 
 export type OrderStatus = 'pending' | 'shipped' | 'delivered' | 'cancelled'
+
+export type NotificationType = 'order' | 'feedback'
+export type NotificationStatus = 'unread' | 'read'
+
+export interface Notification {
+	_id: string
+	type: NotificationType
+	refId: string
+	name: string
+	amount?: number
+	date: string // або Date, залежно від того, як приходить із бекенду
+	status: NotificationStatus
+	createdAt?: string
+	updatedAt?: string
+}

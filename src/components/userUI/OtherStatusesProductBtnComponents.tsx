@@ -36,7 +36,7 @@ const OtherStatusesProductBtnComponents = ({ locale, status }: Props) => {
 				{status === ProductStatus.EXPECTED ? (
 					<Timer color='#606975' />
 				) : (
-					<Cart color='#ffffff' />
+					<Cart variant='white' />
 				)}
 			</div>
 		</>

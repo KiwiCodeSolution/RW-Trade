@@ -16,7 +16,7 @@ const AddCartBtn = observer(({ product }: { product: Product }) => {
 			className='w-[64px] h-[64px] rounded-lg p-2 bg-bg-green cursor-pointer flex items-center justify-center hover:shadow-2xl'
 			onClick={() => addProductToCart(product)}
 		>
-			<Cart color='#ffffff' />
+			<Cart variant='white' />
 		</button>
 	)
 })

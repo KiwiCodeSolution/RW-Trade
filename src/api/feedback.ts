@@ -18,3 +18,14 @@ export async function sendFeedback(
 		throw err
 	}
 }
+
+export async function toggleStatusFeedback(id: string) {
+	try {
+		const res = await axios.patch(`${BASE_URL}/feedbacks/${id}/status`, id)
+
+		return res.data
+	} catch (err: any) {
+		toast.error(err.response?.data?.message)
+		throw err
+	}
+}
