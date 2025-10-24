@@ -1,5 +1,6 @@
 'use client'
 
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -20,6 +21,12 @@ const AdminLink = ({ href, title }: { href: string; title: string }) => {
 	)
 }
 const AdminHeader = () => {
+	const handleLogout = async () => {
+		await signOut({
+			callbackUrl: '/uk/signin' //виходимо на сторінку аторизації
+		})
+	}
+
 	return (
 		<header className='flex flex-col gap-7 bg-[#3C4447] text-txt-white p-2 min-h-screen rounded-tr-4xl rounded-br-4xl justify-center'>
 			{/* <div className='flex justify-center pt-4'>
@@ -74,7 +81,7 @@ const AdminHeader = () => {
 					<AdminLink href='/admin/profile' title='Профілі користувачів' />
 				</div>
 
-				<button>LogOut</button>
+				<button onClick={handleLogout}>LogOut</button>
 
 				{/* <div className='flex flex-col gap-2'>
 					<h2 className='text-2xl'>Сторінки сайта</h2>

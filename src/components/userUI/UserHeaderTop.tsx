@@ -56,7 +56,7 @@ const UserHeaderTop = ({ locale }: { locale: Locale }) => {
 						<RetailWholesale />
 						<Language locale={locale} />
 						<Link
-							href='/admin'
+							href='/manage-panel'
 							className='flex gap-1 items-center hover:text-gr-5 duration-200'
 						>
 							<Person />

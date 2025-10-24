@@ -10,7 +10,7 @@ import Image from 'next/image'
 
 const UserHeaderBottom = () => {
 	return (
-		<div className='w-full'>
+		<div className='w-full header-shadow'>
 			<div className='user-container'>
 				<div className='flex items-center h-[72px]'>
 					<Link href='/' className='hidden sm:block mr-4'>

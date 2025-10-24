@@ -1,8 +1,18 @@
 import { routing } from '@/i18n/routing'
 
+import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-export function middleware(request: NextRequest) {
+// маршрути, що потребують авторизації
+const protectedRoutes = [
+	'/uk/manage-panel',
+	'/uk/manage-panel/*',
+	'/en/manage-panel',
+	'/en/manage-panel/*'
+]
+
+// головна middleware з локалізацією
+export async function middleware(request: NextRequest) {
 	const { pathname } = request.nextUrl
 
 	// 1. Пропускаємо статику та API
@@ -37,19 +47,30 @@ export function middleware(request: NextRequest) {
 			})
 			return response
 		}
+
+		// 3. Авторизація: якщо шлях у protectedRoutes
+		const requiresAuth = protectedRoutes.some(route =>
+			pathname.startsWith(route.replace('*', ''))
+		)
+
+		if (requiresAuth) {
+			const token = await getToken({
+				req: request,
+				secret: process.env.NEXTAUTH_SECRET
+			})
+
+			if (!token) {
+				// редірект на /signin з урахуванням локалі
+				return NextResponse.redirect(new URL(`/uk/signin`, request.url))
+			}
+		}
+
 		return NextResponse.next()
 	}
 
+	// Якщо локаль не вказана — редірект до дефолтної
 	const langToUse = cookieLang || routing.defaultLocale
-	const response = NextResponse.redirect(new URL(`/${langToUse}${pathname}`, request.url))
-
-	// 3. Тут можна вставити авторизацію
-	// const token = request.cookies.get('AUTH_TOKEN')?.value
-	// if (!token && pathname.startsWith('/protected')) {
-	//     return NextResponse.redirect(new URL(`/${langToUse}/login`, request.url))
-	// }
-
-	return response
+	return NextResponse.redirect(new URL(`/${langToUse}${pathname}`, request.url))
 }
 
 export const config = {

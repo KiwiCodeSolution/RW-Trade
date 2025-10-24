@@ -67,7 +67,7 @@
 }
 
 .header-shadow {
-	@apply absolute bg-linear-0 from-[#ffffff] to-[rgba(94,117,200,0.5)] w-full h-1;
+	box-shadow: 0px 0px 6px 0px rgba(94, 117, 200, 1);
 }
 
 .page-title {
@@ -103,6 +103,13 @@
 	textarea {
 		cursor: text;
 		outline: none;
+	}
+
+	input:-webkit-autofill {
+		-webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+		box-shadow: 0 0 0px 1000px transparent inset !important;
+		-webkit-text-fill-color: inherit !important;
+		transition: background-color 9999s ease-in-out 0s;
 	}
 
 	a {

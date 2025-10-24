@@ -151,3 +151,15 @@ export interface Notification {
 	createdAt?: string
 	updatedAt?: string
 }
+
+// users, auth
+
+export type RoleContext = 'admin' | 'user'
+export type PageContext = 'admin' | 'user'
+
+export enum AdminRole {
+	SUPERADMIN = 'superadmin',
+	BASEADMIN = 'baseadmin',
+	SELLER = 'seller',
+	CONTENT_MANAGER = 'content-manager'
+}

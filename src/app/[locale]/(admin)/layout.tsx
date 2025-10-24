@@ -19,7 +19,6 @@ export default async function RootAdminLayout({ children }: RootAdminLayoutProps
 					</div>
 					<div className='flex flex-col grow'>
 						<main className='w-full grow p-8'>{children}</main>
-						<footer>Admin Footer</footer>
 					</div>
 				</div>
 			</body>
