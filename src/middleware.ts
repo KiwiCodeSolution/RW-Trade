@@ -60,8 +60,11 @@ export async function middleware(request: NextRequest) {
 			})
 
 			if (!token) {
-				// редірект на /signin з урахуванням локалі
-				return NextResponse.redirect(new URL(`/uk/signin`, request.url))
+				// Зберігаємо поточний шлях у callbackUrl
+				const callbackUrl = encodeURIComponent(request.nextUrl.pathname)
+				return NextResponse.redirect(
+					new URL(`/uk/signin?callbackUrl=${callbackUrl}`, request.url)
+				)
 			}
 		}
 

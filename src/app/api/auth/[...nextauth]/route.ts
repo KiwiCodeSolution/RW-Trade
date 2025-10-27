@@ -1,9 +1,9 @@
 import { BASE_URL } from '@/utils/config'
 
-import NextAuth from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
-const handler = NextAuth({
+export const authOptions: NextAuthOptions = {
 	providers: [
 		CredentialsProvider({
 			name: 'Credentials',
@@ -13,11 +13,8 @@ const handler = NextAuth({
 				roleContext: { label: 'Role', type: 'hidden' }
 			},
 			async authorize(credentials) {
-				console.log(credentials)
-
 				if (!credentials?.email || !credentials?.password) return null
 
-				// Надсилаємо запит на твій бекенд
 				const res = await fetch(`${BASE_URL}/auth/signin`, {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
@@ -26,25 +23,39 @@ const handler = NextAuth({
 						password: credentials.password,
 						roleContext: credentials.roleContext
 					}),
-					credentials: 'include' // важливо для роботи з cookie
+					credentials: 'include'
 				})
 
 				if (!res.ok) return null
-
 				const user = await res.json()
-				console.log('Авторизований користувач:', user)
-				// бек має повернути user з уже встановленими cookie
 				return user
 			}
 		})
 	],
+	callbacks: {
+		async jwt({ token, user }) {
+			if (user) {
+				token.accessToken = user.access_token
+				token.role = user.role
+			}
+			return token
+		},
+		async session({ session, token }) {
+			session.user = {
+				...session.user,
+				role: token.role,
+				accessToken: token.accessToken
+			}
+			return session
+		}
+	},
 	pages: {
 		signIn: '/signin',
 		error: '/signin'
 	},
-	// Куки контролює бекенд, NextAuth не чіпає токени
 	session: { strategy: 'jwt' },
 	secret: process.env.NEXTAUTH_SECRET
-})
+}
 
+const handler = NextAuth(authOptions)
 export { handler as GET, handler as POST }

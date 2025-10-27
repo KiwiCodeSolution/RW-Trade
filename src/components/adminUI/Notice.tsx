@@ -4,37 +4,40 @@ import { Bell, Cart, Envelope } from '@/assets/icons'
 
 import { Notification } from '@/types/baseTypes'
 
-import { toggleStatusNotification } from '@/api/notification'
+import { notificationsStore } from '@/store/NotificationsStore'
 
+import { observer } from 'mobx-react-lite'
 import { useRouter } from 'next/navigation'
 
-type Props = {
-	notice: Notification
-}
+type Props = { notice: Notification; token: string }
 
-const Notice = ({ notice }: Props) => {
+const Notice = observer(({ notice, token }: Props) => {
 	const router = useRouter()
 	const isUnread = notice.status === 'unread'
 
-	const textColor = isUnread ? 'text-white ' : 'gradient-text'
-
+	const textColor = isUnread ? 'text-white' : 'gradient-text'
 	const text =
 		notice.type === 'order'
 			? `Замовлення товару на суму ${notice.amount} грн від ${notice.name}`
 			: `Повідомлення з основної сторінки сайту від ${notice.name}`
 
 	const link =
-		notice.type === 'order' ? `/admin/orders#${notice._id}` : `/admin/messages#${notice._id}`
+		notice.type === 'order'
+			? `/manage-panel/orders#${notice._id}`
+			: `/manage-panel/messages#${notice._id}`
 
 	const formatDate = (iso: string) => {
 		const d = new Date(iso)
 		const pad = (n: number) => n.toString().padStart(2, '0')
-		return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`
+		return `${pad(d.getDate())}.${pad(d.getMonth() + 1)}.${d.getFullYear()} ${pad(
+			d.getHours()
+		)}:${pad(d.getMinutes())}`
 	}
 
-	//змінюємо тільки статус самої нотифікашки. статус відгука чи ордера не змінюється
 	const handleClick = async () => {
-		if (isUnread) await toggleStatusNotification(notice._id)
+		if (isUnread) {
+			await notificationsStore.toggleStatus(notice._id, token)
+		}
 		router.push(link)
 	}
 
@@ -43,7 +46,7 @@ const Notice = ({ notice }: Props) => {
 			onClick={handleClick}
 			className={`w-full rounded-2xl ${
 				isUnread ? 'bg-bg-green' : 'p-[2px] bg-primary'
-			} hover:shadow-lg transition-shadow duration-300 cursor-pointer `}
+			} hover:shadow-lg transition-shadow duration-300 cursor-pointer`}
 		>
 			<div
 				className={`w-full h-full rounded-2xl px-6 py-5 flex items-center justify-between ${
@@ -68,6 +71,6 @@ const Notice = ({ notice }: Props) => {
 			</div>
 		</article>
 	)
-}
+})
 
 export default Notice

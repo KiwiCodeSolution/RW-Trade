@@ -1,80 +1,27 @@
 import Notice from '@/components/adminUI/Notice'
 
-import { BASE_URL } from '@/utils/config'
-
 import { Notification } from '@/types/baseTypes'
 
-export async function getAllNotifications() {
-	try {
-		const token =
-			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2OGI4NDVjMDZlMzk0N2U4ZWMxNmYzMzEiLCJlbWFpbCI6InN1cGVyYWRtaW4xQHRlc3QuY29tIiwicm9sZSI6InN1cGVyYWRtaW4iLCJpYXQiOjE3NjExMzY1MDgsImV4cCI6MTc2MTIyMjkwOH0.KSgCuI9nw_XQJTQL20pOxlYt-KPBu-wUwMCeAvopQps'
+import { getAllNotifications } from '@/api/notification'
 
-		const res = await fetch(`${BASE_URL}/notifications`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				Authorization: token ? `Bearer ${token}` : ''
-			},
-			cache: 'no-store'
-		})
+import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 
-		if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+import { Metadata } from 'next'
+import { getServerSession } from 'next-auth'
 
-		const data: Notification[] = await res.json()
-		return data
-	} catch (error) {
-		console.error('Помилка при отриманні нотифікацій:', error)
-		return []
-	}
+export const metadata: Metadata = {
+	title: 'Сповіщення | RW-Trade'
 }
 
-export const fakeNotifications: Notification[] = [
-	{
-		_id: '672f1a8b4a1d9a001c3f1a01',
-		type: 'order',
-		refId: '672f1a8b4a1d9a001c3f1a11',
-		name: 'Олена Коваль',
-		amount: 1450,
-		date: '2025-10-20T14:23:00.000Z',
-		status: 'unread',
-		createdAt: '2025-10-20T14:23:00.000Z',
-		updatedAt: '2025-10-20T14:23:00.000Z'
-	},
-	{
-		_id: '672f1a8b4a1d9a001c3f1a02',
-		type: 'feedback',
-		refId: '672f1a8b4a1d9a001c3f1a12',
-		name: 'Ігор Сидоренко',
-		date: '2025-10-21T09:10:00.000Z',
-		status: 'read',
-		createdAt: '2025-10-21T09:10:00.000Z',
-		updatedAt: '2025-10-21T10:45:00.000Z'
-	},
-	{
-		_id: '672f1a8b4a1d9a001c3f1a03',
-		type: 'order',
-		refId: '672f1a8b4a1d9a001c3f1a13',
-		name: 'Марія Гончар',
-		amount: 870,
-		date: '2025-10-22T07:35:00.000Z',
-		status: 'read',
-		createdAt: '2025-10-22T07:35:00.000Z',
-		updatedAt: '2025-10-22T08:00:00.000Z'
-	},
-	{
-		_id: '672f1a8b4a1d9a001c3f1a04',
-		type: 'feedback',
-		refId: '672f1a8b4a1d9a001c3f1a14',
-		name: 'Тетяна Романюк',
-		date: '2025-10-22T11:50:00.000Z',
-		status: 'unread',
-		createdAt: '2025-10-22T11:50:00.000Z',
-		updatedAt: '2025-10-22T11:50:00.000Z'
-	}
-]
-
 export default async function Notifications() {
-	const notifications = await getAllNotifications()
+	const session = await getServerSession(authOptions)
+	const token = { token: session?.user?.accessToken }
+
+	if (!token) return null
+
+	const notifications: Notification[] = await getAllNotifications(
+		session?.user?.accessToken || ''
+	)
 
 	//сортуємо по статусу (сповіщення прочитані/непрочитані) та даті
 	notifications.sort((a, b) => {
@@ -91,7 +38,11 @@ export default async function Notifications() {
 			<div className='h-0.5 w-full bg-primary' />
 			<div className='flex flex-col gap-y-[14px] mt-3 max-h-[87vh] overflow-y-auto pb-3'>
 				{notifications.map(notification => (
-					<Notice key={notification._id} notice={notification} />
+					<Notice
+						key={notification._id}
+						notice={notification}
+						token={session?.user?.accessToken!}
+					/>
 				))}
 			</div>
 		</div>

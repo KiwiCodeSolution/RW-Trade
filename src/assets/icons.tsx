@@ -282,11 +282,11 @@ export const Bell = () => {
 	)
 }
 
-type EnvelopeProps = {
+type VariantProps = {
 	variant?: 'white' | 'gradient'
 }
 
-export const Envelope = ({ variant = 'white' }: EnvelopeProps) => (
+export const Envelope = ({ variant = 'white' }: VariantProps) => (
 	<svg width='22' height='18' viewBox='0 0 22 18' fill='none' xmlns='http://www.w3.org/2000/svg'>
 		<path
 			d='M1 9C1 5.229 1 3.343 2.172 2.172C3.344 1.001 5.229 1 9 1H13C16.771 1 18.657 1 19.828 2.172C20.999 3.344 21 5.229 21 9C21 12.771 21 14.657 19.828 15.828C18.656 16.999 16.771 17 13 17H9C5.229 17 3.343 17 2.172 15.828C1.001 14.656 1 12.771 1 9Z'
@@ -445,6 +445,40 @@ export const Hide = () => {
 					<stop offset='1' stopColor='#5E73C9' />
 				</linearGradient>
 			</defs>
+		</svg>
+	)
+}
+
+export const Arrow = ({ variant = 'white' }: VariantProps) => {
+	return (
+		<svg
+			width='12'
+			height='8'
+			viewBox='0 0 12 8'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M0.75 0.75L5.75 6.75L10.75 0.75'
+				stroke={variant === 'white' ? 'white' : 'url(#paint0_linear_4135_23033)'}
+				strokeWidth='1.5'
+				strokeLinecap='round'
+			/>
+			{variant === 'gradient' && (
+				<defs>
+					<linearGradient
+						id='paint0_linear_4135_23033'
+						x1='0.75'
+						y1='3.75'
+						x2='10.75'
+						y2='3.75'
+						gradientUnits='userSpaceOnUse'
+					>
+						<stop stopColor='#5DAFB1' />
+						<stop offset='1' stopColor='#5E73C9' />
+					</linearGradient>
+				</defs>
+			)}
 		</svg>
 	)
 }

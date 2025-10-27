@@ -35,7 +35,7 @@ const SignInForm = ({ pageType }: { pageType: PageContext }) => {
 
 	const router = useRouter()
 	const searchParams = useSearchParams()
-	const callbackUrl = searchParams.get('callbackUrl') || '/manage-panel'
+	const callbackUrl = searchParams.get('callbackUrl') || '/manage-panel/notifications'
 
 	const onSubmit = async (data: SignInFormValues) => {
 		const formData = { ...data, roleContext: role }

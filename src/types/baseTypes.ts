@@ -81,6 +81,18 @@ export interface Feedback {
 	updatedAt?: string
 }
 
+export interface Message {
+	_id: string
+	username: string
+	surname?: string
+	email: string
+	message: string
+	status: FeedbackStatus
+	blocked: boolean
+	createdAt: string
+	updatedAt?: string
+}
+
 export interface News {
 	_id?: string
 	title: LangField
