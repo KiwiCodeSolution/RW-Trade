@@ -31,11 +31,14 @@ export async function middleware(request: NextRequest) {
 
 	const rawCookieLang = request.cookies.get('NEXT_LOCALE')?.value
 	const cookieLang =
-		rawCookieLang && routing.locales.includes(rawCookieLang as any)
+		rawCookieLang && routing.locales.includes(rawCookieLang as (typeof routing.locales)[number])
 			? (rawCookieLang as (typeof routing.locales)[number])
 			: undefined
 
-	if (firstSegmentRaw && routing.locales.includes(firstSegmentRaw as any)) {
+	if (
+		firstSegmentRaw &&
+		routing.locales.includes(firstSegmentRaw as (typeof routing.locales)[number])
+	) {
 		const firstSegment = firstSegmentRaw as (typeof routing.locales)[number]
 
 		if (cookieLang !== firstSegment) {

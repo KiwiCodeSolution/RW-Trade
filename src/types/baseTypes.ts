@@ -115,9 +115,9 @@ export interface DeliveryInfo {
 	branch?: string
 	address?: string
 	comment?: string
-	novaposhta?: Record<string, any>
-	ukrposhta?: Record<string, any>
-	meest?: Record<string, any>
+	novaposhta?: Record<string, unknown>
+	ukrposhta?: Record<string, unknown>
+	meest?: Record<string, unknown>
 	payer?: string
 }
 

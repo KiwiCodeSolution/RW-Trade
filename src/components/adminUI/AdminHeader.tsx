@@ -60,7 +60,7 @@ const AdminHeader = observer(() => {
 
 			<div className='flex flex-col gap-7 px-2 overflow-y-auto '>
 				<div className='flex flex-col gap-2'>
-					<h2 className='text-2xl'>Зворотній зв'язок</h2>
+					<h2 className='text-2xl'>Зворотній зв&nbsp;&apos;язок</h2>
 					<div className='h-0.5 w-full bg-primary' />
 					<AdminLink
 						href='/manage-panel/notifications'

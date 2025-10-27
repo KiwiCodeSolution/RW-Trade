@@ -41,7 +41,9 @@ class CartStore {
 		try {
 			const storedItems = localStorage.getItem('cart')
 			if (storedItems) runInAction(() => (this.items = JSON.parse(storedItems)))
-		} catch {}
+		} catch (err: unknown) {
+			console.log(err)
+		}
 	}
 
 	saveToStorage() {

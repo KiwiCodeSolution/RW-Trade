@@ -2,14 +2,13 @@ import { BASE_URL } from '@/utils/config'
 
 import { toast } from '@/lib/toast'
 
-import axios from 'axios'
+import axios, { isAxiosError } from 'axios'
 import { makeAutoObservable, runInAction } from 'mobx'
 
 export interface Notification {
 	_id: string
 	type: 'order' | 'feedback' | string
 	status: 'unread' | 'read'
-	[key: string]: any
 }
 
 class NotificationsStore {
@@ -55,9 +54,12 @@ class NotificationsStore {
 					this._recalculateUnread()
 				}
 			})
-		} catch (err: any) {
+		} catch (err: unknown) {
+			const msg = isAxiosError(err)
+				? (err.response?.data?.message ?? 'Помилка при оновленні статусу')
+				: 'Помилка при оновленні статусу'
+			toast.error(msg)
 			console.error('Помилка при оновленні статусу:', err)
-			toast.error(err.response?.data?.message || 'Помилка при оновленні статусу')
 		}
 	}
 

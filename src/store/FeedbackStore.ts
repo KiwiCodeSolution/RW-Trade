@@ -9,7 +9,7 @@ import { getAllMessages } from '@/api/feedback'
 import { notificationsStore } from './NotificationsStore'
 import { toast } from '@/lib/toast'
 
-import axios from 'axios'
+import axios, { isAxiosError } from 'axios'
 import { makeAutoObservable, runInAction } from 'mobx'
 
 class FeedbackStore {
@@ -32,9 +32,11 @@ class FeedbackStore {
 				this.contactedCount = res.filter(m => m.status === 'contacted').length
 				this.importantCount = res.filter(m => m.status === 'important').length
 			})
-		} catch (err: any) {
-			console.error('fetchMessages error:', err)
-			toast.error('Помилка при завантаженні звернень')
+		} catch (err: unknown) {
+			const msg = isAxiosError(err)
+				? (err.response?.data?.message ?? 'Помилка при завантаженні звернень')
+				: 'Помилка при завантаженні звернень'
+			toast.error(msg)
 		}
 	}
 
@@ -57,8 +59,11 @@ class FeedbackStore {
 			})
 			// синхронізація з notificationsStore
 			await notificationsStore.fetchNotifications(token)
-		} catch (err: any) {
-			toast.error(err.response?.data?.message || 'Помилка при зміні статусу')
+		} catch (err: unknown) {
+			const msg = isAxiosError(err)
+				? (err.response?.data?.message ?? 'Помилка при зміні статусу')
+				: 'Помилка при зміні статусу'
+			toast.error(msg)
 		}
 	}
 }

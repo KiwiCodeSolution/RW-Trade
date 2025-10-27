@@ -34,7 +34,7 @@ const UserForm = ({ formTexts }: UserFormProps) => {
 				message: data.message
 			})
 			reset()
-		} catch (err: any) {
+		} catch (err: unknown) {
 			console.log(err)
 			// помилка вже оброблена в sendFeedback через toast
 			setIsLoading(false)

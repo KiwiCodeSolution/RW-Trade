@@ -19,7 +19,7 @@ import ToolsIcon from '../../../public/icons/tools.svg'
 
 import '@/styles/globals.css'
 
-type Category =
+export type Category =
 	| 'light'
 	| 'tools'
 	| 'electric'
@@ -34,7 +34,7 @@ type Size = 's' | 'm'
 type Background = 'primary' | 'bronze' | 'green'
 
 type PropsCategoryIcon = {
-	category?: Category
+	category: Category
 	size?: Size
 	bg?: Background
 }

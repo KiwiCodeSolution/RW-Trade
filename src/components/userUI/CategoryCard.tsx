@@ -17,6 +17,7 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
 
 	const [mounted, setMounted] = useState(false)
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps, react/no-unstable-nested-components
 	useEffect(() => {
 		setMounted(true)
 	}, [])

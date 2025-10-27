@@ -13,13 +13,14 @@ const RetailWholesale = observer(() => {
 	const current = isWholesale ? 'Опт' : 'Роздріб'
 
 	return (
-		<div
-			className='flex gap-2 items-center cursor-pointer hover:text-gr-5 duration-200'
-			onClick={() => toggleWholesale()}
+		<button
+			type='button'
+			onClick={toggleWholesale}
+			className='flex gap-2 items-center hover:text-gr-5 duration-200 focus:outline-none'
 		>
 			{isWholesale ? <BoxIcon /> : <BagIcon />}
-			<div>{current}</div>
-		</div>
+			<span>{current}</span>
+		</button>
 	)
 })
 

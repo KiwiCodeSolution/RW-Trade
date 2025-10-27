@@ -23,6 +23,7 @@ const DiscountsSection = ({
 	const [selectedCategory, setSelectedCategory] = useState<Category | undefined>(undefined)
 	const [mounted, setMounted] = useState(false)
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps, react/no-unstable-nested-components
 	useEffect(() => {
 		setMounted(true)
 	}, [])

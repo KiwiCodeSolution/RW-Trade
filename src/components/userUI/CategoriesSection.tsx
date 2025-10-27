@@ -1,17 +1,25 @@
+import { Locale } from '@/types/baseTypes'
+
 import { categories } from '../../data/categories'
-import CategoryIcon from '../commonUI/CategoryIcon'
+import CategoryIcon, { Category } from '../commonUI/CategoryIcon'
 
 import Link from 'next/link'
 
-const CategoriesSection = () => {
-	const lang = 'uk'
+interface CategoryItem {
+	category: Category
+	uk: string
+	en: string
+}
 
-	const title = {
+const CategoriesSection = () => {
+	const lang: Locale = 'uk'
+
+	const title: Record<Locale, string> = {
 		uk: 'Категорії товарів',
 		en: 'Product categories'
 	}
 
-	const subcategories = [
+	const subcategories: string[] = [
 		'Підкатегорія 1',
 		'Підкатегорія 2',
 		'Підкатегорія 3',
@@ -31,7 +39,7 @@ const CategoriesSection = () => {
 					<div key={index} className='flex flex-col pt-2 py-8 pb-8 bg-bg-light'>
 						<div className='flex flex-col items-center'>
 							<CategoryIcon
-								category={item.category as any}
+								category={item.category}
 								size='m'
 								bg={categories.length === index + 1 ? 'bronze' : 'primary'}
 							/>

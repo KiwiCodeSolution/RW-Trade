@@ -1,8 +1,14 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
-const SubCategoryControl = ({ category, setSubCategory }) => {
+const SubCategoryControl = ({
+	category,
+	setSubCategory
+}: {
+	category: string
+	setSubCategory: React.Dispatch<React.SetStateAction<string>>
+}) => {
 	const lang = 'uk'
 
 	const thumbWidth = 100
@@ -45,56 +51,51 @@ const SubCategoryControl = ({ category, setSubCategory }) => {
 		setIsDragging(true)
 	}
 
-	const handleMouseMove = e => {
-		if (!isDragging || !containerRef.current || !trackRef.current) return
-
-		const container = containerRef.current
-		const track = trackRef.current
-
-		const deltaX = e.clientX - startX
-
-		const maxThumbTravel = track.clientWidth - thumbWidth
-		const newThumbLeft = Math.max(0, Math.min(startLeft + deltaX, maxThumbTravel))
-
-		setThumbLeft(newThumbLeft)
-
-		const scrollRatio = newThumbLeft / maxThumbTravel
-		const maxScroll = container.scrollWidth - container.clientWidth
-		container.scrollLeft = scrollRatio * maxScroll
-	}
+	const handleMouseMove = useCallback(
+		(e: MouseEvent) => {
+			if (!isDragging || !containerRef.current || !trackRef.current) return
+			const container = containerRef.current
+			const track = trackRef.current
+			const deltaX = e.clientX - startX
+			const maxThumbTravel = track.clientWidth - thumbWidth
+			const newThumbLeft = Math.max(0, Math.min(startLeft + deltaX, maxThumbTravel))
+			setThumbLeft(newThumbLeft)
+			const scrollRatio = newThumbLeft / maxThumbTravel
+			const maxScroll = container.scrollWidth - container.clientWidth
+			container.scrollLeft = scrollRatio * maxScroll
+		},
+		[isDragging, startX, startLeft, thumbWidth]
+	)
 
 	const handleMouseUp = () => {
 		setIsDragging(false)
 	}
 
 	useEffect(() => {
-		console.log('subcategory control 1 rendered')
 		document.addEventListener('mousemove', handleMouseMove)
 		document.addEventListener('mouseup', handleMouseUp)
-
-		handleScroll()
-
 		window.addEventListener('resize', handleScroll)
-
+		handleScroll()
 		return () => {
 			document.removeEventListener('mousemove', handleMouseMove)
 			document.removeEventListener('mouseup', handleMouseUp)
 			window.removeEventListener('resize', handleScroll)
 		}
-	}, [isDragging, startX, startLeft])
+	}, [handleMouseMove, handleMouseUp])
 
 	useEffect(() => {
 		console.log('subcategory control 2 rendered')
-		setSelected('any')
+
+		setTimeout(() => {
+			setSelected('any')
+		}, 0) // асинхронно, не блокує рендер
+
 		const container = containerRef.current
+		if (!container) return
+
 		const maxScroll = container.scrollWidth - container.clientWidth
-		if (maxScroll <= 0) {
-			setShowScroll(false)
-			return
-		} else {
-			setShowScroll(true)
-		}
-	}, [category])
+		setShowScroll(maxScroll > 0)
+	}, [category, setSelected])
 
 	return (
 		<div className='relative'>
@@ -109,6 +110,8 @@ const SubCategoryControl = ({ category, setSubCategory }) => {
 					{category[lang].map((item, index) => (
 						<label
 							key={index}
+							htmlFor={`control_${item}`}
+							aria-label={`${item.category} ${item}`}
 							className={`p-0.5 rounded-md w-fit cursor-pointer ${
 								selected === item && 'bg-primary'
 							}`}
@@ -139,9 +142,11 @@ const SubCategoryControl = ({ category, setSubCategory }) => {
 			<div
 				ref={trackRef}
 				className='relative w-full h-1 bg-sc-1 rounded-sm z-10'
-				role='scrollbar'
-				aria-controls='categoryContainer'
-				aria-orientation='horizontal'
+				// role='scrollbar'
+				// aria-controls='categoryContainer'
+				// aria-orientation='horizontal'
+				// aria-valuemin={0}
+				// aria-valuemax={100}
 			>
 				{showScroll && (
 					<div

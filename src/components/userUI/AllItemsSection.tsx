@@ -1,6 +1,6 @@
 'use client'
 
-import { Category, Locale } from '@/types/baseTypes'
+import { Category, Locale, Product } from '@/types/baseTypes'
 
 import Pagination from '../commonUI/Pagination'
 
@@ -22,19 +22,19 @@ interface SubCategory {
 	en: string[]
 }
 
-interface Product {
-	id: string
-	name: string
-	price: number
-	image?: string
-	[key: string]: any
-}
+// interface Product {
+// 	id: string
+// 	name: string
+// 	price: number
+// 	image?: string
+// 	[key: string]: any
+// }
 
 interface Props {
 	locale: Locale
 }
 
-const AllItemsSection: React.FC<Props> = ({ locale }) => {
+const AllItemsSection: React.FC<Props> = ({ locale }: Props) => {
 	const [category, setCategory] = useState<Category | undefined>(undefined)
 	const [selectedCategory, setSelectedCategory] = useState<SubCategory | null>(null)
 	const [subCategory, setSubCategory] = useState<string>('any')

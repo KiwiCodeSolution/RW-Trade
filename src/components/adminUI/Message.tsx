@@ -44,7 +44,7 @@ const MessageComponent = observer(({ message, token }: { message: Message; token
 			<div className='w-full h-full bg-bg-light py-5 px-8 rounded-lg gap-2 flex flex-col '>
 				<div className='flex items-center justify-between'>
 					<p>
-						<span className='font-bold'>Ім'я: </span>
+						<span className='font-bold'>Імʼя: </span>
 						{message.username}
 					</p>
 					<p>
@@ -72,14 +72,15 @@ const MessageComponent = observer(({ message, token }: { message: Message; token
 						<div className='absolute top-[100%] right-0 w-[171px] rounded-lg shadow-lg z-10 bg-primary p-[2px]'>
 							<ul className='w-full bg-white rounded-lg'>
 								{statuses.map(status => (
-									<li
-										key={status.value}
-										onClick={() => handleStatusChange(status.value)}
-										className={`cursor-pointer rounded-lg px-4 py-2 hover:bg-gray-100 ${
-											message.status === status.value ? 'font-bold' : ''
-										}`}
-									>
-										{status.label}
+									<li key={status.value}>
+										<button
+											onClick={() => handleStatusChange(status.value)}
+											className={`w-full text-left rounded-lg px-4 py-2 hover:bg-gray-100 ${
+												message.status === status.value ? 'font-bold' : ''
+											}`}
+										>
+											{status.label}
+										</button>
 									</li>
 								))}
 							</ul>

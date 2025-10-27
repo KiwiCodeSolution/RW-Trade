@@ -1,10 +1,11 @@
+import HeaderPage from '@/components/adminUI/HeaderPage'
 import Notice from '@/components/adminUI/Notice'
 
 import { Notification } from '@/types/baseTypes'
 
 import { getAllNotifications } from '@/api/notification'
 
-import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import { authOptions } from '@/lib/authOptions'
 
 import { Metadata } from 'next'
 import { getServerSession } from 'next-auth'
@@ -18,6 +19,7 @@ export default async function Notifications() {
 	const token = { token: session?.user?.accessToken }
 
 	if (!token) return null
+	if (!session?.user?.accessToken) return null
 
 	const notifications: Notification[] = await getAllNotifications(
 		session?.user?.accessToken || ''
@@ -34,14 +36,13 @@ export default async function Notifications() {
 
 	return (
 		<div className='w-full'>
-			<h1 className='text-center text-2xl font-bold'>Сповіщення</h1>
-			<div className='h-0.5 w-full bg-primary' />
+			<HeaderPage pageName='Сповіщення' />
 			<div className='flex flex-col gap-y-[14px] mt-3 max-h-[87vh] overflow-y-auto pb-3'>
 				{notifications.map(notification => (
 					<Notice
 						key={notification._id}
 						notice={notification}
-						token={session?.user?.accessToken!}
+						token={session.user.accessToken}
 					/>
 				))}
 			</div>

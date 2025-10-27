@@ -2,7 +2,13 @@
 
 import { useState } from 'react'
 
-const NumberOfProducts = ({ setNumber, initialNumber }) => {
+const NumberOfProducts = ({
+	setNumber,
+	initialNumber
+}: {
+	setNumber: (value: string) => void
+	initialNumber: string
+}) => {
 	const lang = 'uk'
 
 	const title = {
@@ -14,7 +20,7 @@ const NumberOfProducts = ({ setNumber, initialNumber }) => {
 
 	const [selected, setSelected] = useState(initialNumber)
 
-	const handleChange = e => {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSelected(e.target.value)
 		setNumber(e.target.value)
 	}

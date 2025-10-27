@@ -42,7 +42,8 @@ const Notice = observer(({ notice, token }: Props) => {
 	}
 
 	return (
-		<article
+		<button
+			type='button'
 			onClick={handleClick}
 			className={`w-full rounded-2xl ${
 				isUnread ? 'bg-bg-green' : 'p-[2px] bg-primary'
@@ -69,7 +70,7 @@ const Notice = observer(({ notice, token }: Props) => {
 				<p className={`${textColor} text-lg font-bold`}>{text}</p>
 				<p className={`${textColor} text-lg font-bold`}>{formatDate(notice.date)}</p>
 			</div>
-		</article>
+		</button>
 	)
 })
 

@@ -144,6 +144,11 @@ const CategoryControl = observer(({ setCategory }: CategoryControlProps) => {
 				role='scrollbar'
 				aria-controls='categoryContainer'
 				aria-orientation='horizontal'
+				aria-valuemin={0}
+				aria-valuemax={100}
+				aria-valuenow={
+					(thumbLeft / ((trackRef.current?.clientWidth || 1) - thumbWidth)) * 100
+				}
 			>
 				<div
 					ref={thumbRef}
