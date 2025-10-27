@@ -2,49 +2,48 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
-const SubCategoryControl = ({
-	category,
-	setSubCategory
-}: {
+interface SubCategory {
 	category: string
-	setSubCategory: React.Dispatch<React.SetStateAction<string>>
-}) => {
-	const lang = 'uk'
+	uk: string[]
+	en: string[]
+}
 
+interface Props {
+	category: SubCategory
+	setSubCategory: React.Dispatch<React.SetStateAction<string>>
+}
+
+const SubCategoryControl = ({ category, setSubCategory }: Props) => {
+	const lang = 'uk'
 	const thumbWidth = 100
 
 	const [selected, setSelected] = useState('')
 	const [isDragging, setIsDragging] = useState(false)
-	const containerRef = useRef(null)
-	const thumbRef = useRef(null)
-	const trackRef = useRef(null)
+	const containerRef = useRef<HTMLDivElement | null>(null)
+	const thumbRef = useRef<HTMLDivElement | null>(null)
+	const trackRef = useRef<HTMLDivElement | null>(null)
 	const [thumbLeft, setThumbLeft] = useState(0)
 	const [startX, setStartX] = useState(0)
 	const [startLeft, setStartLeft] = useState(0)
 	const [showScroll, setShowScroll] = useState(false)
 
-	const handleChange = e => {
+	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setSelected(e.target.value)
 		setSubCategory(e.target.value)
 	}
 
-	const handleScroll = () => {
+	const handleScroll = useCallback(() => {
 		if (!containerRef.current || !trackRef.current) return
-
 		const container = containerRef.current
 		const track = trackRef.current
-
 		const maxScroll = container.scrollWidth - container.clientWidth
 		if (maxScroll <= 0) return
-
 		const scrollRatio = container.scrollLeft / maxScroll
 		const maxThumbTravel = track.clientWidth - thumbWidth
+		setThumbLeft(scrollRatio * maxThumbTravel)
+	}, [])
 
-		const newThumbLeft = scrollRatio * maxThumbTravel
-		setThumbLeft(newThumbLeft)
-	}
-
-	const handleThumbMouseDown = e => {
+	const handleThumbMouseDown = (e: React.MouseEvent) => {
 		e.preventDefault()
 		setStartX(e.clientX)
 		setStartLeft(thumbLeft)
@@ -67,9 +66,7 @@ const SubCategoryControl = ({
 		[isDragging, startX, startLeft, thumbWidth]
 	)
 
-	const handleMouseUp = () => {
-		setIsDragging(false)
-	}
+	const handleMouseUp = () => setIsDragging(false)
 
 	useEffect(() => {
 		document.addEventListener('mousemove', handleMouseMove)
@@ -81,21 +78,15 @@ const SubCategoryControl = ({
 			document.removeEventListener('mouseup', handleMouseUp)
 			window.removeEventListener('resize', handleScroll)
 		}
-	}, [handleMouseMove, handleMouseUp])
+	}, [handleMouseMove, handleScroll])
 
 	useEffect(() => {
-		console.log('subcategory control 2 rendered')
-
-		setTimeout(() => {
-			setSelected('any')
-		}, 0) // асинхронно, не блокує рендер
-
+		setTimeout(() => setSelected('any'), 0)
 		const container = containerRef.current
 		if (!container) return
-
 		const maxScroll = container.scrollWidth - container.clientWidth
 		setShowScroll(maxScroll > 0)
-	}, [category, setSelected])
+	}, [category])
 
 	return (
 		<div className='relative'>
@@ -104,22 +95,21 @@ const SubCategoryControl = ({
 				onScroll={handleScroll}
 				ref={containerRef}
 				role='region'
-				aria-label='Categories navigation'
+				aria-label='Subcategory navigation'
 			>
 				<div className='flex gap-2 whitespace-nowrap'>
 					{category[lang].map((item, index) => (
 						<label
 							key={index}
 							htmlFor={`control_${item}`}
-							aria-label={`${item.category} ${item}`}
 							className={`p-0.5 rounded-md w-fit cursor-pointer ${
-								selected === item && 'bg-primary'
+								selected === item ? 'bg-primary' : ''
 							}`}
 						>
 							<div className='bg-bg-light w-full h-full flex justify-center items-center rounded-sm'>
 								<div
 									className={`text-nowrap px-4 py-2 bg-primary bg-clip-text hover:text-transparent ${
-										selected === item && 'text-transparent'
+										selected === item ? 'text-transparent' : ''
 									}`}
 								>
 									{category.category} {item}
@@ -139,23 +129,14 @@ const SubCategoryControl = ({
 				</div>
 			</div>
 
-			<div
-				ref={trackRef}
-				className='relative w-full h-1 bg-sc-1 rounded-sm z-10'
-				// role='scrollbar'
-				// aria-controls='categoryContainer'
-				// aria-orientation='horizontal'
-				// aria-valuemin={0}
-				// aria-valuemax={100}
-			>
+			<div ref={trackRef} className='relative w-full h-1 bg-sc-1 rounded-sm z-10'>
 				{showScroll && (
 					<div
 						ref={thumbRef}
-						className={`absolute h-[300%] -top-[100%] bg-bronze rounded-full ${isDragging ? 'cursor-grabbing' : 'cursor-grab'}`}
-						style={{
-							width: `${thumbWidth}px`,
-							left: `${thumbLeft}px`
-						}}
+						className={`absolute h-[300%] -top-[100%] bg-bronze rounded-full ${
+							isDragging ? 'cursor-grabbing' : 'cursor-grab'
+						}`}
+						style={{ width: `${thumbWidth}px`, left: `${thumbLeft}px` }}
 						onMouseDown={handleThumbMouseDown}
 						role='presentation'
 					/>
