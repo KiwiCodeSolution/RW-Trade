@@ -1,4 +1,8 @@
-export const fakeProducts = (strNum, category = 'any', subCategory = 'any') => {
+export const fakeProducts = (
+	strNum: string | number,
+	category: string = 'any',
+	subCategory: string = 'any'
+) => {
 	const count = Number(strNum)
 
 	const adjectives = [
@@ -48,9 +52,9 @@ export const fakeProducts = (strNum, category = 'any', subCategory = 'any') => {
 	]
 	const targets = ['your experience', 'your lifestyle', 'your productivity', 'your comfort']
 
-	const getRandomWord = list => list[Math.floor(Math.random() * list.length)]
+	const getRandomWord = (list: string[]) => list[Math.floor(Math.random() * list.length)]
 
-	const getRandomPhrase = wordCount =>
+	const getRandomPhrase = (wordCount: number) =>
 		Array.from({ length: wordCount }, () => getRandomWord([...adjectives, ...nouns])).join(' ')
 
 	const getRandomDescription = () => {
@@ -61,19 +65,18 @@ export const fakeProducts = (strNum, category = 'any', subCategory = 'any') => {
 			`Perfect for anyone looking for quality and innovation.`,
 			`Combines style, durability, and functionality in one package.`
 		]
-		return parts.slice(0, Math.floor(Math.random() * 3) + 2).join(' ') // Combine 2-4 parts for longer text
+		return parts.slice(0, Math.floor(Math.random() * 3) + 2).join(' ')
 	}
 
-	const getRandomId = () => Math.floor(100000 + Math.random() * 900000) // 6-digit number
-
-	const getRandomPrice = () => parseFloat((Math.random() * (90000 - 10) + 10).toFixed(2)) // Random price between 10 and 90000
+	const getRandomId = () => Math.floor(100000 + Math.random() * 900000)
+	const getRandomPrice = () => parseFloat((Math.random() * (90000 - 10) + 10).toFixed(2))
 
 	return Array.from({ length: count }, () => ({
 		id: getRandomId(),
 		name: getRandomPhrase(8),
 		description: getRandomDescription(),
 		price: getRandomPrice(),
-		category: category,
-		subCategory: subCategory
+		category,
+		subCategory
 	}))
 }
