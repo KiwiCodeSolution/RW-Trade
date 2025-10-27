@@ -102,6 +102,7 @@ const SubCategoryControl = ({ category, setSubCategory }: Props) => {
 						<label
 							key={index}
 							htmlFor={`control_${item}`}
+							aria-label={`${category.category} ${item}`}
 							className={`p-0.5 rounded-md w-fit cursor-pointer ${
 								selected === item ? 'bg-primary' : ''
 							}`}
