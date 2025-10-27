@@ -1,6 +1,7 @@
 import NewsCard from './NewsCard'
 import BaseSection from './baseComponents/BaseSection'
 import Title from './baseComponents/Title'
+import { NewsArticle } from '@/app/[locale]/(public)/news/page'
 import { getRandomNews } from '@/helpers'
 import '@/styles/globals.css'
 
@@ -14,10 +15,10 @@ const NewsSection = async ({ section }: NewsSectionProps) => {
 	const t = await getTranslations('NewsSectionAllPages')
 
 	const res = await fetch('https://jsonplaceholder.typicode.com/posts', {
-		cache: 'no-store' // щоб не кешувався при SSR
+		cache: 'no-store'
 	})
-	const posts = await res.json()
-	const randomNews = getRandomNews(posts)
+	const posts = (await res.json()) as NewsArticle[]
+	const randomNews = getRandomNews<NewsArticle>(posts)
 
 	return (
 		<BaseSection className='py-14'>
