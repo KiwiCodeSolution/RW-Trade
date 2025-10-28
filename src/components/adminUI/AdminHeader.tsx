@@ -14,7 +14,8 @@ import { useEffect } from 'react'
 const AdminLink = ({ href, title, count }: { href: string; title: string; count?: number }) => {
 	const pathname = usePathname()
 
-	const isActive = pathname === `/uk${href}`
+	// const isActive = pathname === `/uk${href}`
+	const isActive = pathname.includes(href) || pathname === `/uk ${href}`
 
 	return (
 		<div
@@ -30,6 +31,16 @@ const AdminLink = ({ href, title, count }: { href: string; title: string; count?
 		</div>
 	)
 }
+
+const TitleNavAdmin = ({ text }: { text: string }) => {
+	return (
+		<>
+			<h2 className='text-2xl'>{text}</h2>
+			<div className='h-0.5 w-full bg-primary' />
+		</>
+	)
+}
+
 const AdminHeader = observer(() => {
 	const { data: session } = useSession()
 
@@ -60,8 +71,8 @@ const AdminHeader = observer(() => {
 
 			<div className='flex flex-col gap-7 px-2 overflow-y-auto '>
 				<div className='flex flex-col gap-2'>
-					<h2 className='text-2xl'>Зворотній зв&nbsp;&apos;язок</h2>
-					<div className='h-0.5 w-full bg-primary' />
+					<TitleNavAdmin text="Зворотній зв&nbsp;'язок" />
+
 					<AdminLink
 						href='/manage-panel/notifications'
 						title='Сповіщення'
@@ -75,46 +86,41 @@ const AdminHeader = observer(() => {
 				</div>
 
 				<div className='flex flex-col gap-2'>
-					<h2 className='text-2xl'>Замовлення</h2>
-					<div className='h-0.5 w-full bg-primary' />
+					<TitleNavAdmin text='Замовлення' />
 
 					<AdminLink
 						href='/manage-panel/orders'
 						title='Нові'
 						count={notificationsStore.unreadOrders}
 					/>
-					<AdminLink href='/manage-panel/orders' title='Історія замовлень' />
+					<AdminLink href='/manage-panel/orders/history' title='Історія замовлень' />
 				</div>
 
 				<div className='flex flex-col gap-2'>
-					<h2 className='text-2xl'>Товари та послуги</h2>
-					<div className='h-0.5 w-full bg-primary' />
+					<TitleNavAdmin text='Товари та послуги' />
 
 					<AdminLink
 						href='/manage-panel/categories_filters'
 						title='Категорії та фільтри'
 					/>
-					<AdminLink href='/manage-panel/cards' title='Картки товарів' />
-					<AdminLink href='/manage-panel/create_card' title='Створити нову картку' />
+					<AdminLink href='/manage-panel/products' title='Всі товари' />
+					<AdminLink href='/manage-panel/products/editor' title='Створити новий товар' />
 				</div>
 
 				<div className='flex flex-col gap-2'>
-					<h2 className='text-2xl'>Новини та статті</h2>
-					<div className='h-0.5 w-full bg-primary' />
+					<TitleNavAdmin text='Новини та статті' />
 
-					<AdminLink href='/manage-panel/news' title='Додати / редагувати' />
+					<AdminLink href='/manage-panel/news/editor' title='Додати / редагувати' />
 				</div>
 
 				<div className='flex flex-col gap-2'>
-					<h2 className='text-2xl'>Статистика</h2>
-					<div className='h-0.5 w-full bg-primary' />
+					<TitleNavAdmin text='Статистика' />
 
 					<AdminLink href='/manage-panel/statistics' title='Категорії товарів' />
 				</div>
 
 				<div className='flex flex-col gap-2'>
-					<h2 className='text-2xl'> Налаштування</h2>
-					<div className='h-0.5 w-full bg-primary' />
+					<TitleNavAdmin text='Налаштування' />
 
 					<AdminLink href='/manage-panel/profile' title='Профілі користувачів' />
 				</div>

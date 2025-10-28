@@ -1,17 +1,9 @@
 import ClientAdminLayout from '@/components/adminUI/ClientAdminLayout'
 
-import { Locale } from '@/types/baseTypes'
-
-export default async function RootAdminLayout({
-	children,
-	params
-}: {
-	children: React.ReactNode
-	params: Promise<{ locale: Locale }>
-}) {
+export default async function RootAdminLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang='uk'>
-			<body>
+			<body className='bg-white w-full h-full'>
 				<ClientAdminLayout>{children}</ClientAdminLayout>
 			</body>
 		</html>

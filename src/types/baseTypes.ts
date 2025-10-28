@@ -58,6 +58,7 @@ export interface Category {
 	title: LangField
 	description?: LangField
 	subcategories?: Subcategory[]
+	slug: string
 }
 
 export interface Subcategory {

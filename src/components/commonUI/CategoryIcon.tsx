@@ -1,5 +1,7 @@
 'use client'
 
+import { Category } from '@/types/baseTypes'
+
 import ControlIconM from '../../../public/icons/control-m.svg'
 import ControlIcon from '../../../public/icons/control.svg'
 import DiagnosticsIcomM from '../../../public/icons/diagnostics-m.svg'
@@ -19,49 +21,41 @@ import ToolsIcon from '../../../public/icons/tools.svg'
 
 import '@/styles/globals.css'
 
-export type Category =
-	| 'light'
-	| 'tools'
-	| 'electric'
-	| 'control'
-	| 'repair'
-	| 'diagnostics'
-	| 'radio'
-	| 'discount'
+import { JSX } from 'react'
 
 type Size = 's' | 'm'
 
 type Background = 'primary' | 'bronze' | 'green'
 
 type PropsCategoryIcon = {
-	category: Category
+	category: Category['title']['en']
 	size?: Size
 	bg?: Background
 }
 
-const CategoryIcon = ({ category = 'light', size = 's', bg = 'primary' }: PropsCategoryIcon) => {
+const CategoryIcon = ({ category = 'Lighting', size = 's', bg = 'primary' }: PropsCategoryIcon) => {
 	const baseStyle = 'flex justify-center items-center rounded-2xl'
 
-	const categories = {
+	const categories: Record<Size, Record<Category['title']['en'], JSX.Element>> = {
 		s: {
-			light: <LightIcon />,
-			tools: <ToolsIcon />,
-			electric: <ElectricIcon />,
-			control: <ControlIcon />,
-			repair: <RepairIcom />,
-			diagnostics: <DiagnosticsIcom />,
-			radio: <RadioIcon />,
-			discount: <PersentIcon />
+			Lighting: <LightIcon />,
+			Tools: <ToolsIcon />,
+			Electric: <ElectricIcon />,
+			Control: <ControlIcon />,
+			Repair: <RepairIcom />,
+			Diagnostics: <DiagnosticsIcom />,
+			Radio: <RadioIcon />,
+			Discounts: <PersentIcon />
 		},
 		m: {
-			light: <LightIconM />,
-			tools: <ToolsIconM />,
-			electric: <ElectricIconM />,
-			control: <ControlIconM />,
-			repair: <RepairIcomM />,
-			diagnostics: <DiagnosticsIcomM />,
-			radio: <RadioIconM />,
-			discount: <PersentIconM />
+			Lighting: <LightIconM />,
+			Tools: <ToolsIconM />,
+			Electric: <ElectricIconM />,
+			Control: <ControlIconM />,
+			Repair: <RepairIcomM />,
+			Diagnostics: <DiagnosticsIcomM />,
+			Radio: <RadioIconM />,
+			Discounts: <PersentIconM />
 		}
 	}
 

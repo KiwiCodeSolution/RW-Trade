@@ -9,6 +9,7 @@ export default async function CategoryNamePage({
 	params: Promise<{ categoryName: string; locale: Locale }>
 }) {
 	const { categoryName, locale } = await params
+	console.log(categoryName)
 
 	return (
 		<main className='min-h-[80wh]'>

@@ -1,10 +1,10 @@
-import Backdrop from '../Backdrop'
+import Backdrop from '../modal/Backdrop'
 
 import '@/styles/loader.css'
 
 const Loader = () => {
 	return (
-		<Backdrop>
+		<Backdrop closeOnOverlayClick={false} closeOnEsc={false}>
 			<div className='loader relative z-10' />
 		</Backdrop>
 	)

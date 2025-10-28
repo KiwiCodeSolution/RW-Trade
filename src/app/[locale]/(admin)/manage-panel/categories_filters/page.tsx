@@ -1,5 +1,5 @@
 import HeaderPage from '@/components/adminUI/HeaderPage'
-import MessagesList from '@/components/adminUI/MessagesList'
+import CategoriesSection from '@/components/userUI/CategoriesSection'
 
 import { Metadata } from 'next'
 
@@ -11,7 +11,8 @@ const CategoriesAndFilters = () => {
 	return (
 		<div className='w-full'>
 			<HeaderPage pageName='Категорії та фільтри' />
-			<MessagesList />
+
+			<CategoriesSection section='admin' locale='uk' />
 		</div>
 	)
 }

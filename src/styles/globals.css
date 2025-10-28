@@ -91,7 +91,7 @@
 		height: 100%;
 		margin: 0;
 		padding: 0;
-		background-color: var(--color-bg-light);
+		/* background-color: var(--color-bg-light); */
 	}
 
 	main {
@@ -146,4 +146,18 @@
 	ol {
 		list-style: none;
 	} */
+}
+
+@keyframes wiggleX {
+	0%,
+	100% {
+		transform: translateX(0);
+	}
+	50% {
+		transform: translateX(-4px);
+	}
+}
+
+.go-back-btn:hover .animate-wiggle-x {
+	animation: wiggleX 0.9s ease-in-out infinite;
 }

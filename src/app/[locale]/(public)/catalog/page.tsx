@@ -6,10 +6,10 @@ import { Locale } from '@/types/baseTypes'
 const Catalog = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 	const { locale } = await params
 	return (
-		<div>
+		<div className=''>
 			<div className='user-container'>
 				{/* <Breadcrumbs /> */}
-				<CategoriesSection />
+				<CategoriesSection section='client' locale={locale} title='Категорії товарів' />
 				<AllItemsSection locale={locale} />
 			</div>
 		</div>
