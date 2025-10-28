@@ -1,6 +1,6 @@
 import BtnIcon from '../../../public/icons/btn-icon-02-prim.svg'
 import BtnGost from '../commonUI/BtnGost'
-import CategoryIcon, { Category } from '../commonUI/CategoryIcon'
+import CategoryIcon from '../commonUI/CategoryIcon'
 
 import BaseSection from './baseComponents/BaseSection'
 import Title from './baseComponents/Title'
@@ -10,7 +10,7 @@ import { useTranslations } from 'next-intl'
 
 const PopularCategories = () => {
 	const t = useTranslations('HomePage.popular_categories')
-	const content: { category: Category; name: string; text: string }[] = [
+	const content: { category: string; name: string; text: string }[] = [
 		{
 			category: 'light',
 			name: t('categories.0.name'),
