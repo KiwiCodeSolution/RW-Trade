@@ -147,5 +147,8 @@
 		"text_2": "All goods in our online store have a warranty period! The warranty for each product is individual and ranges from 2 weeks (accessories, chargers, etc.) to 5 years, depending on the product.",
 		"text_3": "During the warranty period, we undertake to replace (repair) the goods purchased in our online store. If during the warranty period the product purchased from us fails due to the manufacturer's fault and cannot be repaired in a service center, we will exchange the goods for a similar product.",
 		"text_4": "At the time of transfer or receipt of the goods (by mail, from a courier), the buyer is obliged to check the appearance of the goods, the complete set and the absence of mechanical damage. Check the goods for switching on and off. After receiving The ownership of the goods, as well as the risk of accidental loss or damage, passes to the Buyer, after which the Seller does not accept claims regarding the appearance and completeness of the goods."
+	},
+	"categories": {
+		"extra": "And {count} more {count, plural, one {category} other {categories}} in this section"
 	}
 }

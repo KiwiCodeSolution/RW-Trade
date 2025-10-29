@@ -10,10 +10,10 @@ export default function ClientAdminLayout({ children }: { children: React.ReactN
 	return (
 		<SessionProvider>
 			<div className='flex'>
-				<div className='w-[320px]'>
+				<div className='w-[320px] shrink-0'>
 					<AdminHeader />
 				</div>
-				<div className='flex flex-col grow'>
+				<div className='flex flex-col grow overflow-hidden'>
 					<main className='w-full grow p-8'>{children}</main>
 				</div>
 			</div>

@@ -1,6 +1,8 @@
 'use client'
 
-import { Category, Locale, Product } from '@/types/baseTypes'
+import { Category, Locale, Product, Subcategory } from '@/types/baseTypes'
+
+import { categoryStore } from '@/store/CategoryStore'
 
 import Pagination from '../commonUI/Pagination'
 
@@ -9,34 +11,18 @@ import NumberOfProducts from './NumberOfProducts'
 import ProductCard from './ProductCard'
 import SubCategoryControl from './SubCategoryControl'
 
-import { useState } from 'react'
-
-interface CategoryControlProps {
-	categories: { category: string; uk: string; en: string }[]
-	setCategory: React.Dispatch<React.SetStateAction<Category | undefined>>
-}
-
-interface SubCategory {
-	category: string
-	uk: string[]
-	en: string[]
-}
-
-// interface Product {
-// 	id: string
-// 	name: string
-// 	price: number
-// 	image?: string
-// 	[key: string]: any
-// }
+import { toJS } from 'mobx'
+import { observer } from 'mobx-react-lite'
+import { useMemo, useState } from 'react'
 
 interface Props {
 	locale: Locale
 }
 
-const AllItemsSection: React.FC<Props> = ({ locale }: Props) => {
+const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
+	const { categories } = categoryStore
+
 	const [category, setCategory] = useState<Category | undefined>(undefined)
-	const [selectedCategory, setSelectedCategory] = useState<SubCategory | null>(null)
 	const [subCategory, setSubCategory] = useState<string>('any')
 	const [numberOfItems, setNumberOfItems] = useState<string>('10')
 	const [products, setProducts] = useState<Product[]>([])
@@ -47,40 +33,50 @@ const AllItemsSection: React.FC<Props> = ({ locale }: Props) => {
 		en: 'All products on the site'
 	}
 
-	// useEffect(() => {
-	// 	console.log('first useEffect')
-	// 	const selected = subCategories.find(item => category && item.category === category.id)
-	// 	setSelectedCategory(selected || null)
-	// 	setSubCategory('any')
-	// }, [category])
+	// 🧩 створюємо масив усіх підкатегорій для випадку "немає вибраної категорії"
+	const allSubcategories: Subcategory[] = useMemo(() => {
+		return categories.flatMap(cat => cat.subcategories ?? [])
+	}, [categories])
+
+	// визначаємо, які підкатегорії показувати
+	const displayedSubcategories = category ? (category.subcategories ?? []) : allSubcategories
+
+	console.log('Обрана категорія:', toJS(category))
+	console.log('Поточні підкатегорії:', displayedSubcategories)
 
 	return (
 		<section>
 			<h2 className='font-bold text-[40px] mb-7'>{title[locale]}</h2>
 
+			{/* категорії */}
 			<div className='mb-7'>
-				<CategoryControl setCategory={setCategory} />
+				<CategoryControl setCategory={setCategory} categories={categories} />
 			</div>
 
-			{!!selectedCategory && (
+			{/* підкатегорії */}
+			{displayedSubcategories.length > 0 && (
 				<div className='mb-7'>
 					<SubCategoryControl
-						category={selectedCategory}
+						subcategories={displayedSubcategories}
 						setSubCategory={setSubCategory}
+						locale={locale}
 					/>
 				</div>
 			)}
 
+			{/* кількість продуктів */}
 			<div className='mb-7 flex justify-end'>
 				<NumberOfProducts setNumber={setNumberOfItems} initialNumber={numberOfItems} />
 			</div>
 
-			<div className='mb-7 grid min-[940px]:grid-cols-3 min-[1230px]:grid-cols-4 min-[1530px]:grid-cols-5 min-[1840px]:grid-cols-6 gap-6'>
+			{/* продукти */}
+			{/* <div className='mb-7 grid min-[940px]:grid-cols-3 min-[1230px]:grid-cols-4 min-[1530px]:grid-cols-5 min-[1840px]:grid-cols-6 gap-6'>
 				{products.map((item, index) => (
 					<ProductCard key={index} locale={locale} />
 				))}
-			</div>
+			</div> */}
 
+			{/* пагінація */}
 			<div className='mb-7'>
 				<Pagination
 					numberOfItems={100}
@@ -91,6 +87,6 @@ const AllItemsSection: React.FC<Props> = ({ locale }: Props) => {
 			</div>
 		</section>
 	)
-}
+})
 
 export default AllItemsSection

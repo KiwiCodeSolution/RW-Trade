@@ -26,7 +26,6 @@ export async function getCategories() {
 }
 
 export async function getCategoriesByID({ id, token }: { id: string; token: string }) {
-	console.log(token, id)
 	try {
 		const res = await axios.get(`${BASE_URL}/categories/${id}`, {
 			headers: {
@@ -34,7 +33,7 @@ export async function getCategoriesByID({ id, token }: { id: string; token: stri
 				'Content-Type': 'application/json'
 			}
 		})
-		console.log(res)
+
 		return res.data
 	} catch (err: unknown) {
 		const msg = isAxiosError(err)
@@ -61,7 +60,7 @@ export async function createSubCategory({
 				'Content-Type': 'application/json'
 			}
 		})
-		console.log(res.data)
+
 		return res.data
 	} catch (err: unknown) {
 		const msg = isAxiosError(err)
@@ -90,7 +89,7 @@ export async function updateSubCategory({
 				'Content-Type': 'application/json'
 			}
 		})
-		console.log(res.data)
+
 		return res.data
 	} catch (err: unknown) {
 		const msg = isAxiosError(err)

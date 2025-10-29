@@ -31,9 +31,15 @@ type PropsCategoryIcon = {
 	category: Category['title']['en']
 	size?: Size
 	bg?: Background
+	isActive?: boolean
 }
 
-const CategoryIcon = ({ category = 'Lighting', size = 's', bg = 'primary' }: PropsCategoryIcon) => {
+const CategoryIcon = ({
+	category = 'Lighting',
+	size = 's',
+	bg = 'primary',
+	isActive = false
+}: PropsCategoryIcon) => {
 	const baseStyle = 'flex justify-center items-center rounded-2xl'
 
 	const categories: Record<Size, Record<Category['title']['en'], JSX.Element>> = {
@@ -70,7 +76,10 @@ const CategoryIcon = ({ category = 'Lighting', size = 's', bg = 'primary' }: Pro
 		green: 'bg-green'
 	}
 
-	const combined = `${baseStyle} ${sizes[size]} ${background[bg]}`.trim()
+	const active = isActive
+		? 'border border-0.5 border-white'
+		: 'border border-0 border-transparent'
+	const combined = `${baseStyle} ${sizes[size]} ${background[bg]} ${active}`.trim()
 
 	return (
 		<div className={combined}>

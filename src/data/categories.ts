@@ -1,7 +1,5 @@
-import { Category } from '@/components/commonUI/CategoryIcon'
-
 export const categories: {
-	category: Category
+	category: string
 	uk: string
 	en: string
 }[] = [

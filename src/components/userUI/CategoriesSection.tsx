@@ -6,7 +6,8 @@ import { categoryStore } from '@/store/CategoryStore'
 
 import CategoryIcon from '../commonUI/CategoryIcon'
 
-import { toJS } from 'mobx'
+import ExtraCategories from './ExtraCategories'
+
 import { observer } from 'mobx-react-lite'
 import Link from 'next/link'
 import { useEffect } from 'react'
@@ -19,8 +20,6 @@ type CategorySectionProps = {
 
 const CategoriesSection = observer(({ section, title, locale }: CategorySectionProps) => {
 	const { categories } = categoryStore
-
-	console.log('categories', toJS(categories))
 
 	useEffect(() => {
 		if (categories.length > 0) return
@@ -36,7 +35,7 @@ const CategoriesSection = observer(({ section, title, locale }: CategorySectionP
 					Оберіть категорію для налаштування
 				</h2>
 			)}
-			{/* <h2 className='font-bold text-[40px] mb-7 text-center'>{title[lang]}</h2> */}
+
 			<div className='grid grid-cols-4 bg-sc-1/30 gap-0.5 pb-0.5'>
 				{categories.map((item, index) => (
 					<div key={index} className='flex flex-col pt-2 py-8 pb-8 bg-bg-light'>
@@ -91,14 +90,20 @@ const CategoriesSection = observer(({ section, title, locale }: CategorySectionP
 										})}
 									</ul>
 								)}
-								<div className='mx-auto'>
+								<div className='mx-auto mt-auto'>
 									<Link
 										href={`/catalog/${item.slug}`}
 										className={`text-center font-semibold ${categories.length === index + 1 ? 'bronze-text' : 'gradient-text'}`}
 									>
-										{item.subcategories && item.subcategories.length > 7
-											? `Та ще ${item.subcategories.length - 7} категорій у розділі --->`
-											: 'Перейти у розділ --->'}
+										{item.subcategories && item.subcategories.length > 7 ? (
+											<ExtraCategories
+												count={item.subcategories.length - 7}
+											/>
+										) : locale === 'uk' ? (
+											'Перейти у розділ --->'
+										) : (
+											'Go to section --->'
+										)}
 									</Link>
 								</div>
 							</>
