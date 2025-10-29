@@ -1,9 +1,9 @@
 'use client'
 
-import { productStore } from '@/store/ProductsStore'
+import BagIcon from '@/assets/icons/bag-16.svg'
+import BoxIcon from '@/assets/icons/box-16.svg'
 
-import BagIcon from '../../../public/icons/bag-16.svg'
-import BoxIcon from '../../../public/icons/box-16.svg'
+import { productStore } from '@/store/ProductsStore'
 
 import { observer } from 'mobx-react-lite'
 

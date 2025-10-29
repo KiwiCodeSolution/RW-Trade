@@ -10,7 +10,6 @@ import SubCategoryControl from './SubCategoryControl'
 import BaseSection from './baseComponents/BaseSection'
 import Title from './baseComponents/Title'
 
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useEffect, useState } from 'react'
 
@@ -21,7 +20,6 @@ const DiscountsSection = observer(
 		const category = categories.find(cat => cat.title['en'] === 'Discounts')
 
 		if (!category) return null
-		console.log('DiscountsSection', toJS(category))
 
 		const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<string>('any')
 		const [mounted, setMounted] = useState(false)

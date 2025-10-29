@@ -1,7 +1,7 @@
 'use client'
 
-import LeftIcon from '../../../public/icons/chevron-left-32.svg'
-import RightIcon from '../../../public/icons/chevron-right-32.svg'
+import LeftIcon from '@/assets/icons/chevron-left-32.svg'
+import RightIcon from '@/assets/icons/chevron-right-32.svg'
 
 import { useState } from 'react'
 

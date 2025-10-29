@@ -1,5 +1,5 @@
-import PersonIcon from '../../../public/icons/person-16.svg'
-import StarIcon from '../../../public/icons/star-solid-24.svg'
+import PersonIcon from '@/assets/icons/person-16.svg'
+import StarIcon from '@/assets/icons/star-solid-24.svg'
 
 type Testimonial = {
 	name: string

@@ -1,4 +1,5 @@
-import ArrowRightIcon from '../../../public/icons/arrow-right-primary-32.svg'
+import ArrowRightIcon from '@/assets/icons/arrow-right-primary-32.svg'
+
 import BtnGost from '../commonUI/BtnGost'
 
 import BaseSection from './baseComponents/BaseSection'

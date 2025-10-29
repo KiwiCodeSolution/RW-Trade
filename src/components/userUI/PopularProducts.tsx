@@ -1,4 +1,5 @@
-import Icon from '../../../public/icons/btn-icon-01-32.svg'
+import Icon from '@/assets/icons/btn-icon-01-32.svg'
+
 import BtnSolid from '../commonUI/BtnSolid'
 
 import PopularProductsSectionWithCategory from './PopularProductsSectionWithCategory'

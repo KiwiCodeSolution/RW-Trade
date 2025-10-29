@@ -1,7 +1,5 @@
 'use client'
 
-import NoImage from '../../../../public/images/NotFound.png'
-
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -18,12 +16,12 @@ const BaseImageItem = ({ src, width, height, alt, className }: BaseImageItemProp
 
 	return (
 		<Image
-			src={imgSrc}
+			src={imgSrc || '/images/NotFound.png'}
 			alt={alt || 'product image'}
 			width={width || 152}
 			height={height || 62}
 			className={`h-full w-full object-cover ${className || ''}`}
-			onError={() => setImgSrc(NoImage.src)}
+			onError={() => setImgSrc('/images/NotFound.png')}
 		/>
 	)
 }

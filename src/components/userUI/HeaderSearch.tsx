@@ -1,4 +1,4 @@
-import SearchIcon from '../../../public/icons/search-20.svg'
+import SearchIcon from '@/assets/icons/search-20.svg'
 
 import '@/styles/globals.css'
 

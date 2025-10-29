@@ -1,6 +1,8 @@
 import { NextConfig } from 'next'
 import createNextIntlPlugin from 'next-intl/plugin'
 
+const withNextIntl = createNextIntlPlugin()
+
 const nextConfig: NextConfig = {
 	experimental: {
 		turbo: {
@@ -11,8 +13,34 @@ const nextConfig: NextConfig = {
 				}
 			}
 		}
+	},
+
+	async rewrites() {
+		return [
+			{
+				source: '/images/:path*',
+				destination: '/images/:path*'
+			}
+		]
+	},
+
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'rw-trade.netlify.app'
+			}
+		]
+	},
+
+	// 🟡 Fallback для Netlify — тут гарантуємо, що .svg рендериться як React-компонент
+	webpack(config) {
+		config.module.rules.push({
+			test: /\.svg$/,
+			use: ['@svgr/webpack']
+		})
+		return config
 	}
 }
 
-const withNextIntl = createNextIntlPlugin()
 export default withNextIntl(nextConfig)

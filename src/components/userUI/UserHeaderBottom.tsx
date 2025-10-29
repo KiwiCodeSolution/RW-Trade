@@ -1,6 +1,6 @@
-import CartIcon from '../../../public/icons/cart-bronze-50.svg'
-import HeartIcon from '../../../public/icons/heart-primary-50.svg'
-import PhoneIcon from '../../../public/icons/phone-primary-50.svg'
+import CartIcon from '@/assets/icons/cart-bronze-50.svg'
+import HeartIcon from '@/assets/icons/heart-primary-50.svg'
+import PhoneIcon from '@/assets/icons/phone-primary-50.svg'
 
 import HeaderSearch from './HeaderSearch'
 import { Link } from '@/i18n/navigation'

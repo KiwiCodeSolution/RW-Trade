@@ -1,4 +1,5 @@
-import BtnIcon from '../../../public/icons/btn-icon-02-prim.svg'
+import BtnIcon from '@/assets/icons/btn-icon-02-prim.svg'
+
 import BtnGost from '../commonUI/BtnGost'
 import CategoryIcon from '../commonUI/CategoryIcon'
 

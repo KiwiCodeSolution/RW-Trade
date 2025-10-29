@@ -1,11 +1,11 @@
 'use client'
 
-import { Locale } from '@/types/baseTypes'
+import BurgerIcon from '@/assets/icons/burger-primary-24.svg'
+import CartIcon from '@/assets/icons/cart-bronze-24.svg'
+import Person from '@/assets/icons/person-16.svg'
+import { LogoBlue } from '@/assets/icons_logos'
 
-import BurgerIcon from '../../../public/icons/burger-primary-24.svg'
-import CartIcon from '../../../public/icons/cart-bronze-24.svg'
-import Person from '../../../public/icons/person-16.svg'
-import Logo from '../../../public/logos/LOGO_blue.svg'
+import { Locale } from '@/types/baseTypes'
 
 import Language from './Language'
 import RetailWholesale from './RetailWholesale'
@@ -34,7 +34,7 @@ const UserHeaderTop = ({ locale }: { locale: Locale }) => {
 						<BurgerIcon />
 					</div>
 					<Link href='/' className='block'>
-						<Logo className='w-[120px]' />
+						<LogoBlue width='120' />
 					</Link>
 					<div className='w-10 h-10 p-2'>
 						<CartIcon />

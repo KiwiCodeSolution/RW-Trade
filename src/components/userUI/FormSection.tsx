@@ -1,8 +1,8 @@
-import FormIcon_1 from '../../../public/icons/form_1.svg'
-import FormIcon_2 from '../../../public/icons/form_2.svg'
-import FormIcon_3 from '../../../public/icons/form_3.svg'
-import FormIcon_4 from '../../../public/icons/form_4.svg'
-import LogoWhite from '../../../public/logos/LOGO_152_white.png'
+import FormIcon_1 from '@/assets/icons/form_1.svg'
+import FormIcon_2 from '@/assets/icons/form_2.svg'
+import FormIcon_3 from '@/assets/icons/form_3.svg'
+import FormIcon_4 from '@/assets/icons/form_4.svg'
+import LogoWhite from '@/assets/logos/LOGO_152_white.png'
 
 import UserForm from './UserForm'
 import BaseSection from './baseComponents/BaseSection'

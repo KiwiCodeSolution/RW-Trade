@@ -1,8 +1,8 @@
 'use client'
 
-import { Locale } from '@/types/baseTypes'
+import WorldIcon from '@/assets/icons/world-16.svg'
 
-import WorldIcon from '../../../public/icons/world-16.svg'
+import { Locale } from '@/types/baseTypes'
 
 import { Link, usePathname } from '@/i18n/navigation'
 import { routing } from '@/i18n/routing'

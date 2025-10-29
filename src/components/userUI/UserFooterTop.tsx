@@ -1,6 +1,6 @@
-import FacebookLogo from '../../../public/icons/facebook-32.svg'
-import MessangerLogo from '../../../public/icons/messanger-32.svg'
-import YoutubeLogo from '../../../public/icons/youtube-32.svg'
+import FacebookLogo from '@/assets/icons/facebook-32.svg'
+import MessangerLogo from '@/assets/icons/messanger-32.svg'
+import YoutubeLogo from '@/assets/icons/youtube-32.svg'
 
 import Image from 'next/image'
 import Link from 'next/link'

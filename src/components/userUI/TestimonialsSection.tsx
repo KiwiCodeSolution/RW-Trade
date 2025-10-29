@@ -1,6 +1,6 @@
-import { Locale } from '@/types/baseTypes'
+import BabyImg from '@/assets/images/baby.svg'
 
-import BabyImg from '../../../public/images/baby.svg'
+import { Locale } from '@/types/baseTypes'
 
 import TestimonialsCarousel from './TestimonialsCarousel'
 
