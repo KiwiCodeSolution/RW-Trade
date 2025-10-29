@@ -7,6 +7,7 @@ import { productStore } from '@/store/ProductsStore'
 import AddCartBtn from './AddCartBtn'
 
 import { observer } from 'mobx-react-lite'
+import { useEffect, useState } from 'react'
 
 interface PriceComponentProps {
 	product: Product
@@ -15,6 +16,10 @@ interface PriceComponentProps {
 
 const PriceAndAddCartComponent = observer(({ product, locale }: PriceComponentProps) => {
 	const { exchangeRate, isWholesale } = productStore
+
+	const [mounted, setMounted] = useState(false)
+	useEffect(() => setMounted(true), [])
+	if (!mounted) return null
 
 	const priceLocal = isWholesale
 		? product.wholesalePrice
