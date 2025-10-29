@@ -1,51 +1,59 @@
 'use client'
 
-import { Category, Locale } from '@/types/baseTypes'
+import { Locale } from '@/types/baseTypes'
+
+import { categoryStore } from '@/store/CategoryStore'
 
 import BtnSolid from '../commonUI/BtnSolid'
 
-import CardRow from './CardRow'
-import CategoryControl from './CategoryControl'
+import SubCategoryControl from './SubCategoryControl'
 import BaseSection from './baseComponents/BaseSection'
 import Title from './baseComponents/Title'
 
+import { toJS } from 'mobx'
+import { observer } from 'mobx-react-lite'
 import { useEffect, useState } from 'react'
 
-const DiscountsSection = ({
-	title,
-	btn,
-	locale
-}: {
-	title: string
-	btn: string
-	locale: Locale
-}) => {
-	const [selectedCategory, setSelectedCategory] = useState<Category | undefined>(undefined)
-	const [mounted, setMounted] = useState(false)
+const DiscountsSection = observer(
+	({ title, btn, locale }: { title: string; btn: string; locale: Locale }) => {
+		const { categories } = categoryStore
 
-	// eslint-disable-next-line react-hooks/exhaustive-deps, react/no-unstable-nested-components
-	useEffect(() => {
-		setMounted(true)
-	}, [])
+		const category = categories.find(cat => cat.title['en'] === 'Discounts')
 
-	if (!mounted) return null
+		if (!category) return null
+		console.log('DiscountsSection', toJS(category))
 
-	return (
-		<BaseSection className='py-9'>
-			<Title tag='h2' styles='mb-7'>
-				{title}
-			</Title>
+		const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<string>('any')
+		const [mounted, setMounted] = useState(false)
 
-			<CategoryControl setCategory={setSelectedCategory} />
+		// eslint-disable-next-line react-hooks/exhaustive-deps, react/no-unstable-nested-components
+		useEffect(() => {
+			setMounted(true)
+		}, [])
 
-			<CardRow category={selectedCategory} locale={locale} section='discounts' />
-			<div className='mt-9 flex justify-center items-center'>
-				<BtnSolid variant='bronze' size='m' as='link' href='/catalog/discount'>
-					{btn}
-				</BtnSolid>
-			</div>
-		</BaseSection>
-	)
-}
+		if (!mounted) return null
+
+		return (
+			<BaseSection className='py-9'>
+				<Title tag='h2' styles='mb-7'>
+					{title}
+				</Title>
+
+				<SubCategoryControl
+					setSubCategory={setSelectedSubcategoryId}
+					subcategories={category.subcategories!}
+					locale={locale}
+				/>
+
+				{/* <CardRow category={selectedCategory} locale={locale} section='discounts' /> */}
+				<div className='mt-9 flex justify-center items-center'>
+					<BtnSolid variant='bronze' size='m' as='link' href='/catalog/discount'>
+						{btn}
+					</BtnSolid>
+				</div>
+			</BaseSection>
+		)
+	}
+)
 
 export default DiscountsSection
