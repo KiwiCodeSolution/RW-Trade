@@ -17,19 +17,18 @@ const DiscountsSection = observer(
 	({ title, btn, locale }: { title: string; btn: string; locale: Locale }) => {
 		const { categories } = categoryStore
 
-		const category = categories.find(cat => cat.title['en'] === 'Discounts')
-
-		if (!category) return null
-
+		// 🧩 хуки завжди перед умовами
 		const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<string>('any')
 		const [mounted, setMounted] = useState(false)
 
-		// eslint-disable-next-line react-hooks/exhaustive-deps, react/no-unstable-nested-components
 		useEffect(() => {
 			setMounted(true)
 		}, [])
 
 		if (!mounted) return null
+
+		const category = categories.find(cat => cat.title['en'] === 'Discounts')
+		if (!category) return null
 
 		return (
 			<BaseSection className='py-9'>

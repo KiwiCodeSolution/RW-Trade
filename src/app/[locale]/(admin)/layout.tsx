@@ -1,10 +1,22 @@
 import ClientAdminLayout from '@/components/adminUI/ClientAdminLayout'
 
-export default async function RootAdminLayout({ children }: { children: React.ReactNode }) {
+import { Locale } from '@/types/baseTypes'
+
+import { NextIntlClientProvider } from 'next-intl'
+
+export default async function RootAdminLayout({
+	children,
+	params
+}: {
+	children: React.ReactNode
+	params: { locale: Locale }
+}) {
 	return (
 		<html lang='uk'>
 			<body className='bg-white w-full h-full'>
-				<ClientAdminLayout>{children}</ClientAdminLayout>
+				<NextIntlClientProvider>
+					<ClientAdminLayout>{children}</ClientAdminLayout>
+				</NextIntlClientProvider>
 			</body>
 		</html>
 	)

@@ -5,9 +5,10 @@ import { Locale, Product, ProductStatus } from '@/types/baseTypes'
 type Props = {
 	locale: Locale
 	status: Product['status']
+	typePage?: 'client' | 'admin'
 }
 
-const OtherStatusesProductBtnComponents = ({ locale, status }: Props) => {
+const OtherStatusesProductBtnComponents = ({ locale, status, typePage }: Props) => {
 	const texts = {
 		en: {
 			expected: 'Expected',
@@ -31,7 +32,7 @@ const OtherStatusesProductBtnComponents = ({ locale, status }: Props) => {
 		<>
 			<p className='text-xl font-medium'>{text}</p>
 			<div
-				className={`w-[64px] h-[64px] rounded-lg p-2 flex items-center justify-center ${currentBgStyle}`}
+				className={`${typePage === 'admin' ? 'w-11 h-11' : 'w-[64px] h-[64px]'} rounded-lg p-2 flex items-center justify-center ${currentBgStyle}`}
 			>
 				{status === ProductStatus.EXPECTED ? (
 					<Timer color='#606975' />

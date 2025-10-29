@@ -1,5 +1,7 @@
 import { Locale, ProductStatus } from '@/types/baseTypes'
 
+import EditButtonProductCard from '../adminUI/EditButtonProductCard'
+
 import OtherStatusesProductBtnComponents from './OtherStatusesProductBtnComponents'
 import PriceAndAddCartComponent from './PriceAndAddCartComponent'
 import ToggleFavoriteButton from './ToggleFavoriteButton'
@@ -10,11 +12,15 @@ type ProductCardProps = {
 	// product?: Product
 	locale: Locale
 	type?: 'our' | 'partners'
+	typePage?: 'client' | 'admin'
 }
-const ProductCard = ({ locale, type }: ProductCardProps) => {
+const ProductCard = ({ locale, type, typePage }: ProductCardProps) => {
 	const product = {
 		_id: '661731f8fd97a46b6a99dc29',
-		title: { uk: 'Автомобільний зарядний пристрій', en: 'Car Charger' },
+		title: {
+			uk: 'Автомобільний зарядний пристрій хто зна для чого, але хай буде як тест. Довгий заголовок для тестування скорочення',
+			en: 'Car Charger'
+		},
 		description: {
 			uk: 'Швидкий зарядний пристрій для автомобіля з підтримкою QC 3.0',
 			en: 'Fast car charger supporting QC 3.0'
@@ -59,7 +65,9 @@ const ProductCard = ({ locale, type }: ProductCardProps) => {
 	const bgColor = type === 'partners' ? 'bg-other-2' : 'bg-other-1'
 
 	return (
-		<article className='h-[505px] w-full min-w-[278px] max-w-[330px] rounded-md border-2 border-sc-1 flex flex-col justify-between items-center relative'>
+		<article
+			className={`${typePage === 'admin' ? 'h-[317px] w-full min-w-[162px] max-w-[162px]' : 'h-[505px] w-full min-w-[278px] max-w-[330px]'}  rounded-md border-2 border-sc-1 flex flex-col justify-between items-center relative product-card-shadow`}
+		>
 			<div className='w-full h-[55px] absolute top-0 left-0 flex items-center justify-between p-1'>
 				<div className='flex flex-col gap-y-1 items-center justify-center'>
 					{product.isHit && (
@@ -73,43 +81,56 @@ const ProductCard = ({ locale, type }: ProductCardProps) => {
 						</span>
 					)}
 				</div>
-
-				<ToggleFavoriteButton product={product} />
+				{typePage === 'admin' ? (
+					<EditButtonProductCard id={product._id} />
+				) : (
+					<ToggleFavoriteButton product={product} />
+				)}
 			</div>
 
-			<div className='h-[265px] w-full overflow-hidden'>
+			<div
+				className={`${typePage === 'admin' ? 'h-[162px]' : 'h-[265px]'} w-full overflow-hidden`}
+			>
 				<BaseImageItem
 					src={product.images && product.images[0]}
 					alt={product.title[locale]}
-					width={300}
-					height={300}
-					className='w-full min-w-[278px] max-w-[330px] object-cover h-full'
+					width={typePage === 'admin' ? 162 : 300}
+					height={typePage === 'admin' ? 162 : 300}
+					className={`w-full min-w-[278px] max-w-[330px] object-cover h-full`}
 				/>
 			</div>
-
-			<div className={`w-full h-[240px] p-3 flex flex-col gap-y-2 justify-center ${bgColor}`}>
+			<div
+				className={`${typePage === 'admin' ? 'w-full h-[147px] p-2' : 'w-full h-[240px] p-3 gap-y-2'} flex flex-col justify-center ${bgColor}`}
+			>
 				<Link
 					href={`/product/${locale === 'en' ? product.slugEn : product.slugUk}`}
 					className='cursor-pointer group h-[72px]'
 				>
-					<h3 className='text-lg font-semibold text-link-blue group-hover:underline group-hover:decoration-link-blue'>
+					<h3
+						className={`${typePage === 'admin' ? 'text-[15px] font-medium line-clamp-2' : 'text-lg font-semibold line-clamp-3'} overflow-hidden text-ellipsis text-link-blue group-hover:underline group-hover:decoration-link-blue`}
+					>
 						{product.title[locale]}
 					</h3>
 				</Link>
 				<div className='h-7'>rating</div>
 				<div className='w-full h-[64px] flex items-center justify-between'>
 					{product.status === ProductStatus.IN_STOCK ? (
-						<PriceAndAddCartComponent product={product} locale={locale} />
+						<PriceAndAddCartComponent
+							product={product}
+							locale={locale}
+							typePage={typePage}
+						/>
 					) : (
 						<OtherStatusesProductBtnComponents
 							status={product.status}
 							locale={locale}
+							typePage={typePage}
 						/>
 					)}
 
 					{/* <AddCartBtn product={product} /> */}
 				</div>
-				<p>Код товару:{product.sku}</p>
+				{typePage !== 'admin' && <p>Код товару:{product.sku}</p>}
 			</div>
 		</article>
 	)

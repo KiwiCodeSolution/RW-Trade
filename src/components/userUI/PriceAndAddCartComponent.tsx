@@ -12,9 +12,10 @@ import { useEffect, useState } from 'react'
 interface PriceComponentProps {
 	product: Product
 	locale: Locale
+	typePage?: 'client' | 'admin'
 }
 
-const PriceAndAddCartComponent = observer(({ product, locale }: PriceComponentProps) => {
+const PriceAndAddCartComponent = observer(({ product, locale, typePage }: PriceComponentProps) => {
 	const { exchangeRate, isWholesale } = productStore
 
 	const [mounted, setMounted] = useState(false)
@@ -29,10 +30,10 @@ const PriceAndAddCartComponent = observer(({ product, locale }: PriceComponentPr
 
 	return (
 		<>
-			<p className='text-xl font-medium'>
+			<p className={`${typePage === 'admin' ? 'text-sm' : 'text-xl'} font-medium`}>
 				{locale === 'en' ? 'Price:' : 'Ціна:'} {priceLocal.toFixed(2)}₴
 			</p>
-			<AddCartBtn product={product} />
+			<AddCartBtn product={product} typePage={typePage} />
 		</>
 	)
 })

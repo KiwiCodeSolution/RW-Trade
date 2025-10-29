@@ -43,12 +43,14 @@ const SignInForm = ({ pageType }: { pageType: PageContext }) => {
 		try {
 			const res = await signIn('credentials', {
 				...formData,
-				redirect: false
+				redirect: false,
+				callbackUrl
 			})
 
-			if (res?.ok && !res.error) {
+			if (res?.ok && res.url && !res.error) {
 				// toast.success('Вхід успішний')
-				await router.replace(callbackUrl)
+				// await router.replace(callbackUrl)
+				router.push(res.url)
 				reset()
 			} else {
 				toast.error('Неправильний логін або пароль')

@@ -12,10 +12,8 @@ import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 
 const AdminLink = ({ href, title, count }: { href: string; title: string; count?: number }) => {
-	const pathname = usePathname()
-
-	// const isActive = pathname === `/uk${href}`
-	const isActive = pathname.includes(href) || pathname === `/uk ${href}`
+	const pathname = usePathname() ?? ''
+	const isActive = pathname && (pathname === `/uk${href}` || pathname.includes(href))
 
 	return (
 		<div
@@ -23,11 +21,11 @@ const AdminLink = ({ href, title, count }: { href: string; title: string; count?
 		>
 			<Link
 				href={href}
-				className={`text-txt-white transition-colors hover:underline hover:underline-offset-2`}
+				className='flex items-center justify-between text-txt-white transition-colors hover:underline hover:underline-offset-2'
 			>
-				{title}
+				<span>{title}</span>
+				{typeof count === 'number' && count > 0 && <Count count={count} />}
 			</Link>
-			{count && count > 0 && <Count count={count} />}
 		</div>
 	)
 }
@@ -62,7 +60,7 @@ const AdminHeader = observer(() => {
 	}
 
 	return (
-		<header className='flex flex-col gap-7 bg-[#3C4447] text-txt-white p-2 min-h-screen rounded-tr-4xl rounded-br-4xl justify-center'>
+		<header className='flex flex-col gap-7 bg-[#3C4447] text-txt-white p-2 min-h-screen rounded-tr-4xl rounded-br-4xl justify-center sticky top-0'>
 			{/* <div className='flex justify-center pt-4'>
 				<Link href='/manage-panel' className='mx-auto'>
 					<BaseImageItem src={'/logos/LOGO_252_white.png'} />
@@ -76,12 +74,21 @@ const AdminHeader = observer(() => {
 					<AdminLink
 						href='/manage-panel/notifications'
 						title='Сповіщення'
-						count={notificationsStore.unreadTotal}
+						count={
+							notificationsStore.isLoaded && notificationsStore.unreadTotal > 0
+								? notificationsStore.unreadTotal
+								: undefined
+						}
+						// count={notificationsStore.unreadTotal}
 					/>
 					<AdminLink
 						href='/manage-panel/messages'
 						title='Повідомлення'
-						count={feedbackStore.newMessagesCount}
+						count={
+							feedbackStore.isLoaded && feedbackStore.newMessagesCount > 0
+								? feedbackStore.newMessagesCount
+								: undefined
+						}
 					/>
 				</div>
 
@@ -104,7 +111,7 @@ const AdminHeader = observer(() => {
 						title='Категорії та фільтри'
 					/>
 					<AdminLink href='/manage-panel/products' title='Всі товари' />
-					<AdminLink href='/manage-panel/products/editor' title='Створити новий товар' />
+					{/* <AdminLink href='/manage-panel/products/editor' title='Створити новий товар' /> */}
 				</div>
 
 				<div className='flex flex-col gap-2'>

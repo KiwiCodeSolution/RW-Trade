@@ -70,6 +70,10 @@
 	box-shadow: 0px 0px 6px 0px rgba(94, 117, 200, 1);
 }
 
+.product-card-shadow {
+	box-shadow: 0px 0px 8px 0px rgba(170, 185, 228, 1);
+}
+
 .page-title {
 	@apply text-[40px] font-bold py-5;
 }
