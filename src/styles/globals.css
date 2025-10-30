@@ -89,6 +89,10 @@
 	@apply cursor-pointer flex justify-center items-center p-[2px] rounded-full  transition-all duration-300 hover:shadow-lg hover:scale-103 overflow-hidden font-bold text-white w-[242px] min-h-[56px] text-xl bg-linear-to-r from-[#5dafb1] to-[#5e73c9];
 }
 
+.add-btn-link {
+	@apply w-[60px] h-[60px] rounded-2xl flex items-center justify-center;
+}
+
 @layer base {
 	html,
 	body {
@@ -139,6 +143,18 @@
 		cursor: pointer;
 		transition-duration: 250ms;
 		transition-timing-function: ease;
+	}
+
+	ul,
+	ol {
+		list-style-type: disc !important;
+		padding-left: 1.5rem !important;
+	}
+	li {
+		display: list-item !important;
+	}
+	li::marker {
+		color: var(--color-link-bronze);
 	}
 
 	/* img {

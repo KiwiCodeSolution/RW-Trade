@@ -1,9 +1,11 @@
 'use client'
 
-import { Product, ProductStatus } from '@/types/baseTypes'
+import { PreviewItem, Product, ProductStatus } from '@/types/baseTypes'
 
 import { categoryStore } from '@/store/CategoryStore'
 
+import Collapse from './Collapse'
+import ProductImagesBlock from './formsComponents/ProductImagesBlock'
 import { toast } from '@/lib/toast'
 
 import { observer } from 'mobx-react-lite'
@@ -11,11 +13,15 @@ import { useSearchParams } from 'next/navigation'
 import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 
-type ProductFormValues = Omit<Product, '_id' | 'slugUk' | 'slugEn'>
+type ProductFormValues = Omit<Product, '_id' | 'slugUk' | 'slugEn' | 'images'> & {
+	images: PreviewItem[]
+}
+
+const toPreviewItems = (arr?: string[]) =>
+	(arr ?? []).map(url => ({ id: crypto.randomUUID(), url }) as PreviewItem)
 
 const ProductForm = observer(({ product }: { product?: Product }) => {
 	const {
-		control,
 		register,
 		handleSubmit,
 		reset,
@@ -23,49 +29,60 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		setValue,
 		formState: { errors, isSubmitting }
 	} = useForm<ProductFormValues>({
-		defaultValues: product ?? {
-			title: { uk: '', en: '' },
-			description: { uk: '', en: '' },
-			price: 0,
-			wholesalePrice: 0,
-			categoryId: '',
-			subCategoryId: '',
-			images: [],
-			isHit: false,
-			newArrival: false,
-			showDiscountBlock: false,
-			showOfferBlock: false,
-			videoUrl: '',
-			characteristics: {},
-			status: ProductStatus.IN_STOCK
-		}
+		defaultValues: product
+			? {
+					...(product as Product),
+					images: toPreviewItems(product.images as string[] | undefined)
+				}
+			: {
+					title: { uk: '', en: '' },
+					description: { uk: '', en: '' },
+					price: 0,
+					wholesalePrice: 0,
+					categoryId: '',
+					subCategoryId: '',
+					images: [] as PreviewItem[],
+					isHit: false,
+					newArrival: false,
+					showDiscountBlock: false,
+					showOfferBlock: false,
+					videoUrl: '',
+					characteristics: {},
+					status: ProductStatus.IN_STOCK
+				}
 	})
 
 	useEffect(() => {
-		if (product) reset(product)
-	}, [product])
+		if (product) {
+			reset({
+				...(product as Product),
+				images: toPreviewItems(product.images as string[] | undefined)
+			})
+		}
+	}, [product, reset])
+
 	const searchParams = useSearchParams()
 	const categoryId = searchParams.get('category')
 
-	// якщо categories ще не завантажені, можеш ініціалізувати
 	useEffect(() => {
-		if (categoryStore.categories.length === 0) {
-			categoryStore.fetchCategories()
+		if (categoryStore.categories.length === 0) categoryStore.fetchCategories()
+		if (categoryId) {
+			setValue('categoryId', categoryId)
 		}
 	}, [])
 
-	// обчислюємо поточну категорію без окремого useState
 	const currentCategory = useMemo(() => {
 		if (!categoryId) return undefined
 		return categoryStore.categories.find(c => c._id === categoryId)
 	}, [categoryId])
 
+	const images = watch('images') // PreviewItem[]
+
 	const onSubmit = async (data: ProductFormValues) => {
 		try {
 			console.log('submit data', data)
-			// тут потім буде твій axios.post або patch
 			toast.success('Товар успішно збережено')
-		} catch (err) {
+		} catch {
 			toast.error('Помилка при збереженні')
 		}
 	}
@@ -80,7 +97,16 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 					{product ? 'Редагувати товар' : 'Новий товар'}
 				</h2>
 
-				{/* 🔹 Поле назв українською */}
+				{/* блок додавання / редагування фото */}
+				<ProductImagesBlock
+					images={images ?? []}
+					onChange={imgs => setValue('images', imgs)}
+				/>
+				<Collapse title='Основна інформація'>
+					<p>тут будуть оновны поля</p>
+				</Collapse>
+
+				{/* поля форми нижче */}
 				<div>
 					<label className='block font-medium mb-1'>Назва (укр)</label>
 					<input
@@ -92,7 +118,6 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 					)}
 				</div>
 
-				{/* 🔹 Поле назв англійською */}
 				<div>
 					<label className='block font-medium mb-1'>Назва (англ)</label>
 					<input
@@ -104,7 +129,6 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 					)}
 				</div>
 
-				{/* 🔹 Ціна */}
 				<div>
 					<label className='block font-medium mb-1'>Ціна</label>
 					<input
@@ -115,7 +139,6 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 					/>
 				</div>
 
-				{/* 🔹 Кнопка */}
 				<button
 					type='submit'
 					disabled={isSubmitting}

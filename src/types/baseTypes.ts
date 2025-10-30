@@ -1,5 +1,7 @@
 export type Locale = 'uk' | 'en'
 
+export type PreviewItem = { id: string; url?: string; file?: File }
+
 export enum ProductStatus {
 	IN_STOCK = 'in_stock',
 	EXPECTED = 'expected',

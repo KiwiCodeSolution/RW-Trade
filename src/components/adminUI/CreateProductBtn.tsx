@@ -7,7 +7,7 @@ const CreateProductBtn = ({ categoryId }: { categoryId: string }) => {
 		<article className='h-[317px] w-full min-w-[162px] max-w-[162px] rounded-md border-2 border-sc-1 flex flex-col gap-y-2 justify-center items-center relative product-card-shadow'>
 			<Link
 				href={`/manage-panel/products/editor?category=${categoryId}`} // /manage-panel/products/editor
-				className='w-[60px] h-[60px] rounded-2xl bg-primary flex items-center justify-center'
+				className='add-btn-link bg-primary '
 			>
 				<Add />
 			</Link>
