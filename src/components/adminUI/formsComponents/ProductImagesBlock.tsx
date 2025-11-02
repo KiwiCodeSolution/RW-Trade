@@ -3,8 +3,23 @@
 
 import { Add, Trash } from '@/assets/icons'
 
+import { BASE_IMG_URL } from '@/utils/config'
+
+import Image from 'next/image'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ReactSortable } from 'react-sortablejs'
+
+/* eslint-disable react-hooks/set-state-in-effect */
+
+/* eslint-disable react-hooks/set-state-in-effect */
+
+/* eslint-disable react-hooks/set-state-in-effect */
+
+/* eslint-disable react-hooks/set-state-in-effect */
+
+/* eslint-disable react-hooks/set-state-in-effect */
+
+/* eslint-disable react-hooks/set-state-in-effect */
 
 /* eslint-disable react-hooks/set-state-in-effect */
 
@@ -31,6 +46,11 @@ const ProductImagesBlock = ({ images = [], onChange }: ProductImagesBlockProps) 
 		}))
 
 	const [local, setLocal] = useState<PreviewItem[]>(images.length ? images : createStaticSlots())
+	const resolveImageUrl = (url?: string) => {
+		if (!url) return ''
+		if (url.startsWith('http://') || url.startsWith('https://')) return url
+		return `${BASE_IMG_URL}${url.startsWith('/') ? url : `/${url}`}`
+	}
 
 	// 🔹 коли додаються або видаляються фото — оновлюємо форму, але не втрачаємо порожні слоти
 	useEffect(() => {
@@ -118,7 +138,13 @@ const ProductImagesBlock = ({ images = [], onChange }: ProductImagesBlockProps) 
 						}`}
 					>
 						{item.url ? (
-							<img src={item.url} alt='' className='object-cover w-full h-full' />
+							<Image
+								src={resolveImageUrl(item.url)}
+								alt=''
+								width={72}
+								height={72}
+								className='object-cover w-full h-full'
+							/>
 						) : (
 							<div className='w-8 h-8 flex items-center justify-center rounded-full bg-primary'>
 								<p className='text-white font-medium'>{idx + 1}</p>

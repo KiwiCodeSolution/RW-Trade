@@ -13,11 +13,32 @@ import Collapse from './Collapse'
 import ProductImagesBlock from './formsComponents/ProductImagesBlock'
 import TextEditor from './formsComponents/TextEditor'
 
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
+
+/* eslint-disable react-hooks/exhaustive-deps */
+
+/* eslint-disable react-hooks/exhaustive-deps */
+
+/* eslint-disable react-hooks/exhaustive-deps */
+
+/* eslint-disable react-hooks/exhaustive-deps */
+
+/* eslint-disable react-hooks/exhaustive-deps */
+
+/* eslint-disable react-hooks/exhaustive-deps */
+
+/* eslint-disable react-hooks/exhaustive-deps */
+
+/* eslint-disable react-hooks/exhaustive-deps */
+
+/* eslint-disable react-hooks/exhaustive-deps */
+
+/* eslint-disable react-hooks/exhaustive-deps */
 
 /* eslint-disable react-hooks/exhaustive-deps */
 
@@ -104,19 +125,35 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 	})
 
 	useEffect(() => {
-		if (product) {
-			reset({
-				...(product as Product),
-				images: toPreviewItems(product.images as string[] | undefined)
-			})
-		}
-	}, [product, reset])
+		if (!product) return
+		reset({
+			...(product as Product),
+			images: toPreviewItems(product.images as string[] | undefined)
+		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [product?._id])
 
 	const { data: session } = useSession()
 	const token = session?.user?.accessToken
 
 	const searchParams = useSearchParams()
-	const categoryId = searchParams.get('category')
+	const categoryIdFromQuery = searchParams.get('category')
+
+	const categoryId = product?.categoryId || categoryIdFromQuery
+
+	useEffect(() => {
+		if (categoryStore.categories.length === 0) {
+			categoryStore.fetchCategories()
+		}
+
+		if (categoryId) {
+			setValue('categoryId', categoryId)
+		}
+	}, [categoryId])
+
+	if (product) {
+		console.log(toJS(product))
+	}
 
 	useEffect(() => {
 		if (categoryStore.categories.length === 0) categoryStore.fetchCategories()
@@ -126,9 +163,9 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 	}, [])
 
 	const currentCategory = useMemo(() => {
-		if (!categoryId) return undefined
+		if (!categoryId || categoryStore.categories.length === 0) return undefined
 		return categoryStore.categories.find(c => c._id === categoryId)
-	}, [categoryId])
+	}, [categoryId, categoryStore.categories])
 
 	const images = watch('images') // PreviewItem[]
 
@@ -181,7 +218,13 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 				{/* блок додавання / редагування фото */}
 				<ProductImagesBlock
 					images={images ?? []}
-					onChange={imgs => setValue('images', imgs)}
+					onChange={imgs => {
+						const prev = images ?? []
+						const changed =
+							prev.length !== imgs.length ||
+							prev.some((p, i) => p.url !== imgs[i]?.url)
+						if (changed) setValue('images', imgs)
+					}}
 				/>
 				<Collapse title='SEO-блок (не обов’язкові поля)'>
 					<div className='grid grid-cols-1 2xl:grid-cols-2 gap-4'>
@@ -283,6 +326,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 									<select
 										id='subcategory'
 										{...register('subCategoryId')}
+										defaultValue={product?.subCategoryId || ''}
 										className='w-[600px] h-10 border border-gr-2 rounded-lg px-3 py-2 text-base text-txt-dark bg-white 
                focus:border-bg-green focus:outline-none transition-colors duration-200 cursor-pointer'
 									>

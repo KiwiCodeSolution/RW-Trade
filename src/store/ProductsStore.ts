@@ -99,6 +99,7 @@ import { makeAutoObservable, runInAction } from 'mobx'
 
 class ProductStore {
 	products: Product[] = []
+	currentProduct: Product | null = null
 	isLoading = false
 	exchangeRate = 0
 	isWholesale = false
@@ -308,6 +309,97 @@ class ProductStore {
 			runInAction(() => {
 				this.isLoading = false
 			})
+		}
+	}
+
+	async fetchProductById(id: string, token: string) {
+		this.isLoading = true
+		try {
+			const res = await fetch(`${BASE_URL}/products/${id}`, {
+				method: 'GET',
+				credentials: 'include',
+				headers: { Authorization: `Bearer ${token}` }
+			})
+
+			if (res.status === 401) {
+				toast.error('Сесія завершена. Увійди знову.')
+				window.location.href = '/uk/signin'
+				return null
+			}
+
+			if (!res.ok) {
+				const msg = await res.text()
+				throw new Error(`Помилка завантаження продукту: ${msg}`)
+			}
+
+			const product = await res.json()
+			this.currentProduct = product
+			return product
+		} catch (err: unknown) {
+			console.error('Fetch product by ID error:', err)
+
+			let msg = 'Помилка при завантаженні товару'
+
+			if (err instanceof Error) {
+				try {
+					const clean = err.message.replace('Помилка завантаження продукту: ', '')
+					const parsed = JSON.parse(clean)
+					if (parsed?.message) msg = parsed.message
+					else msg = err.message
+				} catch {
+					msg = err.message
+				}
+			}
+
+			toast.error(msg)
+			return null
+		} finally {
+			this.isLoading = false
+		}
+	}
+
+	async removePhoto(productId: string, photoUrl: string, token: string) {
+		this.isLoading = true
+		try {
+			const res = await fetch(`${BASE_URL}/products/${productId}/photos/${photoUrl}`, {
+				method: 'DELETE',
+				credentials: 'include',
+				headers: { Authorization: `Bearer ${token}` }
+			})
+
+			if (res.status === 401) {
+				toast.error('Сесія завершена. Увійди знову.')
+				window.location.href = '/uk/signin'
+				return false
+			}
+
+			if (!res.ok) {
+				const msg = await res.text()
+				throw new Error(`Помилка видалення фото: ${msg}`)
+			}
+
+			toast.success('Фото успішно видалено')
+			return true
+		} catch (err: unknown) {
+			console.error('Remove photo error:', err)
+
+			let msg = 'Помилка при видаленні фото'
+
+			if (err instanceof Error) {
+				try {
+					const clean = err.message.replace('Помилка видалення фото: ', '')
+					const parsed = JSON.parse(clean)
+					if (parsed?.message) msg = parsed.message
+					else msg = err.message
+				} catch {
+					msg = err.message
+				}
+			}
+
+			toast.error(msg)
+			return null
+		} finally {
+			this.isLoading = false
 		}
 	}
 
