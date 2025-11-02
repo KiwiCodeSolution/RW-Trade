@@ -1,5 +1,7 @@
 'use client'
 
+import { ArrowUp } from '@/assets/icons'
+
 // import { ChevronDown } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 
@@ -8,9 +10,16 @@ interface CollapseProps {
 	defaultOpen?: boolean
 	hasError?: boolean
 	children: React.ReactNode
+	classNameWrapper?: string
 }
 
-const Collapse = ({ title, defaultOpen = true, hasError = false, children }: CollapseProps) => {
+const Collapse = ({
+	title,
+	defaultOpen = true,
+	hasError = false,
+	children,
+	classNameWrapper
+}: CollapseProps) => {
 	const [isOpen, setIsOpen] = useState(defaultOpen)
 	const [height, setHeight] = useState<string | number>(defaultOpen ? 'auto' : 0)
 	const contentRef = useRef<HTMLDivElement>(null)
@@ -47,18 +56,15 @@ const Collapse = ({ title, defaultOpen = true, hasError = false, children }: Col
 				className={`w-full flex items-center justify-between px-4 py-3 text-left font-semibold transition
         ${hasError ? 'text-red-600' : ''}`}
 			>
-				<span>{title}</span> +
-				{/* <ChevronDown
-					className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
-					size={20}
-				/> */}
+				<span>{title}</span>
+				<ArrowUp />
 			</button>
 
 			<div
 				ref={contentRef}
 				style={{ height, transition: 'height 0.3s ease', overflow: 'hidden' }}
 			>
-				<div className='p-4'>{children}</div>
+				<div className={`p-4 ${classNameWrapper}`}>{children}</div>
 			</div>
 		</div>
 	)

@@ -368,6 +368,41 @@ export const Border = ({ className }: { className?: string }) => {
 	)
 }
 
+export const BorderSmall = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			preserveAspectRatio='none'
+			viewBox='0 0 200 40'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<rect
+				x='0.5'
+				y='0.5'
+				width='99%' // 🔹 заміна з фіксованого 167 на 100%
+				height='39'
+				rx='8'
+				stroke='url(#paint0_linear_4135_16730)'
+				vectorEffect='non-scaling-stroke'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4135_16730'
+					x1='0'
+					y1='20'
+					x2='200'
+					y2='20'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
 export const Show = () => {
 	return (
 		<svg
@@ -698,6 +733,181 @@ export const Settings = () => {
 				>
 					<stop stopColor='#E1A755' />
 					<stop offset='1' stopColor='#B76B00' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const ArrowUp = ({ color }: { color?: string }) => {
+	return (
+		<svg
+			width='12'
+			height='8'
+			viewBox='0 0 12 8'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M0.75 0.75L5.75 6.75L10.75 0.75'
+				stroke={color || '#282828'}
+				strokeWidth='1.5'
+				strokeLinecap='round'
+			/>
+		</svg>
+	)
+}
+
+export const InputField = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			preserveAspectRatio='none'
+			viewBox='0 0 535 40'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<rect
+				x='0.5'
+				y='0.5'
+				width='534'
+				height='39'
+				rx='7.5'
+				stroke='url(#paint0_linear_4135_16719)'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4135_16719'
+					x1='0'
+					y1='20'
+					x2='535'
+					y2='20'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const RequiredStar = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			fill='#b76b00'
+			height='8px'
+			width='8px'
+			version='1.1'
+			id='Capa_1'
+			xmlns='http://www.w3.org/2000/svg'
+			viewBox='0 0 209.17 209.17'
+			xmlSpace='preserve'
+			transform='matrix(1, 0, 0, 1, 0, 0)rotate(0)'
+			className={className}
+		>
+			<g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
+			<g
+				id='SVGRepo_tracerCarrier'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+				stroke='#CCCCCC'
+				strokeWidth='5.856816'
+			></g>
+			<g id='SVGRepo_iconCarrier'>
+				{' '}
+				<path d='M198.855,132.631l-43.571-28.045l43.571-28.044c4.701-3.026,6.064-9.312,3.038-14.013l-18.726-29.094 c-1.875-2.913-5.065-4.652-8.533-4.652c-1.945,0-3.84,0.558-5.48,1.614l-37.128,23.898V10.139C132.025,4.549,127.477,0,121.886,0 h-34.6c-5.591,0-10.139,4.549-10.139,10.139v44.155L40.019,30.396c-1.64-1.056-3.536-1.614-5.48-1.614 c-3.468,0-6.658,1.739-8.532,4.652L7.279,62.528c-3.026,4.701-1.663,10.987,3.038,14.013l43.571,28.044l-43.571,28.045 c-4.701,3.026-6.064,9.312-3.038,14.013l18.726,29.093c1.875,2.913,5.065,4.653,8.533,4.653c1.945,0,3.84-0.558,5.48-1.614 l37.128-23.898v44.154c0,5.591,4.549,10.139,10.139,10.139h34.6c5.591,0,10.139-4.549,10.139-10.139v-44.154l37.128,23.898 c1.641,1.056,3.535,1.614,5.48,1.614c0,0,0.001,0,0.001,0c3.467,0,6.657-1.739,8.532-4.653l18.726-29.093 C204.918,141.943,203.555,135.657,198.855,132.631z'></path>{' '}
+			</g>
+		</svg>
+	)
+}
+
+export const BorderUnified = ({
+	className,
+	width = 343
+}: {
+	className?: string
+	width?: number
+}) => (
+	<svg
+		preserveAspectRatio='none'
+		viewBox='0 0 343 40'
+		fill='none'
+		xmlns='http://www.w3.org/2000/svg'
+		className={className}
+		style={{ width, height: 40 }}
+	>
+		<rect
+			x='1'
+			y='1'
+			width='341'
+			height='38'
+			rx='7'
+			stroke='url(#border-gradient)'
+			strokeWidth='2'
+		/>
+		<defs>
+			<linearGradient
+				id='border-gradient'
+				x1='0'
+				y1='20'
+				x2='343'
+				y2='20'
+				gradientUnits='userSpaceOnUse'
+			>
+				<stop stopColor='#5DAFB1' />
+				<stop offset='1' stopColor='#5E73C9' />
+			</linearGradient>
+		</defs>
+	</svg>
+)
+
+export const Checked = ({ isCheck }: { isCheck?: boolean }) => {
+	return (
+		<svg
+			width='20'
+			height='20'
+			viewBox='0 0 20 20'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<rect
+				x='0.5'
+				y='0.5'
+				width='19'
+				height='19'
+				rx='3.5'
+				stroke='url(#paint0_linear_4135_28199)'
+			/>
+			{isCheck && (
+				<path
+					d='M9.36641 14.0001L5.56641 10.2001L6.51641 9.25007L9.36641 12.1001L15.4831 5.9834L16.4331 6.9334L9.36641 14.0001Z'
+					fill='url(#paint1_linear_4135_28199)'
+				/>
+			)}
+
+			<defs>
+				<linearGradient
+					id='paint0_linear_4135_28199'
+					x1='0'
+					y1='10'
+					x2='20'
+					y2='10'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+				<linearGradient
+					id='paint1_linear_4135_28199'
+					x1='5.56641'
+					y1='9.99173'
+					x2='16.4331'
+					y2='9.99173'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
 				</linearGradient>
 			</defs>
 		</svg>
