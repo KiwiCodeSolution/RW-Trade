@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 }
 const Cards = () => {
 	return (
-		<div className='w-full'>
+		<div className='w-full relative'>
 			<HeaderPage pageName='Всі продукти' />
 			<CategoriesControlAdminPage />
 		</div>

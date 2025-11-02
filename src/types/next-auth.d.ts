@@ -3,22 +3,29 @@ import { DefaultSession } from 'next-auth'
 declare module 'next-auth' {
 	interface Session {
 		user: {
-			/** JWT токен з бекенду */
-			accessToken: string
-			/** роль користувача */
+			login?: string | null
 			role?: string
+			accessToken: string
+			refreshToken?: string
 		} & DefaultSession['user']
 	}
 
 	interface User {
-		access_token: string
+		login?: string | null
 		role?: string
+		accessToken: string
+		refreshToken?: string
+		expiresIn?: number
 	}
 }
 
 declare module 'next-auth/jwt' {
 	interface JWT {
 		accessToken: string
+		refreshToken?: string
+		expiresIn?: number
 		role?: string
+		login?: string | null
+		error?: string
 	}
 }

@@ -110,7 +110,6 @@
 	input,
 	textarea {
 		cursor: text;
-		outline: none;
 	}
 
 	input:-webkit-autofill {

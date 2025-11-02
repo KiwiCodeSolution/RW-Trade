@@ -1,9 +1,14 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 'use client'
 
 import { Add, Trash } from '@/assets/icons'
 
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ReactSortable } from 'react-sortablejs'
+
+/* eslint-disable react-hooks/set-state-in-effect */
+
+/* eslint-disable react-hooks/set-state-in-effect */
 
 export type PreviewItem = {
 	id: string
@@ -27,11 +32,35 @@ const ProductImagesBlock = ({ images = [], onChange }: ProductImagesBlockProps) 
 
 	const [local, setLocal] = useState<PreviewItem[]>(images.length ? images : createStaticSlots())
 
-	// 🔹 синхронізуємо зі стором або формою
+	// 🔹 коли додаються або видаляються фото — оновлюємо форму, але не втрачаємо порожні слоти
 	useEffect(() => {
-		onChange?.(local)
+		const filled = local.filter(i => i.url || i.file)
+
+		// запобігаємо циклу: не викликаємо onChange, якщо масив ідентичний
+		const prev = images || []
+		const changed =
+			filled.length !== prev.length ||
+			filled.some((f, i) => f.url !== prev[i]?.url || f.id !== prev[i]?.id)
+
+		if (changed) onChange?.(filled)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [local])
 
+	// 🔹 якщо ззовні прийшли фото (наприклад, при редагуванні) — тільки додаємо їх у слоти
+	useEffect(() => {
+		if (images.length === 0) return
+
+		setLocal(prev => {
+			const base = prev.filter(i => !i.url && !i.file) // існуючі порожні
+			const filled = images.map(img => ({
+				id: img.id || `img-${crypto.randomUUID()}`,
+				url: img.url,
+				file: img.file
+			}))
+			const result = [...filled, ...base].slice(0, 10) // максимум 10
+			return result
+		})
+	}, [images])
 	const handleAdd = (e: ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
 		if (!files) return

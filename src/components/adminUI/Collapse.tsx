@@ -15,7 +15,7 @@ interface CollapseProps {
 
 const Collapse = ({
 	title,
-	defaultOpen = true,
+	defaultOpen = false,
 	hasError = false,
 	children,
 	classNameWrapper

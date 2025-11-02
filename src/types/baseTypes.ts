@@ -55,6 +55,10 @@ export interface Product {
 	isPartner?: boolean
 }
 
+export type CreateProduct = Omit<Product, '_id' | 'slugUk' | 'slugEn' | 'images'> & {
+	images: (string | PreviewItem)[]
+}
+
 export interface Category {
 	_id?: string
 	title: LangField

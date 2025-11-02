@@ -87,9 +87,13 @@
 // 	}
 // }
 // export const productStore = new ProductStore()
-import { Product, ProductStatus } from '@/types/baseTypes'
+import { BASE_URL } from '@/utils/config'
+
+import { CreateProduct, Product, ProductStatus } from '@/types/baseTypes'
 
 import { getExchangeRate, getProducts } from '@/api/products'
+
+import { toast } from '@/lib/toast'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 
@@ -221,6 +225,85 @@ class ProductStore {
 			})
 		} catch (error) {
 			console.error('Failed to fetch products', error)
+		} finally {
+			runInAction(() => {
+				this.isLoading = false
+			})
+		}
+	}
+
+	async createProduct({
+		product,
+		token,
+		files
+	}: {
+		product: CreateProduct
+		token: string
+		files?: File[]
+	}) {
+		this.isLoading = true
+		try {
+			const formData = new FormData()
+
+			// 1) звичайні поля → JSON/рядок
+			Object.entries(product).forEach(([key, value]) => {
+				if (key === 'images') return // важливо: пропускаємо!
+				if (
+					typeof value === 'boolean' ||
+					Array.isArray(value) ||
+					(typeof value === 'object' && value !== null)
+				) {
+					formData.append(key, JSON.stringify(value))
+				} else if (value !== undefined && value !== null) {
+					formData.append(key, String(value))
+				}
+			})
+
+			// 2) файли — тільки реальні File
+			;(files ?? []).forEach(file => {
+				formData.append('images', file) // ключ має бути рівно 'images'
+			})
+
+			const res = await fetch(`${BASE_URL}/products`, {
+				method: 'POST',
+				body: formData,
+				credentials: 'include',
+				headers: { Authorization: `Bearer ${token}` }
+			})
+
+			if (res.status === 401) {
+				toast.error('Сесія завершена. Увійди знову.')
+				window.location.href = '/uk/signin'
+				return null
+			}
+
+			if (!res.ok) {
+				const msg = await res.text()
+				throw new Error(`Помилка створення продукту: ${msg}`)
+			}
+
+			const created = await res.json()
+			runInAction(() => this.products.push(created))
+			toast.success('Товар успішно збережено')
+			return created
+		} catch (err: unknown) {
+			console.error('Create product error:', err)
+
+			let msg = 'Помилка при збереженні товару'
+
+			if (err instanceof Error) {
+				try {
+					const clean = err.message.replace('Помилка створення продукту: ', '')
+					const parsed = JSON.parse(clean)
+					if (parsed?.message) msg = parsed.message
+					else msg = err.message
+				} catch {
+					msg = err.message
+				}
+			}
+
+			toast.error(msg)
+			return null
 		} finally {
 			runInAction(() => {
 				this.isLoading = false
