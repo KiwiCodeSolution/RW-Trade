@@ -4,6 +4,8 @@ import { useCurrentLocale } from '@/hooks/useCurrentLocale'
 
 import { Category } from '@/types/baseTypes'
 
+import { categoryStore } from '@/store/CategoryStore'
+
 import { Link } from '@/i18n/navigation'
 
 import { useEffect, useState } from 'react'
@@ -14,6 +16,7 @@ interface CategoryCardProps {
 
 const CategoryCard = ({ category }: CategoryCardProps) => {
 	const currentLocale = useCurrentLocale()
+	const { categories } = categoryStore
 
 	const [mounted, setMounted] = useState(false)
 
@@ -22,24 +25,11 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
 		setMounted(true)
 	}, [])
 
-	const correspondenceTable = [
-		{ title: { uk: 'Автоелектроніка', en: 'Car electronics' }, href: 'car_electronics' },
-		{
-			title: { uk: 'Портативні радіостанції', en: 'Walkie-talkies' },
-			href: 'walkie-talkies'
-		},
-		{
-			title: { uk: 'Освітлення для авто', en: 'Car lights' },
-			href: 'car_lights'
-		}
-	]
-
 	const subcategories = category?.subcategories ?? []
 
 	const categoryHref =
-		correspondenceTable.find(
-			item => item.title[currentLocale] === category?.title[currentLocale]
-		)?.href ?? '/catalog'
+		categories.find(item => item.title[currentLocale] === category?.title[currentLocale])
+			?.slug ?? 'catalog'
 
 	return (
 		<div className='h-[505px] w-full min-w-[278px] max-w-[360px] rounded-md border-2 border-sc-1 p-3 flex flex-col justify-between'>
@@ -51,11 +41,13 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
 						</h3>
 						<div className='w-full h-1 bg-primary rounded-full mb-4'></div>
 						{subcategories.length > 0 && (
-							<ul>
+							<div className='flex flex-col gap-y-4'>
 								{subcategories.slice(0, 7).map((item, index) => (
-									<li key={index}>{item.title[currentLocale] ?? ''}</li>
+									<div key={index} className='list-none text-xl leading-[1.4]'>
+										{item.title[currentLocale] ?? ''}
+									</div>
 								))}
-							</ul>
+							</div>
 						)}
 					</div>
 					<div className='mb-3'>

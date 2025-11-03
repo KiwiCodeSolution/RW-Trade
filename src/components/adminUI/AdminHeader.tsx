@@ -1,5 +1,7 @@
 'use client'
 
+import { HomeIcon } from '@/assets/icons'
+
 import { feedbackStore } from '@/store/FeedbackStore'
 import { notificationsStore } from '@/store/NotificationsStore'
 
@@ -68,6 +70,15 @@ const AdminHeader = observer(() => {
 			</div> */}
 
 			<div className='flex flex-col gap-7 px-2 overflow-y-auto '>
+				<div className='mt-4'>
+					<Link
+						href='/manage-panel'
+						className='text-3xl font-bold w-7 h-7 rounded-full flex items-center justify-center hover:shadow-lg hover:product-card-shadow transition duration-300'
+					>
+						<HomeIcon />
+					</Link>
+				</div>
+
 				<div className='flex flex-col gap-2'>
 					<TitleNavAdmin text="Зворотній зв&nbsp;'язок" />
 
