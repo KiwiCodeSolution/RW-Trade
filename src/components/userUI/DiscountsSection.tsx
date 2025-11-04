@@ -55,7 +55,7 @@ const DiscountsSection = observer(
 					<div className='mt-3'>
 						<CardRow products={filteredProducts} locale={locale} section='discounts' />
 						<div className='mt-9 flex justify-center items-center'>
-							<BtnSolid variant='bronze' size='m' as='link' href='/catalog/discount'>
+							<BtnSolid variant='bronze' size='m' as='link' href='/catalog/discounts'>
 								{btn}
 							</BtnSolid>
 						</div>

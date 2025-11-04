@@ -15,7 +15,7 @@ const HeaderOfEditProductPage = observer(() => {
 
 	return (
 		<HeaderPage
-			pageName={`Створення карточки продукту у категорії ${productStore.currentProduct?.title['uk']}`}
+			pageName={`Створення карточки продукту ${productStore.currentProduct?.title['uk']}`}
 		/>
 	)
 })

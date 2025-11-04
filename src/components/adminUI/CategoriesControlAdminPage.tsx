@@ -1,10 +1,15 @@
 'use client'
 
+import { ProductLimit, ProductSort } from '@/types/baseTypes'
+
 import { categoryStore } from '@/store/CategoryStore'
 import { productStore } from '@/store/ProductsStore'
 
 import { generateProductsArray } from '@/data/mokProducts'
 
+import Pagination from '../commonUI/Pagination'
+import Sort from '../commonUI/Sort'
+import QuantityProduct from '../userUI/QuantityProduct'
 import ScrollableTrack from '../userUI/ScrollableTrack'
 import SubCategoryControl from '../userUI/SubCategoryControl'
 
@@ -19,30 +24,52 @@ const CategoriesControlAdminPage = observer(() => {
 	const token = session?.user?.accessToken
 
 	const { categories } = categoryStore
-	const { products } = productStore
+	const { products, total, isLoading } = productStore
+
 	const [category, setCategory] = useState<string | null>(null)
+	const [subCategory, setSubCategory] = useState<string>('all')
 	const [mounted, setMounted] = useState(false)
+	const [page, setPage] = useState(1)
+	const [limit, setLimit] = useState(16)
+	const [availableLimits, setAvailableLimits] = useState<number[]>([20, 40, 60])
+	const [sort, setSort] = useState<ProductSort>('DATE_ADDED')
 	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
-		setMounted(true)
-	}, [])
+		if (categories.length > 0 && !category) {
+			setCategory(categories[0]._id ?? null)
+			categoryStore.setCurrentCreateCategory(categories[0])
+		}
+	}, [categories, category])
 
+	// монтування
+	useEffect(() => setMounted(true), [])
+
+	// фетч категорій
 	useEffect(() => {
 		if (categories.length === 0) categoryStore.fetchCategories()
 	}, [categories.length])
 
+	// фетч продуктів
 	useEffect(() => {
-		if (products.length === 0)
-			productStore.fetchProducts({
-				lang: 'uk',
-				categoryId: 'all',
-				subCategoryId: 'all',
-				sort: 'DATE_ADDED',
-				limit: 24,
-				page: 1
-			})
-	}, [])
+		productStore.fetchProducts({
+			lang: 'uk',
+			categoryId: category || 'all',
+			subCategoryId: subCategory,
+			sort,
+			limit,
+			page
+		})
+	}, [category, subCategory, sort, limit, page])
+
+	// при зміні категорії — скидаємо підкатегорію
+	useEffect(() => setSubCategory('all'), [category])
+
+	const currentSubcategories = useMemo(() => {
+		if (!category) return []
+		const cat = categories.find(c => c._id === category)
+		return cat?.subcategories ?? []
+	}, [category, categories])
 
 	const handleCategory = (id: string) => {
 		if (!id) return
@@ -51,12 +78,7 @@ const CategoriesControlAdminPage = observer(() => {
 		if (cat) categoryStore.setCurrentCreateCategory(cat)
 	}
 
-	const currentSubcategories = useMemo(() => {
-		if (!category) return []
-		const cat = categories.find(c => c._id === category)
-		return cat?.subcategories ?? []
-	}, [category, categories])
-
+	// 🧩 Генерація тестових продуктів
 	const handleGenerateProducts = async () => {
 		if (!token) return alert('Немає токена користувача!')
 		if (categories.length === 0) return alert('Категорії ще не завантажені.')
@@ -92,7 +114,7 @@ const CategoriesControlAdminPage = observer(() => {
 					</button>
 				</div>
 
-				{/* скролбар з категоріями */}
+				{/* категорії */}
 				<ScrollableTrack thumbWidth={80} sectionType='admin'>
 					{categories
 						.filter(cat => cat.title.en !== 'Discounts')
@@ -121,18 +143,36 @@ const CategoriesControlAdminPage = observer(() => {
 						))}
 				</ScrollableTrack>
 
+				{/* підкатегорії */}
 				{currentSubcategories.length > 0 && (
 					<SubCategoryControl
 						subcategories={currentSubcategories}
-						setSubCategory={() => {}}
-						locale={'uk'}
+						setSubCategory={setSubCategory}
+						locale='uk'
 					/>
 				)}
-			</section>
 
-			{products.length > 0 && (
-				<ProductWrapper categoryId={category || categories[0]._id!} products={products} />
-			)}
+				<div className='py-2 flex items-center justify-end gap-x-6 relative'>
+					<Sort onChangeSortValue={setSort} locale={'uk'} />
+					<QuantityProduct
+						locale={'uk'}
+						limits={availableLimits}
+						value={limit as ProductLimit}
+						onChangeQuantityValue={setLimit}
+					/>
+				</div>
+				{/* товари */}
+				<ProductWrapper categoryId={category || 'all'} products={products} />
+
+				<div className='mb-4'>
+					<Pagination
+						numberOfItems={total}
+						itemsPerPage={limit}
+						currentPage={page}
+						onPageChange={setPage}
+					/>
+				</div>
+			</section>
 		</>
 	)
 })

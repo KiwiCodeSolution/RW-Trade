@@ -67,7 +67,7 @@ const ProductComponentSortAndFilters = observer(
 		}, [locale, sort, limit, page, categoryId, subCategoryId, isDiscountMode])
 
 		return (
-			<div className='flex flex-col min-h-[80vh] justify-between'>
+			<div className='flex flex-col justify-between'>
 				<div className='py-6 flex items-center justify-end gap-x-6 relative'>
 					<Sort onChangeSortValue={setSort} locale={locale} />
 					<QuantityProduct

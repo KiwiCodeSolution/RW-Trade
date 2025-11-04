@@ -15,7 +15,7 @@ import { useEffect, useMemo, useState } from 'react'
 
 const CategoryPageHeader = observer(({ slug, locale }: { slug: string; locale: Locale }) => {
 	const { categories } = categoryStore
-	const [subCategoryID, setSubCategoryID] = useState<string>('any')
+	const [subCategoryID, setSubCategoryID] = useState<string>('all')
 
 	const category = categories.find(cat => cat.slug === slug)
 
@@ -27,10 +27,11 @@ const CategoryPageHeader = observer(({ slug, locale }: { slug: string; locale: L
 	useEffect(() => {
 		if (!category || subcategories.length === 0) return
 		const currentSubCategory = subcategories.find(sub => sub._id === subCategoryID)
-		if (!currentSubCategory) setSubCategoryID('any')
+		if (!currentSubCategory) setSubCategoryID('all')
 	}, [slug, category, subCategoryID, subcategories])
 
 	const sorryTitle = locale === 'uk' ? 'Підкатегорії відсутні' : 'No subcategories available'
+	const isDiscountsCategory = category?.slug === 'discounts'
 
 	return (
 		<>
@@ -42,7 +43,7 @@ const CategoryPageHeader = observer(({ slug, locale }: { slug: string; locale: L
 					{categoryName}
 				</Title>
 			</BaseSection>
-			<BaseSection>
+			<BaseSection className='py-2'>
 				{category?.subcategories && subcategories.length > 0 ? (
 					<SubCategoryControl
 						subcategories={subcategories}
@@ -54,7 +55,12 @@ const CategoryPageHeader = observer(({ slug, locale }: { slug: string; locale: L
 				)}
 			</BaseSection>
 			<BaseSection>
-				<ProductComponentSortAndFilters locale={locale} />
+				<ProductComponentSortAndFilters
+					locale={locale}
+					categoryId={isDiscountsCategory ? undefined : category?._id}
+					subCategoryId={subCategoryID}
+					isDiscountMode={isDiscountsCategory}
+				/>
 			</BaseSection>
 		</>
 	)

@@ -30,7 +30,8 @@ const pathLinks: Record<string, string> = {
 	вибране: '/favorite'
 }
 
-const Path = ({ firstName = 'home', secondName, thirdName }: PathProps) => {
+const Path = ({ secondName, thirdName, locale }: PathProps) => {
+	const firstName = locale === 'uk' ? 'Головна' : 'Home'
 	const pathItems = [firstName, secondName, thirdName].filter((item): item is string =>
 		Boolean(item)
 	)

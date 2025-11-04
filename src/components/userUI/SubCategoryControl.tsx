@@ -40,7 +40,7 @@ const SubCategoryControl = ({ subcategories, setSubCategory, locale }: Props) =>
 								selected === 'all' ? 'text-transparent' : ''
 							}`}
 						>
-							{locale === 'uk' ? 'всі підкатегорії' : 'all subcategories'}
+							{locale === 'uk' ? 'Всі підкатегорії' : 'All subcategories'}
 						</div>
 					</div>
 
