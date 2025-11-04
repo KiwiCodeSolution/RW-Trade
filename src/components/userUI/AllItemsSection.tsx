@@ -39,6 +39,9 @@ const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 	// визначаємо, які підкатегорії показувати
 	const displayedSubcategories = category ? (category.subcategories ?? []) : allSubcategories
 
+	// 🧩 Перевіряємо, чи це категорія "Discounts"
+	const isDiscountsCategory = category?.slug === 'discounts'
+
 	return (
 		<section>
 			<h2 className='font-bold text-[40px] mb-7'>{title[locale]}</h2>
@@ -59,10 +62,12 @@ const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 				</div>
 			)}
 
+			{/* товари */}
 			<ProductComponentSortAndFilters
 				locale={locale}
-				categoryId={category?._id}
+				categoryId={isDiscountsCategory ? undefined : category?._id}
 				subCategoryId={subCategory}
+				isDiscountMode={isDiscountsCategory} // 👈 це головне
 			/>
 		</section>
 	)

@@ -17,11 +17,13 @@ const ProductComponentSortAndFilters = observer(
 	({
 		locale,
 		categoryId,
-		subCategoryId
+		subCategoryId,
+		isDiscountMode
 	}: {
 		locale: Locale
 		categoryId?: string
 		subCategoryId?: string
+		isDiscountMode?: boolean
 	}) => {
 		const { products, total, isLoading } = productStore
 
@@ -29,8 +31,6 @@ const ProductComponentSortAndFilters = observer(
 		const [sort, setSort] = useState<ProductSort>('DATE_ADDED')
 		const [limit, setLimit] = useState<number>(16)
 		const [availableLimits, setAvailableLimits] = useState<number[]>([16, 24, 32])
-
-		console.log('Selected subCategory ID ProductComponentSortAndFilters:', subCategoryId)
 
 		// 🔹 Обчислення лімітів динамічно
 		useEffect(() => {
@@ -61,9 +61,10 @@ const ProductComponentSortAndFilters = observer(
 				subCategoryId: subCategoryId || 'all',
 				sort,
 				limit,
-				page
+				page,
+				discountOnly: isDiscountMode ?? false // 👈 ось
 			})
-		}, [locale, sort, limit, page, categoryId, subCategoryId])
+		}, [locale, sort, limit, page, categoryId, subCategoryId, isDiscountMode])
 
 		return (
 			<div className='flex flex-col min-h-[80vh] justify-between'>

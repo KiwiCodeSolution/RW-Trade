@@ -15,53 +15,6 @@ type ProductCardProps = {
 	typePage?: 'client' | 'admin'
 }
 const ProductCard = ({ locale, type, typePage, product }: ProductCardProps) => {
-	// const product = {
-	// 	_id: '661731f8fd97a46b6a99dc29',
-	// 	title: {
-	// 		uk: 'Автомобільний зарядний пристрій хто зна для чого, але хай буде як тест. Довгий заголовок для тестування скорочення',
-	// 		en: 'Car Charger'
-	// 	},
-	// 	description: {
-	// 		uk: 'Швидкий зарядний пристрій для автомобіля з підтримкою QC 3.0',
-	// 		en: 'Fast car charger supporting QC 3.0'
-	// 	},
-	// 	price: 500,
-	// 	wholesalePrice: 465,
-	// 	inStock: 150,
-	// 	sku: '123456',
-	// 	images: ['/images/products/car-charger-1.jpg', '/images/products/car-charger-2.jpg'],
-	// 	categoryId: '68b87a81073dae082670402f',
-	// 	subCategoryId: '68b87a81073dae0826704030',
-	// 	newArrival: true,
-	// 	isHit: true,
-	// 	showDiscountBlock: true,
-	// 	showOfferBlock: false,
-	// 	videoUrl: 'https://www.youtube.com/watch?v=example',
-	// 	characteristics: {
-	// 		country: 'China',
-	// 		brand: 'Xiaomi',
-	// 		priceFrom: 450,
-	// 		priceTo: 500
-	// 	},
-	// 	compatibility: ['iPhone', 'Android'],
-	// 	kit: 'Charger + USB Cable',
-	// 	deliveryTerms: '1–2 business days',
-	// 	initialRatingSum: 45,
-	// 	initialRatingCount: 10,
-	// 	isPublished: true,
-	// 	seo: {
-	// 		title: { uk: 'Купити автомобільний зарядний пристрій', en: 'Buy Car Charger' },
-	// 		description: {
-	// 			uk: 'Якісний швидкий зарядний пристрій для автомобіля',
-	// 			en: 'High-quality fast car charger for your car'
-	// 		},
-	// 		keywords: { uk: 'зарядний, авто, гаджет', en: 'charger, car, gadget' }
-	// 	},
-	// 	slugUk: 'avtomobilnyi-zaryadnyi-prystriy',
-	// 	slugEn: 'car-charger',
-	// 	isFavorite: false,
-	// 	status: ProductStatus.IN_STOCK
-	// }
 	const bgColor = type === 'partners' ? 'bg-other-2' : 'bg-other-1'
 
 	return (

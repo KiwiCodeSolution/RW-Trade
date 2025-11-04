@@ -14,7 +14,7 @@ class ProductStore {
 	discountSubcategories: Subcategory[] = []
 	currentProduct: Product | null = null
 	isLoading = false
-	exchangeRate = 0
+	exchangeRate = 41.5
 	isWholesale = false
 	total = 0
 	discountTotal = 0
@@ -52,8 +52,7 @@ class ProductStore {
 		}
 	}
 
-	async fetchProducts(params?: Partial<ProductFilterParams>) {
-		console.log('🔥 fetchProducts called with:', params)
+	async fetchProducts(params?: Partial<ProductFilterParams & { discountOnly?: boolean }>) {
 		try {
 			this.isLoading = true
 
@@ -66,7 +65,7 @@ class ProductStore {
 				page: 1,
 				...params // дозволяє перевизначати фільтри
 			})
-			console.log('Fetched products data:', data)
+
 			const favorites = this.getFavoritesFromStorage()
 
 			runInAction(() => {
