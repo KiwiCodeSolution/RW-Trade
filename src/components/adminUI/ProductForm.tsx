@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 'use client'
 
 import { Checked } from '@/assets/icons'
@@ -19,62 +18,6 @@ import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
 import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
-
-/* eslint-disable react-hooks/exhaustive-deps */
 
 type Created = Product | null
 
@@ -149,6 +92,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		if (categoryId) {
 			setValue('categoryId', categoryId)
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [categoryId])
 
 	if (product) {
@@ -160,11 +104,13 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		if (categoryId) {
 			setValue('categoryId', categoryId)
 		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [])
 
 	const currentCategory = useMemo(() => {
 		if (!categoryId || categoryStore.categories.length === 0) return undefined
 		return categoryStore.categories.find(c => c._id === categoryId)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [categoryId, categoryStore.categories])
 
 	const images = watch('images') // PreviewItem[]
@@ -185,6 +131,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 
 		const prepared: CreateProduct = {
 			...data,
+			inStock: isInStock ? Number(data.inStock) || 0 : 0,
 			compatibility: normalizeCompatibility(data.compatibility as unknown as string)
 		}
 
@@ -210,7 +157,11 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		if (res > 5) return 5
 
 		return (sum / count).toFixed(2)
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [watch('initialRatingSum'), watch('initialRatingCount')])
+
+	const status = watch('status')
+	const isInStock = status === ProductStatus.IN_STOCK
 
 	return (
 		<div>
@@ -226,7 +177,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 						if (changed) setValue('images', imgs)
 					}}
 				/>
-				<Collapse title='SEO-блок (не обов’язкові поля)'>
+				<Collapse title='SEO-блок'>
 					<div className='grid grid-cols-1 2xl:grid-cols-2 gap-4'>
 						<BaseInput<ProductFormValues>
 							name='seo.title.uk'
@@ -377,8 +328,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 							register={register}
 							errors={errors}
 							placeholder='RW-2025-AX47B9'
-							isRequired
-							requiredMessage='Код є обов’язковим'
+							isRequired={status === ProductStatus.IN_STOCK}
 						/>
 						<div className='grid grid-cols-2 gap-2 items-end mx-4 h-full'>
 							<label className='flex items-center gap-2 cursor-pointer select-none'>
@@ -456,8 +406,9 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 							register={register}
 							errors={errors}
 							placeholder='123456'
-							isRequired
-							requiredMessage='Поле є обов’язковим'
+							disabled={!isInStock}
+							isRequired={isInStock}
+							requiredMessage='Поле є обов’язковим, коли товар у наявності'
 							pattern={/^\d+$/}
 							patternMessage='Кількість повинна бути числом'
 						/>

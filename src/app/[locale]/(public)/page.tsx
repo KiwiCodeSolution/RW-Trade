@@ -2,7 +2,6 @@ import AddSectionFirst from '@/components/userUI/AddSectionFirst'
 import AddSectionSecond from '@/components/userUI/AddSectionSecond'
 import DiscountsSection from '@/components/userUI/DiscountsSection'
 import FormSection from '@/components/userUI/FormSection'
-import NewsSection from '@/components/userUI/NewsSection'
 import PopularCategories from '@/components/userUI/PopularCategories'
 import PopularProducts from '@/components/userUI/PopularProducts'
 import TestimonialsSection from '@/components/userUI/TestimonialsSection'
@@ -29,7 +28,7 @@ const Main = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 			<FormSection />
 
 			<TestimonialsSection locale={locale} />
-			<NewsSection section='main' />
+			{/* <NewsSection section='main' /> */}
 		</main>
 	)
 }

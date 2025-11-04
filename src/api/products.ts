@@ -1,5 +1,7 @@
 import { BASE_URL } from '@/utils/config'
 
+import { ProductFilterParams } from '@/types/baseTypes'
+
 import { toast } from '@/lib/toast'
 
 import axios, { isAxiosError } from 'axios'
@@ -25,4 +27,32 @@ export async function getExchangeRate() {
 	} catch (error) {
 		console.error('Failed to fetch exchange rate', error)
 	}
+}
+
+export async function fetchFilteredProducts(params: ProductFilterParams) {
+	const {
+		lang,
+		categoryId,
+		subCategoryId,
+		priceRange,
+		country,
+		sort,
+		limit = 16,
+		page = 1
+	} = params
+
+	const q = new URLSearchParams()
+	q.append('lang', lang)
+
+	if (categoryId && categoryId !== 'all') q.append('categoryId', categoryId)
+	if (subCategoryId && subCategoryId !== 'all') q.append('subCategoryId', subCategoryId)
+	if (priceRange?.length === 2) q.append('priceRange', `${priceRange[0]},${priceRange[1]}`)
+	if (country?.length) q.append('country', country.join(','))
+	if (sort) q.append('sort', sort)
+	q.append('limit', String(limit))
+	q.append('page', String(page))
+
+	const url = `${BASE_URL}/products/filter?${q.toString()}`
+	const { data } = await axios.get(url)
+	return data
 }

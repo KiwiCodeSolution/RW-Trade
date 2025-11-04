@@ -6,6 +6,10 @@ import { Category } from '@/types/baseTypes'
 
 import { categoryStore } from '@/store/CategoryStore'
 
+import Spinner from '../commonUI/loader/Spinner'
+
+import ExtraCategories from './ExtraCategories'
+import SubcategoriesCardList from './SubcategoriesCardList'
 import { Link } from '@/i18n/navigation'
 
 import { useEffect, useState } from 'react'
@@ -40,37 +44,26 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
 							{category && category.title[currentLocale]}
 						</h3>
 						<div className='w-full h-1 bg-primary rounded-full mb-4'></div>
-						{subcategories.length > 0 && (
-							<div className='flex flex-col gap-y-4'>
-								{subcategories.slice(0, 7).map((item, index) => (
-									<div key={index} className='list-none text-xl leading-[1.4]'>
-										{item.title[currentLocale] ?? ''}
-									</div>
-								))}
-							</div>
-						)}
+						<SubcategoriesCardList
+							subcategories={subcategories}
+							currentLocale={currentLocale}
+						/>
 					</div>
 					<div className='mb-3'>
 						<Link
 							href={`/catalog/${categoryHref}`}
 							className='gradient-text text-center font-semibold'
 						>
-							{subcategories.length > 7
-								? currentLocale === 'en'
-									? `And ${subcategories.length - 7} more categories in the section --->`
-									: `Та ще ${subcategories.length - 7} категорій у розділі --->`
-								: currentLocale === 'en'
-									? 'Go to section --->'
-									: 'Перейти у розділ --->'}
+							{subcategories.length > 7 && (
+								<ExtraCategories count={subcategories.length - 7} />
+							)}
 						</Link>
 					</div>
 				</>
 			) : (
-				<>
-					<h3 className='gradient-text font-semibold text-[28px] mb-4'>
-						{currentLocale === 'en' ? 'Wait...' : 'Почекайте...'}
-					</h3>
-				</>
+				<div className='flex justify-center items-center h-full'>
+					<Spinner />
+				</div>
 			)}
 		</div>
 	)

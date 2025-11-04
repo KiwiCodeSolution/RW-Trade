@@ -23,6 +23,7 @@ interface BaseInputProps<TFormValues extends FieldValues> {
 	pattern?: RegExp
 	patternMessage?: string
 	label?: string
+	disabled?: boolean
 }
 
 /**
@@ -51,7 +52,8 @@ export const BaseInput = <TFormValues extends FieldValues>({
 	isRequired,
 	pattern,
 	patternMessage,
-	label
+	label,
+	disabled
 }: BaseInputProps<TFormValues>) => {
 	const validationRules: RegisterOptions<TFormValues, Path<TFormValues>> = {}
 
@@ -82,6 +84,7 @@ export const BaseInput = <TFormValues extends FieldValues>({
 					type={type}
 					autoComplete='off'
 					placeholder={placeholder}
+					disabled={disabled}
 					className={`border border-gr-2 focus:border-link-blue focus:outline-none px-3 py-2 text-base rounded-lg placeholder:text-sc-2 transition-colors duration-200`}
 					{...register(name, validationRules)}
 				/>

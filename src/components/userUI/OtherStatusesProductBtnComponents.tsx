@@ -30,7 +30,7 @@ const OtherStatusesProductBtnComponents = ({ locale, status, typePage }: Props) 
 
 	return (
 		<>
-			<p className='text-xl font-medium'>{text}</p>
+			<p className={`${typePage === 'admin' ? 'text-sm' : 'text-xl'} font-medium`}>{text}</p>
 			<div
 				className={`${typePage === 'admin' ? 'w-11 h-11' : 'w-[64px] h-[64px]'} rounded-lg p-2 flex items-center justify-center ${currentBgStyle}`}
 			>

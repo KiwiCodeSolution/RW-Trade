@@ -1,19 +1,15 @@
 'use client'
 
-import { Category, Locale, Product, Subcategory } from '@/types/baseTypes'
+import { Category, Locale, Subcategory } from '@/types/baseTypes'
 
 import { categoryStore } from '@/store/CategoryStore'
 
-import Pagination from '../commonUI/Pagination'
-
 import CategoryControl from './CategoryControl'
-import NumberOfProducts from './NumberOfProducts'
-import ProductCard from './ProductCard'
+import ProductComponentSortAndFilters from './ProductComponentSortAndFilters'
 import SubCategoryControl from './SubCategoryControl'
 
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 interface Props {
 	locale: Locale
@@ -23,15 +19,17 @@ const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 	const { categories } = categoryStore
 
 	const [category, setCategory] = useState<Category | undefined>(undefined)
-	const [subCategory, setSubCategory] = useState<string>('any')
-	const [numberOfItems, setNumberOfItems] = useState<string>('10')
-	const [products, setProducts] = useState<Product[]>([])
-	const [currentPage, setCurrentPage] = useState<number>(1)
+	const [subCategory, setSubCategory] = useState<string>('all')
 
 	const title: Record<Locale, string> = {
 		uk: 'Всі товари на сайті',
 		en: 'All products on the site'
 	}
+
+	// 🧩 при зміні категорії — скидаємо підкатегорію
+	useEffect(() => {
+		setSubCategory('all')
+	}, [category])
 
 	// 🧩 створюємо масив усіх підкатегорій для випадку "немає вибраної категорії"
 	const allSubcategories: Subcategory[] = useMemo(() => {
@@ -40,9 +38,6 @@ const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 
 	// визначаємо, які підкатегорії показувати
 	const displayedSubcategories = category ? (category.subcategories ?? []) : allSubcategories
-
-	console.log('Обрана категорія:', toJS(category))
-	console.log('Поточні підкатегорії:', displayedSubcategories)
 
 	return (
 		<section>
@@ -64,27 +59,11 @@ const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 				</div>
 			)}
 
-			{/* кількість продуктів */}
-			<div className='mb-7 flex justify-end'>
-				<NumberOfProducts setNumber={setNumberOfItems} initialNumber={numberOfItems} />
-			</div>
-
-			{/* продукти */}
-			{/* <div className='mb-7 grid min-[940px]:grid-cols-3 min-[1230px]:grid-cols-4 min-[1530px]:grid-cols-5 min-[1840px]:grid-cols-6 gap-6'>
-				{products.map((item, index) => (
-					<ProductCard key={index} locale={locale} />
-				))}
-			</div> */}
-
-			{/* пагінація */}
-			<div className='mb-7'>
-				<Pagination
-					numberOfItems={100}
-					itemsPerPage={Number(numberOfItems)}
-					currentPage={currentPage}
-					onPageChange={setCurrentPage}
-				/>
-			</div>
+			<ProductComponentSortAndFilters
+				locale={locale}
+				categoryId={category?._id}
+				subCategoryId={subCategory}
+			/>
 		</section>
 	)
 })

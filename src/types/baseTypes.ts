@@ -25,7 +25,7 @@ export interface Product {
 	description: LangField
 	price: number
 	wholesalePrice: number
-	inStock: number
+	inStock?: number
 	sku: string
 	images?: string[]
 	categoryId: string
@@ -169,6 +169,27 @@ export interface Notification {
 	status: NotificationStatus
 	createdAt?: string
 	updatedAt?: string
+}
+
+export type ProductSort =
+	| 'PRICE_ASC'
+	| 'PRICE_DESC'
+	| 'DATE_ADDED'
+	| 'RATING'
+	| 'NAME_ASC'
+	| 'NAME_DESC'
+
+export type ProductLimit = 16 | 32 | 48
+
+export type ProductFilterParams = {
+	lang: Locale
+	categoryId?: string | 'all'
+	subCategoryId?: string | 'all'
+	priceRange?: [number, number]
+	country?: string[]
+	sort?: ProductSort
+	limit?: number
+	page?: number
 }
 
 // users, auth

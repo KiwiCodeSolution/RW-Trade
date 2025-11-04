@@ -7,9 +7,9 @@ import { categoryStore } from '@/store/CategoryStore'
 import CategoryIcon from '../commonUI/CategoryIcon'
 
 import ExtraCategories from './ExtraCategories'
+import { Link } from '@/i18n/navigation'
 
 import { observer } from 'mobx-react-lite'
-import Link from 'next/link'
 import { useEffect } from 'react'
 
 type CategorySectionProps = {
@@ -79,16 +79,16 @@ const CategoriesSection = observer(({ section, title, locale }: CategorySectionP
 						{section === 'client' && (
 							<>
 								{item.subcategories && item.subcategories.length > 0 && (
-									<ul className='w-10/12 mx-auto'>
+									<div className='w-10/12 mx-auto grid grid-cols gap-y-4 my-5'>
 										{item.subcategories.map((sub, index) => {
 											if (index > 6) return
 											return (
-												<li key={index} className='text-xl mb-4'>
+												<div key={index} className='text-xl leading-[1.4]'>
 													{sub.title[locale]}
-												</li>
+												</div>
 											)
 										})}
-									</ul>
+									</div>
 								)}
 								<div className='mx-auto mt-auto'>
 									<Link

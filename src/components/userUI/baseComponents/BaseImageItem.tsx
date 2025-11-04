@@ -4,7 +4,7 @@ import Image from 'next/image'
 import { useState } from 'react'
 
 type BaseImageItemProps = {
-	src: string
+	src?: string
 	width?: number
 	height?: number
 	alt?: string

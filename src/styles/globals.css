@@ -156,6 +156,10 @@
 		color: var(--color-link-bronze);
 	}
 
+	.proposal-li::marker {
+		color: var(--color-txt-white) !important;
+	}
+
 	/* img {
 		display: block;
 	} */

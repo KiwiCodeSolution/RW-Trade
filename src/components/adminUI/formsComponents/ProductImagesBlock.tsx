@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/set-state-in-effect */
 'use client'
 
 import { Add, Trash } from '@/assets/icons'
@@ -8,22 +7,6 @@ import { BASE_IMG_URL } from '@/utils/config'
 import Image from 'next/image'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ReactSortable } from 'react-sortablejs'
-
-/* eslint-disable react-hooks/set-state-in-effect */
-
-/* eslint-disable react-hooks/set-state-in-effect */
-
-/* eslint-disable react-hooks/set-state-in-effect */
-
-/* eslint-disable react-hooks/set-state-in-effect */
-
-/* eslint-disable react-hooks/set-state-in-effect */
-
-/* eslint-disable react-hooks/set-state-in-effect */
-
-/* eslint-disable react-hooks/set-state-in-effect */
-
-/* eslint-disable react-hooks/set-state-in-effect */
 
 export type PreviewItem = {
 	id: string
