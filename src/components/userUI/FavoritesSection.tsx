@@ -6,7 +6,6 @@ import { productStore } from '@/store/ProductsStore'
 
 import BtnGost from '../commonUI/BtnGost'
 
-import ProductCard from './ProductCard'
 import BaseSection from './baseComponents/BaseSection'
 
 import { observer } from 'mobx-react-lite'
@@ -32,9 +31,9 @@ const FavoritesSection = observer(({ locale }: { locale: Locale }) => {
 	return (
 		<BaseSection className=''>
 			<div className='grid grid-cols-4 gap-4'>
-				{favoriteProducts.map(product => (
-					<ProductCard key={product._id} locale={locale} type='our' />
-				))}
+				{/* {favoriteProducts.map(product => (
+					<ProductCard key={product._id} locale={locale} type='our' product={favoriteProducts}/>
+				))} */}
 			</div>
 		</BaseSection>
 	)
