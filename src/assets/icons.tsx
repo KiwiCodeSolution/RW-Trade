@@ -952,3 +952,19 @@ export const SortIcon = () => {
 		</svg>
 	)
 }
+
+export const GradientStar = ({ className }: { className?: string }) => (
+	<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' className={className}>
+		<defs>
+			<linearGradient id='starGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
+				<stop offset='0%' stopColor='#E1A755' />
+				<stop offset='100%' stopColor='#B76B00' />
+			</linearGradient>
+		</defs>
+		<path
+			d='M12 2l2.9 6.2 6.8.9-5 4.9 1.2 6.8L12 17.8l-5.9 3.1 1.2-6.8-5-4.9 6.8-.9L12 2z'
+			fill='url(#starGradient)' // ось магія
+			stroke='none'
+		/>
+	</svg>
+)

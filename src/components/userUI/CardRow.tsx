@@ -14,7 +14,7 @@ const CardRow = ({ category, section, locale, products }: CardRowProps) => {
 	return (
 		<div className='grid h-[505px] min-[940px]:grid-cols-3 min-[1230px]:grid-cols-4 min-[1530px]:grid-cols-5 min-[1840px]:grid-cols-6 gap-6 overflow-hidden'>
 			{/* Якщо популярна секція, і category існує */}
-			{section === 'popular' && <CategoryCard category={category} />}
+			{section === 'popular' && <CategoryCard category={category} locale={locale} />}
 			{products?.map(p => (
 				<ProductCard locale={locale} product={p} key={p._id} />
 			))}

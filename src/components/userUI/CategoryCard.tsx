@@ -2,7 +2,7 @@
 
 import { useCurrentLocale } from '@/hooks/useCurrentLocale'
 
-import { Category } from '@/types/baseTypes'
+import { Category, Locale } from '@/types/baseTypes'
 
 import { categoryStore } from '@/store/CategoryStore'
 
@@ -16,9 +16,10 @@ import { useEffect, useState } from 'react'
 
 interface CategoryCardProps {
 	category?: Category
+	locale: Locale
 }
 
-const CategoryCard = ({ category }: CategoryCardProps) => {
+const CategoryCard = ({ category, locale }: CategoryCardProps) => {
 	const currentLocale = useCurrentLocale()
 	const { categories } = categoryStore
 
@@ -54,8 +55,14 @@ const CategoryCard = ({ category }: CategoryCardProps) => {
 							href={`/catalog/${categoryHref}`}
 							className='gradient-text text-center font-semibold'
 						>
-							{subcategories.length > 7 && (
+							{subcategories.length > 7 ? (
 								<ExtraCategories count={subcategories.length - 7} />
+							) : (
+								<span>
+									{locale === 'en'
+										? 'Go to section --->'
+										: 'Перейти у розділ --->'}
+								</span>
 							)}
 						</Link>
 					</div>

@@ -6,6 +6,7 @@ import NewsSection from '@/components/userUI/NewsSection'
 import PopularCategories from '@/components/userUI/PopularCategories'
 import PopularProducts from '@/components/userUI/PopularProducts'
 import TestimonialsSection from '@/components/userUI/TestimonialsSection'
+import RatingComponent from '@/components/userUI/baseComponents/RatingCOmponent'
 
 import { Locale } from '@/types/baseTypes'
 
@@ -20,6 +21,8 @@ const Main = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 		<main className='min-h-[80vh]'>
 			<AddSectionFirst />
 			<PopularProducts />
+
+			<RatingComponent productRating={3.7} />
 
 			<AddSectionSecond />
 

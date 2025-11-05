@@ -72,7 +72,7 @@ const MessageComponent = observer(({ message, token }: { message: Message; token
 						<div className='absolute top-[100%] right-0 w-[171px] rounded-lg shadow-lg z-10 bg-primary p-[2px]'>
 							<ul className='w-full bg-white rounded-lg'>
 								{statuses.map(status => (
-									<li key={status.value}>
+									<li key={status.value} className='list-none'>
 										<button
 											onClick={() => handleStatusChange(status.value)}
 											className={`w-full text-left rounded-lg px-4 py-2 hover:bg-gray-100 ${

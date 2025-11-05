@@ -3,7 +3,7 @@
 import { BASE_URL } from '@/utils/config'
 
 import { uk } from 'date-fns/locale'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { DayPicker } from 'react-day-picker'
 import 'react-day-picker/dist/style.css'
 
@@ -19,7 +19,7 @@ export default function CurrencyDatePicker() {
 	const [records, setRecords] = useState<CurrencyRecord[]>([])
 	const [loading, setLoading] = useState(false)
 
-	const handleDayClick = async (day: Date) => {
+	const fetchRates = async (day: Date) => {
 		setSelected(day)
 		setLoading(true)
 		setRecords([])
@@ -33,11 +33,8 @@ export default function CurrencyDatePicker() {
 
 		try {
 			const res = await fetch(`${BASE_URL}/currency/get-all/by-date?date=${iso}&all=true`)
-
 			if (!res.ok) throw new Error('Bad response')
-
 			const data = await res.json()
-
 			setRecords(Array.isArray(data) ? data : [])
 		} catch (err) {
 			console.error(err)
@@ -47,13 +44,18 @@ export default function CurrencyDatePicker() {
 		}
 	}
 
+	useEffect(() => {
+		const today = new Date()
+		fetchRates(today)
+	}, [])
+
 	return (
 		<div className='flex flex-col items-center gap-4 p-6 bg-gray-50 rounded-2xl'>
 			<DayPicker
 				mode='single'
 				locale={uk}
 				selected={selected ?? undefined}
-				onDayClick={handleDayClick}
+				onDayClick={fetchRates}
 				classNames={{
 					months: 'flex justify-center',
 					month: 'space-y-2',

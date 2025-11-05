@@ -6,6 +6,7 @@ import OtherStatusesProductBtnComponents from './OtherStatusesProductBtnComponen
 import PriceAndAddCartComponent from './PriceAndAddCartComponent'
 import ToggleFavoriteButton from './ToggleFavoriteButton'
 import BaseImageItem from './baseComponents/BaseImageItem'
+import RatingCOmponent from './baseComponents/RatingCOmponent'
 import { Link } from '@/i18n/navigation'
 
 type ProductCardProps = {
@@ -16,6 +17,11 @@ type ProductCardProps = {
 }
 const ProductCard = ({ locale, type, typePage, product }: ProductCardProps) => {
 	const bgColor = type === 'partners' ? 'bg-other-2' : 'bg-other-1'
+	// console.log('Render ProductCard', toJS(product.rating))
+
+	const correctRating = product.rating ? parseFloat(Math.min(product.rating, 5).toFixed(1)) : 0
+
+	console.log('correctRating', correctRating)
 
 	return (
 		<article
@@ -65,7 +71,12 @@ const ProductCard = ({ locale, type, typePage, product }: ProductCardProps) => {
 						{product.title[locale]}
 					</h3>
 				</Link>
-				<div className='h-7'>rating</div>
+
+				<RatingCOmponent
+					productRating={correctRating}
+					productId={product._id}
+					productName={product.title[locale]}
+				/>
 				<div className='w-full h-[64px] flex items-center justify-between'>
 					{product.status === ProductStatus.IN_STOCK ? (
 						<PriceAndAddCartComponent
