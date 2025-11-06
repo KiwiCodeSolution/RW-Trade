@@ -12,6 +12,8 @@ interface OrderForm {
 
 class CartStore {
 	items: OrderItem[] = []
+	oneStepBuyItem: OrderItem | null = null
+
 	orderForm: OrderForm = {
 		fullName: '',
 		phone: '',
@@ -29,27 +31,28 @@ class CartStore {
 		paymentMethod: 'card_privatbank',
 		comment: ''
 	}
+	totalSum = 0
 
 	constructor() {
 		makeAutoObservable(this)
-		if (typeof window !== 'undefined') {
-			this.loadFromStorage()
-		}
+		if (typeof window !== 'undefined') this.loadFromStorage()
 	}
 
+	// ------------------------
+	// Local Storage
+	// ------------------------
 	loadFromStorage() {
 		try {
 			const storedItems = localStorage.getItem('cart')
 			if (storedItems) runInAction(() => (this.items = JSON.parse(storedItems)))
-		} catch (err: unknown) {
+		} catch (err) {
 			console.log(err)
 		}
 	}
 
-	saveToStorage() {
-		localStorage.setItem('cart', JSON.stringify(this.items))
-	}
-
+	// ------------------------
+	// Основна логіка кошика
+	// ------------------------
 	addProductToCart(product: Product, quantity = 1) {
 		const existing = this.items.find(i => i.productId === product._id)
 		runInAction(() => {
@@ -58,7 +61,7 @@ class CartStore {
 			} else {
 				this.items.push({
 					productId: product._id ?? '',
-					productName: product.title.uk, // або локаль
+					productName: product.title['uk'],
 					quantity,
 					price: product.price,
 					categoryId: product.categoryId,
@@ -70,6 +73,25 @@ class CartStore {
 		})
 	}
 
+	increment(product: Product) {
+		const item = this.items.find(i => i.productId === product._id)
+		runInAction(() => {
+			if (!item) this.addProductToCart(product, 1)
+			else item.quantity++
+			this.saveToStorage()
+		})
+	}
+
+	decrement(product: Product) {
+		const item = this.items.find(i => i.productId === product._id)
+		if (!item) return
+		runInAction(() => {
+			if (item.quantity > 1) item.quantity--
+			else this.items = this.items.filter(i => i.productId !== product._id)
+			this.saveToStorage()
+		})
+	}
+
 	removeProduct(productId: string) {
 		runInAction(() => {
 			this.items = this.items.filter(i => i.productId !== productId)
@@ -77,21 +99,63 @@ class CartStore {
 		})
 	}
 
+	clearCart() {
+		runInAction(() => {
+			this.items = []
+			this.saveToStorage()
+		})
+	}
+
+	// ------------------------
+	// One Step Buy
+	// ------------------------
+	oneStepBuy(product: Product, quantity = 1) {
+		runInAction(() => {
+			this.oneStepBuyItem = {
+				productId: product._id ?? '',
+				productName: product.title['uk'],
+				quantity,
+				price: product.price,
+				categoryId: product.categoryId,
+				subCategoryId: product.subCategoryId,
+				sku: product.sku
+			}
+		})
+	}
+
+	clearOneStepBuy() {
+		runInAction(() => {
+			this.oneStepBuyItem = null
+		})
+	}
+
+	// ------------------------
+	// Order form
+	// ------------------------
 	updateOrderForm(data: Partial<OrderForm>) {
 		runInAction(() => {
 			this.orderForm = { ...this.orderForm, ...data }
 		})
 	}
 
+	// ------------------------
+	// Гетери
+	// ------------------------
 	get totalPrice() {
 		return this.items.reduce((acc, i) => acc + i.price * i.quantity, 0)
 	}
 
-	clearCart() {
-		runInAction(() => {
-			this.items = []
-			this.saveToStorage()
-		})
+	get totalItems() {
+		return this.items.reduce((acc, i) => acc + i.quantity, 0)
+	}
+
+	updateTotal() {
+		this.totalSum = this.items.reduce((acc, i) => acc + i.price * i.quantity, 0)
+	}
+
+	saveToStorage() {
+		this.updateTotal()
+		localStorage.setItem('cart', JSON.stringify(this.items))
 	}
 }
 

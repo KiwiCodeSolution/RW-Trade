@@ -968,3 +968,95 @@ export const GradientStar = ({ className }: { className?: string }) => (
 		/>
 	</svg>
 )
+
+export const NavArrow = ({
+	className,
+	isGradient
+}: {
+	className?: string
+	isGradient?: boolean
+}) => {
+	return (
+		<svg
+			width='30'
+			height='30'
+			viewBox='0 0 32 32'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<path
+				d='M8.5 15C7.94772 15 7.5 15.4477 7.5 16C7.5 16.5523 7.94772 17 8.5 17L8.5 15ZM25.2071 16.7071C25.5976 16.3166 25.5976 15.6834 25.2071 15.2929L18.8431 8.92893C18.4526 8.53841 17.8195 8.53841 17.4289 8.92893C17.0384 9.31946 17.0384 9.95262 17.4289 10.3431L23.0858 16L17.4289 21.6569C17.0384 22.0474 17.0384 22.6805 17.4289 23.0711C17.8195 23.4616 18.4526 23.4616 18.8431 23.0711L25.2071 16.7071ZM8.5 17L24.5 17L24.5 15L8.5 15L8.5 17Z'
+				fill={isGradient ? 'url(#paint0_linear_4031_6551)' : 'currentColor'}
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4031_6551'
+					x1='8.5'
+					y1='16.5'
+					x2='24.5'
+					y2='16.5'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const Minus = () => {
+	return (
+		<svg
+			width='64px'
+			height='64px'
+			viewBox='0 0 24 24'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
+			<g id='SVGRepo_tracerCarrier' strokeLinecap='round' strokeLinejoin='round'></g>
+			<g id='SVGRepo_iconCarrier'>
+				<path
+					d='M5 12H19'
+					stroke='#ffffff'
+					strokeWidth='2'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+				></path>
+			</g>
+		</svg>
+	)
+}
+
+export const Plus = () => {
+	return (
+		<svg
+			width='64px'
+			height='64px'
+			viewBox='0 0 24 24'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
+			<g id='SVGRepo_tracerCarrier' strokeLinecap='round' strokeLinejoin='round'></g>
+			<g id='SVGRepo_iconCarrier'>
+				<path
+					d='M5 12H19'
+					stroke='#fff'
+					strokeWidth='2'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+				></path>
+				<path
+					d='M12 5L12 19'
+					stroke='#fff'
+					strokeWidth='2'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+				></path>
+			</g>
+		</svg>
+	)
+}

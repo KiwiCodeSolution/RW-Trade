@@ -21,8 +21,6 @@ const ProductCard = ({ locale, type, typePage, product }: ProductCardProps) => {
 
 	const correctRating = product.rating ? parseFloat(Math.min(product.rating, 5).toFixed(1)) : 0
 
-	console.log('correctRating', correctRating)
-
 	return (
 		<article
 			className={`${typePage === 'admin' ? 'h-[317px] w-full min-w-[162px] max-w-[162px]' : 'h-[505px] w-full min-w-[278px] max-w-[330px]'}  rounded-md border-2 border-sc-1 flex flex-col justify-between items-center relative product-card-shadow`}

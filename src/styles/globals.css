@@ -74,6 +74,10 @@
 	box-shadow: 0px 0px 8px 0px rgba(170, 185, 228, 1);
 }
 
+.rating-shadow {
+	box-shadow: 0px 0px 2px 0px rgba(25, 144, 186, 0.5);
+}
+
 .page-title {
 	@apply text-[40px] font-bold py-5;
 }
@@ -191,4 +195,67 @@
 
 .go-back-btn:hover .animate-wiggle-x {
 	animation: wiggleX 0.9s ease-in-out infinite;
+}
+
+/* .swiper-pagination-bullet {
+	width: 6px !important;
+	height: 6px !important;
+	background: var(--color-gr-8) !important;
+	opacity: 0.3;
+	cursor: pointer;
+}
+
+.swiper-pagination-bullet-active {
+	background: var(--color-link-bronze) !important;
+	width: 6px !important;
+	height: 6px !important;
+}
+
+.custom-pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-wrap: wrap;
+	margin: 0 auto;
+}
+
+.custom-bullet {
+	width: 12px;
+	height: 12px;
+	background-color: gray;
+	border-radius: 50%;
+	margin: 4px;
+	cursor: pointer;
+}
+
+.swiper-controls {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0 auto;
+}
+
+.swiper-controls .btn-swiper {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+} */
+
+.swiper-pagination-bullet {
+	width: 12px !important;
+	height: 12px !important;
+	opacity: 1;
+	background: linear-gradient(90deg, #5dafb1 0%, #5e73c9 100%) !important;
+}
+
+.swiper-pagination-bullet-active {
+	background: linear-gradient(90deg, #e1a755 0%, #b76b00 100%) !important;
+}
+
+.swiper-pagination-bullet:not(.swiper-pagination-bullet-active) {
+	width: 12px !important;
+	height: 12px !important;
+	opacity: 1;
+	background: linear-gradient(90deg, #5dafb1 0%, #5e73c9 100%) !important;
+	background-color: transparent !important; /* прибиває inline стиль */
 }

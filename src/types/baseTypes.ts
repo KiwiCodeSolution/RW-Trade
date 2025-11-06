@@ -53,7 +53,7 @@ export interface Product {
 	isFavorite?: boolean
 	status: ProductStatus
 	isPartner?: boolean
-	rating?: number
+	rating: number
 }
 
 export type CreateProduct = Omit<Product, '_id' | 'slugUk' | 'slugEn' | 'images'> & {
