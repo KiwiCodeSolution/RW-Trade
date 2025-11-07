@@ -61,6 +61,14 @@
 	@apply bg-linear-180 from-[#e2fcff] to-[#b4dffe];
 }
 
+.bg-other-5 {
+	background: linear-gradient(180deg, rgba(226, 252, 255, 0.3) 0%, rgba(180, 223, 254, 0.3) 100%);
+}
+
+.video {
+	background: linear-gradient(180deg, rgba(255, 147, 38, 0.2) 0%, rgba(150, 84, 230, 0.2) 100%);
+	box-shadow: 0px 0px 2px 0px #ffb90033;
+}
 /* user pages */
 .user-container {
 	@apply relative max-w-[1920px] mx-auto px-4 sm:px-8;
@@ -76,6 +84,11 @@
 
 .rating-shadow {
 	box-shadow: 0px 0px 2px 0px rgba(25, 144, 186, 0.5);
+}
+
+.description {
+	background: linear-gradient(180deg, rgba(226, 252, 255, 0.3) 0%, rgba(180, 223, 254, 0.3) 100%);
+	box-shadow: 0px 0px 2px 0px rgba(25, 144, 186, 0.2);
 }
 
 .page-title {

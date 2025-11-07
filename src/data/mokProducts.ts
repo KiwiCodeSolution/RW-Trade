@@ -72,7 +72,7 @@ export function generateRandomProduct(categories: Category[]): CreateProduct {
 		wholesalePrice: randomInt(80, 1500),
 		inStock,
 		sku: `SKU-${randomNumber}`,
-		images: [], // фото не чіпаємо
+		images: [],
 		categoryId: category._id!,
 		subCategoryId: subcategory?._id,
 		newArrival: randomBool(0.4),
@@ -103,6 +103,7 @@ export function generateRandomProduct(categories: Category[]): CreateProduct {
 		]),
 		initialRatingSum: randomInt(10, 50),
 		initialRatingCount: randomInt(2, 10),
+		rating: +(randomInt(20, 50) / 10).toFixed(1), // ✅ додано
 		isPublished: randomBool(0.9),
 		seo: {
 			title: randomLangField(

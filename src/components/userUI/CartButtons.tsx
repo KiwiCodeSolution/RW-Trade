@@ -1,12 +1,12 @@
 'use client'
 
-import { Locale, Product } from '@/types/baseTypes'
+import { ProductPrint } from '@/types/baseTypes'
 
 import { cartStore } from '@/store/CartStore'
 
 import { observer } from 'mobx-react-lite'
 
-const CartButtons = observer(({ product, locale }: { product: Product; locale: Locale }) => {
+const CartButtons = observer(({ product, locale }: ProductPrint) => {
 	return (
 		<>
 			<button

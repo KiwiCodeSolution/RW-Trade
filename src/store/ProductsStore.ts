@@ -189,6 +189,96 @@ class ProductStore {
 		}
 	}
 
+	async updateProduct({
+		id,
+		product,
+		token,
+		files
+	}: {
+		id: string
+		product: CreateProduct
+		token: string
+		files?: File[]
+	}) {
+		this.isLoading = true
+		try {
+			const formData = new FormData()
+
+			// 1️⃣ Серіалізуємо звичайні поля, без _id / slug / timestamps
+			Object.entries(product).forEach(([key, value]) => {
+				if (['_id', 'slugUk', 'slugEn', 'createdAt', 'updatedAt', '__v'].includes(key))
+					return
+				if (key === 'images') return // окремо обробляємо нижче
+
+				if (
+					typeof value === 'boolean' ||
+					Array.isArray(value) ||
+					(typeof value === 'object' && value !== null)
+				) {
+					formData.append(key, JSON.stringify(value))
+				} else if (value !== undefined && value !== null) {
+					formData.append(key, String(value))
+				}
+			})
+
+			// 2️⃣ Файли — лише нові (реальні File)
+			;(files ?? []).forEach(file => {
+				formData.append('images', file)
+			})
+
+			// 3️⃣ Відправляємо PATCH (оновлення)
+			const res = await fetch(`${BASE_URL}/products/${id}`, {
+				method: 'PATCH',
+				body: formData,
+				headers: { Authorization: `Bearer ${token}` },
+				credentials: 'include'
+			})
+
+			if (res.status === 401) {
+				toast.error('Сесія завершена. Увійди знову.')
+				window.location.href = '/uk/signin'
+				return null
+			}
+
+			if (!res.ok) {
+				const msg = await res.text()
+				throw new Error(`Помилка оновлення продукту: ${msg}`)
+			}
+
+			const updated = await res.json()
+
+			runInAction(() => {
+				this.products = this.products.map(p => (p._id === updated._id ? updated : p))
+				if (this.currentProduct?._id === updated._id) this.currentProduct = updated
+			})
+
+			toast.success('Товар успішно оновлено')
+			return updated
+		} catch (err: unknown) {
+			console.error('Update product error:', err)
+
+			let msg = 'Помилка при оновленні товару'
+
+			if (err instanceof Error) {
+				try {
+					const clean = err.message.replace('Помилка оновлення продукту: ', '')
+					const parsed = JSON.parse(clean)
+					if (parsed?.message) msg = parsed.message
+					else msg = err.message
+				} catch {
+					msg = err.message
+				}
+			}
+
+			toast.error(msg)
+			return null
+		} finally {
+			runInAction(() => {
+				this.isLoading = false
+			})
+		}
+	}
+
 	async fetchProductById(id: string, token: string) {
 		this.isLoading = true
 		try {

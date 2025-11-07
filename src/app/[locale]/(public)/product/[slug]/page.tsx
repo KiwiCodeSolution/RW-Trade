@@ -1,4 +1,5 @@
 import HeroProductPageComponent from '@/components/userUI/HeroProductPageComponent'
+import OtherInformation from '@/components/userUI/OtherInformation'
 import BaseSection from '@/components/userUI/baseComponents/BaseSection'
 import Path from '@/components/userUI/baseComponents/Path'
 import Title from '@/components/userUI/baseComponents/Title'
@@ -10,11 +11,12 @@ import { Locale, Product } from '@/types/baseTypes'
 export default async function ProductPage({
 	params
 }: {
-	params: { slug: string; locale: Locale }
+	params: Promise<{ slug: string; locale: Locale }>
 }) {
 	const { slug, locale } = await params
+
 	const res = await fetch(`${BASE_URL}/products/slug/${slug}`, {
-		next: { revalidate: 60 } // ISR кешування
+		next: { revalidate: 60 }
 	})
 
 	if (!res.ok) throw new Error('Failed to fetch product')
@@ -24,7 +26,7 @@ export default async function ProductPage({
 
 	return (
 		<main className='w-full min-h-[80vh]'>
-			<BaseSection className=''>
+			<BaseSection>
 				<Path secondName={secondName} thirdName={product.title[locale]} locale={locale} />
 			</BaseSection>
 			<BaseSection className='flex flex-col pt-4 pb-8'>
@@ -32,9 +34,9 @@ export default async function ProductPage({
 					{product.title[locale]}
 				</Title>
 			</BaseSection>
-			<BaseSection className=''>
-				<HeroProductPageComponent product={product} locale={locale} />
-			</BaseSection>
+
+			<HeroProductPageComponent product={product} locale={locale} />
+			<OtherInformation product={product} locale={locale} />
 		</main>
 	)
 }

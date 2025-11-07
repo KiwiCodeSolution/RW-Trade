@@ -11,6 +11,7 @@ interface CollapseProps {
 	hasError?: boolean
 	children: React.ReactNode
 	classNameWrapper?: string
+	sectionType: 'video' | 'form' | 'base' | 'error'
 }
 
 const Collapse = ({
@@ -18,7 +19,8 @@ const Collapse = ({
 	defaultOpen = false,
 	hasError = false,
 	children,
-	classNameWrapper
+	classNameWrapper,
+	sectionType = 'form'
 }: CollapseProps) => {
 	const [isOpen, setIsOpen] = useState(defaultOpen)
 	const [height, setHeight] = useState<string | number>(defaultOpen ? 'auto' : 0)
@@ -45,26 +47,40 @@ const Collapse = ({
 		}
 	}, [isOpen])
 
+	const baseStyles = {
+		form: 'mb-4 border border-sc-1 bg-white rounded-lg shadow-sm',
+		error: '',
+		video: 'video rounded-2xl',
+		base: 'description rounded-2xl'
+	}
+
 	return (
 		<div
-			className={`border rounded-lg mb-4 overflow-hidden shadow-sm transition-colors
-      ${hasError ? 'border-red-500 bg-red-50' : 'border-sc-1 bg-white'}`}
+			className={`overflow-hidden transition-colors py-3 px-4 ${hasError ? 'border-red-500 bg-red-50' : baseStyles[sectionType]}`}
 		>
 			<button
 				type='button'
 				onClick={() => setIsOpen(v => !v)}
-				className={`w-full flex items-center justify-between px-4 py-3 text-left font-semibold transition
+				className={`w-full flex items-center ${sectionType === 'form' ? 'justify-between' : 'gap-x-3'} text-left font-semibold transition
         ${hasError ? 'text-red-600' : ''}`}
 			>
-				<span>{title}</span>
-				<ArrowUp />
+				<span
+					className={`${sectionType !== 'form' ? 'text-xl font-bold order-2' : 'order-1'}`}
+				>
+					{title}
+				</span>
+				<div
+					className={`w-6 h-6 rounded-full flex items-center justify-center bg-white rating-shadow transition-transform duration-300 ${sectionType !== 'form' ? 'text-xl font-bold order-1' : 'order-2'} ${isOpen ? 'rotate-180' : 'rotate-0'}`}
+				>
+					<ArrowUp />
+				</div>
 			</button>
 
 			<div
 				ref={contentRef}
 				style={{ height, transition: 'height 0.3s ease', overflow: 'hidden' }}
 			>
-				<div className={`p-4 ${classNameWrapper}`}>{children}</div>
+				<div className={`${classNameWrapper} mt-2`}>{children}</div>
 			</div>
 		</div>
 	)

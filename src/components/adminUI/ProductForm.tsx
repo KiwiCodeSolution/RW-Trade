@@ -7,8 +7,9 @@ import { CreateProduct, PreviewItem, Product, ProductStatus } from '@/types/base
 import { categoryStore } from '@/store/CategoryStore'
 import { productStore } from '@/store/ProductsStore'
 
+import Collapse from '../commonUI/Collapse'
+
 import { BaseInput } from './BaseInput'
-import Collapse from './Collapse'
 import ProductImagesBlock from './formsComponents/ProductImagesBlock'
 import TextEditor from './formsComponents/TextEditor'
 
@@ -135,16 +136,27 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 			compatibility: normalizeCompatibility(data.compatibility as unknown as string)
 		}
 
-		const created: Created = await productStore.createProduct({
-			product: prepared,
-			token: token ?? '',
-			files: filesOnly.map(i => i.file)
-		})
+		let result: Created = null
 
-		if (created) {
-			// успіх → чистимо форму та локальні картинки
-			reset() // react-hook-form
-			setValue?.('images', []) // якщо керуєш цим полем через RHF
+		if (product?._id) {
+			// ✅ PATCH замість POST
+			result = await productStore.updateProduct({
+				id: product._id,
+				product: prepared,
+				token: token ?? '',
+				files: filesOnly.map(i => i.file)
+			})
+		} else {
+			result = await productStore.createProduct({
+				product: prepared,
+				token: token ?? '',
+				files: filesOnly.map(i => i.file)
+			})
+		}
+
+		if (result) {
+			reset()
+			setValue('images', [])
 		}
 	}
 
@@ -177,7 +189,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 						if (changed) setValue('images', imgs)
 					}}
 				/>
-				<Collapse title='SEO-блок'>
+				<Collapse title='SEO-блок' sectionType='form'>
 					<div className='grid grid-cols-1 2xl:grid-cols-2 gap-4'>
 						<BaseInput<ProductFormValues>
 							name='seo.title.uk'

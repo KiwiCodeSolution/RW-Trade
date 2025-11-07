@@ -56,6 +56,8 @@ export interface Product {
 	rating: number
 }
 
+export type ProductPrint = { product: Product; locale: Locale }
+
 export type CreateProduct = Omit<Product, '_id' | 'slugUk' | 'slugEn' | 'images'> & {
 	images: (string | PreviewItem)[]
 }
