@@ -23,7 +23,6 @@ const AddSectionFirst = () => {
 	const [currentSlide, setCurrentSlide] = useState(0)
 
 	useEffect(() => {
-		console.log('add section first rendered')
 		const interval = setInterval(() => {
 			setCurrentSlide(prev => (prev + 1) % slides.length)
 		}, 3000)

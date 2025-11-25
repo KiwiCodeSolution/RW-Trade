@@ -26,7 +26,7 @@ const ProductCard = ({ locale, type, typePage, product }: ProductCardProps) => {
 			className={`${typePage === 'admin' ? 'h-[317px] w-full min-w-[162px] max-w-[162px]' : 'h-[505px] w-full min-w-[278px] max-w-[330px]'}  rounded-md border-2 border-sc-1 flex flex-col justify-between items-center relative product-card-shadow`}
 		>
 			<div className='w-full h-[55px] absolute top-0 left-0 flex items-center justify-between p-1'>
-				<div className='flex flex-col gap-y-1 items-center justify-center'>
+				<div className='h-full flex flex-col gap-y-1 items-center'>
 					{product.isHit && (
 						<span className='w-[42px] h-6 rounded-tl-lg rounded-br-lg bg-sc-4 uppercase text-xs font-medium flex items-center justify-center'>
 							{locale === 'en' ? 'Hit' : 'Хіт'}

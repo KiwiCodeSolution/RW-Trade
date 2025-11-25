@@ -1,8 +1,7 @@
-import CartIcon from '@/assets/icons/cart-bronze-50.svg'
 import HeartIcon from '@/assets/icons/heart-primary-50.svg'
 import PhoneIcon from '@/assets/icons/phone-primary-50.svg'
 
-import CartCount from './CartCount'
+import HeaderCartButton from './HeaderCartButton'
 import HeaderSearch from './HeaderSearch'
 import { Link } from '@/i18n/navigation'
 import '@/styles/globals.css'
@@ -35,10 +34,8 @@ const UserHeaderBottom = () => {
 						<div className='rounded-full hover:shadow-lg hover:scale-102 duration-200'>
 							<PhoneIcon />
 						</div>
-						<button className='w-[50px] h-[50px] relative rounded-full hover:shadow-lg hover:scale-102 duration-200'>
-							<CartIcon />
-							<CartCount />
-						</button>
+
+						<HeaderCartButton />
 					</div>
 				</div>
 			</div>

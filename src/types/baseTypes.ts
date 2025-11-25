@@ -1,3 +1,5 @@
+import { OrderItem } from '@/store/CartStore'
+
 export type Locale = 'uk' | 'en'
 
 export type PreviewItem = { id: string; url?: string; file?: File }
@@ -117,7 +119,7 @@ export interface News {
 	updatedAt?: string
 }
 
-export type DeliveryMethod = 'novaposhta' | 'ukrposhta' | 'meest' | 'courier' // або точний перелік з бекенду, якщо є enum
+export type DeliveryMethod = 'nova_poshta' | 'Ukrposhta' | 'Meest' | 'courier' // або точний перелік з бекенду, якщо є enum
 
 export interface DeliveryInfo {
 	method: DeliveryMethod
@@ -129,16 +131,6 @@ export interface DeliveryInfo {
 	ukrposhta?: Record<string, unknown>
 	meest?: Record<string, unknown>
 	payer?: string
-}
-
-export interface OrderItem {
-	productId: string
-	productName: string
-	quantity: number
-	price: number
-	categoryId: string
-	subCategoryId?: string
-	sku?: string
 }
 
 export interface Order {
@@ -155,6 +147,14 @@ export interface Order {
 	orderNumber?: string
 	createdAt?: string
 	updatedAt?: string
+}
+
+export interface OrderForm {
+	fullName: string
+	phone: string
+	delivery: DeliveryInfo
+	paymentMethod: string
+	comment: string
 }
 
 export type OrderStatus = 'pending' | 'shipped' | 'delivered' | 'cancelled'

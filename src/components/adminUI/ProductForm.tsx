@@ -13,7 +13,6 @@ import { BaseInput } from './BaseInput'
 import ProductImagesBlock from './formsComponents/ProductImagesBlock'
 import TextEditor from './formsComponents/TextEditor'
 
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useSession } from 'next-auth/react'
 import { useSearchParams } from 'next/navigation'
@@ -95,10 +94,6 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [categoryId])
-
-	if (product) {
-		console.log(toJS(product))
-	}
 
 	useEffect(() => {
 		if (categoryStore.categories.length === 0) categoryStore.fetchCategories()

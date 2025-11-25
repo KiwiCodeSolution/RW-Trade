@@ -18,6 +18,7 @@ class ProductStore {
 	isWholesale = false
 	total = 0
 	discountTotal = 0
+	shouldAskWholesale = false
 
 	constructor() {
 		makeAutoObservable(this)
@@ -28,7 +29,11 @@ class ProductStore {
 
 		if (typeof window !== 'undefined') {
 			const saved = localStorage.getItem('isWholesale')
-			this.isWholesale = saved === 'true'
+			if (saved === null) {
+				this.shouldAskWholesale = true
+			} else {
+				this.isWholesale = saved === 'true'
+			}
 		}
 	}
 
@@ -380,6 +385,7 @@ class ProductStore {
 	setWholesale = (isWholesale: boolean) => {
 		this.isWholesale = isWholesale
 		localStorage.setItem('isWholesale', String(isWholesale))
+		this.shouldAskWholesale = false
 	}
 
 	toggleWholesale = () => {

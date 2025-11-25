@@ -1,13 +1,21 @@
-import { DeliveryInfo, OrderItem, Product } from '@/types/baseTypes'
+import { createOrderItem } from '@/helpers/createOrderItem'
+
+import { OrderForm, Product } from '@/types/baseTypes'
+
+import { productStore } from './ProductsStore'
 
 import { makeAutoObservable, runInAction } from 'mobx'
 
-interface OrderForm {
-	fullName: string
-	phone: string
-	delivery: DeliveryInfo
-	paymentMethod: string
-	comment: string
+export interface OrderItem {
+	productId: string
+	productName: Product['title']
+	quantity: number
+	basePrice: number // ціна з бекенду
+	finalPrice: number // порахована з курсом
+	categoryId: string
+	subCategoryId?: string
+	sku?: string
+	isWholesale: boolean
 }
 
 class CartStore {
@@ -18,7 +26,7 @@ class CartStore {
 		fullName: '',
 		phone: '',
 		delivery: {
-			method: 'novaposhta',
+			method: 'nova_poshta',
 			city: '',
 			novaposhta: {},
 			ukrposhta: {},
@@ -44,10 +52,19 @@ class CartStore {
 	loadFromStorage() {
 		try {
 			const storedItems = localStorage.getItem('cart')
-			if (storedItems) runInAction(() => (this.items = JSON.parse(storedItems)))
+			if (storedItems) {
+				runInAction(() => {
+					this.items = JSON.parse(storedItems)
+					this.updateTotal()
+				})
+			}
 		} catch (err) {
 			console.log(err)
 		}
+	}
+
+	private getId(item: Product | OrderItem) {
+		return '_id' in item ? item._id : item.productId
 	}
 
 	// ------------------------
@@ -55,39 +72,59 @@ class CartStore {
 	// ------------------------
 	addProductToCart(product: Product, quantity = 1) {
 		const existing = this.items.find(i => i.productId === product._id)
+		const { exchangeRate, isWholesale } = productStore
+
 		runInAction(() => {
 			if (existing) {
 				existing.quantity += quantity
 			} else {
+				const newItem = createOrderItem(product, quantity, exchangeRate, isWholesale)
+				this.items.push(newItem)
+			}
+			this.saveToStorage()
+		})
+	}
+
+	increment(item: Product | OrderItem) {
+		const id = '_id' in item ? item._id : item.productId
+		const found = this.items.find(i => i.productId === id)
+
+		runInAction(() => {
+			if (found) {
+				found.quantity++
+			} else if ('title' in item) {
+				// item — це Product
+				const isWholesale = productStore.isWholesale
+				const basePrice = isWholesale ? (item.wholesalePrice ?? item.price) : item.price
+				const finalPrice = basePrice * productStore.exchangeRate
+
 				this.items.push({
-					productId: product._id ?? '',
-					productName: product.title['uk'],
-					quantity,
-					price: product.price,
-					categoryId: product.categoryId,
-					subCategoryId: product.subCategoryId,
-					sku: product.sku
+					productId: item._id ?? '',
+					productName: item.title,
+					quantity: 1,
+					basePrice,
+					finalPrice,
+					isWholesale,
+					categoryId: item.categoryId,
+					subCategoryId: item.subCategoryId,
+					sku: item.sku
 				})
 			}
 			this.saveToStorage()
 		})
 	}
 
-	increment(product: Product) {
-		const item = this.items.find(i => i.productId === product._id)
-		runInAction(() => {
-			if (!item) this.addProductToCart(product, 1)
-			else item.quantity++
-			this.saveToStorage()
-		})
-	}
+	decrement(item: Product | OrderItem) {
+		const id = this.getId(item)
+		const found = this.items.find(i => i.productId === id)
+		if (!found) return
 
-	decrement(product: Product) {
-		const item = this.items.find(i => i.productId === product._id)
-		if (!item) return
 		runInAction(() => {
-			if (item.quantity > 1) item.quantity--
-			else this.items = this.items.filter(i => i.productId !== product._id)
+			if (found.quantity > 1) {
+				found.quantity--
+			} else {
+				this.items = this.items.filter(i => i.productId !== id)
+			}
 			this.saveToStorage()
 		})
 	}
@@ -109,17 +146,12 @@ class CartStore {
 	// ------------------------
 	// One Step Buy
 	// ------------------------
+
 	oneStepBuy(product: Product, quantity = 1) {
+		const { exchangeRate, isWholesale } = productStore
+
 		runInAction(() => {
-			this.oneStepBuyItem = {
-				productId: product._id ?? '',
-				productName: product.title['uk'],
-				quantity,
-				price: product.price,
-				categoryId: product.categoryId,
-				subCategoryId: product.subCategoryId,
-				sku: product.sku
-			}
+			this.oneStepBuyItem = createOrderItem(product, quantity, exchangeRate, isWholesale)
 		})
 	}
 
@@ -142,7 +174,7 @@ class CartStore {
 	// Гетери
 	// ------------------------
 	get totalPrice() {
-		return this.items.reduce((acc, i) => acc + i.price * i.quantity, 0)
+		return this.items.reduce((acc, i) => acc + i.finalPrice * i.quantity, 0)
 	}
 
 	get totalItems() {
@@ -150,7 +182,7 @@ class CartStore {
 	}
 
 	updateTotal() {
-		this.totalSum = this.items.reduce((acc, i) => acc + i.price * i.quantity, 0)
+		this.totalSum = this.items.reduce((acc, i) => acc + i.finalPrice * i.quantity, 0)
 	}
 
 	saveToStorage() {

@@ -9,13 +9,11 @@ import { categoryStore } from '../../store/CategoryStore'
 
 import CardRow from './CardRow'
 
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useLocale } from 'next-intl'
 import { useEffect } from 'react'
 
 const PopularProductsSectionWithCategory = observer(() => {
-	console.log('start component PopularProductsSectionWithCategory')
 	const { categories } = categoryStore
 	const { products } = productStore
 
@@ -29,7 +27,6 @@ const PopularProductsSectionWithCategory = observer(() => {
 	const secondProducts = products.filter(p => p.categoryId === categories[1]?._id).slice(0, 8)
 	const thirdProducts = products.filter(p => p.categoryId === categories[2]?._id).slice(0, 8)
 	const locale = useLocale() as Locale
-	console.log(toJS(firstProducts))
 
 	return (
 		<div className='grid grid-rows-3 gap-9 mb-9'>

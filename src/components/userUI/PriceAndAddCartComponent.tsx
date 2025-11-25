@@ -7,7 +7,7 @@ import { productStore } from '@/store/ProductsStore'
 import AddCartBtn from './AddCartBtn'
 
 import { observer } from 'mobx-react-lite'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 interface PriceComponentProps {
 	product: Product
@@ -20,18 +20,19 @@ const PriceAndAddCartComponent = observer(({ product, locale, typePage }: PriceC
 
 	const [mounted, setMounted] = useState(false)
 	useEffect(() => setMounted(true), [])
-	if (!mounted) return null
 
-	const priceLocal = isWholesale
-		? product.wholesalePrice
-			? product.wholesalePrice * exchangeRate
-			: product.price * exchangeRate
-		: product.price * exchangeRate
+	// 🧠 Мемо рахуємо завжди, незалежно від mounted
+	const priceLocal = useMemo(() => {
+		const base = isWholesale ? (product.wholesalePrice ?? product.price) : product.price
+		return +(base * exchangeRate).toFixed(2)
+	}, [product.price, product.wholesalePrice, exchangeRate, isWholesale])
+
+	if (!mounted) return null
 
 	return (
 		<>
 			<p className={`${typePage === 'admin' ? 'text-sm' : 'text-xl'} font-medium`}>
-				{locale === 'en' ? 'Price:' : 'Ціна:'} {priceLocal.toFixed(2)}₴
+				{locale === 'en' ? 'Price:' : 'Ціна:'} {priceLocal}₴
 			</p>
 			<AddCartBtn product={product} typePage={typePage} />
 		</>
