@@ -157,6 +157,47 @@ export interface OrderForm {
 	comment: string
 }
 
+export interface OrderPayload {
+	fullName: string
+	phone: string
+	paymentMethod: string
+	comment: string
+	totalPrice: number
+
+	delivery: {
+		method: string
+		city: string
+		branch?: string
+		address?: string
+		comment?: string
+		payer?: string
+		raw?: {
+			city?: unknown
+			warehouse?: unknown
+		}
+	}
+
+	items: {
+		productId: string
+		productName: string
+		quantity: number
+		price: number
+		categoryId: string
+	}[]
+}
+
+export interface CreateOrderSuccess {
+	success: true
+	data: unknown // можу замінити на точний OrderModel з бекенду
+}
+
+export interface CreateOrderError {
+	success: false
+	error: string
+}
+
+export type CreateOrderResult = CreateOrderSuccess | CreateOrderError
+
 export type OrderStatus = 'pending' | 'shipped' | 'delivered' | 'cancelled'
 
 export type NotificationType = 'order' | 'feedback'

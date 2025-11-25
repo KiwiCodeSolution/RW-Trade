@@ -1,6 +1,8 @@
 import { createOrderItem } from '@/helpers/createOrderItem'
 
-import { OrderForm, Product } from '@/types/baseTypes'
+import { BASE_URL } from '@/utils/config'
+
+import { CreateOrderResult, OrderForm, OrderPayload, Product } from '@/types/baseTypes'
 
 import { productStore } from './ProductsStore'
 
@@ -168,6 +170,52 @@ class CartStore {
 		runInAction(() => {
 			this.orderForm = { ...this.orderForm, ...data }
 		})
+	}
+
+	async createOrder(payload: OrderPayload): Promise<CreateOrderResult> {
+		try {
+			const response = await fetch(`${BASE_URL}/orders`, {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload)
+			})
+
+			if (!response.ok) {
+				const errorData = await response.json()
+				return {
+					success: false,
+					error: errorData?.message || 'Unknown error'
+				}
+			}
+
+			const data = await response.json()
+
+			// очистка кошика
+			this.items = []
+			this.totalSum = 0
+
+			return {
+				success: true,
+				data
+			}
+		} catch (e: unknown) {
+			let message = 'Network error'
+			if (e instanceof Error) {
+				message = e.message
+			} else if (typeof e === 'string') {
+				message = e
+			} else {
+				try {
+					message = JSON.stringify(e)
+				} catch {
+					// keep default message
+				}
+			}
+			return {
+				success: false,
+				error: message
+			}
+		}
 	}
 
 	// ------------------------

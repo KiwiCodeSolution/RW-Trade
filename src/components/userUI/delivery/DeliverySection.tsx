@@ -254,41 +254,44 @@ export default function DeliverySection({ value, onChange }: Props) {
 
 				{/* WAREHOUSE INPUT */}
 				{city && (
-					<div className='flex flex-col gap-2 w-full'>
+					<div className='flex flex-col gap-2 w-full relative'>
 						<label className='font-semibold' htmlFor='warehouse'>
 							Відділення
 						</label>
-						<input
-							type='text'
-							className='h-8 border border-gr-2 rounded-lg px-3 w-full outline-none text-base'
-							autoComplete='new-password'
-							value={warehouseInput}
-							id='warehouse'
-							placeholder='Введіть номер або адресу'
-							onChange={e => {
-								setWarehouseInput(e.target.value)
-								setWarehouse(null)
-								setShowWarehouses(true)
-							}}
-						/>
-						{showWarehouses && filteredWarehouses.length > 0 && (
-							<div className='border rounded-lg mt-1 max-h-[240px] w-full bg-bg-light overflow-y-auto absolute z-10'>
-								{filteredWarehouses.map(w => (
-									<button
-										type='button'
-										key={w.ref}
-										className='px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-left'
-										onClick={() => {
-											setWarehouse(w)
-											setWarehouseInput(w.description)
-											setShowWarehouses(false)
-										}}
-									>
-										<b>Відділення №{w.number}</b> — {w.short}
-									</button>
-								))}
-							</div>
-						)}
+						<div className='relative'>
+							<input
+								type='text'
+								className='h-8 border border-gr-2 rounded-lg px-3 w-full outline-none text-base'
+								autoComplete='new-password'
+								value={warehouseInput}
+								id='warehouse'
+								placeholder='Введіть номер або адресу'
+								onChange={e => {
+									setWarehouseInput(e.target.value)
+									setWarehouse(null)
+									setShowWarehouses(e.target.value.trim().length > 0) // показуємо тільки якщо щось ввели
+								}}
+							/>
+							{showWarehouses && filteredWarehouses.length > 0 && (
+								<div className='border rounded-lg mt-1 max-h-[90px] w-full bg-bg-light overflow-y-auto absolute bottom-[-90px] left-0 z-10 flex flex-col'>
+									{filteredWarehouses.map(w => (
+										<button
+											type='button'
+											key={w.ref}
+											className='px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-left'
+											onClick={() => {
+												setWarehouse(w)
+												setWarehouseInput(w.description)
+												setShowWarehouses(false)
+												setAddress(w.description)
+											}}
+										>
+											<b>Відділення №{w.number}</b> — {w.short}
+										</button>
+									))}
+								</div>
+							)}
+						</div>
 						{warehousesError && (
 							<div className='text-sm text-red-600 mt-1'>{warehousesError}</div>
 						)}

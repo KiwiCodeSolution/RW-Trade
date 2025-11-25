@@ -6,8 +6,7 @@ export interface NPAddressItem {
 	MainDescription: string
 	Area: string
 	Region: string
-	Warehouse?: string
-	DeliveryCity?: string
+	ParentRegionCode?: string
 }
 
 export interface NPWarehouseItem {
@@ -42,7 +41,7 @@ export interface DeliveryAPI {
 export type DeliveryData = {
 	method: DeliveryMethod
 	city: DeliveryCity | null
-	warehouse?: DeliveryWarehouse | null
+	branch?: DeliveryWarehouse | null
 	address?: string
 	comment?: string
 	raw?: {
