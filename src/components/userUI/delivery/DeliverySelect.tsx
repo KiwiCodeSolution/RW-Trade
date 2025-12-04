@@ -28,6 +28,8 @@ export default function DeliverySelect({ options, value, onChange }: Props) {
 
 	const [isOpen, setIsOpen] = useState(false)
 
+	console.log('DeliverySelect render:', { value, selected, isOpen })
+
 	return (
 		<div className='w-[224px] h-8 p-[1px] rounded-lg bg-primary relative'>
 			{/* Верхня кнопка */}

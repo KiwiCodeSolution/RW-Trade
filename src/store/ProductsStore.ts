@@ -1,6 +1,12 @@
 import { BASE_URL } from '@/utils/config'
 
-import { CreateProduct, Product, ProductFilterParams, Subcategory } from '@/types/baseTypes'
+import {
+	CreateProductDto,
+	LangField,
+	Product,
+	ProductFilterParams,
+	Subcategory
+} from '@/types/baseTypes'
 
 import { fetchFilteredProducts, getExchangeRate } from '@/api/products'
 
@@ -23,10 +29,7 @@ class ProductStore {
 	constructor() {
 		makeAutoObservable(this)
 
-		this.products = []
-		this.discountProducts = []
-		this.discountSubcategories = []
-
+		// Завантажуємо isWholesale
 		if (typeof window !== 'undefined') {
 			const saved = localStorage.getItem('isWholesale')
 			if (saved === null) {
@@ -34,6 +37,50 @@ class ProductStore {
 			} else {
 				this.isWholesale = saved === 'true'
 			}
+
+			// Завантажуємо фаворитів
+			const savedFavorites = localStorage.getItem('favorites-RWTrade')
+			if (savedFavorites) {
+				try {
+					const favProducts: Product[] = JSON.parse(savedFavorites)
+					this.products = [
+						...this.products,
+						...favProducts.map(p => ({ ...p, isFavorite: true }))
+					]
+				} catch {
+					console.warn('Favorites parse error')
+				}
+			}
+		}
+	}
+
+	get favoriteProducts() {
+		return this.products.filter(p => p.isFavorite)
+	}
+
+	toggleFavorite(product: Product) {
+		const exists = this.products.find(p => p._id === product._id)
+
+		if (exists) {
+			exists.isFavorite = !exists.isFavorite
+		} else {
+			// якщо немає в products, додаємо його як фаворит
+			this.products.push({ ...product, isFavorite: true })
+		}
+
+		this.updateFavoritesStorage()
+	}
+
+	updateFavoritesStorage() {
+		const favorites = this.products.filter(p => p.isFavorite)
+		localStorage.setItem('favorites-RWTrade', JSON.stringify(favorites))
+	}
+
+	getFavoritesFromStorage(): Product[] {
+		try {
+			return JSON.parse(localStorage.getItem('favorites-RWTrade') || '[]')
+		} catch {
+			return []
 		}
 	}
 
@@ -71,13 +118,14 @@ class ProductStore {
 				...params // дозволяє перевизначати фільтри
 			})
 
-			const favorites = this.getFavoritesFromStorage()
-
 			runInAction(() => {
-				this.products = data.items.map((p: Product) => ({
-					...p,
-					isFavorite: favorites.includes(p._id ?? '')
-				}))
+				const favsFromStorage = this.getFavoritesFromStorage()
+
+				this.products = data.items.map((p: Product) => {
+					const fav = favsFromStorage.find(f => f._id === p._id)
+					return fav ? { ...fav, isFavorite: true } : { ...p, isFavorite: false }
+				})
+
 				this.total = data.totalItems
 			})
 		} catch (error) {
@@ -120,7 +168,7 @@ class ProductStore {
 		token,
 		files
 	}: {
-		product: CreateProduct
+		product: CreateProductDto
 		token: string
 		files?: File[]
 	}) {
@@ -201,7 +249,7 @@ class ProductStore {
 		files
 	}: {
 		id: string
-		product: CreateProduct
+		product: CreateProductDto
 		token: string
 		files?: File[]
 	}) {
@@ -214,6 +262,12 @@ class ProductStore {
 				if (['_id', 'slugUk', 'slugEn', 'createdAt', 'updatedAt', '__v'].includes(key))
 					return
 				if (key === 'images') return // окремо обробляємо нижче
+
+				if (key === 'kit' || key === 'compatibility') {
+					const field = value as LangField // чітко типізуємо
+					formData.append(key, JSON.stringify(field))
+					return
+				}
 
 				if (
 					typeof value === 'boolean' ||
@@ -375,12 +429,12 @@ class ProductStore {
 		}
 	}
 
-	toggleFavorite(id: string) {
-		this.products = this.products.map(p =>
-			p._id === id ? { ...p, isFavorite: !p.isFavorite } : p
-		)
-		this.updateFavoritesStorage()
-	}
+	// toggleFavorite(id: string) {
+	// 	this.products = this.products.map(p =>
+	// 		p._id === id ? { ...p, isFavorite: !p.isFavorite } : p
+	// 	)
+	// 	this.updateFavoritesStorage()
+	// }
 
 	setWholesale = (isWholesale: boolean) => {
 		this.isWholesale = isWholesale
@@ -393,26 +447,37 @@ class ProductStore {
 	}
 
 	getProductPrice(product: Product) {
-		const base = product.price * this.exchangeRate
+		const base = (product.price ?? product.priceCurrency) * this.exchangeRate
 		return this.isWholesale ? +(base * 0.93).toFixed(2) : +base.toFixed(2)
 	}
 
-	getFavoritesFromStorage(): string[] {
-		try {
-			return JSON.parse(localStorage.getItem('favorites') || '[]')
-		} catch {
-			return []
-		}
-	}
+	// getFavoritesFromStorage(): Product[] {
+	// 	try {
+	// 		const favs = JSON.parse(localStorage.getItem('favorites-RWTrade') || '[]')
+	// 		return favs
+	// 	} catch {
+	// 		return []
+	// 	}
+	// }
 
-	updateFavoritesStorage() {
-		const favorites = this.products.filter(p => p.isFavorite).map(p => p._id ?? '')
-		localStorage.setItem('favorites', JSON.stringify(favorites))
-	}
+	// updateFavoritesStorage() {
+	// 	const favorites = this.products
+	// 		.filter(p => p.isFavorite)
+	// 		.map(p => ({
+	// 			_id: p._id,
+	// 			title: p.title,
+	// 			price: p.price,
+	// 			priceCurrency: p.priceCurrency,
+	// 			images: p.images,
+	// 			inStock: p.inStock
+	// 			// тут можна додати інші поля, які потрібні для UI
+	// 		}))
+	// 	localStorage.setItem('favorites-RWTrade', JSON.stringify(favorites))
+	// }
 
-	get favoriteProducts() {
-		return this.products.filter(p => p.isFavorite)
-	}
+	// get favoriteProducts() {
+	// 	return this.products.filter(p => p.isFavorite)
+	// }
 }
 
 export const productStore = new ProductStore()

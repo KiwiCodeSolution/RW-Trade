@@ -1,5 +1,7 @@
 'use client'
 
+import { BASE_IMG_URL } from '@/utils/config'
+
 import { Product } from '@/types/baseTypes'
 
 import SwiperBtn from '../commonUI/SwiperBtn'
@@ -9,9 +11,18 @@ import { A11y, Navigation, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 const ImagesGallery = ({ images }: { images: Product['images'] }) => {
+	console.log('images', images)
+	const imagesGallery: Product['images'] = images?.map(img => {
+		if (img.startsWith('http://') || img.startsWith('https://')) {
+			return img
+		}
+		return `${BASE_IMG_URL}${img.startsWith('/') ? img : `/${img}`}`
+	})
+	console.log('imagesGallery', imagesGallery)
+
 	return (
-		images &&
-		images.length > 0 && (
+		imagesGallery &&
+		imagesGallery.length > 0 && (
 			<div className='w-[526px] h-[423px] flex items-center gap-x-16 border-[1.5px] border-sc-1/20 rounded-2xl px-4 relative'>
 				<SwiperBtn className='product_card-btn-prev rotate-180' />
 				<Swiper
@@ -26,7 +37,7 @@ const ImagesGallery = ({ images }: { images: Product['images'] }) => {
 					pagination={{ clickable: true }}
 					className='w-[526px] h-[423px]'
 				>
-					{images.map((image, index) => (
+					{imagesGallery.map((image, index) => (
 						<SwiperSlide key={index}>
 							<div className='w-full h-full flex items-center justify-center'>
 								<Image

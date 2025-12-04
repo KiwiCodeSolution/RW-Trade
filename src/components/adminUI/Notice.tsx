@@ -7,12 +7,10 @@ import { Notification } from '@/types/baseTypes'
 import { notificationsStore } from '@/store/NotificationsStore'
 
 import { observer } from 'mobx-react-lite'
-import { useRouter } from 'next/navigation'
 
 type Props = { notice: Notification; token: string }
 
 const Notice = observer(({ notice, token }: Props) => {
-	const router = useRouter()
 	const isUnread = notice.status === 'unread'
 
 	const textColor = isUnread ? 'text-white' : 'gradient-text'
@@ -23,8 +21,8 @@ const Notice = observer(({ notice, token }: Props) => {
 
 	const link =
 		notice.type === 'order'
-			? `/manage-panel/orders#${notice._id}`
-			: `/manage-panel/messages#${notice._id}`
+			? `/manage-panel/orders#${notice.refId}`
+			: `/manage-panel/messages#${notice.refId}`
 
 	const formatDate = (iso: string) => {
 		const d = new Date(iso)
@@ -34,20 +32,19 @@ const Notice = observer(({ notice, token }: Props) => {
 		)}:${pad(d.getMinutes())}`
 	}
 
-	const handleClick = async () => {
+	const handleMarkRead = async () => {
 		if (isUnread) {
 			await notificationsStore.toggleStatus(notice._id, token)
 		}
-		router.push(link)
 	}
 
 	return (
-		<button
-			type='button'
-			onClick={handleClick}
+		<a
+			href={link}
+			onClick={handleMarkRead}
 			className={`w-full rounded-2xl ${
 				isUnread ? 'bg-bg-green' : 'p-[2px] bg-primary'
-			} hover:shadow-lg transition-shadow duration-300 cursor-pointer`}
+			} hover:shadow-lg transition-shadow duration-300 cursor-pointer block`}
 		>
 			<div
 				className={`w-full h-full rounded-2xl px-6 py-5 flex items-center justify-between ${
@@ -70,7 +67,7 @@ const Notice = observer(({ notice, token }: Props) => {
 				<p className={`${textColor} text-lg font-bold`}>{text}</p>
 				<p className={`${textColor} text-lg font-bold`}>{formatDate(notice.date)}</p>
 			</div>
-		</button>
+		</a>
 	)
 })
 

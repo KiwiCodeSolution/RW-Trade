@@ -21,12 +21,49 @@ export interface SeoBlock {
 	keywords?: LangField | string[]
 }
 
-export interface Product {
-	_id: string // якщо приходить з бекенду після створення
+// export interface Product {
+// 	_id: string // якщо приходить з бекенду після створення
+// 	title: LangField
+// 	description: LangField
+// 	price: number
+// 	priceCurrency: number
+// 	wholesalePrice: number
+// 	inStock?: number
+// 	sku: string
+// 	images?: string[]
+// 	categoryId: string
+// 	subCategoryId?: string
+// 	newArrival?: boolean
+// 	isHit?: boolean
+// 	showDiscountBlock?: boolean
+// 	showOfferBlock?: boolean
+// 	videoUrl?: string
+// 	characteristics?: LangField
+// 	compatibility?: LangField
+// 	kit?: LangField
+// 	deliveryTerms?: string
+// 	initialRatingSum?: number
+// 	initialRatingCount?: number
+// 	isPublished?: boolean
+// 	seo?: SeoBlock
+// 	slugUk: string
+// 	slugEn: string
+// 	isFavorite?: boolean
+// 	status: ProductStatus
+// 	isPartner?: boolean
+// 	rating: number
+// 	country?: string
+// 	brand?: string
+// }
+
+export type Price =
+	| { price: number; priceCurrency?: never } // ціна в грн
+	| { priceCurrency: number; price?: never } // ціна у валюті
+
+export type CreateProductDto = Price & {
 	title: LangField
 	description: LangField
-	price: number
-	wholesalePrice: number
+	wholesalePrice?: number
 	inStock?: number
 	sku: string
 	images?: string[]
@@ -37,32 +74,34 @@ export interface Product {
 	showDiscountBlock?: boolean
 	showOfferBlock?: boolean
 	videoUrl?: string
-	characteristics?: {
-		country?: string
-		brand?: string
-		priceFrom?: number
-		priceTo?: number
-	}
-	compatibility?: string[]
-	kit?: string
-	deliveryTerms?: string
+	characteristics?: LangField
+	compatibility?: LangField
+	kit?: LangField
+	deliveryTerms?: LangField
 	initialRatingSum?: number
 	initialRatingCount?: number
 	isPublished?: boolean
 	seo?: SeoBlock
+	isFavorite?: boolean
+	status?: ProductStatus
+	isPartner?: boolean
+	country: string
+	brand: string
+}
+
+export type Product = CreateProductDto & {
+	_id: string
 	slugUk: string
 	slugEn: string
-	isFavorite?: boolean
-	status: ProductStatus
-	isPartner?: boolean
 	rating: number
+	status: ProductStatus
 }
 
 export type ProductPrint = { product: Product; locale: Locale }
 
-export type CreateProduct = Omit<Product, '_id' | 'slugUk' | 'slugEn' | 'images'> & {
-	images: (string | PreviewItem)[]
-}
+// export type CreateProduct = Omit<Product, '_id' | 'slugUk' | 'slugEn' | 'images'> & {
+// 	images: (string | PreviewItem)[]
+// }
 
 export interface Category {
 	_id?: string
@@ -121,6 +160,56 @@ export interface News {
 
 export type DeliveryMethod = 'nova_poshta' | 'Ukrposhta' | 'Meest' | 'courier' // або точний перелік з бекенду, якщо є enum
 
+export interface NPAddressItem {
+	Ref: string
+	Present: string
+	MainDescription: string
+	Area: string
+	Region: string
+	ParentRegionCode?: string
+}
+
+export interface DeliveryAPI {
+	searchCities(query: string): Promise<DeliveryCity[]>
+	getWarehouses(city: DeliveryCity): Promise<DeliveryWarehouse[]>
+}
+
+export type DeliveryData = {
+	method: DeliveryMethod
+	city: DeliveryCity | null
+	branch?: DeliveryWarehouse | null
+	address?: string
+	comment?: string
+	raw?: {
+		city?: NPAddressItem
+		warehouse?: NPWarehouseItem
+	} | null
+}
+
+export type DeliveryCityUP = {
+	name: string
+	ref: string
+	full: string
+	short: string
+	// raw немає
+}
+
+export interface NPWarehouseItem {
+	Ref: string
+	Number: string
+	Description: string
+	ShortAddress: string
+	CityRef: string
+}
+
+export interface DeliveryWarehouse {
+	ref: string
+	number: string
+	description: string
+	short: string
+	raw: NPWarehouseItem
+}
+
 export interface DeliveryInfo {
 	method: DeliveryMethod
 	city: string
@@ -133,8 +222,16 @@ export interface DeliveryInfo {
 	payer?: string
 }
 
+export interface DeliveryCity {
+	ref: string
+	name: string
+	full: string
+	short: string
+	raw: NPAddressItem
+}
+
 export interface Order {
-	_id?: string
+	_id: string
 	fullName: string
 	phone: string
 	delivery: DeliveryInfo
@@ -181,7 +278,7 @@ export interface OrderPayload {
 		productId: string
 		productName: string
 		quantity: number
-		price: number
+		finalPrice: number
 		categoryId: string
 	}[]
 }

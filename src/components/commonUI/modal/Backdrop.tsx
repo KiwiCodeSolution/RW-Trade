@@ -57,10 +57,10 @@ const Backdrop = ({
 
 	function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
 		if (!onClose) return
-		if (e.key === 'Enter' || e.key === ' ') {
-			e.preventDefault()
-			onClose()
-		}
+		// if (e.key === 'Enter' || e.key === ' ') {
+		// 	e.preventDefault()
+		// 	onClose()
+		// }
 	}
 
 	const interactive = Boolean(onClose)

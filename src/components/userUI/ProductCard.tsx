@@ -17,7 +17,6 @@ type ProductCardProps = {
 }
 const ProductCard = ({ locale, type, typePage, product }: ProductCardProps) => {
 	const bgColor = type === 'partners' ? 'bg-other-2' : 'bg-other-1'
-	// console.log('Render ProductCard', toJS(product.rating))
 
 	const correctRating = product.rating ? parseFloat(Math.min(product.rating, 5).toFixed(1)) : 0
 

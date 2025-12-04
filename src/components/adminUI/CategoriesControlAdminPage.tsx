@@ -15,6 +15,7 @@ import SubCategoryControl from '../userUI/SubCategoryControl'
 
 import ProductWrapper from './ProductWrapper'
 
+import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useSession } from 'next-auth/react'
 import { useEffect, useMemo, useState } from 'react'
@@ -84,7 +85,10 @@ const CategoriesControlAdminPage = observer(() => {
 		if (categories.length === 0) return alert('Категорії ще не завантажені.')
 
 		setLoading(true)
-		const fakeProducts = generateProductsArray(categories, 50)
+		const validCategories = categories.filter(cat => cat.title.en !== 'Discounts')
+		const fakeProducts = generateProductsArray(validCategories, 50)
+
+		console.log('🚀 ~ fakeProducts:', toJS(fakeProducts))
 
 		for (const product of fakeProducts) {
 			await productStore.createProduct({

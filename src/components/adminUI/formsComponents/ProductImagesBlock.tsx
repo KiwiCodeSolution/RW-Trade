@@ -31,7 +31,13 @@ const ProductImagesBlock = ({ images = [], onChange }: ProductImagesBlockProps) 
 	const [local, setLocal] = useState<PreviewItem[]>(images.length ? images : createStaticSlots())
 	const resolveImageUrl = (url?: string) => {
 		if (!url) return ''
+
+		// 🔥 важливо: blob-URL не чіпаємо!
+		if (url.startsWith('blob:')) return url
+
+		// звичайні http/https
 		if (url.startsWith('http://') || url.startsWith('https://')) return url
+
 		return `${BASE_IMG_URL}${url.startsWith('/') ? url : `/${url}`}`
 	}
 
@@ -140,7 +146,7 @@ const ProductImagesBlock = ({ images = [], onChange }: ProductImagesBlockProps) 
 								onClick={() => handleRemove(item.id)}
 								className='absolute top-1 right-1 w-7 h-7 rounded-full flex items-center justify-center bg-sc-5'
 							>
-								<Trash />
+								<Trash className='w-4 h-4' />
 							</button>
 						)}
 					</div>

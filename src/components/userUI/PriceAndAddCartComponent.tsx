@@ -21,11 +21,18 @@ const PriceAndAddCartComponent = observer(({ product, locale, typePage }: PriceC
 	const [mounted, setMounted] = useState(false)
 	useEffect(() => setMounted(true), [])
 
-	// 🧠 Мемо рахуємо завжди, незалежно від mounted
 	const priceLocal = useMemo(() => {
-		const base = isWholesale ? (product.wholesalePrice ?? product.price) : product.price
-		return +(base * exchangeRate).toFixed(2)
-	}, [product.price, product.wholesalePrice, exchangeRate, isWholesale])
+		// базова ціна
+		const base = isWholesale
+			? (product.wholesalePrice ?? 0)
+			: (product.price ?? product.priceCurrency ?? 0)
+
+		// множимо на курс, лише якщо це priceCurrency
+		const finalPrice =
+			product.priceCurrency != null && product.price == null ? base * exchangeRate : base
+
+		return +finalPrice.toFixed(2)
+	}, [isWholesale, product.wholesalePrice, product.price, product.priceCurrency, exchangeRate])
 
 	if (!mounted) return null
 

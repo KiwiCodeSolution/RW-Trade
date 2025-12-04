@@ -10,7 +10,7 @@ import { makeAutoObservable, runInAction } from 'mobx'
 
 export interface OrderItem {
 	productId: string
-	productName: Product['title']
+	productName: string | { uk?: string; en?: string }
 	quantity: number
 	basePrice: number // ціна з бекенду
 	finalPrice: number // порахована з курсом

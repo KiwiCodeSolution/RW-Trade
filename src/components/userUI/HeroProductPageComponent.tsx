@@ -44,7 +44,10 @@ const HeroProductPageComponent = ({ product, locale }: ProductPrint) => {
 					</div>
 					<div className='w-full h-12 flex items-center gap-x-3'>
 						<p className='text-xl'>
-							{locale === 'en' ? 'Price:' : 'Ціна:'} {product.price.toFixed(2)} ₴
+							{locale === 'en' ? 'Price:' : 'Ціна:'}
+							{(product.price && product.price.toFixed(2)) ??
+								(product.priceCurrency && product.priceCurrency.toFixed(2))}
+							₴
 						</p>
 					</div>
 					<div className='w-full h-12 flex items-center gap-x-3'>

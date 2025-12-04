@@ -2,7 +2,7 @@
 
 import { Checked } from '@/assets/icons'
 
-import { CreateProduct, PreviewItem, Product, ProductStatus } from '@/types/baseTypes'
+import { CreateProductDto, PreviewItem, Product, ProductStatus } from '@/types/baseTypes'
 
 import { categoryStore } from '@/store/CategoryStore'
 import { productStore } from '@/store/ProductsStore'
@@ -21,8 +21,10 @@ import { useForm } from 'react-hook-form'
 
 type Created = Product | null
 
-type ProductFormValues = Omit<Product, '_id' | 'slugUk' | 'slugEn' | 'images'> & {
+export type ProductFormValues = Omit<CreateProductDto, 'images' | 'price' | 'priceCurrency'> & {
 	images: PreviewItem[]
+	price?: number
+	priceCurrency?: number
 }
 
 const toPreviewItems = (arr?: string[]) =>
@@ -47,6 +49,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 					title: { uk: '', en: '' },
 					description: { uk: '', en: '' },
 					price: 0,
+					priceCurrency: 0,
 					wholesalePrice: 0,
 					categoryId: '',
 					subCategoryId: '',
@@ -56,14 +59,16 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 					showDiscountBlock: false,
 					showOfferBlock: false,
 					videoUrl: '',
-					characteristics: {},
+					characteristics: { uk: '', en: '' },
 					status: ProductStatus.IN_STOCK,
-					compatibility: [],
-					kit: '',
-					deliveryTerms: '',
+					compatibility: { uk: '', en: '' },
+					kit: { uk: '', en: '' },
+					deliveryTerms: { uk: '', en: '' },
 					initialRatingSum: 25,
 					initialRatingCount: 5,
-					isPublished: true
+					isPublished: true,
+					country: '',
+					brand: ''
 				}
 	})
 
@@ -95,6 +100,21 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [categoryId])
 
+	const price = watch('price')
+	const priceCurrency = watch('priceCurrency')
+
+	useEffect(() => {
+		if (price != null && price !== 0) {
+			setValue('priceCurrency', undefined) // або 0, якщо тобі так зручно
+		}
+	}, [price, setValue])
+
+	useEffect(() => {
+		if (priceCurrency != null && priceCurrency !== 0) {
+			setValue('price', undefined)
+		}
+	}, [priceCurrency, setValue])
+
 	useEffect(() => {
 		if (categoryStore.categories.length === 0) categoryStore.fetchCategories()
 		if (categoryId) {
@@ -120,21 +140,77 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 			.filter(Boolean)
 	}
 
+	// const onSubmit = async (data: ProductFormValues) => {
+	// 	const filesOnly = (data.images ?? []).filter(
+	// 		(i): i is PreviewItem & { file: File } => !!i?.file
+	// 	)
+
+	// 	const prepared: CreateProductDto = {
+	// 		...data,
+	// 		inStock: isInStock ? Number(data.inStock) || 0 : 0,
+	// 		...(data.price ? { price: data.price } : {}),
+	// 		...(data.priceCurrency ? { priceCurrency: data.priceCurrency } : {})
+	// 	}
+
+	// 	let result: Created = null
+
+	// 	if (product?._id) {
+	// 		// ✅ PATCH замість POST
+	// 		result = await productStore.updateProduct({
+	// 			id: product._id,
+	// 			product: prepared,
+	// 			token: token ?? '',
+	// 			files: filesOnly.map(i => i.file)
+	// 		})
+	// 	} else {
+	// 		result = await productStore.createProduct({
+	// 			product: prepared,
+	// 			token: token ?? '',
+	// 			files: filesOnly.map(i => i.file)
+	// 		})
+	// 	}
+
+	// 	if (result) {
+	// 		reset()
+	// 		setValue('images', [])
+	// 	}
+	// }
+
 	const onSubmit = async (data: ProductFormValues) => {
 		const filesOnly = (data.images ?? []).filter(
 			(i): i is PreviewItem & { file: File } => !!i?.file
 		)
 
-		const prepared: CreateProduct = {
-			...data,
-			inStock: isInStock ? Number(data.inStock) || 0 : 0,
-			compatibility: normalizeCompatibility(data.compatibility as unknown as string)
-		}
+		// Гарантуємо лише string[]
+		const imageUrls = (data.images ?? [])
+			.map(i => i.url)
+			.filter((u): u is string => typeof u === 'string')
 
+		let prepared: CreateProductDto
+
+		if (data.price !== undefined && data.price !== 0) {
+			prepared = {
+				...data,
+				price: data.price,
+				priceCurrency: undefined,
+				images: imageUrls,
+				inStock: isInStock ? Number(data.inStock) || 0 : 0
+			}
+		} else if (data.priceCurrency !== undefined && data.priceCurrency !== 0) {
+			prepared = {
+				...data,
+				priceCurrency: data.priceCurrency,
+				price: undefined,
+				images: imageUrls,
+				inStock: isInStock ? Number(data.inStock) || 0 : 0
+			}
+		} else {
+			throw new Error('Вкажи або price, або priceCurrency')
+		}
 		let result: Created = null
 
+		console.log('prepared', prepared)
 		if (product?._id) {
-			// ✅ PATCH замість POST
 			result = await productStore.updateProduct({
 				id: product._id,
 				product: prepared,
@@ -326,7 +402,8 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 				</div>
 
 				{/* код товару, чекбокси, ціна та кількість товару */}
-				<div className='w-full grid grid-cols-1 2xl:grid-cols-2 gap-4'>
+
+				<div className='grid grid-cols-1 2xl:grid-cols-2 gap-4'>
 					<div className='flex items-end gap-x-3'>
 						<BaseInput<ProductFormValues>
 							name='sku'
@@ -381,45 +458,65 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 							</label>
 						</div>
 					</div>
-
-					<div className='flex items-center gap-x-4'>
+					<div className=''>
 						<BaseInput<ProductFormValues>
-							name='price'
-							label='Ціна, роздріб'
-							type='number'
+							name='brand'
+							label='Бренд товару'
+							type='text'
 							register={register}
 							errors={errors}
-							placeholder='123456'
 							isRequired
-							requiredMessage='Роздрібна ціна є обов’язковою'
-							pattern={/^\d+$/}
-							patternMessage='Ціна повинна бути числом'
-						/>
-						<BaseInput<ProductFormValues>
-							name='wholesalePrice'
-							label='Ціна, гурт'
-							type='number'
-							register={register}
-							errors={errors}
-							placeholder='123456'
-							pattern={/^\d+$/}
-							patternMessage='Ціна повинна бути числом'
-						/>
-
-						<BaseInput<ProductFormValues>
-							name='inStock'
-							label='Кількість на складі'
-							type='number'
-							register={register}
-							errors={errors}
-							placeholder='123456'
-							disabled={!isInStock}
-							isRequired={isInStock}
-							requiredMessage='Поле є обов’язковим, коли товар у наявності'
-							pattern={/^\d+$/}
-							patternMessage='Кількість повинна бути числом'
+							placeholder='RWTrade'
+							requiredMessage='Поле є обов’язковим'
 						/>
 					</div>
+				</div>
+
+				<div className='w-full grid grid-cols-2 xl:grid-cols-4 items-center gap-x-4'>
+					<BaseInput<ProductFormValues>
+						name='price'
+						label='Ціна, роздріб, ₴'
+						type='number'
+						register={register}
+						errors={errors}
+						placeholder='123456'
+						pattern={/^\d+$/}
+						patternMessage='Ціна повинна бути числом'
+					/>
+					<BaseInput<ProductFormValues>
+						name='priceCurrency'
+						label='Ціна, роздріб, $'
+						type='number'
+						register={register}
+						errors={errors}
+						placeholder='123456'
+						pattern={/^\d+$/}
+						patternMessage='Ціна повинна бути числом'
+					/>
+					<BaseInput<ProductFormValues>
+						name='wholesalePrice'
+						label='Ціна, гурт'
+						type='number'
+						register={register}
+						errors={errors}
+						placeholder='123456'
+						pattern={/^\d+$/}
+						patternMessage='Ціна повинна бути числом'
+					/>
+
+					<BaseInput<ProductFormValues>
+						name='inStock'
+						label='Кількість на складі'
+						type='number'
+						register={register}
+						errors={errors}
+						placeholder='123456'
+						disabled={!isInStock}
+						isRequired={isInStock}
+						requiredMessage='Поле є обов’язковим'
+						pattern={/^\d+$/}
+						patternMessage='Кількість повинна бути числом'
+					/>
 				</div>
 
 				{/* Опис */}
@@ -441,57 +538,81 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 					/>
 				</div>
 
-				{/* виробник та бренд */}
+				{/* характеристика */}
 				<div className='grid grid-cols-1 2xl:grid-cols-2 gap-4'>
-					<BaseInput<ProductFormValues>
-						name='characteristics.country'
-						label='Країна-виробник'
-						type='text'
-						register={register}
-						errors={errors}
-						placeholder='Україна'
+					<TextEditor
+						name='characteristics.uk'
+						control={control}
+						label='характеристика українською'
+						initialValue={product?.characteristics?.uk || ''}
 					/>
-
-					<BaseInput<ProductFormValues>
-						name='characteristics.brand'
-						label='Назва бренду'
-						type='text'
-						register={register}
-						errors={errors}
-						placeholder='RW Trade'
+					<TextEditor
+						name='characteristics.en'
+						control={control}
+						label='Characteristics in English'
+						initialValue={product?.characteristics?.en || ''}
 					/>
 				</div>
 
-				{/* сумісність і комплектація */}
+				{/* сумісність */}
 				<div className='grid grid-cols-1 2xl:grid-cols-2 gap-4'>
-					<BaseInput<ProductFormValues>
-						name='compatibility'
-						label='Сумісність (через кому)'
-						type='text'
-						register={register}
-						errors={errors}
-						placeholder='Audi, BMW, Ford'
+					<TextEditor
+						name='compatibility.uk'
+						control={control}
+						label='сумісність українською'
+						initialValue={product?.compatibility?.uk || ''}
 					/>
-
-					<BaseInput<ProductFormValues>
-						name='kit'
-						label='Комплектація (через кому)'
-						type='text'
-						register={register}
-						errors={errors}
-						placeholder='Кабель, перехідник, адаптер'
+					<TextEditor
+						name='compatibility.en'
+						control={control}
+						label='Compatibility in English'
+						initialValue={product?.compatibility?.en || ''}
 					/>
 				</div>
 
-				{/* умови доставки, відео-лінк */}
+				{/* комплектація */}
+				<div className='grid grid-cols-1 2xl:grid-cols-2 gap-4'>
+					<TextEditor
+						name='kit.uk'
+						control={control}
+						label='комплектація українською'
+						initialValue={product?.kit?.uk || ''}
+					/>
+					<TextEditor
+						name='kit.en'
+						control={control}
+						label='Kit in English'
+						initialValue={product?.kit?.en || ''}
+					/>
+				</div>
+
+				{/* умови доставки */}
+				<div className='grid grid-cols-1 2xl:grid-cols-2 gap-4'>
+					<TextEditor
+						name='deliveryTerms.uk'
+						control={control}
+						label='Умови доставки українською'
+						initialValue={product?.deliveryTerms?.uk || ''}
+					/>
+					<TextEditor
+						name='deliveryTerms.en'
+						control={control}
+						label='Delivery terms in English'
+						initialValue={product?.deliveryTerms?.en || ''}
+					/>
+				</div>
+
+				{/* країна, відео-лінк */}
 				<div className='grid grid-cols-1 2xl:grid-cols-2 gap-4'>
 					<BaseInput<ProductFormValues>
-						name='deliveryTerms'
-						label='Умови доставки'
+						name='country'
+						label='Країна виробник'
 						type='text'
 						register={register}
+						isRequired
 						errors={errors}
-						placeholder='Безкоштовна доставка від 500 грн'
+						placeholder='Ukraine'
+						requiredMessage='Поле є обов’язковим'
 					/>
 
 					<BaseInput<ProductFormValues>

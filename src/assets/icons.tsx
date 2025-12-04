@@ -565,11 +565,10 @@ export const Pen = () => {
 	)
 }
 
-export const Trash = () => {
+export const Trash = ({ className }: { className?: string }) => {
 	return (
 		<svg
-			width='11'
-			height='12'
+			className={className}
 			viewBox='0 0 11 12'
 			fill='none'
 			xmlns='http://www.w3.org/2000/svg'

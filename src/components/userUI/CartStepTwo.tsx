@@ -1,12 +1,11 @@
 'use client'
 
-import { DeliveryInfo, Locale, OrderForm } from '@/types/baseTypes'
+import { DeliveryData, DeliveryInfo, Locale, OrderForm } from '@/types/baseTypes'
 
-import { cartStore } from '@/store/CartStore'
+import { OrderItem, cartStore } from '@/store/CartStore'
 
 import DeliverySection from './delivery/DeliverySection'
 import PayMethodSection from './delivery/PayMethodSection'
-import { DeliveryData } from './delivery/delivery.types'
 
 import { observer } from 'mobx-react-lite'
 import { useLocale } from 'next-intl'
@@ -40,7 +39,6 @@ const CartStepTwo = observer(() => {
 		}
 	})
 
-	console.log('Delivery data:', watch('delivery'))
 	const mapDeliveryDataToBackend = (delivery: DeliveryData): DeliveryInfo => {
 		const cityName =
 			typeof delivery.city === 'string' ? delivery.city : delivery.city?.name || ''
@@ -129,16 +127,23 @@ const CartStepTwo = observer(() => {
 	// 	}
 	// }
 
+	function getProductName(name: OrderItem['productName']): string {
+		if (typeof name === 'string') return name
+		return name?.uk || name?.en || 'No name'
+	}
+
 	const onSubmit: SubmitHandler<OrderForm & { delivery: DeliveryData }> = async data => {
 		const deliveryForBackend = mapDeliveryDataToBackend(data.delivery)
 
 		const preparedItems = cartStore.items.map(i => ({
 			productId: i.productId,
-			productName: i.productName['uk'] || i.productName['en'] || 'No name',
+			productName: getProductName(i.productName),
 			quantity: i.quantity,
-			price: i.finalPrice,
+			finalPrice: i.finalPrice,
 			categoryId: i.categoryId
 		}))
+
+		console.log('Prepared items for backend:', preparedItems)
 
 		const payload = {
 			fullName: data.fullName,
@@ -170,7 +175,7 @@ const CartStepTwo = observer(() => {
 		>
 			<div className='flex flex-col gap-y-2 min-h-[450px]'>
 				{/* FULL NAME */}
-				<div className='flex flex-col gap-1 w-full'>
+				<div className='flex flex-col gap-1 w-full relative'>
 					<label className='font-semibold' htmlFor='fullName'>
 						Прізвище, ім’я та по батькові
 					</label>
@@ -184,10 +189,15 @@ const CartStepTwo = observer(() => {
 							required: 'Вкажіть ПІБ'
 						})}
 					/>
+					{errors.fullName && (
+						<div className='text-sm text-red-600 absolute top-full italic right-0'>
+							{errors.fullName.message}
+						</div>
+					)}
 				</div>
 
 				{/* PHONE */}
-				<div className='flex flex-col gap-1 w-full'>
+				<div className='flex flex-col gap-1 w-full relative'>
 					<label className='font-semibold' htmlFor='phone'>
 						Телефон
 					</label>
@@ -201,6 +211,11 @@ const CartStepTwo = observer(() => {
 							required: 'Вкажіть телефон'
 						})}
 					/>
+					{errors.phone && (
+						<div className='text-sm text-red-600 absolute top-full italic right-0'>
+							{errors.phone.message}
+						</div>
+					)}
 				</div>
 
 				{/* PAY METHOD */}
@@ -233,6 +248,19 @@ const CartStepTwo = observer(() => {
 						}}
 					/>
 				</div>
+			</div>
+
+			{/* COMMENT */}
+			<div className='flex flex-col gap-1 w-full relative'>
+				<label className='font-semibold' htmlFor='comment'>
+					Коментар
+				</label>
+				<textarea
+					id='comment'
+					placeholder='Ваш коментар'
+					className='w-full border border-gr-2 rounded-lg px-3 py-2 outline-none text-base resize-none'
+					{...register('comment')}
+				/>
 			</div>
 
 			<button

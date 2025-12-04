@@ -35,40 +35,55 @@ const OtherInformation = ({ product, locale }: ProductPrint) => {
 							<VideoBlock videoUrl={product.videoUrl} />
 						</Collapse>
 					)}
+					{product.characteristics && product.characteristics[locale] !== '' && (
+						<Collapse
+							title={locale === 'uk' ? 'Характеристики' : 'Characteristics'}
+							sectionType='base'
+						>
+							<div
+								dangerouslySetInnerHTML={{
+									__html: DOMPurify.sanitize(product.characteristics[locale])
+								}}
+							/>
+						</Collapse>
+					)}
 
-					<Collapse
-						title={locale === 'uk' ? 'Характеристики' : 'Characteristics'}
-						sectionType='base'
-					>
-						<div></div>
-					</Collapse>
-
-					{product.compatibility && (
+					{product.compatibility && product.compatibility[locale] !== '' && (
 						<Collapse
 							title={locale === 'uk' ? 'Сумісність' : 'Compatibility'}
 							sectionType='base'
 						>
-							{product.compatibility.map((i, index) => (
-								<p key={index}>{i}</p>
-							))}
+							<div
+								dangerouslySetInnerHTML={{
+									__html: DOMPurify.sanitize(product.compatibility[locale])
+								}}
+							/>
 						</Collapse>
 					)}
 
-					{product.kit && (
+					{product.kit && product.kit[locale] !== '' && (
 						<Collapse
 							title={locale === 'uk' ? 'Комплектація' : 'Equipment'}
 							sectionType='base'
 						>
-							<p>{product.kit}</p>
+							<div
+								dangerouslySetInnerHTML={{
+									__html: DOMPurify.sanitize(product.kit[locale])
+								}}
+							/>
 						</Collapse>
 					)}
 
-					{product.deliveryTerms && (
+					{product.deliveryTerms && product.deliveryTerms[locale] !== '' && (
 						<Collapse
 							title={locale === 'uk' ? 'Умови доставки' : 'Delivery terms'}
 							sectionType='base'
 						>
-							<p>{product.deliveryTerms}</p>
+							<div
+								dangerouslySetInnerHTML={{
+									__html: DOMPurify.sanitize(product.deliveryTerms[locale])
+								}}
+							/>
 						</Collapse>
 					)}
 				</div>
