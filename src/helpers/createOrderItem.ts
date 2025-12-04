@@ -8,9 +8,13 @@ export function createOrderItem(
 	exchangeRate: number,
 	isWholesale: boolean
 ): OrderItem {
-	const basePrice = isWholesale ? (product.wholesalePrice ?? product.price) : product.price
-
-	const finalPrice = +(basePrice * exchangeRate).toFixed(2)
+	const basePrice = isWholesale
+		? (product.wholesalePrice ?? 0)
+		: (product.price ?? product.priceCurrency ?? 0)
+	const finalPrice =
+		product.priceCurrency != null && product.price == null
+			? basePrice * exchangeRate
+			: basePrice
 
 	return {
 		productId: product._id ?? '',
