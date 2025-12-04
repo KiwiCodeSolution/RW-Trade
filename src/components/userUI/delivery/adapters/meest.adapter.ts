@@ -1,6 +1,6 @@
 'use client'
 
-import { DeliveryAPI } from '../delivery.types'
+import { DeliveryAPI } from '@/types/baseTypes'
 
 export const meestAPI: DeliveryAPI = {
 	async searchCities() {

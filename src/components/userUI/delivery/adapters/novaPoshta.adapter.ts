@@ -1,11 +1,10 @@
-// novaPoshta.adapter.ts
 import {
 	DeliveryAPI,
 	DeliveryCity,
 	DeliveryWarehouse,
 	NPAddressItem,
 	NPWarehouseItem
-} from '../delivery.types'
+} from '@/types/baseTypes'
 
 const NP_URL = 'https://api.novaposhta.ua/v2.0/json/'
 const apiKey = process.env.NEXT_PUBLIC_NP_KEY!
@@ -51,7 +50,7 @@ export const novaPoshtaAPI: DeliveryAPI = {
 				modelName: 'AddressGeneral',
 				calledMethod: 'getWarehouses',
 				methodProperties: {
-					CityRef: city.raw.DeliveryCity ?? city.raw.Ref,
+					CityRef: city.raw.Ref,
 					Language: 'UA'
 				}
 			})
