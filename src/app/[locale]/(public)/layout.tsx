@@ -9,6 +9,10 @@ import '@/styles/globals.css'
 
 import { Metadata } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
+import 'swiper/css'
+import 'swiper/css/a11y'
+import 'swiper/css/navigation'
+import 'swiper/css/pagination'
 
 export const metadata: Metadata = {
 	title: 'RW-Trade | Auto parts store',

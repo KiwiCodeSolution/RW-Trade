@@ -15,7 +15,7 @@ import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 type SignInFormValues = {
-	email: string
+	login: string
 	password: string
 }
 
@@ -39,16 +39,19 @@ const SignInForm = ({ pageType }: { pageType: PageContext }) => {
 
 	const onSubmit = async (data: SignInFormValues) => {
 		const formData = { ...data, roleContext: role }
+		console.log('formData', formData)
 
 		try {
 			const res = await signIn('credentials', {
 				...formData,
-				redirect: false
+				redirect: false,
+				callbackUrl
 			})
 
-			if (res?.ok && !res.error) {
+			if (res?.ok && res.url && !res.error) {
 				// toast.success('Вхід успішний')
-				await router.replace(callbackUrl)
+				// await router.replace(callbackUrl)
+				router.push(res.url)
 				reset()
 			} else {
 				toast.error('Неправильний логін або пароль')
@@ -66,30 +69,26 @@ const SignInForm = ({ pageType }: { pageType: PageContext }) => {
 			onSubmit={handleSubmit(onSubmit)}
 			className='min-w-[375px] max-w-2/3 mt-10 flex flex-col gap-y-10 relative'
 		>
-			{/* EMAIL */}
+			{/* LOGIN */}
 			<div className='flex flex-col gap-1'>
-				<label htmlFor='email' className='font-semibold'>
-					Email
+				<label htmlFor='login' className='font-semibold'>
+					Login
 				</label>
 				<div className='relative flex flex-col gap-1 overflow-hidden'>
 					<Border className='absolute top-0 left-0 w-[375px] h-full z-0' />
 					<input
-						type='email'
-						id='email'
+						type='text'
+						id='login'
 						autoComplete='off'
-						placeholder='Введіть пошту'
+						placeholder='Введіть логін'
 						className={`w-[375px] outline-none px-3 py-2 relative z-[1] text-base placeholder:text-sc-2`}
-						{...register('email', {
-							required: 'Email є обовʼязковим',
-							pattern: {
-								value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-								message: 'Некоректний email'
-							}
+						{...register('login', {
+							required: 'Login є обовʼязковим'
 						})}
 					/>
-					{errors.email && (
+					{errors.login && (
 						<p className='text-sc-5 italic text-sm absolute -bottom-6 left-1'>
-							{errors.email.message}
+							{errors.login.message}
 						</p>
 					)}
 				</div>

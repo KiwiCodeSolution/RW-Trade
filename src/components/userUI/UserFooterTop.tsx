@@ -15,20 +15,20 @@ const UserFooterTop = () => {
 			</div>
 			<div className='flex justify-center'>
 				<ul className='pl-8 font-semibold space-y-2'>
-					<li className='gradient-text'>
+					<li className='gradient-text list-none'>
 						<Link href='/about'>Про компанію</Link>
 					</li>
-					<li className='gradient-text'>
+					<li className='gradient-text list-none'>
 						<Link href='/payment_delivery'>Оплата та доставка</Link>
 					</li>
-					<li className='gradient-text'>
+					<li className='gradient-text list-none'>
 						<Link href='/warranty_return'>Гарантія та повернення</Link>
 					</li>
-					<li className='gradient-text'>
+					<li className='gradient-text list-none'>
 						<Link href='/contacts'>Контакти</Link>
 					</li>
-					<li className='gradient-text'>Умови використання сайту</li>
-					<li className='gradient-text'>Політика конфіденційності</li>
+					<li className='gradient-text list-none'>Умови використання сайту</li>
+					<li className='gradient-text list-none'>Політика конфіденційності</li>
 				</ul>
 			</div>
 			<div className='flex flex-col items-center'>

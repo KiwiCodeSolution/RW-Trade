@@ -17,6 +17,7 @@ class FeedbackStore {
 	newMessagesCount = 0
 	contactedCount = 0
 	importantCount = 0
+	isLoaded = false
 
 	constructor() {
 		makeAutoObservable(this)
@@ -24,6 +25,7 @@ class FeedbackStore {
 
 	async fetchMessages(token: string) {
 		try {
+			this.isLoaded = false
 			const res = await getAllMessages(token)
 
 			runInAction(() => {
@@ -31,11 +33,13 @@ class FeedbackStore {
 				this.newMessagesCount = res.filter(m => m.status === 'new').length
 				this.contactedCount = res.filter(m => m.status === 'contacted').length
 				this.importantCount = res.filter(m => m.status === 'important').length
+				this.isLoaded = true
 			})
 		} catch (err: unknown) {
 			const msg = isAxiosError(err)
 				? (err.response?.data?.message ?? 'Помилка при завантаженні звернень')
 				: 'Помилка при завантаженні звернень'
+			this.isLoaded = true
 			toast.error(msg)
 		}
 	}

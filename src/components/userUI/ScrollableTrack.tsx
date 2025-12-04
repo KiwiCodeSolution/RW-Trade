@@ -6,12 +6,14 @@ interface ScrollableTrackProps {
 	children: ReactNode
 	thumbWidth?: number
 	className?: string
+	sectionType?: string
 }
 
 export default function ScrollableTrack({
 	children,
 	thumbWidth = 100,
-	className
+	className,
+	sectionType
 }: ScrollableTrackProps) {
 	const containerRef = useRef<HTMLDivElement | null>(null)
 	const trackRef = useRef<HTMLDivElement | null>(null)
@@ -82,8 +84,12 @@ export default function ScrollableTrack({
 	return (
 		<div className={`relative ${className ?? ''}`}>
 			{/* Контейнер зі скролом */}
-			<div ref={containerRef} className='overflow-hidden mb-6' onScroll={handleScroll}>
-				<div className='flex gap-2 whitespace-nowrap'>{children}</div>
+			<div
+				ref={containerRef}
+				className={`overflow-hidden ${sectionType === 'admin' ? 'mb-1' : 'my-2 '}`}
+				onScroll={handleScroll}
+			>
+				<div className='flex gap-2 whitespace-nowrap justify-between'>{children}</div>
 			</div>
 
 			{/* 🟩 трек — завжди видимий */}

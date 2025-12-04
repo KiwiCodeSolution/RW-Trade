@@ -8,7 +8,7 @@ const BaseSection = ({ className, children }: BaseSectionProps) => {
 
 	return (
 		<section
-			className={`${classNamProps} w-full mx-auto xl:max-w-[1980px] px-6 overflow-hidden`}
+			className={`${classNamProps} w-full mx-auto xl:max-w-[1980px] px-8 overflow-hidden`}
 		>
 			{children}
 		</section>

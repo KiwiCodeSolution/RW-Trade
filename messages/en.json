@@ -150,5 +150,23 @@
 	},
 	"categories": {
 		"extra": "And {count} more {count, plural, one {category} other {categories}} in this section"
+	},
+	"DeliveryPayment": {
+		"title": "Delivery and payment",
+		"methods_title": "Payment methods",
+		"methods": [
+			"Cash (for self-pickup from stores)",
+			"Cashless payment (FOP 2-3 group)",
+			"Online payment to PrivatBank card",
+			"Payment by Visa, Mastercard - WayForPay"
+		],
+		"guarantee_title": "Warranty and return",
+		"guarantee": ["Return of goods within 14 days"],
+		"delivery_title": "Delivery is carried out the next day after payment for the goods.",
+		"delivery": [
+			"Nova Poshta (from 1 to 5 days)",
+			"Ukr Poshta (from 3 to 10 days)",
+			"Meest-express (from 3 to 10 days)"
+		]
 	}
 }

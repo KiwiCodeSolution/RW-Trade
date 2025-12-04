@@ -4,19 +4,26 @@ import { FavoriteHurt, FavoriteHurtSolid } from '@/assets/icons'
 
 import { Product } from '@/types/baseTypes'
 
+import { productStore } from '@/store/ProductsStore'
+
 import { observer } from 'mobx-react-lite'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-const ToggleFavoriteButton = observer(({ product }: { product: Product }) => {
-	const [favorite, setFavorite] = useState(false)
+type ToggleFavoriteButtonProps = {
+	product: Product
+}
 
-	// const product = productStore.products.find(p => p._id === id)
-	if (!product) return null
+const ToggleFavoriteButton = observer(({ product }: ToggleFavoriteButtonProps) => {
+	const [favorite, setFavorite] = useState(product.isFavorite || false)
+
+	useEffect(() => {
+		const favs = productStore.getFavoritesFromStorage()
+		setFavorite(favs.some(p => p._id === product._id))
+	}, [product._id])
 
 	function toggleFavorite() {
+		productStore.toggleFavorite(product)
 		setFavorite(!favorite)
-		console.log('click')
-		// productStore.toggleFavorite(product._id)
 	}
 
 	return (
@@ -24,7 +31,6 @@ const ToggleFavoriteButton = observer(({ product }: { product: Product }) => {
 			onClick={toggleFavorite}
 			className='cursor-pointer w-8 h-8 flex items-center justify-center'
 		>
-			{/* {product.isFavorite ? <FavoriteHurtSolid /> : <FavoriteHurt />} */}
 			{favorite ? <FavoriteHurtSolid /> : <FavoriteHurt />}
 		</button>
 	)

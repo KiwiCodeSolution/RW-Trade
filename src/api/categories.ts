@@ -26,6 +26,7 @@ export async function getCategories() {
 }
 
 export async function getCategoriesByID({ id, token }: { id: string; token: string }) {
+	console.log('TOKEN', token)
 	try {
 		const res = await axios.get(`${BASE_URL}/categories/${id}`, {
 			headers: {

@@ -16,6 +16,7 @@ class NotificationsStore {
 	unreadTotal = 0
 	unreadOrders = 0
 	unreadFeedback = 0
+	isLoaded = false
 
 	constructor() {
 		makeAutoObservable(this)
@@ -24,19 +25,27 @@ class NotificationsStore {
 	/** --- Отримання нотифікацій --- */
 	async fetchNotifications(token: string) {
 		try {
+			this.isLoaded = false
+
 			const res = await fetch(`${BASE_URL}/notifications`, {
 				headers: { Authorization: `Bearer ${token}` },
 				cache: 'no-store'
 			})
+
 			if (!res.ok) throw new Error(`HTTP ${res.status}`)
+
 			const data: Notification[] = await res.json()
 
 			runInAction(() => {
 				this.notifications = data
 				this._recalculateUnread()
+				this.isLoaded = true
 			})
 		} catch (err) {
 			console.error('Помилка при отриманні нотифікацій:', err)
+			runInAction(() => {
+				this.isLoaded = true
+			})
 		}
 	}
 

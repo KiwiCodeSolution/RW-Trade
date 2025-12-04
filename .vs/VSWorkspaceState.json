@@ -1,0 +1,11 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\src",
+    "\\src\\app",
+    "\\src\\app\\[locale]",
+    "\\src\\app\\[locale]\\(admin)"
+  ],
+  "SelectedNode": "\\src\\app\\[locale]\\(admin)\\layout.tsx",
+  "PreviewInSolutionExplorer": false
+}

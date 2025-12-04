@@ -13,10 +13,10 @@ interface Props {
 }
 
 const SubCategoryControl = ({ subcategories, setSubCategory, locale }: Props) => {
-	const [selected, setSelected] = useState('any')
+	const [selected, setSelected] = useState('all')
 
 	useEffect(() => {
-		queueMicrotask(() => setSelected('any'))
+		queueMicrotask(() => setSelected('all'))
 	}, [subcategories])
 
 	const handleChange = (value: string) => {
@@ -27,6 +27,33 @@ const SubCategoryControl = ({ subcategories, setSubCategory, locale }: Props) =>
 	return (
 		<div className='relative '>
 			<ScrollableTrack>
+				<label
+					htmlFor={`control_all`}
+					aria-label={'all subcategories'}
+					className={`p-0.5 rounded-md w-fit cursor-pointer ${
+						selected === 'all' ? 'bg-primary' : ''
+					}`}
+				>
+					<div className='bg-bg-light w-full h-full flex justify-center items-center rounded-sm'>
+						<div
+							className={`text-nowrap px-4 py-2 bg-primary bg-clip-text hover:text-transparent ${
+								selected === 'all' ? 'text-transparent' : ''
+							}`}
+						>
+							{locale === 'uk' ? 'Всі підкатегорії' : 'All subcategories'}
+						</div>
+					</div>
+
+					<input
+						type='radio'
+						name='subcategoryControl'
+						id={`control_all`}
+						value={'all'}
+						className='hidden'
+						onChange={() => handleChange('all')}
+						checked={selected === 'all'}
+					/>
+				</label>
 				{subcategories.map(item => (
 					<label
 						key={item._id}

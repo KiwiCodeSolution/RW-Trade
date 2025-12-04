@@ -13,6 +13,7 @@ import { makeAutoObservable, runInAction } from 'mobx'
 class CategoryStore {
 	categories: Category[] = []
 	loading = false
+	currentCreteCategory: Category | null = null
 
 	constructor() {
 		makeAutoObservable(this)
@@ -33,6 +34,10 @@ class CategoryStore {
 				this.loading = false
 			})
 		}
+	}
+
+	setCurrentCreateCategory(category: Category) {
+		this.currentCreteCategory = category
 	}
 }
 

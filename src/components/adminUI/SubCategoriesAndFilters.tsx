@@ -44,14 +44,16 @@ const SubCategoriesAndFilters = ({
 				<TitleSection title='Створені підкатегорії:' />
 
 				{sub && sub.length > 0 && (
-					<ul className='flex flex-col gap-y-3 px-2'>
+					<div className='flex flex-col gap-y-3 px-2'>
 						{sub.map(item => (
-							<li
+							<div
 								key={item._id}
-								className='relative flex h-8 items-center justify-between px-2 border-b-[2px] border-b-gr-10 pb-0.5'
+								className='flex items-center justify-between px-2 border-b-2 border-b-gr-10 pb-0.5 w-full whitespace-nowrap'
 							>
-								<p className='text-base'>{item.title['uk']}</p>
-								<div className='flex items-center gap-x-3'>
+								<p className='text-base truncate max-w-[calc(100%-80px)]'>
+									{item.title['uk']}
+								</p>
+								<div className='flex items-center gap-x-3 flex-shrink-0'>
 									<button
 										className='w-7 h-7 rounded-full flex items-center justify-center bg-primary'
 										onClick={() => {
@@ -71,9 +73,9 @@ const SubCategoriesAndFilters = ({
 										<Trash />
 									</button>
 								</div>
-							</li>
+							</div>
 						))}
-					</ul>
+					</div>
 				)}
 				<BtnSolid
 					size='s'
