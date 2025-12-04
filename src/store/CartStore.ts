@@ -97,8 +97,13 @@ class CartStore {
 			} else if ('title' in item) {
 				// item — це Product
 				const isWholesale = productStore.isWholesale
-				const basePrice = isWholesale ? (item.wholesalePrice ?? item.price) : item.price
-				const finalPrice = basePrice * productStore.exchangeRate
+				const basePrice = isWholesale
+					? (item.wholesalePrice ?? 0)
+					: (item.price ?? item.priceCurrency ?? 0)
+				const finalPrice =
+					item.priceCurrency != null && item.price == null
+						? basePrice * productStore.exchangeRate
+						: basePrice
 
 				this.items.push({
 					productId: item._id ?? '',
