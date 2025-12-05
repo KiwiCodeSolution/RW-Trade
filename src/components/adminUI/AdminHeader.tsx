@@ -128,7 +128,8 @@ const AdminHeader = observer(() => {
 				<div className='flex flex-col gap-2'>
 					<TitleNavAdmin text='Новини та статті' />
 
-					<AdminLink href='/manage-panel/news/editor' title='Додати / редагувати' />
+					<AdminLink href='/manage-panel/news' title='Всі новини' />
+					{/* <AdminLink href='/manage-panel/news/editor' title='Додати / редагувати' /> */}
 				</div>
 
 				<div className='flex flex-col gap-2'>

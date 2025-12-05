@@ -2,9 +2,9 @@
 
 import { ProductPrint } from '@/types/baseTypes'
 
-import VideoBlock from '../adminUI/VideoBlock'
 import Collapse from '../commonUI/Collapse'
 
+import VideoBlock from './VideoBlock'
 import BaseSection from './baseComponents/BaseSection'
 
 import DOMPurify from 'dompurify'

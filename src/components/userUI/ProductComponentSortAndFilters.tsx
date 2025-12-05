@@ -1,6 +1,6 @@
 'use client'
 
-import { Locale, ProductLimit, ProductSort } from '@/types/baseTypes'
+import { ItemsSort, Locale, ProductLimit } from '@/types/baseTypes'
 
 import { productStore } from '@/store/ProductsStore'
 
@@ -28,7 +28,7 @@ const ProductComponentSortAndFilters = observer(
 		const { products, total, isLoading } = productStore
 
 		const [page, setPage] = useState(1)
-		const [sort, setSort] = useState<ProductSort>('DATE_ADDED')
+		const [sort, setSort] = useState<ItemsSort>('DATE_ADDED')
 		const [limit, setLimit] = useState<number>(16)
 		const [availableLimits, setAvailableLimits] = useState<number[]>([16, 24, 32])
 
@@ -69,7 +69,7 @@ const ProductComponentSortAndFilters = observer(
 		return (
 			<div className='flex flex-col justify-between'>
 				<div className='py-6 flex items-center justify-end gap-x-6 relative'>
-					<Sort onChangeSortValue={setSort} locale={locale} />
+					<Sort onChangeSortValue={setSort} locale={locale} pageType='product' />
 					<QuantityProduct
 						locale={locale}
 						limits={availableLimits}

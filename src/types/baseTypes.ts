@@ -144,20 +144,6 @@ export interface Message {
 	updatedAt?: string
 }
 
-export interface News {
-	_id?: string
-	title: LangField
-	subtitle?: LangField
-	content: LangField
-	slugUk: string
-	slugEn: string
-	videoUrl?: string
-	image?: string
-	seo?: SeoBlock
-	createdAt?: string
-	updatedAt?: string
-}
-
 export type DeliveryMethod = 'nova_poshta' | 'Ukrposhta' | 'Meest' | 'courier' // або точний перелік з бекенду, якщо є enum
 
 export interface NPAddressItem {
@@ -312,27 +298,53 @@ export interface Notification {
 	updatedAt?: string
 }
 
-export type ProductSort =
-	| 'PRICE_ASC'
-	| 'PRICE_DESC'
-	| 'DATE_ADDED'
-	| 'RATING'
-	| 'NAME_ASC'
-	| 'NAME_DESC'
+export type ItemsSort =
+	| 'PRICE_ASC' // ціна зростання
+	| 'PRICE_DESC' // ціна зменшення
+	| 'DATE_ADDED' //дата створення
+	| 'RATING' //рейтинг
+	| 'NAME_ASC' // назва а-я
+	| 'NAME_DESC' // назва я-а
 
 export type ProductLimit = 16 | 32 | 48
+export type NewsLimit = 4 | 8 | 12
 
-export type ProductFilterParams = {
-	lang: Locale
-	categoryId?: string | 'all'
-	subCategoryId?: string | 'all'
-	priceRange?: [number, number]
-	country?: string[]
-	sort?: ProductSort
+export type ItemsFilterParams = {
+	lang?: Locale
+	categoryId?: string | 'all' // для продуктів
+	subCategoryId?: string | 'all' // для продуктів
+	priceRange?: [number, number] // для продуктів
+	country?: string[] // для продуктів
+	sort?: ItemsSort
 	limit?: number
 	page?: number
 }
 
+export type CreateNewsDto = {
+	title: LangField
+	subtitle?: LangField
+	content: LangField
+	videoUrl?: string
+	image?: string
+	seo?: SeoBlock
+	isNews: boolean
+	isPublished?: boolean
+}
+
+export type NewsArticle = CreateNewsDto & {
+	_id: string
+	createdAt: string
+	slugUk: string
+	slugEn: string
+}
+
+export interface PaginatedNews {
+	data: NewsArticle[]
+	total: number
+	page: number
+	limit: number
+	totalPages: number
+}
 // users, auth
 
 export type RoleContext = 'admin' | 'user'

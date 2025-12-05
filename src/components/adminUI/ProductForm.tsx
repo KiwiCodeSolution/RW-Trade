@@ -129,52 +129,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [categoryId, categoryStore.categories])
 
-	const images = watch('images') // PreviewItem[]
-
-	const normalizeCompatibility = (input: string | string[]) => {
-		if (Array.isArray(input)) return input
-		if (!input.trim()) return []
-		return input
-			.split(',')
-			.map(item => item.trim())
-			.filter(Boolean)
-	}
-
-	// const onSubmit = async (data: ProductFormValues) => {
-	// 	const filesOnly = (data.images ?? []).filter(
-	// 		(i): i is PreviewItem & { file: File } => !!i?.file
-	// 	)
-
-	// 	const prepared: CreateProductDto = {
-	// 		...data,
-	// 		inStock: isInStock ? Number(data.inStock) || 0 : 0,
-	// 		...(data.price ? { price: data.price } : {}),
-	// 		...(data.priceCurrency ? { priceCurrency: data.priceCurrency } : {})
-	// 	}
-
-	// 	let result: Created = null
-
-	// 	if (product?._id) {
-	// 		// ✅ PATCH замість POST
-	// 		result = await productStore.updateProduct({
-	// 			id: product._id,
-	// 			product: prepared,
-	// 			token: token ?? '',
-	// 			files: filesOnly.map(i => i.file)
-	// 		})
-	// 	} else {
-	// 		result = await productStore.createProduct({
-	// 			product: prepared,
-	// 			token: token ?? '',
-	// 			files: filesOnly.map(i => i.file)
-	// 		})
-	// 	}
-
-	// 	if (result) {
-	// 		reset()
-	// 		setValue('images', [])
-	// 	}
-	// }
+	const images = watch('images')
 
 	const onSubmit = async (data: ProductFormValues) => {
 		const filesOnly = (data.images ?? []).filter(
@@ -209,7 +164,6 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		}
 		let result: Created = null
 
-		console.log('prepared', prepared)
 		if (product?._id) {
 			result = await productStore.updateProduct({
 				id: product._id,
@@ -668,7 +622,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 				<button
 					type='submit'
 					disabled={isSubmitting}
-					className='bg-primary text-white px-4 py-2 rounded hover:bg-gr-8 transition'
+					className='bg-primary text-white px-4 py-2 rounded hover:shadow-lg bg-gr-8 transition duration-300 disabled:opacity-50'
 				>
 					{isSubmitting ? 'Збереження...' : 'Створити / Зберегти товар'}
 				</button>

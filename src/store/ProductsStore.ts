@@ -2,9 +2,9 @@ import { BASE_URL } from '@/utils/config'
 
 import {
 	CreateProductDto,
+	ItemsFilterParams,
 	LangField,
 	Product,
-	ProductFilterParams,
 	Subcategory
 } from '@/types/baseTypes'
 
@@ -104,7 +104,7 @@ class ProductStore {
 		}
 	}
 
-	async fetchProducts(params?: Partial<ProductFilterParams & { discountOnly?: boolean }>) {
+	async fetchProducts(params?: Partial<ItemsFilterParams & { discountOnly?: boolean }>) {
 		try {
 			this.isLoading = true
 

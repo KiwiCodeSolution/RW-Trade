@@ -1,33 +1,38 @@
-import NewsCard from '@/components/userUI/NewsCard'
+import NewsList from '@/components/commonUI/NewsList'
+import BaseSection from '@/components/userUI/baseComponents/BaseSection'
+import Title from '@/components/userUI/baseComponents/Title'
 
 import { Locale } from '@/types/baseTypes'
 
-export type NewsArticle = {
-	id: string | number
-	title: string
-	body: string
-	imgUrl: string
+import { getNewsWithPagination } from '@/api/news'
+
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+	title: 'RW-Trade | Новини та статті',
+	description: 'Новини та статті'
+}
+
+async function getAllNews() {
+	const res = await getNewsWithPagination({ page: 1, limit: 20 })
+
+	return res.data
 }
 
 const News = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 	const { locale } = await params
-
-	const res = await fetch('https://jsonplaceholder.typicode.com/posts')
-	const posts = (await res.json()) as NewsArticle[]
+	const news = await getAllNews()
 
 	return (
-		<div className='user-container'>
-			<h3 className='font-bold text-[40px] text-center'>
-				{locale === 'uk' ? 'Новини та статті' : 'News and Articles'}
-			</h3>
-			<div className='grid lg:grid-cols-2 gap-10 py-10'>
-				{posts.map((item, index) => (
-					<div key={index}>
-						<NewsCard article={item} />
-					</div>
-				))}
-			</div>
-		</div>
+		<main className='min-h-[80vh]'>
+			<div className='header-shadow' />
+			<BaseSection>
+				<Title tag='h1' isPageTitle styles='text-center my-5'>
+					{locale === 'uk' ? 'Новини та статті' : 'News and Articles'}
+				</Title>
+			</BaseSection>
+			<NewsList locale={locale} posts={news} />
+		</main>
 	)
 }
 

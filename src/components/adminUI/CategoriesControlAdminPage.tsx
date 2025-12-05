@@ -1,6 +1,6 @@
 'use client'
 
-import { ProductLimit, ProductSort } from '@/types/baseTypes'
+import { ItemsSort, ProductLimit } from '@/types/baseTypes'
 
 import { categoryStore } from '@/store/CategoryStore'
 import { productStore } from '@/store/ProductsStore'
@@ -33,7 +33,7 @@ const CategoriesControlAdminPage = observer(() => {
 	const [page, setPage] = useState(1)
 	const [limit, setLimit] = useState(16)
 	const [availableLimits, setAvailableLimits] = useState<number[]>([20, 40, 60])
-	const [sort, setSort] = useState<ProductSort>('DATE_ADDED')
+	const [sort, setSort] = useState<ItemsSort>('DATE_ADDED')
 	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {

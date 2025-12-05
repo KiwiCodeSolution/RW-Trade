@@ -1,6 +1,6 @@
 import { BASE_URL } from '@/utils/config'
 
-import { ProductFilterParams } from '@/types/baseTypes'
+import { ItemsFilterParams } from '@/types/baseTypes'
 
 import { toast } from '@/lib/toast'
 
@@ -29,7 +29,7 @@ export async function getExchangeRate() {
 	}
 }
 
-export async function fetchFilteredProducts(params: ProductFilterParams) {
+export async function fetchFilteredProducts(params: ItemsFilterParams) {
 	const {
 		lang,
 		categoryId,
@@ -42,7 +42,7 @@ export async function fetchFilteredProducts(params: ProductFilterParams) {
 	} = params
 
 	const q = new URLSearchParams()
-	q.append('lang', lang)
+	if (lang) q.append('lang', lang)
 
 	if (categoryId && categoryId !== 'all') q.append('categoryId', categoryId)
 	if (subCategoryId && subCategoryId !== 'all') q.append('subCategoryId', subCategoryId)

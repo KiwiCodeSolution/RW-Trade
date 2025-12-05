@@ -1,5 +1,6 @@
-import { Locale, ProductLimit } from '@/types/baseTypes'
+import { Locale, NewsLimit, ProductLimit } from '@/types/baseTypes'
 
+type Limit = ProductLimit | NewsLimit
 const QuantityProduct = ({
 	locale,
 	onChangeQuantityValue,
@@ -8,7 +9,7 @@ const QuantityProduct = ({
 }: {
 	locale: Locale
 	onChangeQuantityValue: React.Dispatch<React.SetStateAction<number>>
-	value: ProductLimit
+	value: Limit
 	limits?: number[]
 }) => {
 	return (
@@ -23,7 +24,7 @@ const QuantityProduct = ({
 					className={`w-8 h-8 flex items-center justify-center font-medium text-link-blue cursor-pointer text-sm border rounded-lg transform duration-150 ${
 						value === quantity ? 'border-link-blue' : 'border-transparent'
 					}`}
-					onClick={() => onChangeQuantityValue(quantity as ProductLimit)}
+					onClick={() => onChangeQuantityValue(quantity as Limit)}
 				>
 					{quantity}
 				</button>

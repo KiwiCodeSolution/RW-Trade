@@ -1059,3 +1059,42 @@ export const Plus = () => {
 		</svg>
 	)
 }
+
+export const YoutubeIcon = ({ className = 'w-8 h-6' }: { className?: string }) => {
+	return (
+		<svg
+			width='32px'
+			height='32px'
+			viewBox='0 0 16 16'
+			xmlns='http://www.w3.org/2000/svg'
+			fill='none'
+		>
+			<g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
+			<g id='SVGRepo_tracerCarrier' strokeLinecap='round' strokeLinejoin='round'></g>
+			<g id='SVGRepo_iconCarrier'>
+				<path
+					fill='red'
+					d='M14.712 4.633a1.754 1.754 0 00-1.234-1.234C12.382 3.11 8 3.11 8 3.11s-4.382 0-5.478.289c-.6.161-1.072.634-1.234 1.234C1 5.728 1 8 1 8s0 2.283.288 3.367c.162.6.635 1.073 1.234 1.234C3.618 12.89 8 12.89 8 12.89s4.382 0 5.478-.289a1.754 1.754 0 001.234-1.234C15 10.272 15 8 15 8s0-2.272-.288-3.367z'
+				></path>
+				<path fill='#ffffff' d='M6.593 10.11l3.644-2.098-3.644-2.11v4.208z'></path>
+			</g>
+		</svg>
+	)
+}
+
+export const EditIcon = () => {
+	return (
+		<svg
+			width='20'
+			height='20'
+			viewBox='0 0 16 16'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M3.33333 12.6667H4.28333L10.8 6.15L9.85 5.2L3.33333 11.7167V12.6667ZM2 14V11.1667L10.8 2.38333C10.9333 2.26111 11.0807 2.16667 11.242 2.1C11.4033 2.03333 11.5727 2 11.75 2C11.9273 2 12.0996 2.03333 12.2667 2.1C12.4338 2.16667 12.5782 2.26667 12.7 2.4L13.6167 3.33333C13.75 3.45556 13.8473 3.6 13.9087 3.76667C13.97 3.93333 14.0004 4.1 14 4.26667C14 4.44444 13.9696 4.614 13.9087 4.77533C13.8478 4.93667 13.7504 5.08378 13.6167 5.21667L4.83333 14H2ZM10.3167 5.68333L9.85 5.2L10.8 6.15L10.3167 5.68333Z'
+				fill='var(--color-gr-2)'
+			/>
+		</svg>
+	)
+}

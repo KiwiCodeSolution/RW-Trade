@@ -37,10 +37,8 @@ export async function getCategoriesByID({ id, token }: { id: string; token: stri
 
 		return res.data
 	} catch (err: unknown) {
-		const msg = isAxiosError(err)
-			? (err.response?.data?.message ?? 'Помилка отримання категорій')
-			: 'Помилка отримання категорій'
-
+		console.error(err)
+		toast.error('Не вдалося оновити категорію')
 		throw err
 	}
 }

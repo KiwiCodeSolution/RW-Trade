@@ -2,16 +2,19 @@
 
 import { SortIcon } from '@/assets/icons'
 
-import { Locale, ProductSort } from '@/types/baseTypes'
+import { ItemsSort, Locale } from '@/types/baseTypes'
 
 import { useState } from 'react'
 
+type PageType = 'product' | 'news'
 const Sort = ({
 	locale,
-	onChangeSortValue
+	onChangeSortValue,
+	pageType = 'product'
 }: {
 	locale: Locale
-	onChangeSortValue: React.Dispatch<React.SetStateAction<ProductSort>>
+	onChangeSortValue: React.Dispatch<React.SetStateAction<ItemsSort>>
+	pageType: PageType
 }) => {
 	const [isShowSortOptions, setIsShowSortOptions] = useState(false)
 	const sortItems = [
@@ -25,14 +28,24 @@ const Sort = ({
 		},
 		{
 			value: 'DATE_ADDED',
-			label: locale === 'uk' ? 'За датою надходження' : 'Date added'
+			label: locale === 'uk' ? 'За датою додавання' : 'Date added'
 		},
 		{ value: 'RATING', label: locale === 'uk' ? 'Рейтинг' : 'Rating' },
 		{ value: 'NAME_ASC', label: locale === 'uk' ? 'Назва: А-Я' : 'Name: A-Z' },
 		{ value: 'NAME_DESC', label: locale === 'uk' ? 'Назва: Я-А' : 'Name: Z-A' }
 	]
 
-	function handleClickOutside(value: ProductSort) {
+	const sortItemsRender =
+		pageType === 'product'
+			? sortItems
+			: sortItems.filter(
+					item =>
+						item.value !== 'PRICE_ASC' &&
+						item.value !== 'PRICE_DESC' &&
+						item.value !== 'RATING'
+				)
+
+	function handleClickOutside(value: ItemsSort) {
 		setIsShowSortOptions(false)
 		onChangeSortValue(value)
 	}
@@ -50,11 +63,11 @@ const Sort = ({
 			</button>
 			{isShowSortOptions && (
 				<div className='h-fit px-2 py-4 rounded-md border-2 border-sc-1 flex flex-col gap-y-3 justify-between items-start product-card-shadow bg-other-1 z-10 absolute top-8 right-0 w-[200px]'>
-					{sortItems.map(item => (
+					{sortItemsRender.map(item => (
 						<button
 							key={item.value}
 							className='gradient-text font-medium text-left w-full'
-							onClick={() => handleClickOutside(item.value as ProductSort)}
+							onClick={() => handleClickOutside(item.value as ItemsSort)}
 						>
 							{item.label}
 						</button>
