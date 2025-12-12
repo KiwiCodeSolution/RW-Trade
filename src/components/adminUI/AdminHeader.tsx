@@ -5,6 +5,8 @@ import { HomeIcon } from '@/assets/icons'
 import { feedbackStore } from '@/store/FeedbackStore'
 import { notificationsStore } from '@/store/NotificationsStore'
 
+import BtnSolid from '../commonUI/BtnSolid'
+
 import Count from './Count'
 
 import { observer } from 'mobx-react-lite'
@@ -62,14 +64,14 @@ const AdminHeader = observer(() => {
 	}
 
 	return (
-		<header className='flex flex-col gap-7 bg-[#3C4447] text-txt-white p-2 min-h-screen rounded-tr-4xl rounded-br-4xl justify-center sticky top-0'>
+		<header className='flex flex-col gap-4 bg-[#3C4447] text-txt-white px-2 py-3 min-h-screen rounded-tr-4xl rounded-br-4xl justify-center sticky top-0 overflow-y-auto'>
 			{/* <div className='flex justify-center pt-4'>
 				<Link href='/manage-panel' className='mx-auto'>
 					<BaseImageItem src={'/logos/LOGO_252_white.png'} />
 				</Link>
 			</div> */}
 
-			<div className='flex flex-col gap-7 px-2 overflow-y-auto '>
+			<div className='flex flex-col gap-6 '>
 				<div className='mt-4'>
 					<Link
 						href='/manage-panel'
@@ -133,6 +135,12 @@ const AdminHeader = observer(() => {
 				</div>
 
 				<div className='flex flex-col gap-2'>
+					<TitleNavAdmin text='Рекламні банери' />
+
+					<AdminLink href='/manage-panel/banners' title='Управління банерами' />
+				</div>
+
+				<div className='flex flex-col gap-2'>
 					<TitleNavAdmin text='Статистика' />
 
 					<AdminLink href='/manage-panel/statistics' title='Категорії товарів' />
@@ -144,7 +152,16 @@ const AdminHeader = observer(() => {
 					<AdminLink href='/manage-panel/profile' title='Профілі користувачів' />
 				</div>
 
-				<button onClick={handleLogout}>LogOut</button>
+				{/* <button onClick={handleLogout}>LogOut</button> */}
+				<BtnSolid
+					variant='primary'
+					action={handleLogout}
+					as='button'
+					btnType='button'
+					className='mx-auto'
+				>
+					LogOut
+				</BtnSolid>
 
 				{/* <div className='flex flex-col gap-2'>
 					<h2 className='text-2xl'>Сторінки сайта</h2>

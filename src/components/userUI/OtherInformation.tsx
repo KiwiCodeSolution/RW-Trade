@@ -6,8 +6,7 @@ import Collapse from '../commonUI/Collapse'
 
 import VideoBlock from './VideoBlock'
 import BaseSection from './baseComponents/BaseSection'
-
-import DOMPurify from 'dompurify'
+import HtmlContent from './baseComponents/HtmlContent'
 
 const OtherInformation = ({ product, locale }: ProductPrint) => {
 	return (
@@ -19,11 +18,8 @@ const OtherInformation = ({ product, locale }: ProductPrint) => {
 						<p className='text-xl font-medium'>
 							{locale === 'en' ? 'Description' : 'Опис товару'}
 						</p>
-						<div
-							dangerouslySetInnerHTML={{
-								__html: DOMPurify.sanitize(product.description[locale])
-							}}
-						/>
+
+						<HtmlContent html={product.description[locale] ?? product.description.uk} />
 					</div>
 
 					{/* відео блок */}
@@ -40,10 +36,8 @@ const OtherInformation = ({ product, locale }: ProductPrint) => {
 							title={locale === 'uk' ? 'Характеристики' : 'Characteristics'}
 							sectionType='base'
 						>
-							<div
-								dangerouslySetInnerHTML={{
-									__html: DOMPurify.sanitize(product.characteristics[locale])
-								}}
+							<HtmlContent
+								html={product.characteristics[locale] ?? product.characteristics.uk}
 							/>
 						</Collapse>
 					)}
@@ -53,10 +47,8 @@ const OtherInformation = ({ product, locale }: ProductPrint) => {
 							title={locale === 'uk' ? 'Сумісність' : 'Compatibility'}
 							sectionType='base'
 						>
-							<div
-								dangerouslySetInnerHTML={{
-									__html: DOMPurify.sanitize(product.compatibility[locale])
-								}}
+							<HtmlContent
+								html={product.compatibility[locale] ?? product.compatibility.uk}
 							/>
 						</Collapse>
 					)}
@@ -66,11 +58,7 @@ const OtherInformation = ({ product, locale }: ProductPrint) => {
 							title={locale === 'uk' ? 'Комплектація' : 'Equipment'}
 							sectionType='base'
 						>
-							<div
-								dangerouslySetInnerHTML={{
-									__html: DOMPurify.sanitize(product.kit[locale])
-								}}
-							/>
+							<HtmlContent html={product.kit[locale] ?? product.kit.uk} />
 						</Collapse>
 					)}
 
@@ -79,10 +67,8 @@ const OtherInformation = ({ product, locale }: ProductPrint) => {
 							title={locale === 'uk' ? 'Умови доставки' : 'Delivery terms'}
 							sectionType='base'
 						>
-							<div
-								dangerouslySetInnerHTML={{
-									__html: DOMPurify.sanitize(product.deliveryTerms[locale])
-								}}
+							<HtmlContent
+								html={product.deliveryTerms[locale] ?? product.deliveryTerms.uk}
 							/>
 						</Collapse>
 					)}

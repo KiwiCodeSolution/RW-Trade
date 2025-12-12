@@ -1,6 +1,6 @@
 import { CreateNewsDto, ItemsFilterParams, NewsArticle } from '@/types/baseTypes'
 
-import { createNewsArticle, getNewsWithPagination, updateNewsArticle } from '@/api/news'
+import { createNewsArticle, deleteNews, getNewsWithPagination, updateNewsArticle } from '@/api/news'
 
 import { toast } from '@/lib/toast'
 
@@ -83,6 +83,23 @@ class NewsStore {
 			console.error(err)
 			toast.error('Не вдалося оновити новину')
 			return null
+		} finally {
+			runInAction(() => (this.isLoading = false))
+		}
+	}
+
+	deleteNews = async (id: string, token: string) => {
+		this.isLoading = true
+		try {
+			await deleteNews(id, token)
+			runInAction(() => {
+				this.news = this.news.filter(n => n._id !== id)
+				this.total -= 1
+			})
+			toast.success('Новину успішно видалено')
+		} catch (err) {
+			console.error(err)
+			toast.error('Не вдалося видалити новину')
 		} finally {
 			runInAction(() => (this.isLoading = false))
 		}

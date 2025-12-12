@@ -1,8 +1,6 @@
 import { getYouTubeEmbedUrl } from '@/helpers/getYouTubeEmbedUrl'
 
-import { Product } from '@/types/baseTypes'
-
-const VideoBlock = ({ videoUrl }: { videoUrl: Product['videoUrl'] }) => {
+const VideoBlock = ({ videoUrl }: { videoUrl: string }) => {
 	if (!videoUrl) return null
 
 	const embedUrl = getYouTubeEmbedUrl(videoUrl)

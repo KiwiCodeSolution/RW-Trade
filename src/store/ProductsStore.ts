@@ -105,6 +105,7 @@ class ProductStore {
 	}
 
 	async fetchProducts(params?: Partial<ItemsFilterParams & { discountOnly?: boolean }>) {
+		console.log('🔹 fetchProducts called with params:', params)
 		try {
 			this.isLoading = true
 
@@ -118,6 +119,7 @@ class ProductStore {
 				...params // дозволяє перевизначати фільтри
 			})
 
+			console.log('SERVER DATA:', data)
 			runInAction(() => {
 				const favsFromStorage = this.getFavoritesFromStorage()
 

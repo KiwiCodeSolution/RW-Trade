@@ -1,56 +1,96 @@
 'use client'
 
+import { BASE_IMG_URL } from '@/utils/config'
+
+import { bannersStore } from '@/store/BannersStore'
+
 import BaseSection from './baseComponents/BaseSection'
 
+import { observer } from 'mobx-react-lite'
 import Image from 'next/image'
+import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
 
-const slideStyle = 'w-full h-auto sm:h-[290px] rounded-2xl flex justify-center items-center'
+const SLIDE_INTERVAL = 3000
+const ASPECT_RATIO = 568 / 292
 
-const slides = [
-	<div key='slide-1' className={slideStyle}>
-		<Image src='/images/caroucel_1.png' alt='baby' width={568} height={292} />
-	</div>,
-	<div key='slide-2' className={slideStyle}>
-		<Image src='/images/caroucel_2.png' alt='baby' width={568} height={292} />
-	</div>,
-	<div key='slide-3' className={slideStyle}>
-		<Image src='/images/caroucel_1.png' alt='baby' width={568} height={292} />
-	</div>
-]
+const AddSectionFirst = observer(() => {
+	const { banners } = bannersStore
 
-const AddSectionFirst = () => {
-	const [currentSlide, setCurrentSlide] = useState(0)
+	const left = banners.filter(b => b.type === 'left' && b.isPublished)
+	const right = banners.filter(b => b.type === 'right' && b.isPublished)
 
+	const [leftIndex, setLeftIndex] = useState(0)
+	const [rightIndex, setRightIndex] = useState(0)
+
+	const [stopLeft, setStopLeft] = useState(false)
+	const [stopRight, setStopRight] = useState(false)
+
+	// Лівий autoplay
 	useEffect(() => {
+		if (left.length === 0 || stopLeft) return
+
 		const interval = setInterval(() => {
-			setCurrentSlide(prev => (prev + 1) % slides.length)
-		}, 3000)
+			setLeftIndex(prev => (prev + 1) % left.length)
+		}, SLIDE_INTERVAL)
+
 		return () => clearInterval(interval)
-	}, [])
+	}, [left.length, stopLeft])
+
+	// Правий autoplay
+	useEffect(() => {
+		if (right.length === 0 || stopRight) return
+
+		const interval = setInterval(() => {
+			setRightIndex(prev => (prev + 1) % right.length)
+		}, SLIDE_INTERVAL)
+
+		return () => clearInterval(interval)
+	}, [right.length, stopRight])
 
 	return (
 		<BaseSection>
-			<div className='hidden sm:grid sm:grid-cols-3 sm:gap-12 sm:py-14'>
-				{slides.map((item, index) => (
-					<div key={index}>{item}</div>
-				))}
-			</div>
-			{/* <div className='sm:hidden relative w-full flex justify-center items-center'>
-				{slides[currentSlide]}
-				<div className='absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-2'>
-					{slides.map((_, index) => (
-						<div
-							key={index}
-							className={`h-2 rounded-full duration-200 ${
-								index === currentSlide ? 'bg-bronze w-5' : 'bg-primary w-2'
-							}`}
-						></div>
-					))}
+			<div className='hidden sm:grid sm:grid-cols-2 sm:gap-12 sm:py-14'>
+				{/* LEFT SLIDER */}
+				<div
+					className='relative w-full overflow-hidden rounded-2xl'
+					style={{ aspectRatio: ASPECT_RATIO }}
+					onMouseEnter={() => setStopLeft(true)}
+					onMouseLeave={() => setStopLeft(false)}
+				>
+					{left.length > 0 && (
+						<Link href={left[leftIndex].link}>
+							<Image
+								src={`${BASE_IMG_URL}${left[leftIndex].image}`}
+								alt='left banner'
+								fill
+								className='object-cover rounded-2xl transition-opacity duration-500'
+							/>
+						</Link>
+					)}
 				</div>
-			</div> */}
+
+				{/* RIGHT SLIDER */}
+				<div
+					className='relative w-full overflow-hidden rounded-2xl'
+					style={{ aspectRatio: ASPECT_RATIO }}
+					onMouseEnter={() => setStopRight(true)}
+					onMouseLeave={() => setStopRight(false)}
+				>
+					{right.length > 0 && (
+						<Link href={right[rightIndex].link}>
+							<Image
+								src={`${BASE_IMG_URL}${right[rightIndex].image}`}
+								alt='right banner'
+								fill
+								className='object-cover rounded-2xl transition-opacity duration-500'
+							/>
+						</Link>
+					)}
+				</div>
+			</div>
 		</BaseSection>
 	)
-}
+})
 
 export default React.memo(AddSectionFirst)

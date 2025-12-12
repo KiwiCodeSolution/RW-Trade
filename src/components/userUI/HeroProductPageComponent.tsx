@@ -9,24 +9,12 @@ import BaseSection from './baseComponents/BaseSection'
 import RatingCOmponent from './baseComponents/RatingCOmponent'
 
 const HeroProductPageComponent = ({ product, locale }: ProductPrint) => {
-	const testImages = [
-		'/images/products/1.jpg',
-		'/images/products/2.png',
-		'/images/products/3.jpg',
-		'/images/products/4.jpg',
-		'/images/products/5.webp',
-		'/images/products/6.webp',
-		'/images/products/7.jpg',
-		'/images/products/8.jpg'
-	]
-
-	const images = product.images && product.images.length > 0 ? product.images : testImages
 	const correctRating = product.rating ? parseFloat(Math.min(product.rating, 5).toFixed(1)) : 0
 
 	return (
 		<BaseSection>
 			<div className='w-full xl:w-[1280px] flex items-center justify-between gap-x-6 mx-auto'>
-				<ImagesGallery images={images} />
+				<ImagesGallery images={product.images} />
 				<div className='w-[280px] flex flex-col gap-y-3 justify-between shrink-0'>
 					<div className='w-full h-12 rounded-xl bg-other-4 rating-shadow flex items-center justify-center gap-x-3'>
 						<p className='mt-1'>{locale === 'en' ? 'Rating:' : 'Рейтинг:'}</p>

@@ -42,6 +42,14 @@
 	@apply bg-linear-to-r from-[#5dafb1] to-[#5e73c9];
 }
 
+.bg-primary-reverse {
+	@apply bg-linear-to-l from-[#5dafb1] to-[#5e73c9];
+}
+
+.bg-primary-bottom {
+	@apply bg-linear-to-t from-[#5dafb1] to-[#5e73c9];
+}
+
 .bg-bronze {
 	@apply bg-linear-to-r from-[#e1a755] to-[#b76b00];
 }
@@ -77,6 +85,10 @@
 
 .header-shadow {
 	box-shadow: 0px 0px 6px 0px rgba(94, 117, 200, 1);
+}
+
+.btn-shadow {
+	box-shadow: 0px 0px 4px 0px rgba(25, 144, 186, 0.5);
 }
 
 .product-card-shadow {
@@ -177,16 +189,6 @@
 	.proposal-li::marker {
 		color: var(--color-txt-white) !important;
 	}
-
-	/* img {
-		display: block;
-	} */
-
-	/* ul,
-	li,
-	ol {
-		list-style: none;
-	} */
 }
 
 .no-scrollbar::-webkit-scrollbar {

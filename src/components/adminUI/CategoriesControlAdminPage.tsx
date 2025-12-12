@@ -157,7 +157,7 @@ const CategoriesControlAdminPage = observer(() => {
 				)}
 
 				<div className='py-2 flex items-center justify-end gap-x-6 relative'>
-					<Sort onChangeSortValue={setSort} locale={'uk'} />
+					<Sort onChangeSortValue={setSort} locale={'uk'} pageType='product' />
 					<QuantityProduct
 						locale={'uk'}
 						limits={availableLimits}

@@ -1,3 +1,5 @@
+'use client'
+
 import { BASE_URL } from '@/utils/config'
 
 import { ItemsFilterParams } from '@/types/baseTypes'
@@ -9,6 +11,20 @@ import axios, { isAxiosError } from 'axios'
 export async function getProducts() {
 	try {
 		const res = await axios.get(`${BASE_URL}/products`)
+
+		return res.data
+	} catch (err: unknown) {
+		const msg = isAxiosError(err)
+			? (err.response?.data?.message ?? 'Помилка отримання продуктів')
+			: 'Помилка отримання продуктів'
+		toast.error(msg)
+		throw err
+	}
+}
+
+export async function getProductsByCategoryId({ categoryId }: { categoryId: string }) {
+	try {
+		const res = await axios.get(`${BASE_URL}/products/by-category/${categoryId}`)
 
 		return res.data
 	} catch (err: unknown) {

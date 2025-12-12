@@ -21,41 +21,6 @@ export interface SeoBlock {
 	keywords?: LangField | string[]
 }
 
-// export interface Product {
-// 	_id: string // якщо приходить з бекенду після створення
-// 	title: LangField
-// 	description: LangField
-// 	price: number
-// 	priceCurrency: number
-// 	wholesalePrice: number
-// 	inStock?: number
-// 	sku: string
-// 	images?: string[]
-// 	categoryId: string
-// 	subCategoryId?: string
-// 	newArrival?: boolean
-// 	isHit?: boolean
-// 	showDiscountBlock?: boolean
-// 	showOfferBlock?: boolean
-// 	videoUrl?: string
-// 	characteristics?: LangField
-// 	compatibility?: LangField
-// 	kit?: LangField
-// 	deliveryTerms?: string
-// 	initialRatingSum?: number
-// 	initialRatingCount?: number
-// 	isPublished?: boolean
-// 	seo?: SeoBlock
-// 	slugUk: string
-// 	slugEn: string
-// 	isFavorite?: boolean
-// 	status: ProductStatus
-// 	isPartner?: boolean
-// 	rating: number
-// 	country?: string
-// 	brand?: string
-// }
-
 export type Price =
 	| { price: number; priceCurrency?: never } // ціна в грн
 	| { priceCurrency: number; price?: never } // ціна у валюті
@@ -336,6 +301,19 @@ export type NewsArticle = CreateNewsDto & {
 	createdAt: string
 	slugUk: string
 	slugEn: string
+}
+
+export type BannerType = 'left' | 'right' | 'center'
+
+export type CreateBannerDto = {
+	link: string
+	image: string
+	type: BannerType
+}
+
+export type Banner = CreateBannerDto & {
+	_id: string
+	isPublished: boolean
 }
 
 export interface PaginatedNews {

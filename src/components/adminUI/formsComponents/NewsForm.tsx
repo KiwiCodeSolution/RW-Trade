@@ -12,6 +12,7 @@ import { BaseInput } from '../BaseInput'
 
 import SingleImageUpload from './SingleImageUpload'
 import TextEditor from './TextEditor'
+import { useRouter } from '@/i18n/navigation'
 import { toast } from '@/lib/toast'
 
 import { observer } from 'mobx-react-lite'
@@ -62,6 +63,8 @@ const NewsForm = observer(({ news }: { news?: NewsArticle }) => {
 		}
 	}, [news, reset])
 
+	const router = useRouter()
+
 	const { data: session } = useSession()
 	const token = session?.user?.accessToken
 
@@ -83,7 +86,7 @@ const NewsForm = observer(({ news }: { news?: NewsArticle }) => {
 				content: data.content, // залишаємо об'єкт
 				seo: data.seo, // залишаємо об'єкт
 				videoUrl: data.videoUrl || '',
-				image: data.image || '',
+				// image: data.image || '',
 				isNews: Boolean(data.isNews),
 				isPublished: Boolean(data.isPublished)
 			}
@@ -110,6 +113,7 @@ const NewsForm = observer(({ news }: { news?: NewsArticle }) => {
 			reset() // очищаємо форму
 			setValue('image', '')
 			setValue('imageFile', null)
+			router.push('/manage-panel/news')
 		} catch (err) {
 			console.error('❌ Помилка збереження новини:', err)
 			toast.error('Не вдалося зберегти новину')

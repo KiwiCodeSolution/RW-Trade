@@ -16,9 +16,14 @@ export type PreviewItem = {
 interface SingleImageUploadProps {
 	image?: PreviewItem
 	onChange?: (img?: PreviewItem) => void
+	className?: string
 }
 
-const SingleImageUpload = ({ image, onChange }: SingleImageUploadProps) => {
+const SingleImageUpload = ({
+	image,
+	onChange,
+	className = 'w-[162px] h-[162px]'
+}: SingleImageUploadProps) => {
 	const [local, setLocal] = useState<PreviewItem | undefined>(image)
 
 	useEffect(() => {
@@ -54,7 +59,9 @@ const SingleImageUpload = ({ image, onChange }: SingleImageUploadProps) => {
 	return (
 		<div className='flex gap-x-5 items-center'>
 			{!local ? (
-				<label className='inline-flex flex-col items-center justify-center w-[162px] h-[162px] rounded-md border-2 border-sc-1 cursor-pointer product-card-shadow'>
+				<label
+					className={`inline-flex flex-col items-center justify-center rounded-md border-2 border-sc-1 cursor-pointer product-card-shadow ${className}`}
+				>
 					<input type='file' className='hidden' onChange={handleAdd} />
 					<div className='add-btn-link bg-primary mb-2'>
 						<Add />
@@ -64,7 +71,9 @@ const SingleImageUpload = ({ image, onChange }: SingleImageUploadProps) => {
 					</p>
 				</label>
 			) : (
-				<div className='relative w-[162px] h-[162px] rounded-md border-2 border-sc-1 overflow-hidden product-card-shadow'>
+				<div
+					className={`relative rounded-md border-2 border-sc-1 overflow-hidden product-card-shadow ${className}`}
+				>
 					<Image src={resolveImageUrl(local.url)} alt='' fill className='object-cover' />
 
 					<button

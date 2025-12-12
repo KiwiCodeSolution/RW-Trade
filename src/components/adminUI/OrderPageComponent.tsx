@@ -1,21 +1,31 @@
 'use client'
 
-import { Order } from '@/types/baseTypes'
+import { ordersStore } from '@/store/OrderStore'
 
 import OrderItemComponent from './OrderItem'
 
+import { observer } from 'mobx-react-lite'
+import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
-const OrderPageComponent = ({ orders, token }: { orders: Order[]; token: string }) => {
+// 🔹 Маленький компонент для фетча замовлень
+const OrdersFetcher = observer(({ token }: { token: string }) => {
+	useEffect(() => {
+		ordersStore.fetchOrders(token)
+	}, [token])
+
+	return null
+})
+
+// 🔹 Основний компонент
+const OrderPageComponent = observer(() => {
+	const { orders } = ordersStore
 	const [highlightId, setHighlightId] = useState<string | null>(null)
 
-	useEffect(() => {
-		if (typeof window !== 'undefined') {
-			const id = window.location.hash.slice(1)
-			if (id) setTimeout(() => setHighlightId(id), 0)
-		}
-	}, [])
+	const { data: session, status } = useSession()
+	const token = session?.user?.accessToken
 
+	// 🔹 Підсвічування hash
 	useEffect(() => {
 		if (!highlightId) return
 
@@ -30,19 +40,29 @@ const OrderPageComponent = ({ orders, token }: { orders: Order[]; token: string 
 		}
 
 		el.addEventListener('animationend', handleAnimationEnd)
-
-		return () => {
-			el.removeEventListener('animationend', handleAnimationEnd)
-		}
+		return () => el.removeEventListener('animationend', handleAnimationEnd)
 	}, [highlightId])
+
+	// 🔹 Витягуємо hash після рендера
+	useEffect(() => {
+		if (typeof window === 'undefined') return
+		const id = window.location.hash.slice(1)
+		if (id) setTimeout(() => setHighlightId(id), 0)
+	}, [])
+
+	// 🔹 Показ логів для debug
+	console.log('orders', orders)
 
 	return (
 		<div className='flex flex-col gap-y-[14px] mt-3 max-h-[87vh] overflow-y-auto pb-3'>
+			{/* Виконуємо фетч тільки якщо токен є */}
+			{token && <OrdersFetcher token={token} />}
+
 			{orders.map(order => (
-				<OrderItemComponent key={order._id} order={order} token={token} />
+				<OrderItemComponent key={order._id} order={order} />
 			))}
 		</div>
 	)
-}
+})
 
 export default OrderPageComponent

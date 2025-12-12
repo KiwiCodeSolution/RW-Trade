@@ -282,8 +282,9 @@ export const Bell = () => {
 	)
 }
 
-type VariantProps = {
+export type VariantProps = {
 	variant?: 'white' | 'gradient'
+	className?: string
 }
 
 export const Envelope = ({ variant = 'white' }: VariantProps) => (
@@ -484,7 +485,7 @@ export const Hide = () => {
 	)
 }
 
-export const Arrow = ({ variant = 'white' }: VariantProps) => {
+export const Arrow = ({ variant = 'white', className }: VariantProps) => {
 	return (
 		<svg
 			width='12'
@@ -492,6 +493,7 @@ export const Arrow = ({ variant = 'white' }: VariantProps) => {
 			viewBox='0 0 12 8'
 			fill='none'
 			xmlns='http://www.w3.org/2000/svg'
+			className={className}
 		>
 			<path
 				d='M0.75 0.75L5.75 6.75L10.75 0.75'

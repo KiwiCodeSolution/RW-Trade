@@ -1,6 +1,8 @@
 import HeartIcon from '@/assets/icons/heart-primary-50.svg'
 import PhoneIcon from '@/assets/icons/phone-primary-50.svg'
 
+import { Locale } from '@/types/baseTypes'
+
 import HeaderCartButton from './HeaderCartButton'
 import HeaderSearch from './HeaderSearch'
 import { Link } from '@/i18n/navigation'
@@ -8,7 +10,7 @@ import '@/styles/globals.css'
 
 import Image from 'next/image'
 
-const UserHeaderBottom = () => {
+const UserHeaderBottom = ({ locale }: { locale: Locale }) => {
 	return (
 		<div className='w-full header-shadow'>
 			<div className='user-container'>
@@ -22,7 +24,7 @@ const UserHeaderBottom = () => {
 						/>
 					</Link>
 					<div className='grow sm:mr-6'>
-						<HeaderSearch />
+						<HeaderSearch locale={locale} />
 					</div>
 					<div className='hidden sm:flex items-center gap-6'>
 						<Link

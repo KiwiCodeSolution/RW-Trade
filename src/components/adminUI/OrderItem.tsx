@@ -1,24 +1,43 @@
 'use client'
 
-import { Trash } from '@/assets/icons'
+import { Arrow, Trash } from '@/assets/icons'
 
 import { servicesList } from '@/helpers/deliverys'
 
-import { Order } from '@/types/baseTypes'
+import { Order, OrderStatus } from '@/types/baseTypes'
 
 import { OrderItem } from '@/store/CartStore'
+import { ordersStore } from '@/store/OrderStore'
 
+import BaseModal from '../commonUI/modal/BaseModal'
+import ConfirmAdminComponent from '../commonUI/modal/ConfirmAdminComponent'
+
+import { observer } from 'mobx-react-lite'
+import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useState } from 'react'
 
 type OrderItemProps = {
 	order: Order
-	token?: string
 }
 
-const OrderItemComponent = ({ order, token }: OrderItemProps) => {
+const OrderItemComponent = observer(({ order }: OrderItemProps) => {
 	const [isShowDetails, setIsShowDetails] = useState(false)
+	const [isStatusOpen, setIsStatusOpen] = useState(false)
+	const { deleteOrder, updateOrderStatus } = ordersStore
 	const status = order.status || 'pending'
+	const { data: session } = useSession()
+	const token = session?.user?.accessToken
+	const [isShowModal, setIsShowModal] = useState(false)
+
+	const orderStatuses: { label: string; value: OrderStatus; color: string }[] = [
+		{ label: 'Нове', value: 'pending', color: 'bg-green-500 text-white' },
+		{ label: 'Відправлено', value: 'shipped', color: 'bg-yellow-500 text-black' },
+		{ label: 'Доставлено', value: 'delivered', color: 'bg-blue-500 text-white' },
+		{ label: 'Скасовано', value: 'cancelled', color: 'bg-red-500 text-white' }
+	]
+
+	const currentStatus = orderStatuses.find(s => s.value === status) || orderStatuses[0]
 
 	const priceOrderItem = (price: OrderItem['finalPrice'], quantity: OrderItem['quantity']) =>
 		price * quantity
@@ -41,11 +60,15 @@ const OrderItemComponent = ({ order, token }: OrderItemProps) => {
 		}).format(value)
 	}
 
-	const handleDeleteOrder = () => {
-		const confirmDelete = confirm('Ви впевнені, що хочете видалити це замовлення?')
-		if (confirmDelete) {
-			// Викликати API для видалення замовлення
-		}
+	async function handleDeleteOrder(id: string) {
+		await deleteOrder(id, token || '')
+		setIsShowModal(false)
+	}
+
+	async function handleChangeStatus(newStatus: OrderStatus) {
+		setIsStatusOpen(false)
+		if (!token) return
+		await updateOrderStatus(order._id, newStatus, token)
 	}
 
 	const delivery = servicesList.find(s => s.id === order.delivery.method)!
@@ -71,7 +94,7 @@ const OrderItemComponent = ({ order, token }: OrderItemProps) => {
 			</p>
 
 			{/* Верхня таблиця */}
-			<div className='w-full rounded-lg border border-gr-2 overflow-hidden'>
+			<div className='w-full rounded-lg border border-gr-2 '>
 				<table className='w-full text-sm text-center text-[#133566] border-collapse'>
 					<thead className='bg-sc-6 border-b border-gr-2'>
 						<tr className='divide-x divide-y divide-gr-2'>
@@ -103,22 +126,45 @@ const OrderItemComponent = ({ order, token }: OrderItemProps) => {
 									<p>{address}</p>
 								</div>
 							</td>
-							<td className='px-4 py-2'>
-								<div className='flex items-center gap-1'>
-									<span
-										className={`w-3 h-3 rounded-full ${
-											status === 'pending'
-												? 'bg-green-500'
-												: status === 'shipped'
-													? 'bg-yellow-500'
-													: status === 'delivered'
-														? 'bg-blue-500'
-														: status === 'cancelled'
-															? 'bg-red-500'
-															: 'bg-gray-500'
-										}`}
-									></span>
-									<span>{status === 'pending' ? 'Нове' : status}</span>
+
+							<td className='px-4 py-2 '>
+								<div className='relative'>
+									<button
+										onClick={() => setIsStatusOpen(prev => !prev)}
+										className={`w-[170px] h-7 px-1 rounded-lg flex items-center justify-between gap-2 transition`}
+									>
+										<div className='flex items-center gap-x-1'>
+											<span>{currentStatus.label}</span>
+											<span
+												className={`w-2 h-2 rounded-full ${status === 'pending' ? 'bg-green-500' : status === 'shipped' ? 'bg-bronze' : status === 'delivered' ? 'bg-primary' : status === 'cancelled' ? 'bg-red-500' : 'bg-gray-500'}`}
+											></span>
+										</div>
+										<div className='w-6 h-6 rounded-full flex items-center justify-center bg-white rating-shadow btn-shadow'>
+											<Arrow
+												variant='gradient'
+												className={`${isStatusOpen ? 'rotate-180' : ''} transition`}
+											/>
+										</div>
+									</button>
+
+									{isStatusOpen && (
+										<div className=' bg-sc-6 absolute top-[100%] left-0 w-[170px] rounded-lg shadow-lg z-20'>
+											{orderStatuses.map(s => (
+												<button
+													onClick={() => handleChangeStatus(s.value)}
+													key={s.value}
+													className={`w-full text-left rounded-lg px-4 py-2 flex items-center gap-x-1 hover:bg-gray-100 ${
+														status === s.value ? 'font-bold' : ''
+													}`}
+												>
+													{s.label}
+													<span
+														className={`w-2 h-2 rounded-full ${s.value === 'pending' ? 'bg-green-500' : s.value === 'shipped' ? 'bg-bronze' : s.value === 'delivered' ? 'bg-primary' : s.value === 'cancelled' ? 'bg-red-500' : 'bg-gray-500'}`}
+													></span>
+												</button>
+											))}
+										</div>
+									)}
 								</div>
 							</td>
 						</tr>
@@ -129,7 +175,6 @@ const OrderItemComponent = ({ order, token }: OrderItemProps) => {
 			{order.comment && (
 				<div className='w-full rounded-lg border border-gr-2 overflow-hidden bg-sc-6 py-3 px-2'>
 					<p className=''>
-						{' '}
 						<span className='font-semibold '>Коментар:</span> {order.comment}
 					</p>
 				</div>
@@ -187,12 +232,25 @@ const OrderItemComponent = ({ order, token }: OrderItemProps) => {
 
 			{isShowDetails && (
 				<button
-					onClick={handleDeleteOrder}
+					onClick={() => setIsShowModal(true)}
 					className='min-w-[174px] h-9 rounded-[32px] bg-sc-5 flex items-center justify-center gap-x-1 py-2 px-4 ml-auto mt-2 mr-1 hover:shadow-lg transition-all duration-300'
 				>
 					<Trash className='w-4 h-4' />
 					<p className='text-white font-semibold'>Видалити замовлення</p>
 				</button>
+			)}
+			{isShowModal && (
+				<BaseModal
+					isOpen={isShowModal}
+					onClose={() => setIsShowModal(false)}
+					title='Підтвердження видалення'
+				>
+					<ConfirmAdminComponent
+						fncDelete={handleDeleteOrder.bind(null, order._id)}
+						fncEscape={() => setIsShowModal(false)}
+						text='замовлення'
+					/>
+				</BaseModal>
 			)}
 
 			<button
@@ -203,6 +261,6 @@ const OrderItemComponent = ({ order, token }: OrderItemProps) => {
 			</button>
 		</article>
 	)
-}
+})
 
 export default OrderItemComponent
