@@ -5,8 +5,8 @@ import FormSection from '@/components/userUI/FormSection'
 import NewsSection from '@/components/userUI/NewsSection'
 import PopularCategories from '@/components/userUI/PopularCategories'
 import PopularProducts from '@/components/userUI/PopularProducts'
-import RetailWholesaleModal from '@/components/userUI/RetailWholesaleModal'
 import TestimonialsSection from '@/components/userUI/TestimonialsSection'
+import BaseSection from '@/components/userUI/baseComponents/BaseSection'
 
 import { Locale } from '@/types/baseTypes'
 
@@ -23,7 +23,10 @@ const Main = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 
 	return (
 		<main className='min-h-[80vh]'>
-			<AddSectionFirst />
+			<BaseSection className='min-h-[200px] xl:min-h-[400px]'>
+				<AddSectionFirst />
+			</BaseSection>
+
 			<PopularProducts />
 
 			<AddSectionSecond />
@@ -45,7 +48,7 @@ const Main = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 				subtitle={t('NewsSectionAllPages.subtitle_homePage')}
 				bntText={t('NewsSectionAllPages.btn_homePage')}
 			/>
-			<RetailWholesaleModal locale={locale} />
+			{/* <RetailWholesaleModal locale={locale} /> */}
 		</main>
 	)
 }

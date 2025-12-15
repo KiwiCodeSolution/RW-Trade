@@ -98,7 +98,7 @@ const HeaderSearch = ({ locale }: { locale: Locale }) => {
 	// )
 
 	const fetchResultsDebounced = useCallback(
-		debounceAsync(async (value, signal) => {
+		debounceAsync<string>(async (value, signal) => {
 			if (!value.trim()) {
 				setResults([])
 				setIsOpen(false)

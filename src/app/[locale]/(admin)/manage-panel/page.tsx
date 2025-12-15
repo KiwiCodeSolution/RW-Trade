@@ -1,6 +1,5 @@
-import CurrencyDatePicker from '@/components/adminUI/CurrencyDatePicker'
-
 import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
 	title: 'RW-Trade | Manage Panel',
@@ -8,12 +7,13 @@ export const metadata: Metadata = {
 }
 
 const Admin = () => {
-	return (
-		<main className='w-full h-full flex flex-col items-center justify-center'>
-			<h1 className='text-[40px] font-extrabold gradient-text'>Вітаємо у Адмін панелі!</h1>
-			<CurrencyDatePicker />
-		</main>
-	)
+	redirect(`/uk/manage-panel/notifications`)
+	// return (
+	// 	<main className='w-full h-full flex flex-col items-center justify-center'>
+	// 		<h1 className='text-[40px] font-extrabold gradient-text'>Вітаємо у Адмін панелі!</h1>
+	// 		<CurrencyDatePicker />
+	// 	</main>
+	// )
 }
 
 export default Admin

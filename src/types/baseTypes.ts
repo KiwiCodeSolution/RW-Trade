@@ -118,6 +118,7 @@ export interface NPAddressItem {
 	Area: string
 	Region: string
 	ParentRegionCode?: string
+	DeliveryCity: string
 }
 
 export interface DeliveryAPI {
@@ -234,6 +235,15 @@ export interface OrderPayload {
 	}[]
 }
 
+export type OrdersResponse = {
+	data: Order[]
+	total: number
+	page: number
+	limit: number
+	totalPages: number
+	totalByStatus?: Partial<Record<OrderStatus, number>>
+}
+
 export interface CreateOrderSuccess {
 	success: true
 	data: unknown // можу замінити на точний OrderModel з бекенду
@@ -333,4 +343,36 @@ export enum AdminRole {
 	BASEADMIN = 'baseadmin',
 	SELLER = 'seller',
 	CONTENT_MANAGER = 'content-manager'
+}
+
+// stats
+
+export interface CategoryStatsItem {
+	count: number
+	subcategories?: Record<string, number>
+}
+
+export interface MonthlyOrdersItem {
+	total: number
+	pending?: number
+	shipped?: number
+	delivered?: number
+	cancelled?: number
+}
+
+export interface OrderStats {
+	_id: string
+
+	// Статистика по статусах
+	pending?: number
+	shipped?: number
+	delivered?: number
+	cancelled?: number
+	totalOrders: number
+
+	// Категорії та підкатегорії
+	categoryStats: Record<string, CategoryStatsItem>
+
+	// Місячна статистика
+	monthlyOrders: Record<string, MonthlyOrdersItem>
 }

@@ -1,15 +1,10 @@
-import { BASE_URL } from '@/utils/config'
+import { Notification } from '@/types/baseTypes'
+
+import { getAllNotifications, toggleStatusNotification } from '@/api/notification'
 
 import { toast } from '@/lib/toast'
 
-import axios, { isAxiosError } from 'axios'
 import { makeAutoObservable, runInAction } from 'mobx'
-
-export interface Notification {
-	_id: string
-	type: 'order' | 'feedback' | string
-	status: 'unread' | 'read'
-}
 
 class NotificationsStore {
 	notifications: Notification[] = []
@@ -17,62 +12,55 @@ class NotificationsStore {
 	unreadOrders = 0
 	unreadFeedback = 0
 	isLoaded = false
+	isLoading = false
 
 	constructor() {
 		makeAutoObservable(this)
 	}
 
-	/** --- Отримання нотифікацій --- */
-	async fetchNotifications(token: string) {
+	/** --- Отримати всі нотифікації --- */
+	fetchNotifications = async (router?: { push: (path: string) => void }) => {
+		this.isLoaded = false
 		try {
-			this.isLoaded = false
-
-			const res = await fetch(`${BASE_URL}/notifications`, {
-				headers: { Authorization: `Bearer ${token}` },
-				cache: 'no-store'
-			})
-
-			if (!res.ok) throw new Error(`HTTP ${res.status}`)
-
-			const data: Notification[] = await res.json()
-
+			const data = await getAllNotifications()
 			runInAction(() => {
 				this.notifications = data
 				this._recalculateUnread()
 				this.isLoaded = true
 			})
-		} catch (err) {
-			console.error('Помилка при отриманні нотифікацій:', err)
-			runInAction(() => {
-				this.isLoaded = true
-			})
-		}
-	}
-
-	/** --- Тогл статусу прочитання (API + локальне оновлення) --- */
-	async toggleStatus(id: string, token: string) {
-		try {
-			await axios.patch(`${BASE_URL}/notifications/${id}/read`, id, {
-				headers: { Authorization: `Bearer ${token}` }
-			})
-
-			runInAction(() => {
-				const target = this.notifications.find(n => n._id === id)
-				if (target) {
-					target.status = target.status === 'unread' ? 'read' : 'unread'
-					this._recalculateUnread()
-				}
-			})
 		} catch (err: unknown) {
-			const msg = isAxiosError(err)
-				? (err.response?.data?.message ?? 'Помилка при оновленні статусу')
-				: 'Помилка при оновленні статусу'
-			toast.error(msg)
-			console.error('Помилка при оновленні статусу:', err)
+			console.error(err)
+			if (err instanceof Error && err.message.includes('401') && router) {
+				toast.error('Ви не авторизовані. Будь ласка, увійдіть.')
+				router.push('/login')
+			}
+			runInAction(() => (this.isLoaded = true))
 		}
 	}
 
-	/** --- Внутрішній метод для підрахунку --- */
+	/** --- Тогл статусу прочитання --- */
+	toggleStatus = async (id: string) => {
+		this.isLoading = true
+		try {
+			const updated = await toggleStatusNotification(id)
+			if (updated) {
+				runInAction(() => {
+					const target = this.notifications.find(n => n._id === id)
+					if (target) {
+						target.status = updated.status
+						this._recalculateUnread()
+					}
+				})
+			}
+		} catch (err) {
+			console.error(err)
+			toast.error('Не вдалося оновити статус нотифікації')
+		} finally {
+			runInAction(() => (this.isLoading = false))
+		}
+	}
+
+	/** --- Локальний підрахунок непрочитаних --- */
 	private _recalculateUnread() {
 		const unread = this.notifications.filter(n => n.status === 'unread')
 		this.unreadTotal = unread.length

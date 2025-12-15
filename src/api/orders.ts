@@ -1,67 +1,70 @@
 import { BASE_URL } from '@/utils/config'
 
-import { OrderStatus } from '@/types/baseTypes'
+import { Order, OrderStatus, OrdersResponse } from '@/types/baseTypes'
 
-import { toast } from '@/lib/toast'
+import { fetchWithAuth } from './fetchWithAuth'
 
-import axios, { isAxiosError } from 'axios'
+type GetOrdersParams = {
+	page?: number
+	limit?: number
+	status?: OrderStatus
+	sortBy?: 'createdAt' | 'fullName' | 'totalPrice'
+	sortOrder?: 'asc' | 'desc'
+}
+export async function getOrders(params: GetOrdersParams = {}): Promise<OrdersResponse> {
+	const query = new URLSearchParams()
 
-export async function getOrders(token: string) {
+	if (params.page) query.set('page', String(params.page))
+	if (params.limit) query.set('limit', String(params.limit))
+	if (params.status) query.set('status', params.status)
+	if (params.sortBy) query.set('sortBy', params.sortBy)
+	if (params.sortOrder) query.set('sortOrder', params.sortOrder)
+
 	try {
-		const res = await axios.get(`${BASE_URL}/orders`, {
-			headers: {
-				Authorization: `Bearer ${token ?? ''}`,
-				'Content-Type': 'application/json'
-			}
+		const res = await fetchWithAuth(`${BASE_URL}/orders?${query.toString()}`, {
+			cache: 'no-store'
 		})
-		console.log(res.data)
-		return res.data
-	} catch (err: unknown) {
-		const msg = isAxiosError(err)
-			? (err.response?.data?.message ?? 'Помилка отримання ордерів')
-			: 'Помилка отримання ордерів'
-		toast.error(msg)
-		throw err
+
+		if (!res.ok) throw new Error('Помилка отримання ордерів')
+
+		return await res.json()
+	} catch (err) {
+		console.error(err)
+		return {
+			data: [],
+			total: 0,
+			page: 1,
+			limit: params.limit ?? 8,
+			totalPages: 1,
+			totalByStatus: {}
+		}
 	}
 }
 
-export async function deleteOrder(id: string, token: string) {
+// Видалити замовлення
+export async function deleteOrder(id: string) {
 	try {
-		const res = await axios.delete(`${BASE_URL}/orders/${id}`, {
-			headers: {
-				Authorization: `Bearer ${token ?? ''}`,
-				'Content-Type': 'application/json'
-			}
-		})
-
-		return res.data
-	} catch (err: unknown) {
-		const msg = isAxiosError(err)
-			? (err.response?.data?.message ?? 'Помилка видалення ордеру')
-			: 'Помилка видалення ордеру'
-		toast.error(msg)
-		throw err
+		const res = await fetchWithAuth(`${BASE_URL}/orders/${id}`, { method: 'DELETE' })
+		if (!res.ok) throw new Error('Помилка видалення ордеру')
+		return true
+	} catch (err) {
+		console.error(err)
+		return false
 	}
 }
 
-export async function patchOrderStatus(id: string, status: OrderStatus, token: string) {
+// Оновити статус замовлення
+export async function patchOrderStatus(id: string, status: OrderStatus) {
 	try {
-		const res = await axios.patch(
-			`${BASE_URL}/orders/${id}/status`,
-			{ status },
-			{
-				headers: {
-					Authorization: `Bearer ${token ?? ''}`,
-					'Content-Type': 'application/json'
-				}
-			}
-		)
-		return res.data
-	} catch (err: unknown) {
-		const msg = isAxiosError(err)
-			? (err.response?.data?.message ?? 'Помилка оновлення статусу')
-			: 'Помилка оновлення статусу'
-		toast.error(msg)
-		throw err
+		const res = await fetchWithAuth(`${BASE_URL}/orders/${id}/status`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ status })
+		})
+		if (!res.ok) throw new Error('Помилка оновлення статусу')
+		return (await res.json()) as Order
+	} catch (err) {
+		console.error(err)
+		return null
 	}
 }

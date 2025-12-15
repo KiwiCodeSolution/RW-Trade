@@ -1,15 +1,14 @@
 import UserFooterBottom from './UserFooterBottom'
 import UserFooterTop from './UserFooterTop'
-
-import React from 'react'
+import BaseSection from './baseComponents/BaseSection'
 
 const UserFooter = () => {
 	return (
 		<footer>
-			<div className='user-container'>
+			<BaseSection>
 				<UserFooterTop />
 				<UserFooterBottom />
-			</div>
+			</BaseSection>
 		</footer>
 	)
 }

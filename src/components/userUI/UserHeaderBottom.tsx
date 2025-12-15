@@ -34,7 +34,12 @@ const UserHeaderBottom = ({ locale }: { locale: Locale }) => {
 							<HeartIcon />
 						</Link>
 						<div className='rounded-full hover:shadow-lg hover:scale-102 duration-200'>
-							<PhoneIcon />
+							<Link
+								href='/contacts'
+								className='rounded-full hover:shadow-lg hover:scale-102 duration-200'
+							>
+								<PhoneIcon />
+							</Link>
 						</div>
 
 						<HeaderCartButton />

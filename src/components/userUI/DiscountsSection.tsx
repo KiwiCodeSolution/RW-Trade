@@ -38,6 +38,9 @@ const DiscountsSection = observer(
 				? discountProducts
 				: discountProducts.filter(p => p.subCategoryId === selectedSubcategoryId)
 
+		const filteredProductsMob =
+			filteredProducts.length > 4 ? filteredProducts.slice(0, 4) : filteredProducts
+
 		return (
 			<BaseSection className='py-9'>
 				<Title tag='h2' styles='mb-7'>
@@ -50,10 +53,27 @@ const DiscountsSection = observer(
 					locale={locale}
 				/>
 				{(discountSubcategories?.length ?? 0) === 0 ? (
-					<p className='text-center my-20'>No products with discounts available.</p>
+					<p className='text-center my-20'>
+						{locale === 'en'
+							? 'No products with discounts available.'
+							: 'Немає товарів з знижками.'}
+					</p>
 				) : (
 					<div className='mt-3'>
-						<CardRow products={filteredProducts} locale={locale} section='discounts' />
+						<div className='lg:hidden'>
+							<CardRow
+								products={filteredProductsMob}
+								locale={locale}
+								section='discounts'
+							/>
+						</div>
+						<div className='hidden lg:block'>
+							<CardRow
+								products={filteredProducts}
+								locale={locale}
+								section='discounts'
+							/>
+						</div>
 						<div className='mt-9 flex justify-center items-center'>
 							<BtnSolid variant='bronze' size='m' as='link' href='/catalog/discounts'>
 								{btn}

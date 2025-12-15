@@ -119,7 +119,6 @@ class ProductStore {
 				...params // дозволяє перевизначати фільтри
 			})
 
-			console.log('SERVER DATA:', data)
 			runInAction(() => {
 				const favsFromStorage = this.getFavoritesFromStorage()
 

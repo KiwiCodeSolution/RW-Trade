@@ -5,6 +5,18 @@ import Path from '@/components/userUI/baseComponents/Path'
 
 import { Locale } from '@/types/baseTypes'
 
+export async function generateMetadata({
+	params
+}: {
+	params: Promise<{ slug: string; locale: Locale }>
+}) {
+	const { locale } = await params
+
+	return {
+		title: locale === 'uk' ? 'RW-Trade | Каталог' : 'RW-Trade | Catalog'
+	}
+}
+
 const Catalog = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 	const { locale } = await params
 

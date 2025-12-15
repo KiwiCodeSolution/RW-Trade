@@ -14,7 +14,7 @@ const AddCartBtn = observer(
 
 		return (
 			<button
-				className={`${typePage === 'admin' ? 'w-11 h-11' : 'w-[64px] h-[64px]'} rounded-lg p-2 bg-bg-green cursor-pointer flex items-center justify-center hover:shadow-2xl`}
+				className={`${typePage === 'admin' ? 'w-11 h-11' : 'w-11 h-11 xl:w-[64px] xl:h-[64px]'} rounded-lg p-2 bg-bg-green cursor-pointer flex items-center justify-center hover:shadow-2xl`}
 				onClick={() => cartStore.increment(product)}
 			>
 				<Cart variant='white' />

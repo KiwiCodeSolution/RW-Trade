@@ -1,12 +1,14 @@
 'use client'
 
-import { Locale, Product } from '@/types/baseTypes'
+import { Category, Locale, Product } from '@/types/baseTypes'
 
 import { getProductsByCategoryId } from '@/api/products'
 
 import { categoryStore } from '../../store/CategoryStore'
 
 import CardRow from './CardRow'
+import CategoryControl from './CategoryControl'
+import ProductComponentSortAndFilters from './ProductComponentSortAndFilters'
 
 import { observer } from 'mobx-react-lite'
 import { useLocale } from 'next-intl'
@@ -20,6 +22,7 @@ const PopularProductsSectionWithCategory = observer(() => {
 	const [secondProducts, setSecondProducts] = useState<Product[]>([])
 	const [thirdProducts, setThirdProducts] = useState<Product[]>([])
 	const [ready, setReady] = useState(false)
+	const [category, setCategory] = useState<Category | undefined>(undefined)
 
 	useEffect(() => {
 		setReady(true)
@@ -44,35 +47,51 @@ const PopularProductsSectionWithCategory = observer(() => {
 
 	if (!ready) return null
 
-	if (categories.length < 3) return null
+	if (!categories.length) return null
+
+	const isDiscountsCategory = category?.slug === 'discounts'
 
 	return (
-		<div className='grid grid-rows-3 gap-9 mb-9'>
-			{firstProducts.length > 0 && (
-				<CardRow
-					category={categories[0]}
-					section='popular'
+		<>
+			<div className='hidden lg:grid grid-rows-3 gap-9 mb-9'>
+				{firstProducts.length > 0 && (
+					<CardRow
+						category={categories[0]}
+						section='popular'
+						locale={locale}
+						products={firstProducts}
+					/>
+				)}
+				{secondProducts.length > 0 && (
+					<CardRow
+						category={categories[1]}
+						section='popular'
+						locale={locale}
+						products={secondProducts}
+					/>
+				)}
+				{thirdProducts.length > 0 && (
+					<CardRow
+						category={categories[2]}
+						section='popular'
+						locale={locale}
+						products={thirdProducts}
+					/>
+				)}
+			</div>
+			<div className='lg:hidden'>
+				<div className='mb-7 lg:hidden'>
+					<CategoryControl setCategory={setCategory} categories={categories} />
+				</div>
+				<ProductComponentSortAndFilters
 					locale={locale}
-					products={firstProducts}
+					categoryId={isDiscountsCategory ? undefined : category?._id}
+					isDiscountMode={isDiscountsCategory}
+					typeSection='home'
+					isShowSotr={false}
 				/>
-			)}
-			{secondProducts.length > 0 && (
-				<CardRow
-					category={categories[1]}
-					section='popular'
-					locale={locale}
-					products={secondProducts}
-				/>
-			)}
-			{thirdProducts.length > 0 && (
-				<CardRow
-					category={categories[2]}
-					section='popular'
-					locale={locale}
-					products={thirdProducts}
-				/>
-			)}
-		</div>
+			</div>
+		</>
 	)
 })
 

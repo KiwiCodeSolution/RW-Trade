@@ -25,8 +25,16 @@ export async function getProducts() {
 export async function getProductsByCategoryId({ categoryId }: { categoryId: string }) {
 	try {
 		const res = await axios.get(`${BASE_URL}/products/by-category/${categoryId}`)
+		const products = res.data
 
-		return res.data
+		// Сортування по статусу
+		const statusOrder: Record<string, number> = { in_stock: 0, expect: 1, on_order: 2 }
+		const sortedProducts = products.sort(
+			(a: { status: string }, b: { status: string }) =>
+				(statusOrder[a.status] ?? 99) - (statusOrder[b.status] ?? 99)
+		)
+
+		return sortedProducts
 	} catch (err: unknown) {
 		const msg = isAxiosError(err)
 			? (err.response?.data?.message ?? 'Помилка отримання продуктів')

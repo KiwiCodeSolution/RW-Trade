@@ -4,7 +4,7 @@ import { BASE_IMG_URL } from '@/utils/config'
 
 import { bannersStore } from '@/store/BannersStore'
 
-import BaseSection from './baseComponents/BaseSection'
+import Spinner from '../commonUI/loader/Spinner'
 
 import { observer } from 'mobx-react-lite'
 import Image from 'next/image'
@@ -22,74 +22,84 @@ const AddSectionFirst = observer(() => {
 
 	const [leftIndex, setLeftIndex] = useState(0)
 	const [rightIndex, setRightIndex] = useState(0)
-
 	const [stopLeft, setStopLeft] = useState(false)
 	const [stopRight, setStopRight] = useState(false)
+	const [isClient, setIsClient] = useState(false)
 
-	// Лівий autoplay
 	useEffect(() => {
-		if (left.length === 0 || stopLeft) return
+		setIsClient(true)
+	}, [])
 
-		const interval = setInterval(() => {
-			setLeftIndex(prev => (prev + 1) % left.length)
-		}, SLIDE_INTERVAL)
-
-		return () => clearInterval(interval)
-	}, [left.length, stopLeft])
-
-	// Правий autoplay
+	// Autoplay
 	useEffect(() => {
-		if (right.length === 0 || stopRight) return
-
-		const interval = setInterval(() => {
-			setRightIndex(prev => (prev + 1) % right.length)
-		}, SLIDE_INTERVAL)
-
+		if (!isClient || left.length === 0 || stopLeft) return
+		const interval = setInterval(
+			() => setLeftIndex(prev => (prev + 1) % left.length),
+			SLIDE_INTERVAL
+		)
 		return () => clearInterval(interval)
-	}, [right.length, stopRight])
+	}, [left.length, stopLeft, isClient])
+
+	useEffect(() => {
+		if (!isClient || right.length === 0 || stopRight) return
+		const interval = setInterval(
+			() => setRightIndex(prev => (prev + 1) % right.length),
+			SLIDE_INTERVAL
+		)
+		return () => clearInterval(interval)
+	}, [right.length, stopRight, isClient])
+
+	if (!isClient) {
+		// Поки компонент не змонтувався — показуємо спінер із фіксованою висотою
+		return (
+			<div style={{ minHeight: `${292}px`, paddingTop: '80px' }}>
+				<Spinner />
+			</div>
+		)
+	}
 
 	return (
-		<BaseSection>
-			<div className='hidden sm:grid sm:grid-cols-2 sm:gap-12 sm:py-14'>
-				{/* LEFT SLIDER */}
-				<div
-					className='relative w-full overflow-hidden rounded-2xl'
-					style={{ aspectRatio: ASPECT_RATIO }}
-					onMouseEnter={() => setStopLeft(true)}
-					onMouseLeave={() => setStopLeft(false)}
-				>
-					{left.length > 0 && (
-						<Link href={left[leftIndex].link}>
-							<Image
-								src={`${BASE_IMG_URL}${left[leftIndex].image}`}
-								alt='left banner'
-								fill
-								className='object-cover rounded-2xl transition-opacity duration-500'
-							/>
-						</Link>
-					)}
-				</div>
-
-				{/* RIGHT SLIDER */}
-				<div
-					className='relative w-full overflow-hidden rounded-2xl'
-					style={{ aspectRatio: ASPECT_RATIO }}
-					onMouseEnter={() => setStopRight(true)}
-					onMouseLeave={() => setStopRight(false)}
-				>
-					{right.length > 0 && (
-						<Link href={right[rightIndex].link}>
-							<Image
-								src={`${BASE_IMG_URL}${right[rightIndex].image}`}
-								alt='right banner'
-								fill
-								className='object-cover rounded-2xl transition-opacity duration-500'
-							/>
-						</Link>
-					)}
-				</div>
+		<div className='grid grid-cols-1 lg:grid-cols-2 sm:gap-12 gap-y-4 py-8 sm:py-14'>
+			<div
+				className='relative w-full overflow-hidden rounded-2xl'
+				style={{ aspectRatio: ASPECT_RATIO }}
+				onMouseEnter={() => setStopLeft(true)}
+				onMouseLeave={() => setStopLeft(false)}
+			>
+				{left.length > 0 ? (
+					<Link href={left[leftIndex].link}>
+						<Image
+							src={`${BASE_IMG_URL}${left[leftIndex].image}`}
+							alt='left banner'
+							fill
+							className='object-cover rounded-2xl transition-opacity duration-500'
+						/>
+					</Link>
+				) : (
+					<Spinner />
+				)}
 			</div>
-		</BaseSection>
+
+			<div
+				className='relative w-full overflow-hidden rounded-2xl'
+				style={{ aspectRatio: ASPECT_RATIO }}
+				onMouseEnter={() => setStopRight(true)}
+				onMouseLeave={() => setStopRight(false)}
+			>
+				{right.length > 0 ? (
+					<Link href={right[rightIndex].link}>
+						<Image
+							src={`${BASE_IMG_URL}${right[rightIndex].image}`}
+							alt='right banner'
+							fill
+							className='object-cover rounded-2xl transition-opacity duration-500'
+						/>
+					</Link>
+				) : (
+					<Spinner />
+				)}
+			</div>
+		</div>
 	)
 })
 

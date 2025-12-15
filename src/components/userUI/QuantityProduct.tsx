@@ -13,7 +13,7 @@ const QuantityProduct = ({
 	limits?: number[]
 }) => {
 	return (
-		<div className='flex items-center gap-x-2'>
+		<div className='hidden xl:flex items-center gap-x-2'>
 			<p className='font-medium text-link-blue underline decoration-1'>
 				{locale === 'uk' ? 'Кількість на сторінці' : 'Items per page:'}
 			</p>

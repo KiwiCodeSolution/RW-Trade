@@ -7,47 +7,91 @@ import { toast } from '@/lib/toast'
 import { makeAutoObservable, runInAction } from 'mobx'
 
 class OrdersStore {
-	order: Order = {} as Order
 	orders: Order[] = []
 	isLoading = false
 
+	// pagination
+	page = 1
+	limit = 8
+	total = 0
+	totalPages = 1
+
+	// filters & sorting
+	status?: OrderStatus
+	sortBy: 'createdAt' | 'fullName' | 'totalPrice' = 'createdAt'
+	sortOrder: 'asc' | 'desc' = 'desc'
+
+	// counters
+	totalByStatus: Partial<Record<OrderStatus, number>> = {}
+
 	constructor() {
 		makeAutoObservable(this)
+		this.fetchOrders()
 	}
 
-	async fetchOrders(token: string) {
-		console.log('starting to fetch orders', token)
-
+	fetchOrders = async () => {
+		this.isLoading = true
 		try {
-			const data = await getOrders(token)
-
-			runInAction(() => {
-				this.orders = Array.isArray(data) ? data : []
+			const response = await getOrders({
+				page: this.page,
+				limit: this.limit,
+				status: this.status,
+				sortBy: this.sortBy,
+				sortOrder: this.sortOrder
 			})
 
-			console.log('Orders:', this.orders)
-		} catch (error) {
-			console.error('Error fetching orders:', error)
-
+			runInAction(() => {
+				this.orders = response.data
+				this.total = response.total
+				this.totalPages = response.totalPages
+				this.totalByStatus = response.totalByStatus ?? {}
+			})
+		} catch (err) {
+			console.error(err)
 			runInAction(() => {
 				this.orders = []
+				this.total = 0
 			})
+		} finally {
+			runInAction(() => (this.isLoading = false))
 		}
 	}
 
-	setOrders(orders: Order[]) {
-		this.orders = orders
+	// ===== UI actions =====
+	setPage(page: number) {
+		this.page = page
+		this.fetchOrders()
 	}
 
-	deleteOrder = async (id: string, token: string) => {
-		console.log(token)
+	setLimit(limit: number) {
+		this.limit = limit
+		this.page = 1
+		this.fetchOrders()
+	}
+
+	setStatus(status?: OrderStatus) {
+		this.status = status
+		this.page = 1
+		this.fetchOrders()
+	}
+
+	setSorting(sortBy: 'createdAt' | 'fullName' | 'totalPrice', sortOrder: 'asc' | 'desc') {
+		this.sortBy = sortBy
+		this.sortOrder = sortOrder
+		this.fetchOrders()
+	}
+
+	// ===== mutations =====
+	deleteOrder = async (id: string) => {
 		this.isLoading = true
 		try {
-			await deleteOrder(id, token)
-			runInAction(() => {
-				this.orders = this.orders.filter(n => n._id !== id)
-			})
-			toast.success('Замовлення успішно видалено')
+			const success = await deleteOrder(id)
+			if (success) {
+				toast.success('Замовлення успішно видалено')
+				this.fetchOrders()
+			} else {
+				toast.error('Не вдалося видалити замовлення')
+			}
 		} catch (err) {
 			console.error(err)
 			toast.error('Не вдалося видалити замовлення')
@@ -56,15 +100,16 @@ class OrdersStore {
 		}
 	}
 
-	updateOrderStatus = async (id: string, status: OrderStatus, token: string) => {
+	updateOrderStatus = async (id: string, status: OrderStatus) => {
 		this.isLoading = true
 		try {
-			await patchOrderStatus(id, status, token)
-			runInAction(() => {
-				const order = this.orders.find(o => o._id === id)
-				if (order) order.status = status
-			})
-			toast.success('Статус замовлення оновлено')
+			const updated = await patchOrderStatus(id, status)
+			if (updated) {
+				toast.success('Статус замовлення оновлено')
+				this.fetchOrders() // важливо для лічильників
+			} else {
+				toast.error('Не вдалося оновити статус замовлення')
+			}
 		} catch (err) {
 			console.error(err)
 			toast.error('Не вдалося оновити статус замовлення')

@@ -60,7 +60,7 @@ export default function GradientHoverRating({
 			<div
 				role='button'
 				tabIndex={0}
-				className={`relative w-[125px] h-[26px] ${
+				className={`relative w-[80px] xl:w-[125px] h-[15px] xl:h-[26px] ${
 					loading ? 'opacity-70 pointer-events-none' : 'cursor-pointer'
 				}`}
 				onMouseMove={handleMove}
@@ -71,13 +71,13 @@ export default function GradientHoverRating({
 				}}
 			>
 				{/* сіра база */}
-				<div className='absolute inset-0 text-gray-300 pointer-events-none text-3xl leading-none'>
+				<div className='absolute inset-0 text-gray-300 pointer-events-none text-lg xl:text-3xl leading-none'>
 					{'★★★★★'}
 				</div>
 
 				{/* градієнтна заливка */}
 				<div
-					className='absolute inset-0 overflow-hidden text-transparent pointer-events-none text-3xl leading-none will-change-[width]'
+					className='absolute inset-0 overflow-hidden text-transparent pointer-events-none text-lg xl:text-3xl leading-none will-change-[width]'
 					style={{
 						width: `${percent}%`,
 						background: 'linear-gradient(90deg, #E1A755 0%, #B76B00 100%)',
@@ -90,7 +90,9 @@ export default function GradientHoverRating({
 
 			{/* Значення рейтингу */}
 			<div className='h-full flex items-center justify-center pt-1.5 ml-1'>
-				<p className=' font-medium text-right'>{displayValue.toFixed(1)} / 5</p>
+				<p className='text-xs xl:text-sm font-medium text-right'>
+					{displayValue.toFixed(1)} / 5
+				</p>
 			</div>
 		</div>
 	)

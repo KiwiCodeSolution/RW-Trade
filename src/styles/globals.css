@@ -290,3 +290,7 @@
 .blink-blue {
 	animation: blinkBlue 1s ease-in-out 3; /* 3 рази */
 }
+
+::-webkit-scrollbar {
+	display: none;
+}

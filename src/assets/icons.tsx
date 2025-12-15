@@ -934,7 +934,7 @@ export const HomeIcon = ({ className }: { className?: string }) => {
 	)
 }
 
-export const SortIcon = () => {
+export const SortIcon = ({ className }: { className?: string }) => {
 	return (
 		<svg
 			width='16'
@@ -942,6 +942,7 @@ export const SortIcon = () => {
 			viewBox='0 0 16 18'
 			fill='none'
 			xmlns='http://www.w3.org/2000/svg'
+			className={className}
 		>
 			<path
 				d='M4 17V7M4 17L1 14M4 17L7 14M12 1V11M12 1L15 4M12 1L9 4'

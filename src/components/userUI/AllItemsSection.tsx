@@ -67,7 +67,7 @@ const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 				locale={locale}
 				categoryId={isDiscountsCategory ? undefined : category?._id}
 				subCategoryId={subCategory}
-				isDiscountMode={isDiscountsCategory} // 👈 це головне
+				isDiscountMode={isDiscountsCategory}
 			/>
 		</section>
 	)

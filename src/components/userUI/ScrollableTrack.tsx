@@ -86,7 +86,8 @@ export default function ScrollableTrack({
 			{/* Контейнер зі скролом */}
 			<div
 				ref={containerRef}
-				className={`overflow-hidden ${sectionType === 'admin' ? 'mb-1' : 'my-2 '}`}
+				className={`overflow-x-auto overflow-y-hidden touch-pan-x scrollbar-none ${sectionType === 'admin' ? 'mb-1' : 'my-2'}
+  `}
 				onScroll={handleScroll}
 			>
 				<div className='flex gap-2 whitespace-nowrap justify-between'>{children}</div>

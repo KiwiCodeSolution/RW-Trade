@@ -1,7 +1,8 @@
-import { CreateNewsDto, ItemsFilterParams, NewsArticle } from '@/types/baseTypes'
+import { CreateNewsDto, NewsArticle } from '@/types/baseTypes'
 
 import { createNewsArticle, deleteNews, getNewsWithPagination, updateNewsArticle } from '@/api/news'
 
+import { NewsSort } from '@/lib/sortOptions'
 import { toast } from '@/lib/toast'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -15,20 +16,19 @@ class NewsStore {
 		this.fetchNews()
 	}
 
-	async fetchNews(params?: ItemsFilterParams) {
+	async fetchNews(params?: { page?: number; limit?: number; sort?: NewsSort }) {
 		try {
 			this.isLoading = true
 
 			const res = await getNewsWithPagination({
-				page: params?.page ?? 1,
-				limit: params?.limit ?? 16,
-				sort: 'DATE_ADDED',
-				...params
+				page: params?.page,
+				limit: params?.limit,
+				sort: params?.sort ?? 'date_desc'
 			})
 
 			runInAction(() => {
-				this.news = res.data
-				this.total = res.total ?? res.data.length
+				this.news = res.items
+				this.total = res.totalItems
 			})
 		} catch (error) {
 			console.error('❌ Failed to fetch news:', error)

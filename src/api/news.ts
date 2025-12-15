@@ -1,8 +1,9 @@
 // api/news.ts
 import { BASE_URL } from '@/utils/config'
 
-import { CreateNewsDto, ItemsFilterParams, NewsArticle } from '@/types/baseTypes'
+import { CreateNewsDto, NewsArticle } from '@/types/baseTypes'
 
+import { NewsSort } from '@/lib/sortOptions'
 import { toast } from '@/lib/toast'
 
 // Створення новини з файлами
@@ -144,15 +145,19 @@ export async function updateNewsArticle({
 }
 
 // Отримання новин з пагінацією
-export async function getNewsWithPagination(params: ItemsFilterParams) {
+export async function getNewsWithPagination(params?: {
+	page?: number
+	limit?: number
+	sort?: NewsSort
+}) {
 	const q = new URLSearchParams({
 		page: String(params?.page ?? 1),
 		limit: String(params?.limit ?? 16),
-		sort: String(params?.sort ?? 'DATE_ADDED')
+		sort: String(params?.sort ?? 'date_desc')
 	})
 
 	const res = await fetch(`${BASE_URL}/news?${q.toString()}`)
-
+	console.log('res', res)
 	return res.json()
 }
 

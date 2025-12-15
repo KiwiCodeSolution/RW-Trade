@@ -57,9 +57,9 @@
 	animation: l23 1s infinite steps(12);
 	border-radius: 50%;
 	background:
-		linear-gradient(0deg, rgb(217 217 217/50%) 30%, #f0f0f000 0 70%, rgb(94 94 94/100%) 0)
+		linear-gradient(0deg, var(--color-gr-3) 30%, var(--color-gr-4) 0 70%, var(--color-gr-2) 0)
 			50%/8% 100%,
-		linear-gradient(90deg, rgb(240 240 240/25%) 30%, #f0f0f000 0 70%, rgb(203 200 194/75%) 0)
+		linear-gradient(90deg, var(--color-gr-3) 30%, var(--color-gr-4) 0 70%, var(--color-gr-2) 0)
 			50%/100% 8%;
 	background-repeat: no-repeat;
 	aspect-ratio: 1;

@@ -155,9 +155,9 @@ const TestimonialsCarousel = () => {
 	}
 
 	return (
-		<div className='h-full flex flex-col py-5'>
+		<div className='h-full flex flex-col pt-8 pb-5 lg:py-5'>
 			<div className='grow'>
-				<div className='grid grid-cols-2 gap-10 mb-6'>
+				<div className='grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10 mb-6'>
 					{currentTestimonials.map((item, index) => (
 						<div key={index} className='w-full flex justify-center'>
 							<TestimonialsCard key={index} testimonial={item[lang]} />

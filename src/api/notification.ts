@@ -2,41 +2,31 @@ import { BASE_URL } from '@/utils/config'
 
 import { Notification } from '@/types/baseTypes'
 
+import { fetchWithAuth } from './fetchWithAuth'
 import { toast } from '@/lib/toast'
 
-import axios, { isAxiosError } from 'axios'
-
-export async function toggleStatusNotification(id: string) {
-	try {
-		const res = await axios.patch(`${BASE_URL}/notifications/${id}/read`, id)
-
-		return res.data
-	} catch (err: unknown) {
-		const msg = isAxiosError(err)
-			? (err.response?.data?.message ?? 'Помилка зміни статусу')
-			: 'Помилка зміни статусу'
-		toast.error(msg)
-
-		throw err
+// Отримати всі нотифікації
+export async function getAllNotifications(): Promise<Notification[]> {
+	const res = await fetchWithAuth(`${BASE_URL}/notifications`, { cache: 'no-store' })
+	if (!res.ok) {
+		// Тепер помилка піде до стору
+		throw new Error(`HTTP ${res.status}`)
 	}
+	const data: Notification[] = await res.json()
+	return data
 }
 
-export async function getAllNotifications(token: string) {
+// Тогл статусу прочитання нотифікації
+export async function toggleStatusNotification(id: string): Promise<Notification | null> {
 	try {
-		const res = await fetch(`${BASE_URL}/notifications`, {
-			headers: {
-				Authorization: `Bearer ${token ?? ''}`,
-				'Content-Type': 'application/json'
-			},
-			cache: 'no-store'
+		const res = await fetchWithAuth(`${BASE_URL}/notifications/${id}/read`, {
+			method: 'PATCH'
 		})
-
-		if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
-
-		const data: Notification[] = await res.json()
-		return data
-	} catch (error) {
-		console.error('Помилка при отриманні нотифікацій:', error)
-		return []
+		if (!res.ok) throw new Error(`HTTP ${res.status}`)
+		return (await res.json()) as Notification
+	} catch (err) {
+		console.error('Помилка при оновленні статусу:', err)
+		toast.error('Помилка при оновленні статусу')
+		return null
 	}
 }

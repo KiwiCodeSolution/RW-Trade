@@ -9,25 +9,22 @@ import ConfirmAdminComponent from '../commonUI/modal/ConfirmAdminComponent'
 import BaseImageItem from '../userUI/baseComponents/BaseImageItem'
 
 import { observer } from 'mobx-react-lite'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useState } from 'react'
 
 const BannerItem = observer(({ banner, fnc }: { banner: Banner; fnc: () => void }) => {
 	const { toggleVisibility, remove } = bannersStore
-	const { data: session } = useSession()
-	const token = session?.user?.accessToken
 
 	if (typeof window === 'undefined') return null
 
 	const [isShowModal, setIsShowModal] = useState(false)
 
 	function toggleVisible() {
-		toggleVisibility(banner._id, token!)
+		toggleVisibility(banner._id)
 	}
 
 	function removeBanner() {
-		remove(banner._id, token!)
+		remove(banner._id, () => setIsShowModal(false))
 	}
 
 	return (

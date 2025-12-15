@@ -50,13 +50,14 @@ export const novaPoshtaAPI: DeliveryAPI = {
 				modelName: 'AddressGeneral',
 				calledMethod: 'getWarehouses',
 				methodProperties: {
-					CityRef: city.raw.Ref,
+					CityRef: city.raw.DeliveryCity,
 					Language: 'UA'
 				}
 			})
 		})
 
 		const data = await res.json()
+
 		const list: NPWarehouseItem[] = data?.data ?? []
 
 		return list.map(w => ({
