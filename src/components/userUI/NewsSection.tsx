@@ -8,7 +8,6 @@ import Spinner from '../commonUI/loader/Spinner'
 
 import NewsCard from './NewsCard'
 import NewsGallery from './NewsGallery'
-import BaseSection from './baseComponents/BaseSection'
 import Title from './baseComponents/Title'
 import { Link } from '@/i18n/navigation'
 import '@/styles/globals.css'
@@ -40,11 +39,11 @@ const NewsSection = observer(({ section, title, subtitle, locale, bntText }: New
 	const articles = news.filter(n => !n.isNews).length > 2 ? news.filter(n => !n.isNews) : news
 
 	return (
-		<BaseSection className='py-14'>
-			<Title tag='h2' styles='lg:text-center'>
+		<section className={section === 'main' ? 'py-14' : 'lg:py-10'}>
+			<Title tag='h2' styles='text-center'>
 				{section === 'main' ? title[0] : title[1]}
 			</Title>
-			{section === 'main' && <p className='mt-4 lg:text-center'>{subtitle}</p>}
+			{section === 'main' && <p className='mt-1 lg:mt-4 lg:text-center'>{subtitle}</p>}
 
 			<div className='w-full hidden lg:flex items-center justify-center gap-x-10 py-10'>
 				<div className='w-full lg:w-1/2 grid lg:grid-rows-3 gap-10 '>
@@ -73,7 +72,7 @@ const NewsSection = observer(({ section, title, subtitle, locale, bntText }: New
 					</Link>
 				</div>
 			)}
-		</BaseSection>
+		</section>
 	)
 })
 
