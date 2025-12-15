@@ -24,6 +24,7 @@ interface BaseInputProps<TFormValues extends FieldValues> {
 	patternMessage?: string
 	label?: string
 	disabled?: boolean
+	validation?: RegisterOptions<TFormValues, Path<TFormValues>>
 }
 
 /**
@@ -53,7 +54,8 @@ export const BaseInput = <TFormValues extends FieldValues>({
 	pattern,
 	patternMessage,
 	label,
-	disabled
+	disabled,
+	validation
 }: BaseInputProps<TFormValues>) => {
 	const validationRules: RegisterOptions<TFormValues, Path<TFormValues>> = {}
 
@@ -65,6 +67,11 @@ export const BaseInput = <TFormValues extends FieldValues>({
 		}
 
 	const fieldError = getNestedError(errors, name)
+
+	const fieldValidation = {
+		...validationRules,
+		...validation
+	} as RegisterOptions<TFormValues, Path<TFormValues>>
 
 	return (
 		<div className='flex flex-col gap-1'>
@@ -86,7 +93,7 @@ export const BaseInput = <TFormValues extends FieldValues>({
 					placeholder={placeholder}
 					disabled={disabled}
 					className={`border border-gr-2 focus:border-link-blue focus:outline-none px-3 py-2 text-base rounded-lg placeholder:text-sc-2 transition-colors duration-200`}
-					{...register(name, validationRules)}
+					{...register(name, fieldValidation)}
 				/>
 				{fieldError?.message && (
 					<p className='text-sc-5 italic text-sm absolute -bottom-6 left-1'>

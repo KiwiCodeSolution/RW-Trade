@@ -9,13 +9,13 @@ import { generateProductsArray } from '@/data/mokProducts'
 
 import Pagination from '../commonUI/Pagination'
 import Sort from '../commonUI/Sort'
+import Spinner from '../commonUI/loader/Spinner'
 import QuantityProduct from '../userUI/QuantityProduct'
 import ScrollableTrack from '../userUI/ScrollableTrack'
 import SubCategoryControl from '../userUI/SubCategoryControl'
 
 import ProductWrapper from './ProductWrapper'
 
-import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import { useSession } from 'next-auth/react'
 import { useEffect, useMemo, useState } from 'react'
@@ -25,7 +25,7 @@ const CategoriesControlAdminPage = observer(() => {
 	const token = session?.user?.accessToken
 
 	const { categories } = categoryStore
-	const { products, total, isLoading } = productStore
+	const { adminProducts, totalAdmin } = productStore
 
 	const [category, setCategory] = useState<string | null>(null)
 	const [subCategory, setSubCategory] = useState<string>('all')
@@ -53,7 +53,7 @@ const CategoriesControlAdminPage = observer(() => {
 
 	// фетч продуктів
 	useEffect(() => {
-		productStore.fetchProducts({
+		productStore.fetchAdminProducts({
 			lang: 'uk',
 			categoryId: category || 'all',
 			subCategoryId: subCategory,
@@ -88,8 +88,6 @@ const CategoriesControlAdminPage = observer(() => {
 		const validCategories = categories.filter(cat => cat.title.en !== 'Discounts')
 		const fakeProducts = generateProductsArray(validCategories, 50)
 
-		console.log('🚀 ~ fakeProducts:', toJS(fakeProducts))
-
 		for (const product of fakeProducts) {
 			await productStore.createProduct({
 				product,
@@ -101,7 +99,7 @@ const CategoriesControlAdminPage = observer(() => {
 		alert('✅ 50 тестових продуктів створено!')
 	}
 
-	if (!mounted) return <div className='p-4 text-gray-400'>Завантаження...</div>
+	if (!mounted) return <Spinner />
 
 	return (
 		<>
@@ -166,11 +164,11 @@ const CategoriesControlAdminPage = observer(() => {
 					/>
 				</div>
 				{/* товари */}
-				<ProductWrapper categoryId={category || 'all'} products={products} />
+				<ProductWrapper categoryId={category || 'all'} products={adminProducts} />
 
 				<div className='mb-4'>
 					<Pagination
-						numberOfItems={total}
+						numberOfItems={totalAdmin}
 						itemsPerPage={limit}
 						currentPage={page}
 						onPageChange={setPage}

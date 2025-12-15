@@ -35,7 +35,7 @@ const ImagesGallery = ({ images }: { images: Product['images'] }) => {
 		imagesArray &&
 		imagesArray.length > 0 && (
 			<div className='w-full lg:w-[526px] h-[324px] lg:h-[423px] flex items-center lg:gap-x-16 border-[1.5px] border-sc-1/20 rounded-2xl lg:px-4 relative'>
-				<SwiperBtn className='product_card-btn-prev rotate-180 absolute top-1/2 -translate-y-1/2 left-0 z-[3] lg:relative' />
+				<SwiperBtn className='product_card-btn-prev rotate-180 absolute top-1/2 -translate-y-1/2 left-0 z-[3]' />
 				<Swiper
 					modules={[Navigation, A11y, Pagination]}
 					spaceBetween={10}
@@ -69,7 +69,7 @@ const ImagesGallery = ({ images }: { images: Product['images'] }) => {
 						</SwiperSlide>
 					))}
 				</Swiper>
-				<SwiperBtn className='product_card-btn-next absolute top-1/2 -translate-y-1/2 right-0 z-[3] lg:relative' />
+				<SwiperBtn className='product_card-btn-next absolute top-1/2 -translate-y-1/2 right-0 z-[3]' />
 			</div>
 		)
 	)

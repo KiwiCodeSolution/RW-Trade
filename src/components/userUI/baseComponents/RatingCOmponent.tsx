@@ -41,8 +41,13 @@ export default function GradientHoverRating({
 
 			if (!res.ok) throw new Error()
 			const updated = await res.json()
-			toast.success(`Рейтинг товару ${productName} оновлено: ${updated.rating}`)
-			setRating(updated.rating)
+			const correctRating = updated.rating
+				? updated.rating > 5
+					? 5.0
+					: Number(updated.rating.toFixed(1))
+				: 0
+			toast.success(`Рейтинг товару ${productName} оновлено: ${correctRating}`)
+			setRating(correctRating)
 		} catch {
 			toast.error('Не вдалося оновити рейтинг')
 			setRating(productRating) // відкат

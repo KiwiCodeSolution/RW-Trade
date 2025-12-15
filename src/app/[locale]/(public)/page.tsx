@@ -5,6 +5,7 @@ import FormSection from '@/components/userUI/FormSection'
 import NewsSection from '@/components/userUI/NewsSection'
 import PopularCategories from '@/components/userUI/PopularCategories'
 import PopularProducts from '@/components/userUI/PopularProducts'
+import RetailWholesaleModal from '@/components/userUI/RetailWholesaleModal'
 import TestimonialsSection from '@/components/userUI/TestimonialsSection'
 import BaseSection from '@/components/userUI/baseComponents/BaseSection'
 
@@ -41,14 +42,17 @@ const Main = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 			<FormSection />
 
 			<TestimonialsSection locale={locale} />
-			<NewsSection
-				section='main'
-				locale={locale}
-				title={titles}
-				subtitle={t('NewsSectionAllPages.subtitle_homePage')}
-				bntText={t('NewsSectionAllPages.btn_homePage')}
-			/>
-			{/* <RetailWholesaleModal locale={locale} /> */}
+
+			<BaseSection>
+				<NewsSection
+					section='main'
+					locale={locale}
+					title={titles}
+					subtitle={t('NewsSectionAllPages.subtitle_homePage')}
+					bntText={t('NewsSectionAllPages.btn_homePage')}
+				/>
+			</BaseSection>
+			<RetailWholesaleModal locale={locale} />
 		</main>
 	)
 }

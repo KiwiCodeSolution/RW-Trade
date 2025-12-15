@@ -4,8 +4,8 @@ import Image from 'next/image'
 
 const UserFooterTop = () => {
 	return (
-		<div className='grid grid-cols-1 xl:grid-cols-[3fr_3fr_3fr_3fr_auto] py-5 gap-y-5 border-t-[2px] border-t-nav/30 lg:border-none'>
-			<div className='hidden h-full xl:flex justify-center items-center'>
+		<div className='grid grid-cols-1 xl:grid-cols-[3fr_3fr_3fr_3fr_1fr] py-5 gap-y-5 border-t-[2px] border-t-nav/30 lg:border-none'>
+			<div className='hidden h-full xl:flex justify-center items-center lg:items-start'>
 				<Link href='/'>
 					<Image src='/logos/LOGO_152_blue.png' width={156} height={58} alt='logo' />
 				</Link>
@@ -36,7 +36,7 @@ const UserFooterTop = () => {
 					<Image src='/icons/yt.png' width={32} height={32} alt='logo' />
 				</div>
 			</div>
-			<div className='flex flex-col xl:items-center'>
+			<div className='flex flex-col xl:items-start'>
 				<div>
 					<div className='xl:pl-8 mb-6'>
 						<h3 className='gradient-text font-semibold mb-2'>Адреса:</h3>
@@ -61,7 +61,7 @@ const UserFooterTop = () => {
 					</div>
 				</div>
 			</div>
-			<div className='flex flex-col xl:items-center'>
+			<div className='flex flex-col xl:items-start'>
 				<div className='xl:pl-8 mb-6'>
 					<h3 className='gradient-text font-semibold mb-2'>Графік роботи:</h3>
 					<p>Пн - Пт: 10:00 - 18:00</p>

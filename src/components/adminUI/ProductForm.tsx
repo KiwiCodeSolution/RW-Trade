@@ -581,7 +581,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 
 				{/* рейтинг */}
 				<div className='grid grid-cols-3 2xl:grid-cols-3 gap-4 items-center'>
-					<BaseInput<ProductFormValues>
+					{/* <BaseInput<ProductFormValues>
 						name='initialRatingSum'
 						label='Сумарний рейтинг'
 						type='number'
@@ -595,6 +595,39 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 						label='Кількість відгуків'
 						type='number'
 						register={register}
+						errors={errors}
+						placeholder='5'
+					/> */}
+					<BaseInput<ProductFormValues>
+						name='initialRatingSum'
+						label='Сумарний рейтинг'
+						type='number'
+						register={register}
+						validation={{
+							min: 0,
+							validate: value => {
+								const count = watch('initialRatingCount') || 1
+								const avg = Number(value) / count
+								return avg <= 5 || 'Середній рейтинг не може бути більше 5'
+							}
+						}}
+						errors={errors}
+						placeholder='25'
+					/>
+
+					<BaseInput<ProductFormValues>
+						name='initialRatingCount'
+						label='Кількість відгуків'
+						type='number'
+						register={register}
+						validation={{
+							min: { value: 1, message: 'Має бути хоча б один відгук' },
+							validate: value => {
+								const sum = watch('initialRatingSum') || 0
+								const avg = sum / Number(value)
+								return avg <= 5 || 'Середній рейтинг не може бути більше 5'
+							}
+						}}
 						errors={errors}
 						placeholder='5'
 					/>

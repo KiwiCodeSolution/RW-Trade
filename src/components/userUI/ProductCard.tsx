@@ -1,6 +1,6 @@
 import { Locale, Product } from '@/types/baseTypes'
 
-import EditButtonProductCard from '../adminUI/EditButtonProductCard'
+import AdminRatingComponent from '../adminUI/AdminRatingComponent'
 
 import ProductInfoComponent from './ProductInfoComponent'
 import ToggleFavoriteButton from './ToggleFavoriteButton'
@@ -17,7 +17,11 @@ type ProductCardProps = {
 const ProductCard = ({ locale, type, typePage, product }: ProductCardProps) => {
 	const bgColor = type === 'partners' ? 'bg-other-2' : 'bg-other-1'
 
-	const correctRating = product.rating ? parseFloat(Math.min(product.rating, 5).toFixed(1)) : 0
+	const correctRating = product.rating
+		? product.rating > 5
+			? 5.0
+			: Number(product.rating.toFixed(1))
+		: 0
 
 	return (
 		<article
@@ -36,11 +40,8 @@ const ProductCard = ({ locale, type, typePage, product }: ProductCardProps) => {
 						</span>
 					)}
 				</div>
-				{typePage === 'admin' ? (
-					<EditButtonProductCard id={product._id} />
-				) : (
-					<ToggleFavoriteButton product={product} />
-				)}
+
+				<ToggleFavoriteButton product={product} />
 			</div>
 
 			<div
@@ -67,12 +68,16 @@ const ProductCard = ({ locale, type, typePage, product }: ProductCardProps) => {
 						{product.title[locale]}
 					</h3>
 				</Link>
+				{typePage === 'admin' ? (
+					<AdminRatingComponent productRating={correctRating} />
+				) : (
+					<RatingCOmponent
+						productRating={correctRating}
+						productId={product._id}
+						productName={product.title[locale]}
+					/>
+				)}
 
-				<RatingCOmponent
-					productRating={correctRating}
-					productId={product._id}
-					productName={product.title[locale]}
-				/>
 				<div className='w-full h-[64px] flex items-center justify-between'>
 					<ProductInfoComponent product={product} locale={locale} typePage={typePage} />
 				</div>
