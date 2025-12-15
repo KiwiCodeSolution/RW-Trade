@@ -7,6 +7,8 @@ import { categoryStore } from '@/store/CategoryStore'
 import CategoryIcon from '../commonUI/CategoryIcon'
 
 import ExtraCategories from './ExtraCategories'
+import BaseSection from './baseComponents/BaseSection'
+import Title from './baseComponents/Title'
 import { Link } from '@/i18n/navigation'
 
 import { observer } from 'mobx-react-lite'
@@ -27,18 +29,25 @@ const CategoriesSection = observer(({ section, title, locale }: CategorySectionP
 	}, [])
 
 	return (
-		<section className='py-9'>
+		<BaseSection className='py-4 lg:py-9'>
 			{section === 'client' ? (
-				<h2 className='font-bold text-[40px] mb-7 text-center'>{title}</h2>
+				<Title tag='h2' styles='mb-4 lg:mb-7 lg:text-center'>
+					{title}
+				</Title>
 			) : (
 				<h2 className='font-bold text-2xl mb-7 text-center'>
 					Оберіть категорію для налаштування
 				</h2>
 			)}
 
-			<div className='grid grid-cols-4 bg-sc-1/30 gap-0.5 pb-0.5'>
+			<div
+				className={`grid ${section === 'client' ? 'grid-cols-2 lg:grid-cols-4' : 'grid-cols-4'} bg-sc-1/30 gap-0.5 pb-0.5`}
+			>
 				{categories.map((item, index) => (
-					<div key={index} className='flex flex-col pt-2 py-8 pb-8 bg-bg-light'>
+					<div
+						key={index}
+						className='flex flex-col py-4 lg:pt-2 lg:py-8 pb-8 bg-bg-light'
+					>
 						<div className='flex flex-col items-center'>
 							<CategoryIcon
 								category={item.title['en']}
@@ -73,13 +82,13 @@ const CategoriesSection = observer(({ section, title, locale }: CategorySectionP
 						</div>
 
 						<div
-							className={`h-0.5 w-10/12 mb-2 mx-auto ${categories.length === index + 1 ? 'bg-bronze' : 'bg-primary'}`}
+							className={`hidden lg:block h-0.5 w-10/12 mb-2 mx-auto ${categories.length === index + 1 ? 'bg-bronze' : 'bg-primary'}`}
 						></div>
 
 						{section === 'client' && (
 							<>
 								{item.subcategories && item.subcategories.length > 0 && (
-									<div className='w-10/12 mx-auto grid grid-cols gap-y-4 my-5'>
+									<div className='w-10/12 mx-auto hidden lg:grid grid-cols gap-y-4 my-5'>
 										{item.subcategories.map((sub, index) => {
 											if (index > 6) return
 											return (
@@ -90,7 +99,7 @@ const CategoriesSection = observer(({ section, title, locale }: CategorySectionP
 										})}
 									</div>
 								)}
-								<div className='mx-auto mt-auto'>
+								<div className='mx-auto mt-auto hidden lg:block'>
 									<Link
 										href={`/catalog/${item.slug}`}
 										className={`text-center font-semibold ${categories.length === index + 1 ? 'bronze-text' : 'gradient-text'}`}
@@ -111,7 +120,7 @@ const CategoriesSection = observer(({ section, title, locale }: CategorySectionP
 					</div>
 				))}
 			</div>
-		</section>
+		</BaseSection>
 	)
 })
 

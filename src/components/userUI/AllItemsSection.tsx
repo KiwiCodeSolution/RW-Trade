@@ -7,6 +7,8 @@ import { categoryStore } from '@/store/CategoryStore'
 import CategoryControl from './CategoryControl'
 import ProductComponentSortAndFilters from './ProductComponentSortAndFilters'
 import SubCategoryControl from './SubCategoryControl'
+import BaseSection from './baseComponents/BaseSection'
+import Title from './baseComponents/Title'
 
 import { observer } from 'mobx-react-lite'
 import { useEffect, useMemo, useState } from 'react'
@@ -43,8 +45,10 @@ const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 	const isDiscountsCategory = category?.slug === 'discounts'
 
 	return (
-		<section>
-			<h2 className='font-bold text-[40px] mb-7'>{title[locale]}</h2>
+		<BaseSection className='py-4 lg:py-9'>
+			<Title tag='h2' styles='mb-4 lg:mb-7'>
+				{title[locale]}
+			</Title>
 
 			{/* категорії */}
 			<div className='mb-7'>
@@ -69,7 +73,7 @@ const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 				subCategoryId={subCategory}
 				isDiscountMode={isDiscountsCategory}
 			/>
-		</section>
+		</BaseSection>
 	)
 })
 

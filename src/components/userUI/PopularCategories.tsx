@@ -9,10 +9,8 @@ import { Link } from '@/i18n/navigation'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 
-const capitalize = (str: string) => str.charAt(0).toUpperCase() + str.slice(1)
-
 type ContentType = { category: string; name: string; text: string; img: string }
-const LinkToCategory = ({ item, isFirst }: { item: ContentType; isFirst?: boolean }) => {
+export const LinkToCategory = ({ item, isFirst }: { item: ContentType; isFirst?: boolean }) => {
 	return (
 		<Link
 			href={`/catalog/${item.category}`}
