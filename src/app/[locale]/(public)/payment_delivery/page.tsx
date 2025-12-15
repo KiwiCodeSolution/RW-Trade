@@ -51,16 +51,16 @@ export default async function PaymentAndDelivery() {
 
 	return (
 		<main className='min-h-[80vh]'>
-			<div className='header-shadow' />
+			<div className='hidden lg:block header-shadow' />
 			<BaseSection>
-				<Title tag='h1' isPageTitle styles='text-center my-5'>
+				<Title tag='h1' isPageTitle styles='lg:text-center my-5'>
 					{t('title')}
 				</Title>
 
-				<div className='grid grid-cols-2 py-4 gap-10 sm:gap-24'>
+				<div className='grid grid-cols-1 lg:grid-cols-2 pt-4 pb-4 gap-4 lg:gap-10 sm:gap-24'>
 					<div>
 						<h2 className='text-2xl font-semibold mb-6'>{t('delivery.title')}</h2>
-						<ul className='list-disc ml-5 mb-10 space-y-7'>
+						<ul className='list-disc lg:ml-5 mb-10 space-y-7'>
 							{deliveryMethods.map((d, idx) => (
 								<li key={idx}>
 									<span className='font-semibold'>{d.title}</span>
@@ -70,7 +70,7 @@ export default async function PaymentAndDelivery() {
 						</ul>
 
 						<h2 className='text-2xl font-semibold mb-6'>{t('payment.title')}</h2>
-						<ul className='list-disc ml-5 space-y-7'>
+						<ul className='list-disc lg:ml-5 space-y-7'>
 							{paymentMethods.map((p, idx) => (
 								<li key={idx}>
 									<span className='font-semibold'>{p.title}</span>
@@ -80,7 +80,7 @@ export default async function PaymentAndDelivery() {
 						</ul>
 					</div>
 
-					<BabyAndLogo styles='mt-[45px]' />
+					<BabyAndLogo styles='lg:mt-[45px]' />
 				</div>
 			</BaseSection>
 		</main>
