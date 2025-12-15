@@ -68,15 +68,27 @@ const CategoriesSection = observer(({ section, title, locale }: CategorySectionP
 										{item.title[locale]}
 									</Link>
 								) : (
-									<h3
-										className={`px-4 text-center font-semibold text-xl mx-auto bg-clip-text text-transparent ${
-											categories.length === index + 1
-												? 'bg-bronze'
-												: 'bg-primary'
-										}`}
-									>
-										{item.title[locale]}
-									</h3>
+									<>
+										<h3
+											className={`hidden lg:block px-4 text-center font-semibold text-xl mx-auto bg-clip-text text-transparent ${
+												categories.length === index + 1
+													? 'bg-bronze'
+													: 'bg-primary'
+											}`}
+										>
+											{item.title[locale]}
+										</h3>
+										<Link
+											className={`lg:hidden px-4 text-center font-semibold text-xl mx-auto bg-clip-text text-transparent ${
+												categories.length === index + 1
+													? 'bg-bronze'
+													: 'bg-primary'
+											}`}
+											href={`/catalog/${item.slug}`}
+										>
+											{item.title[locale]}
+										</Link>
+									</>
 								)}
 							</div>
 						</div>

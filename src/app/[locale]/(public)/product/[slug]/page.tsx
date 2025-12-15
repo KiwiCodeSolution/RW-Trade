@@ -26,8 +26,11 @@ export default async function ProductPage({
 
 	return (
 		<main className='w-full min-h-[80vh]'>
-			<BaseSection>
+			<BaseSection className='hidden lg:flex'>
 				<Path secondName={secondName} thirdName={product.title[locale]} locale={locale} />
+			</BaseSection>
+			<BaseSection className='lg:hidden'>
+				<Path secondName={secondName} locale={locale} />
 			</BaseSection>
 			<BaseSection className='flex flex-col pt-4 pb-8'>
 				<Title isPageTitle tag='h1' styles='text-center'>
