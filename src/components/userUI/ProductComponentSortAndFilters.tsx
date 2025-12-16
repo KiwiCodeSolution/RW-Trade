@@ -25,27 +25,25 @@ const ProductComponentSortAndFilters = observer(
 		subCategoryId,
 		isDiscountMode,
 		typeSection,
-		isShowSotr = true
+		isShowSort = true
 	}: {
 		locale: Locale
 		categoryId?: string
 		subCategoryId?: string
 		isDiscountMode?: boolean
 		typeSection?: 'home' | 'discounts' | 'catalog'
-		isShowSotr?: boolean
+		isShowSort?: boolean
 	}) => {
 		const { products, total, isLoading } = productStore
-
-		// 📌 useQueryParams для page, limit, sort
+		// URL query
 		const { query, setQuery } = useListQuery({
 			page: '1',
-			limit: '16',
+			limit: '18',
 			sort: 'DATE_ADDED' as ProductSort
 		})
-
 		const { page, limit, sort } = query
 
-		// 📌 useResponsiveLimits для динамічних лімітів
+		// Динамічні ліміти для grid
 		const { limits, limit: currentLimit } = useDynamicLimits({
 			breakpoints: [
 				{ min: 0, cols: 2 },
@@ -54,78 +52,72 @@ const ProductComponentSortAndFilters = observer(
 				{ min: 1530, cols: 5 },
 				{ min: 1840, cols: 6 }
 			],
-			rows: [4, 5, 6]
+			rows: [3, 4, 5]
 		})
 
-		// 🔹 Завантаження продуктів зі стору
+		// Для рендеру grid (віднімемо 1 картку під Sort)
+		// const gridLimit = currentLimit - 1
+
+		const userLimit = limits.includes(Number(limit)) ? Number(limit) : limits[0]
+		const gridLimit = Math.min(userLimit) - 1
+		const fetchLimit = gridLimit
+
+		// реально фетчимо стільки, скільки вибрав користувач
+		// 🔹 Завантаження продуктів
 		useEffect(() => {
+			const fetchLimit = Number(query.limit) // беремо новий ліміт із URL
 			productStore.fetchProducts({
 				lang: locale,
 				categoryId: categoryId || 'all',
 				subCategoryId: subCategoryId || 'all',
 				sort,
 				page: Number(page),
-				limit: Number(limit),
-				discountOnly: isDiscountMode ?? false // 👈 ось
+				limit: fetchLimit,
+				discountOnly: isDiscountMode ?? false
 			})
-		}, [locale, sort, limit, page, categoryId, subCategoryId, isDiscountMode])
+		}, [locale, sort, query.limit, page, categoryId, subCategoryId, isDiscountMode])
 
 		return (
 			<div className='flex flex-col justify-between'>
-				{isShowSotr && (
+				{isShowSort && (
 					<div className='py-6 flex items-center justify-end gap-x-6 relative'>
 						<Sort<ProductSort>
 							locale={locale}
 							options={productSortOptions}
 							onChange={val => setQuery({ sort: val, page: '1' })}
 						/>
-
 						<QuantityProduct
 							locale={locale}
 							limits={limits}
-							value={Number(limit) as ProductLimit}
-							onChangeQuantityValue={
-								val => setQuery({ limit: String(val), page: '1' }) // 🔹 число -> рядок
+							value={userLimit as ProductLimit}
+							onChangeQuantityValue={val =>
+								setQuery({ limit: String(val), page: '1' })
 							}
 						/>
 					</div>
 				)}
-
 				{isLoading ? (
 					<div className='h-[100px]'>
 						<Spinner />
 					</div>
 				) : (
 					<div className='mb-7 grid max-[939px]:grid-cols-2 min-[940px]:grid-cols-3 min-[1230px]:grid-cols-4 min-[1530px]:grid-cols-5 min-[1840px]:grid-cols-6 gap-4 lg:gap-6'>
-						{products.map(item => (
+						<div className='hidden lg:h-[505px] w-full min-w-[162px] lg:min-w-[278px] max-w-[330px] rounded-md border-2 border-sc-1 lg:flex flex-col justify-between items-center relative product-card-shadow'>
+							Sort
+						</div>
+						{products.slice(0, gridLimit).map(item => (
 							<ProductCard key={item._id} locale={locale} product={item} />
 						))}
 					</div>
 				)}
-
-				{typeSection === 'home' && (
-					<div className='hidden'>
-						<Pagination
-							numberOfItems={total}
-							itemsPerPage={Number(limit)}
-							currentPage={Number(page)}
-							onPageChange={val => setQuery({ page: String(val) })}
-						/>
-					</div>
-				)}
-				{typeSection !== 'home' && (
-					<div className='mb-7'>
-						<Pagination
-							numberOfItems={total}
-							itemsPerPage={Number(limit)}
-							currentPage={Number(page)}
-							onPageChange={val => setQuery({ page: String(val) })}
-						/>
-					</div>
-				)}
+				<Pagination
+					numberOfItems={total}
+					itemsPerPage={fetchLimit}
+					currentPage={Number(page)}
+					onPageChange={val => setQuery({ page: String(val) })}
+				/>
 			</div>
 		)
 	}
 )
-
 export default ProductComponentSortAndFilters

@@ -115,7 +115,6 @@ class ProductStore {
 	}
 
 	async fetchProducts(params?: Partial<ItemsFilterParams & { discountOnly?: boolean }>) {
-		console.log('🔹 fetchProducts called with params:', params)
 		try {
 			this.isLoading = true
 

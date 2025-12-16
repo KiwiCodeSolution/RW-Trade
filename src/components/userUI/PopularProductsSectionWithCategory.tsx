@@ -88,7 +88,7 @@ const PopularProductsSectionWithCategory = observer(() => {
 					categoryId={isDiscountsCategory ? undefined : category?._id}
 					isDiscountMode={isDiscountsCategory}
 					typeSection='home'
-					isShowSotr={false}
+					isShowSort={false}
 				/>
 			</div>
 		</>

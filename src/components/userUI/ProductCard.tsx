@@ -25,7 +25,7 @@ const ProductCard = ({ locale, type, typePage, product }: ProductCardProps) => {
 
 	return (
 		<article
-			className={`${typePage === 'admin' ? 'h-[317px] w-full min-w-[162px] max-w-[162px]' : 'h-[317px] xl:h-[505px] w-full min-w-[162px] xl:min-w-[278px] max-w-[330px]'}  rounded-md border-2 border-sc-1 flex flex-col justify-between items-center relative product-card-shadow`}
+			className={`${typePage === 'admin' ? 'h-[317px] w-full min-w-[162px] max-w-[162px]' : 'h-[317px] xl:h-[505px] w-full min-w-[162px] xl:min-w-[278px] max-w-[330px]'} rounded-md border-2 border-sc-1 flex flex-col justify-between items-center relative product-card-shadow`}
 		>
 			<div className='w-full h-[55px] absolute top-0 left-0 flex items-center justify-between p-1'>
 				<div className='h-full flex flex-col gap-y-1 items-center'>
