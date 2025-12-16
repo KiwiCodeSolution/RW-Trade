@@ -8,6 +8,7 @@ type BackdropProps = {
 	onClose?: () => void
 	closeOnOverlayClick?: boolean
 	closeOnEsc?: boolean
+	typeModal?: 'base' | 'menu'
 }
 
 const Backdrop = ({
@@ -15,7 +16,8 @@ const Backdrop = ({
 	className = '',
 	onClose,
 	closeOnOverlayClick = true,
-	closeOnEsc = true
+	closeOnEsc = true,
+	typeModal = 'base'
 }: BackdropProps) => {
 	useEffect(() => {
 		const scrollY = window.scrollY
@@ -57,10 +59,6 @@ const Backdrop = ({
 
 	function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
 		if (!onClose) return
-		// if (e.key === 'Enter' || e.key === ' ') {
-		// 	e.preventDefault()
-		// 	onClose()
-		// }
 	}
 
 	const interactive = Boolean(onClose)
@@ -73,7 +71,7 @@ const Backdrop = ({
 			// eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
 			tabIndex={interactive ? 0 : -1}
 			onKeyDown={interactive ? handleKeyDown : undefined}
-			className={`fixed inset-0 z-50 flex items-center justify-center bg-[rgba(203,200,194,0.76)] backdrop-blur-sm ${className}`}
+			className={`fixed inset-0 z-50 flex bg-[rgba(203,200,194,0.76)] backdrop-blur-sm ${className} ${typeModal === 'menu' ? 'flex-col' : 'items-center justify-center'}`}
 			onClick={handleOverlayClick}
 		>
 			{children}
