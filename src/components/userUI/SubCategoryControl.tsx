@@ -4,85 +4,67 @@ import { Locale, Subcategory } from '@/types/baseTypes'
 
 import ScrollableTrack from './ScrollableTrack'
 
-import { useEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface Props {
 	subcategories: Subcategory[]
-	setSubCategory: React.Dispatch<React.SetStateAction<string>>
+	activeSlug: string
 	locale: Locale
 }
 
-const SubCategoryControl = ({ subcategories, setSubCategory, locale }: Props) => {
-	const [selected, setSelected] = useState('all')
+const SubCategoryControl = ({ subcategories, activeSlug, locale }: Props) => {
+	const router = useRouter()
+	const searchParams = useSearchParams()
 
-	useEffect(() => {
-		queueMicrotask(() => setSelected('all'))
-	}, [subcategories])
+	const handleChange = (slug: string) => {
+		const params = new URLSearchParams(searchParams.toString())
+		if (slug === 'all') {
+			params.delete('subCategory')
+		} else {
+			params.set('subCategory', slug)
+		}
+		router.push(`?${params.toString()}`)
+	}
 
-	const handleChange = (value: string) => {
-		setSelected(value)
-		setSubCategory(value)
+	const allLabel: Record<Locale, string> = {
+		uk: 'Всі підкатегорії',
+		en: 'All subcategories'
 	}
 
 	return (
-		<div className='relative '>
+		<div className='relative'>
 			<ScrollableTrack>
-				<label
-					htmlFor={`control_all`}
-					aria-label={'all subcategories'}
-					className={`p-0.5 rounded-md w-fit cursor-pointer ${
-						selected === 'all' ? 'bg-primary' : ''
-					}`}
+				<button
+					className={`p-0.5 rounded-md w-fit cursor-pointer ${activeSlug === 'all' ? 'bg-primary' : ''}`}
+					onClick={() => handleChange('all')}
 				>
 					<div className='bg-bg-light w-full h-full flex justify-center items-center rounded-sm'>
 						<div
 							className={`text-nowrap px-4 py-2 bg-primary bg-clip-text hover:text-transparent ${
-								selected === 'all' ? 'text-transparent' : ''
+								activeSlug === 'all' ? 'text-transparent' : ''
 							}`}
 						>
-							{locale === 'uk' ? 'Всі підкатегорії' : 'All subcategories'}
+							{allLabel[locale]}
 						</div>
 					</div>
+				</button>
 
-					<input
-						type='radio'
-						name='subcategoryControl'
-						id={`control_all`}
-						value={'all'}
-						className='hidden'
-						onChange={() => handleChange('all')}
-						checked={selected === 'all'}
-					/>
-				</label>
 				{subcategories.map(item => (
-					<label
+					<button
 						key={item._id}
-						htmlFor={`control_${item.title.en}`}
-						aria-label={item.title[locale]}
-						className={`p-0.5 rounded-md w-fit cursor-pointer ${
-							selected === item._id ? 'bg-primary' : ''
-						}`}
+						className={`p-0.5 rounded-md w-fit cursor-pointer ${activeSlug === item.slug ? 'bg-primary' : ''}`}
+						onClick={() => handleChange(item.slug)}
 					>
 						<div className='bg-bg-light w-full h-full flex justify-center items-center rounded-sm'>
 							<div
 								className={`text-nowrap px-4 py-2 bg-primary bg-clip-text hover:text-transparent ${
-									selected === item._id ? 'text-transparent' : ''
+									activeSlug === item.slug ? 'text-transparent' : ''
 								}`}
 							>
 								{item.title[locale]}
 							</div>
 						</div>
-
-						<input
-							type='radio'
-							name='subcategoryControl'
-							id={`control_${item.title.en}`}
-							value={item._id}
-							className='hidden'
-							onChange={() => handleChange(item._id!)}
-							checked={selected === item._id}
-						/>
-					</label>
+					</button>
 				))}
 			</ScrollableTrack>
 		</div>

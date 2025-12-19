@@ -57,8 +57,8 @@ export async function getExchangeRate() {
 export async function fetchFilteredProducts(params: ItemsFilterParams) {
 	const {
 		lang,
-		categoryId,
-		subCategoryId,
+		categorySlug,
+		subCategorySlug,
 		priceRange,
 		country,
 		sort,
@@ -68,15 +68,15 @@ export async function fetchFilteredProducts(params: ItemsFilterParams) {
 
 	const q = new URLSearchParams()
 	if (lang) q.append('lang', lang)
-
-	if (categoryId && categoryId !== 'all') q.append('categoryId', categoryId)
-	if (subCategoryId && subCategoryId !== 'all') q.append('subCategoryId', subCategoryId)
+	if (categorySlug && categorySlug !== 'all') q.append('categorySlug', categorySlug)
+	if (subCategorySlug && subCategorySlug !== 'all') q.append('subCategorySlug', subCategorySlug)
 	if (priceRange?.length === 2) q.append('priceRange', `${priceRange[0]},${priceRange[1]}`)
 	if (country?.length) q.append('country', country.join(','))
 	if (sort) q.append('sort', sort)
 	q.append('limit', String(limit))
 	q.append('page', String(page))
 
+	console.log('q', q)
 	const url = `${BASE_URL}/products/filter?${q.toString()}`
 	const { data } = await axios.get(url)
 	return data
@@ -85,8 +85,8 @@ export async function fetchFilteredProducts(params: ItemsFilterParams) {
 export async function fetchFilteredAdminProducts(params: ItemsFilterParams) {
 	const {
 		lang,
-		categoryId,
-		subCategoryId,
+		categorySlug,
+		subCategorySlug,
 		priceRange,
 		country,
 		sort,
@@ -96,9 +96,8 @@ export async function fetchFilteredAdminProducts(params: ItemsFilterParams) {
 
 	const q = new URLSearchParams()
 	if (lang) q.append('lang', lang)
-
-	if (categoryId && categoryId !== 'all') q.append('categoryId', categoryId)
-	if (subCategoryId && subCategoryId !== 'all') q.append('subCategoryId', subCategoryId)
+	if (categorySlug && categorySlug !== 'all') q.append('categorySlug', categorySlug)
+	if (subCategorySlug && subCategorySlug !== 'all') q.append('subCategorySlug', subCategorySlug)
 	if (priceRange?.length === 2) q.append('priceRange', `${priceRange[0]},${priceRange[1]}`)
 	if (country?.length) q.append('country', country.join(','))
 	if (sort) q.append('sort', sort)

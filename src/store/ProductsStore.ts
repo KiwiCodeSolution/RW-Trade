@@ -120,8 +120,8 @@ class ProductStore {
 
 			const data = await fetchFilteredProducts({
 				lang: 'uk',
-				categoryId: 'all',
-				subCategoryId: 'all',
+				categorySlug: 'all',
+				subCategorySlug: 'all',
 				sort: 'DATE_ADDED',
 				limit: 24,
 				page: 1,
@@ -153,14 +153,15 @@ class ProductStore {
 
 			const data = await fetchFilteredAdminProducts({
 				lang: 'uk',
-				categoryId: 'all',
-				subCategoryId: 'all',
+				categorySlug: 'all',
+				subCategorySlug: 'all',
 				sort: 'DATE_ADDED',
 				limit: 24,
 				page: 1,
 				...params // дозволяє перевизначати фільтри
 			})
 
+			console.log('storeData----->', data)
 			runInAction(() => {
 				this.adminProducts = data.items
 

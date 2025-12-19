@@ -11,7 +11,6 @@ const QuantityProduct = ({
 	value: number
 	limits?: number[]
 }) => {
-	console.log(value)
 	return (
 		<div className='hidden xl:flex items-center gap-x-2'>
 			<p className='font-medium text-link-blue underline decoration-1'>

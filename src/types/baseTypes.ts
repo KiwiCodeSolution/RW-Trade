@@ -81,6 +81,7 @@ export interface Subcategory {
 	title: LangField
 	description?: LangField
 	categoryId?: string
+	slug: string
 }
 
 export type FeedbackStatus = 'new' | 'read' | 'contacted' | 'important'
@@ -286,8 +287,8 @@ export type NewsLimit = 4 | 8 | 12
 
 export type ItemsFilterParams = {
 	lang?: Locale
-	categoryId?: string | 'all' // для продуктів
-	subCategoryId?: string | 'all' // для продуктів
+	categorySlug?: string | 'all' // для продуктів
+	subCategorySlug?: string | 'all' // для продуктів
 	priceRange?: [number, number] // для продуктів
 	country?: string[] // для продуктів
 	sort?: ItemsSort

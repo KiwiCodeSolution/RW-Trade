@@ -21,20 +21,23 @@ import { useEffect } from 'react'
 const ProductComponentSortAndFilters = observer(
 	({
 		locale,
-		categoryId,
-		subCategoryId,
+		categorySlug,
+		subCategorySlug,
 		isDiscountMode,
 		typeSection,
 		isShowSort = true
 	}: {
 		locale: Locale
-		categoryId?: string
-		subCategoryId?: string
+		categorySlug?: string
+		subCategorySlug?: string
 		isDiscountMode?: boolean
 		typeSection?: 'home' | 'discounts' | 'catalog'
 		isShowSort?: boolean
 	}) => {
 		const { products, total, isLoading } = productStore
+		console.log('products', products)
+		console.log('categorySlug', categorySlug)
+		console.log('subCategorySlug', subCategorySlug)
 		// URL query
 		const { query, setQuery } = useListQuery({
 			page: '1',
@@ -68,14 +71,14 @@ const ProductComponentSortAndFilters = observer(
 			const fetchLimit = Number(query.limit) // беремо новий ліміт із URL
 			productStore.fetchProducts({
 				lang: locale,
-				categoryId: categoryId || 'all',
-				subCategoryId: subCategoryId || 'all',
+				categorySlug: categorySlug || 'all', // <- тут
+				subCategorySlug: subCategorySlug || 'all',
 				sort,
 				page: Number(page),
 				limit: fetchLimit,
 				discountOnly: isDiscountMode ?? false
 			})
-		}, [locale, sort, query.limit, page, categoryId, subCategoryId, isDiscountMode])
+		}, [locale, sort, query.limit, page, categorySlug, subCategorySlug, isDiscountMode])
 
 		return (
 			<div className='flex flex-col justify-between'>
