@@ -32,7 +32,19 @@ export default async function ProductPage({
 
 	const partnerProducts: Product[] = partnersRes.ok ? await partnersRes.json() : []
 
-	console.log('partnerProducts', partnerProducts.length, partnerProducts)
+	// console.log('partnerProducts', partnerProducts.length, partnerProducts)
+
+	const popularRes = await fetch(
+		`${BASE_URL}/products/popular-products` +
+			`?subCategoryId=${product.subCategoryId ?? ''}` +
+			`&categoryId=${product.categoryId}` +
+			`&excludeProductId=${product._id}`,
+		{ next: { revalidate: 60 } }
+	)
+
+	const popularProducts: Product[] = popularRes.ok ? await popularRes.json() : []
+
+	console.log('popularProducts', popularProducts.length, popularProducts)
 
 	if (!product)
 		return (
@@ -63,6 +75,7 @@ export default async function ProductPage({
 				product={product}
 				locale={locale}
 				partnersProducts={partnerProducts}
+				popularProducts={popularProducts}
 			/>
 		</main>
 	)
