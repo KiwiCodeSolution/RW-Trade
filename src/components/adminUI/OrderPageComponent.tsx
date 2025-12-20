@@ -1,52 +1,132 @@
 'use client'
 
+import { Locale, OrderStatus } from '@/types/baseTypes'
+
 import { ordersStore } from '@/store/OrderStore'
 
+import Pagination from '../commonUI/Pagination'
+import Sort from '../commonUI/Sort'
+import Spinner from '../commonUI/loader/Spinner'
+import QuantityProduct from '../userUI/QuantityProduct'
+
 import OrderItemComponent from './OrderItem'
+import { OrderSort, orderSortOptions } from '@/lib/sortOptions'
 
 import { observer } from 'mobx-react-lite'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 
-// 🔹 Основний компонент
+const orderLimits = [4, 8, 12]
+const statusOptions: (OrderStatus | 'all')[] = [
+	'all',
+	'pending',
+	'shipped',
+	'delivered',
+	'cancelled'
+]
+
 const OrderPageComponent = observer(() => {
-	const { orders, fetchOrders } = ordersStore
-	const [highlightId, setHighlightId] = useState<string | null>(null)
+	const router = useRouter()
+	const searchParams = useSearchParams()
+	const locale: Locale = 'uk'
 
+	const { orders, isLoading, totalPages, limit, total } = ordersStore
+
+	// 🔹 URL синхронізація
+	const updateQuery = (params: Record<string, string>) => {
+		const newParams = new URLSearchParams(searchParams.toString())
+		Object.entries(params).forEach(([key, value]) => {
+			if (value === '') newParams.delete(key)
+			else newParams.set(key, value)
+		})
+		router.replace(`?${newParams.toString()}`)
+	}
+
+	// 🔹 fetch завжди беремо параметри з URL
 	useEffect(() => {
-		if (orders.length === 0) fetchOrders()
-	}, [])
+		const pageParam = Number(searchParams.get('page')) || 1
+		const limitParam = Number(searchParams.get('limit')) || 4
+		const statusParam = (searchParams.get('status') as OrderStatus) || undefined
+		const sortParam = (searchParams.get('sort') as OrderSort) || 'createdAt_DESC'
 
-	// 🔹 Підсвічування hash
+		// 🔹 fetch із параметрами з URL
+		ordersStore.fetchOrders({
+			page: pageParam,
+			limit: limitParam,
+			status: statusParam,
+			sort: sortParam
+		})
+	}, [searchParams])
 
-	useLayoutEffect(() => {
-		if (!highlightId) return
-
-		const el = document.getElementById(`title-${highlightId}`)
-		if (!el) return
-
-		el.scrollIntoView({ behavior: 'smooth', block: 'start' })
-		el.classList.add('blink-blue')
-
-		const handleAnimationEnd = () => el.classList.remove('blink-blue')
-		el.addEventListener('animationend', handleAnimationEnd)
-
-		return () => el.removeEventListener('animationend', handleAnimationEnd)
-	}, [highlightId])
-
-	// 🔹 Витягуємо hash після рендера
-	useEffect(() => {
-		if (typeof window === 'undefined') return
-		const id = window.location.hash.slice(1)
-		if (id) setTimeout(() => setHighlightId(id), 0)
-	}, [])
+	const pageParam = Number(searchParams.get('page')) || 1
+	const limitParam = Number(searchParams.get('limit')) || 4
+	const statusParam = (searchParams.get('status') as OrderStatus) || undefined
 
 	return (
-		<div className='flex flex-col gap-y-[14px] mt-3 max-h-[87vh] overflow-y-auto pb-3'>
-			{/* Виконуємо фетч тільки якщо токен є */}
+		<div className='flex flex-col justify-between gap-y-4 mt-2'>
+			{/* 🔹 Фільтри та сортування */}
+			<div className='flex flex-wrap items-center justify-between gap-4'>
+				<div className='flex items-center gap-2 flex-wrap'>
+					<span className='font-bold'>Всього замовлень: {total}</span>
+					{statusOptions.map(s => (
+						<button
+							key={s}
+							className={`px-3 py-1 rounded font-medium ${
+								(statusParam ?? 'all') === s
+									? 'bg-link-blue text-white'
+									: 'bg-gray-100 text-gray-700'
+							}`}
+							onClick={() => {
+								updateQuery({ status: s === 'all' ? '' : s, page: '1' })
+							}}
+						>
+							{s === 'all' ? 'Всі' : s}
+						</button>
+					))}
+				</div>
 
-			{orders.map(order => (
-				<OrderItemComponent key={order._id} order={order} />
-			))}
+				<div className='flex items-center gap-4 flex-wrap'>
+					<Sort<OrderSort>
+						locale='uk'
+						options={orderSortOptions}
+						onChange={val => updateQuery({ sort: val, page: '1' })}
+					/>
+
+					<QuantityProduct
+						locale={locale}
+						limits={orderLimits}
+						value={limitParam}
+						onChangeQuantityValue={val =>
+							updateQuery({ limit: String(val), page: '1' })
+						}
+					/>
+				</div>
+			</div>
+
+			{/* 🔹 Контент */}
+			{isLoading ? (
+				<div className='flex flex-col gap-y-3 mt-3 max-h-[75vh] overflow-y-scroll pb-3'>
+					<Spinner />
+				</div>
+			) : (
+				<div className='flex flex-col gap-y-3 mt-3 max-h-[75vh] overflow-y-scroll pb-3'>
+					{orders.map(order => (
+						<OrderItemComponent order={order} key={order._id} />
+					))}
+				</div>
+			)}
+
+			{/* 🔹 Пагінація */}
+			{totalPages > 1 && (
+				<div className='mt-4'>
+					<Pagination
+						numberOfItems={total}
+						itemsPerPage={limitParam}
+						currentPage={pageParam}
+						onPageChange={val => updateQuery({ page: String(val) })}
+					/>
+				</div>
+			)}
 		</div>
 	)
 })

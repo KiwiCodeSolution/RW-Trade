@@ -27,18 +27,12 @@ export type NewsSort = (typeof newsSortOptions)[number]['value']
 /* ================= ORDERS ================= */
 
 export const orderSortOptions = [
-	{
-		value: 'createdAt',
-		label: { uk: 'Дата створення', en: 'Created date' }
-	},
-	{
-		value: 'fullName',
-		label: { uk: 'Клієнт', en: 'Customer' }
-	},
-	{
-		value: 'totalPrice',
-		label: { uk: 'Сума', en: 'Total price' }
-	}
+	{ value: 'createdAt_DESC', label: { uk: 'Дата ↓', en: 'Date ↓' } },
+	{ value: 'createdAt_ASC', label: { uk: 'Дата ↑', en: 'Date ↑' } },
+	// { value: 'fullName_ASC', label: { uk: "Ім'я А-Я", en: 'Name A-Z' } },
+	// { value: 'fullName_DESC', label: { uk: "Ім'я Я-А", en: 'Name Z-A' } },
+	{ value: 'totalPrice_ASC', label: { uk: 'Сума ↑', en: 'Price ↑' } },
+	{ value: 'totalPrice_DESC', label: { uk: 'Сума ↓', en: 'Price ↓' } }
 ] as const
 
-export type OrderSortBy = (typeof orderSortOptions)[number]['value']
+export type OrderSort = (typeof orderSortOptions)[number]['value']

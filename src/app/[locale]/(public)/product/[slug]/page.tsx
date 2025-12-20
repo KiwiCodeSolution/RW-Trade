@@ -32,8 +32,6 @@ export default async function ProductPage({
 
 	const partnerProducts: Product[] = partnersRes.ok ? await partnersRes.json() : []
 
-	// console.log('partnerProducts', partnerProducts.length, partnerProducts)
-
 	const popularRes = await fetch(
 		`${BASE_URL}/products/popular-products` +
 			`?subCategoryId=${product.subCategoryId ?? ''}` +
@@ -43,8 +41,6 @@ export default async function ProductPage({
 	)
 
 	const popularProducts: Product[] = popularRes.ok ? await popularRes.json() : []
-
-	console.log('popularProducts', popularProducts.length, popularProducts)
 
 	if (!product)
 		return (

@@ -2,6 +2,7 @@ import { Order, OrderStatus } from '@/types/baseTypes'
 
 import { deleteOrder, getOrders, patchOrderStatus } from '@/api/orders'
 
+import { OrderSort } from '@/lib/sortOptions'
 import { toast } from '@/lib/toast'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -12,7 +13,7 @@ class OrdersStore {
 
 	// pagination
 	page = 1
-	limit = 8
+	limit = 4
 	total = 0
 	totalPages = 1
 
@@ -20,30 +21,35 @@ class OrdersStore {
 	status?: OrderStatus
 	sortBy: 'createdAt' | 'fullName' | 'totalPrice' = 'createdAt'
 	sortOrder: 'asc' | 'desc' = 'desc'
+	sort: OrderSort = 'createdAt_DESC'
 
 	// counters
 	totalByStatus: Partial<Record<OrderStatus, number>> = {}
 
 	constructor() {
 		makeAutoObservable(this)
-		this.fetchOrders()
+		// this.fetchOrders()
 	}
 
-	fetchOrders = async () => {
+	fetchOrders = async (params?: {
+		page?: number
+		limit?: number
+		status?: OrderStatus
+		sort?: OrderSort
+	}) => {
+		const page = params?.page ?? this.page
+		const limit = params?.limit ?? this.limit
+		const status = params?.status ?? this.status
+		const sort = params?.sort ?? this.sort
+
 		this.isLoading = true
 		try {
-			const response = await getOrders({
-				page: this.page,
-				limit: this.limit,
-				status: this.status,
-				sortBy: this.sortBy,
-				sortOrder: this.sortOrder
-			})
+			const response = await getOrders({ page, limit, status, sort })
 
 			runInAction(() => {
-				this.orders = response.data
-				this.total = response.total
-				this.totalPages = response.totalPages
+				this.orders = response.data ?? []
+				this.total = response.total ?? 0
+				this.totalPages = response.totalPages ?? 1
 				this.totalByStatus = response.totalByStatus ?? {}
 			})
 		} catch (err) {
@@ -60,25 +66,24 @@ class OrdersStore {
 	// ===== UI actions =====
 	setPage(page: number) {
 		this.page = page
-		this.fetchOrders()
+		// this.fetchOrders()
 	}
 
 	setLimit(limit: number) {
 		this.limit = limit
 		this.page = 1
-		this.fetchOrders()
+		// this.fetchOrders()
 	}
 
 	setStatus(status?: OrderStatus) {
 		this.status = status
 		this.page = 1
-		this.fetchOrders()
+		// this.fetchOrders()
 	}
 
-	setSorting(sortBy: 'createdAt' | 'fullName' | 'totalPrice', sortOrder: 'asc' | 'desc') {
-		this.sortBy = sortBy
-		this.sortOrder = sortOrder
-		this.fetchOrders()
+	setSorting(sort: OrderSort) {
+		this.sort = sort
+		// this.fetchOrders()
 	}
 
 	// ===== mutations =====

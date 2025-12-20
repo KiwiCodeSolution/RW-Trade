@@ -20,9 +20,7 @@ const Notice = observer(({ notice }: Props) => {
 			: `Повідомлення з основної сторінки сайту від ${notice.name}`
 
 	const link =
-		notice.type === 'order'
-			? `/manage-panel/orders#${notice.refId}`
-			: `/manage-panel/messages#${notice.refId}`
+		notice.type == 'order' ? `/manage-panel/orders` : `/manage-panel/messages#${notice.refId}`
 
 	const formatDate = (iso: string) => {
 		const d = new Date(iso)

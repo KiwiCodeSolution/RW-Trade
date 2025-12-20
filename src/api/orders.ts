@@ -3,42 +3,27 @@ import { BASE_URL } from '@/utils/config'
 import { Order, OrderStatus, OrdersResponse } from '@/types/baseTypes'
 
 import { fetchWithAuth } from './fetchWithAuth'
+import { OrderSort } from '@/lib/sortOptions'
 
 type GetOrdersParams = {
 	page?: number
 	limit?: number
 	status?: OrderStatus
-	sortBy?: 'createdAt' | 'fullName' | 'totalPrice'
-	sortOrder?: 'asc' | 'desc'
+	sort?: OrderSort
 }
 export async function getOrders(params: GetOrdersParams = {}): Promise<OrdersResponse> {
 	const query = new URLSearchParams()
-
 	if (params.page) query.set('page', String(params.page))
 	if (params.limit) query.set('limit', String(params.limit))
 	if (params.status) query.set('status', params.status)
-	if (params.sortBy) query.set('sortBy', params.sortBy)
-	if (params.sortOrder) query.set('sortOrder', params.sortOrder)
+	if (params.sort) query.set('sort', params.sort) // прямо OrderSort
 
-	try {
-		const res = await fetchWithAuth(`${BASE_URL}/orders?${query.toString()}`, {
-			cache: 'no-store'
-		})
+	const res = await fetchWithAuth(`${BASE_URL}/orders?${query.toString()}`, {
+		cache: 'no-store'
+	})
 
-		if (!res.ok) throw new Error('Помилка отримання ордерів')
-
-		return await res.json()
-	} catch (err) {
-		console.error(err)
-		return {
-			data: [],
-			total: 0,
-			page: 1,
-			limit: params.limit ?? 8,
-			totalPages: 1,
-			totalByStatus: {}
-		}
-	}
+	if (!res.ok) throw new Error('Помилка отримання ордерів')
+	return await res.json()
 }
 
 // Видалити замовлення
