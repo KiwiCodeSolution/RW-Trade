@@ -11,7 +11,7 @@ export default async function OrdersPage() {
 	return (
 		<div className='w-full'>
 			<HeaderPage pageName='Замовлення' />
-			<OrderPageComponent />
+			<OrderPageComponent pageName='all' />
 		</div>
 	)
 }

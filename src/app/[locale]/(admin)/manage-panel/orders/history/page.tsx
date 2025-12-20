@@ -1,4 +1,5 @@
 import HeaderPage from '@/components/adminUI/HeaderPage'
+import OrderPageComponent from '@/components/adminUI/OrderPageComponent'
 
 import { Metadata } from 'next'
 
@@ -9,6 +10,7 @@ const HistoryPage = () => {
 	return (
 		<div className='w-full'>
 			<HeaderPage pageName='Історія замовлень' />
+			<OrderPageComponent pageName='history' />
 		</div>
 	)
 }

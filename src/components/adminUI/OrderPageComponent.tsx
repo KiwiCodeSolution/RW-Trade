@@ -25,7 +25,7 @@ const statusOptions: (OrderStatus | 'all')[] = [
 	'cancelled'
 ]
 
-const OrderPageComponent = observer(() => {
+const OrderPageComponent = observer(({ pageName = 'all' }: { pageName: 'all' | 'history' }) => {
 	const router = useRouter()
 	const searchParams = useSearchParams()
 	const locale: Locale = 'uk'
@@ -62,28 +62,33 @@ const OrderPageComponent = observer(() => {
 	const limitParam = Number(searchParams.get('limit')) || 4
 	const statusParam = (searchParams.get('status') as OrderStatus) || undefined
 
+	const titleButton = {
+		all: 'Всі',
+		pending: 'В очікуванні',
+		shipped: 'Відправлені',
+		delivered: 'Доставлені',
+		cancelled: 'Скасовані'
+	}
+
 	return (
 		<div className='flex flex-col justify-between gap-y-4 mt-2'>
 			{/* 🔹 Фільтри та сортування */}
-			<div className='flex flex-wrap items-center justify-between gap-4'>
-				<div className='flex items-center gap-2 flex-wrap'>
-					<span className='font-bold'>Всього замовлень: {total}</span>
-					{statusOptions.map(s => (
+			<div className='w-full grid grid-cols-5 gap-x-[2px] bg-primary rounded-lg h-[38px] p-[2px]'>
+				{pageName === 'history' &&
+					statusOptions.map((s, idx) => (
 						<button
 							key={s}
-							className={`px-3 py-1 rounded font-medium ${
-								(statusParam ?? 'all') === s
-									? 'bg-link-blue text-white'
-									: 'bg-gray-100 text-gray-700'
-							}`}
+							className={`w-full ${(statusParam ?? 'all') === s ? 'bg-transparent text-white' : 'bg-white text-nav'} ${idx === 0 ? 'rounded-l-lg' : ''} ${idx === statusOptions.length - 1 ? 'rounded-r-lg' : ''} transition-colors duration-300 font-semibold flex items-center justify-center`}
 							onClick={() => {
 								updateQuery({ status: s === 'all' ? '' : s, page: '1' })
 							}}
 						>
-							{s === 'all' ? 'Всі' : s}
+							{titleButton[s]}
 						</button>
 					))}
-				</div>
+			</div>
+			<div className={`flex flex-wrap items-center justify-between gap-4 `}>
+				<p className='font-bold'>Всього замовлень: {total}</p>
 
 				<div className='flex items-center gap-4 flex-wrap'>
 					<Sort<OrderSort>
