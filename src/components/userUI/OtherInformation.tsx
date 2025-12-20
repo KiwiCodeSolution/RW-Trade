@@ -1,19 +1,28 @@
 'use client'
 
-import { ProductPrint } from '@/types/baseTypes'
+import { Locale, Product } from '@/types/baseTypes'
 
 import Collapse from '../commonUI/Collapse'
 
 import DeliveryPayment from './DeliveryPayment'
+import PartnersProductsList from './PartnersProductsList'
 import VideoBlock from './VideoBlock'
 import BaseSection from './baseComponents/BaseSection'
 import HtmlContent from './baseComponents/HtmlContent'
 
-const OtherInformation = ({ product, locale }: ProductPrint) => {
+const OtherInformation = ({
+	product,
+	locale,
+	partnersProducts
+}: {
+	product: Product
+	locale: Locale
+	partnersProducts?: Product[]
+}) => {
 	return (
-		<BaseSection className='flex gap-x-14 items-start justify-between pt-9'>
+		<BaseSection className='flex flex-col lg:flex-row gap-x-14 items-start justify-between pt-9'>
 			<div className='w-full lg:w-[1280px] mx-auto'>
-				<div className='flex flex-col w-full lg:w-9/12 gap-4 lg:gap-5'>
+				<div className='flex flex-col w-full gap-4 lg:gap-5'>
 					{/* опис */}
 					<div className='flex flex-col gap-x-4 px-2 py-4 rounded-2xl bg-other-5 description'>
 						<p className='text-xl font-medium'>
@@ -28,6 +37,7 @@ const OtherInformation = ({ product, locale }: ProductPrint) => {
 						<Collapse
 							title={locale === 'uk' ? 'Відеоогляд' : 'Videos'}
 							sectionType='video'
+							defaultOpen
 						>
 							<VideoBlock videoUrl={product.videoUrl} />
 						</Collapse>
@@ -79,6 +89,9 @@ const OtherInformation = ({ product, locale }: ProductPrint) => {
 					<DeliveryPayment />
 				</div>
 			</div>
+			{partnersProducts && partnersProducts.length > 0 && (
+				<PartnersProductsList locale={locale} products={partnersProducts} />
+			)}
 		</BaseSection>
 	)
 }

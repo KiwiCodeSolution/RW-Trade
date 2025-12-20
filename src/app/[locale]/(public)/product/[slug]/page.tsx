@@ -15,13 +15,33 @@ export default async function ProductPage({
 }) {
 	const { slug, locale } = await params
 
-	const res = await fetch(`${BASE_URL}/products/slug/${slug}`, {
+	const productRes = await fetch(`${BASE_URL}/products/slug/${slug}`, {
 		next: { revalidate: 60 }
 	})
 
-	if (!res.ok) throw new Error('Failed to fetch product')
-	const product: Product = await res.json()
+	if (!productRes.ok) throw new Error('Failed to fetch product')
+	const product: Product = await productRes.json()
 
+	const partnersRes = await fetch(
+		`${BASE_URL}/products/partners` +
+			`?subCategoryId=${product.subCategoryId ?? ''}` +
+			`&categoryId=${product.categoryId}` +
+			`&excludeProductId=${product._id}`,
+		{ next: { revalidate: 60 } }
+	)
+
+	const partnerProducts: Product[] = partnersRes.ok ? await partnersRes.json() : []
+
+	console.log('partnerProducts', partnerProducts.length, partnerProducts)
+
+	if (!product)
+		return (
+			<BaseSection className='flex flex-col pt-4 pb-8'>
+				<Title isPageTitle tag='h1' styles='text-center'>
+					{locale === 'uk' ? 'Вибачте, товар не знайдено' : 'Sorry, product not found'}
+				</Title>
+			</BaseSection>
+		)
 	const secondName = locale === 'uk' ? 'каталог' : 'catalog'
 
 	return (
@@ -39,7 +59,11 @@ export default async function ProductPage({
 			</BaseSection>
 
 			<HeroProductPageComponent product={product} locale={locale} />
-			<OtherInformation product={product} locale={locale} />
+			<OtherInformation
+				product={product}
+				locale={locale}
+				partnersProducts={partnerProducts}
+			/>
 		</main>
 	)
 }

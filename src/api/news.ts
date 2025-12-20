@@ -157,7 +157,7 @@ export async function getNewsWithPagination(params?: {
 	})
 
 	const res = await fetch(`${BASE_URL}/news?${q.toString()}`)
-	console.log('res', res)
+
 	return res.json()
 }
 

@@ -15,10 +15,11 @@ type ProductInfoComponentProps = {
 	product: Product
 	locale: Locale
 	typePage?: 'client' | 'admin'
+	type?: 'our' | 'partners'
 }
 
 const ProductInfoComponent = observer(
-	({ product, locale, typePage }: ProductInfoComponentProps) => {
+	({ product, locale, typePage, type = 'our' }: ProductInfoComponentProps) => {
 		const { exchangeRate, isWholesale } = productStore
 		const [mounted, setMounted] = useState(false)
 
@@ -64,11 +65,11 @@ const ProductInfoComponent = observer(
 			// Товар в наявності — текст і кнопка в одному рядку
 			<div className='w-full h-[64px] flex items-center justify-between'>
 				<p
-					className={`${typePage === 'admin' ? 'text-sm' : 'text-sm xl:text-xl'} font-medium`}
+					className={`${typePage === 'admin' ? 'text-sm' : type === 'partners' ? 'text-base' : 'text-sm xl:text-xl'} font-medium`}
 				>
 					{locale === 'en' ? 'Price:' : 'Ціна:'} {priceLocal}₴
 				</p>
-				<AddCartBtn product={product} typePage={typePage} />
+				<AddCartBtn product={product} typePage={typePage} type={type} />
 			</div>
 		) : (
 			// Товар не в наявності — вертикальна колонка
@@ -88,7 +89,7 @@ const ProductInfoComponent = observer(
 					)}
 				</div>
 				<div
-					className={`${typePage === 'admin' ? 'w-11 h-11' : 'w-[64px] h-[64px]'} rounded-lg p-2 flex items-center justify-center ${currentBgStyle}`}
+					className={`${typePage === 'admin' ? 'w-11 h-11' : type === 'partners' ? 'w-11 h-11' : 'w-[64px] h-[64px]'} rounded-lg p-2 flex items-center justify-center ${currentBgStyle}`}
 				>
 					{product.status === ProductStatus.EXPECTED ? (
 						<Timer color='#606975' />

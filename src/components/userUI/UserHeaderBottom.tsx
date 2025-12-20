@@ -13,7 +13,7 @@ import Image from 'next/image'
 
 const UserHeaderBottom = ({ locale }: { locale: Locale }) => {
 	return (
-		<div className='w-full min-[939px]:header-shadow'>
+		<div className='w-full header-shadow'>
 			<BaseSection>
 				<div className='flex items-center h-[72px]'>
 					<Link href='/' className='hidden sm:block mr-4'>

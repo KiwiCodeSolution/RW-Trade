@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 async function getAllNews() {
 	const res = await getNewsWithPagination({ page: 1, limit: 20 })
 
-	return res.data
+	return res
 }
 
 const News = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
@@ -31,7 +31,7 @@ const News = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 					{locale === 'uk' ? 'Новини та статті' : 'News and Articles'}
 				</Title>
 			</BaseSection>
-			<NewsList locale={locale} posts={news} />
+			<NewsList locale={locale} posts={news.items} />
 		</main>
 	)
 }

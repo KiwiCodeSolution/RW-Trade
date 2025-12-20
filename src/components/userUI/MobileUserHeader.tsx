@@ -1,13 +1,13 @@
 'use client'
 
 import BurgerIcon from '@/assets/icons/burger-primary-24.svg'
-import CartIcon from '@/assets/icons/cart-bronze-24.svg'
 import { LogoBlue } from '@/assets/icons_logos'
 
 import { Locale } from '@/types/baseTypes'
 
 import MobileMenuModal from '../commonUI/modal/MobileMenuModal'
 
+import HeaderCartButtonMobile from './HeaderCartButtonMobile'
 import MobileMenu from './MobileMenu'
 import { Link } from '@/i18n/navigation'
 
@@ -31,9 +31,7 @@ const MobileUserHeader = ({
 				<Link href='/' className='block'>
 					<LogoBlue width='120' />
 				</Link>
-				<div className='w-10 h-10 p-2'>
-					<CartIcon />
-				</div>
+				<HeaderCartButtonMobile locale={locale} />
 			</div>
 			{isShowModal && (
 				<MobileMenuModal isOpen={isShowModal} onClose={() => setIsShowModal(false)}>
