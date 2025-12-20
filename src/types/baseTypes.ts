@@ -60,6 +60,8 @@ export type Product = CreateProductDto & {
 	slugEn: string
 	rating: number
 	status: ProductStatus
+	subCategorySlug: string
+	categorySlug: string
 }
 
 export type ProductPrint = { product: Product; locale: Locale }
@@ -82,6 +84,7 @@ export interface Subcategory {
 	description?: LangField
 	categoryId?: string
 	slug: string
+	subCategorySlug?: string
 }
 
 export type FeedbackStatus = 'new' | 'read' | 'contacted' | 'important'

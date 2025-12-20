@@ -35,7 +35,9 @@ const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 
 		// 2️⃣ якщо категорії нема, але є підкатегорія
 		if (subCategorySlug !== 'all') {
-			return categories.find(c => c.subcategories?.some(sc => sc.slug === subCategorySlug))
+			return categories.find(c =>
+				c.subcategories?.some(sc => sc.subCategorySlug === subCategorySlug)
+			)
 		}
 
 		return undefined
@@ -80,6 +82,7 @@ const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 						subcategories={displayedSubcategories}
 						activeSlug={subCategorySlug}
 						locale={locale}
+						useUrlSync
 					/>
 				</div>
 			)}
@@ -90,6 +93,7 @@ const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 				categorySlug={isDiscountsCategory ? undefined : activeCategory?.slug}
 				subCategorySlug={subCategorySlug !== 'all' ? subCategorySlug : undefined}
 				isDiscountMode={isDiscountsCategory}
+				typeSection='catalog'
 			/>
 		</BaseSection>
 	)

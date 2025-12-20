@@ -4,26 +4,48 @@ import { Locale, Subcategory } from '@/types/baseTypes'
 
 import ScrollableTrack from './ScrollableTrack'
 
-import { useRouter, useSearchParams } from 'next/navigation'
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 
 interface Props {
 	subcategories: Subcategory[]
-	activeSlug: string
 	locale: Locale
+
+	activeSlug?: string
+	onChange?: (slug: string) => void
+	useUrlSync?: boolean
 }
 
-const SubCategoryControl = ({ subcategories, activeSlug, locale }: Props) => {
+const SubCategoryControl = ({
+	subcategories,
+	locale,
+	activeSlug = 'all',
+	onChange,
+	useUrlSync = false
+}: Props) => {
 	const router = useRouter()
 	const searchParams = useSearchParams()
+	const pathname = usePathname()
 
-	const handleChange = (slug: string) => {
-		const params = new URLSearchParams(searchParams.toString())
-		if (slug === 'all') {
-			params.delete('subCategory')
+	const currentSlug = useUrlSync ? (searchParams.get('subCategory') ?? 'all') : activeSlug
+
+	const handleChange = (slug?: string) => {
+		if (!slug) return
+
+		if (useUrlSync) {
+			const params = new URLSearchParams(searchParams.toString())
+
+			if (slug === 'all') {
+				params.delete('subCategory')
+			} else {
+				params.set('subCategory', slug)
+			}
+
+			// 🔥 КЛЮЧОВИЙ ФІКС
+			const query = params.toString()
+			router.push(query ? `${pathname}?${query}` : pathname)
 		} else {
-			params.set('subCategory', slug)
+			onChange?.(slug)
 		}
-		router.push(`?${params.toString()}`)
 	}
 
 	const allLabel: Record<Locale, string> = {
@@ -34,35 +56,43 @@ const SubCategoryControl = ({ subcategories, activeSlug, locale }: Props) => {
 	return (
 		<div className='relative'>
 			<ScrollableTrack>
+				{/* ALL */}
 				<button
-					className={`p-0.5 rounded-md w-fit cursor-pointer ${activeSlug === 'all' ? 'bg-primary' : ''}`}
 					onClick={() => handleChange('all')}
+					className={`p-0.5 rounded-md w-fit ${
+						currentSlug === 'all' ? 'bg-primary' : ''
+					}`}
 				>
-					<div className='bg-bg-light w-full h-full flex justify-center items-center rounded-sm'>
-						<div
-							className={`text-nowrap px-4 py-2 bg-primary bg-clip-text hover:text-transparent ${
-								activeSlug === 'all' ? 'text-transparent' : ''
+					<div className='bg-bg-light rounded-sm px-4 py-2'>
+						<span
+							className={`text-nowrap bg-primary bg-clip-text ${
+								currentSlug === 'all' ? 'text-transparent' : ''
 							}`}
 						>
 							{allLabel[locale]}
-						</div>
+						</span>
 					</div>
 				</button>
 
+				{/* SUBCATEGORIES */}
 				{subcategories.map(item => (
 					<button
 						key={item._id}
-						className={`p-0.5 rounded-md w-fit cursor-pointer ${activeSlug === item.slug ? 'bg-primary' : ''}`}
-						onClick={() => handleChange(item.slug)}
+						onClick={() => handleChange(item.subCategorySlug ?? item.slug)}
+						className={`p-0.5 rounded-md w-fit ${
+							currentSlug === (item.subCategorySlug ?? item.slug) ? 'bg-primary' : ''
+						}`}
 					>
-						<div className='bg-bg-light w-full h-full flex justify-center items-center rounded-sm'>
-							<div
-								className={`text-nowrap px-4 py-2 bg-primary bg-clip-text hover:text-transparent ${
-									activeSlug === item.slug ? 'text-transparent' : ''
+						<div className='bg-bg-light rounded-sm px-4 py-2'>
+							<span
+								className={`text-nowrap bg-primary bg-clip-text ${
+									currentSlug === (item.subCategorySlug ?? item.slug)
+										? 'text-transparent'
+										: ''
 								}`}
 							>
 								{item.title[locale]}
-							</div>
+							</span>
 						</div>
 					</button>
 				))}

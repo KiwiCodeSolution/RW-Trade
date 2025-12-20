@@ -11,6 +11,7 @@ import Pagination from '../commonUI/Pagination'
 import Sort from '../commonUI/Sort'
 import Spinner from '../commonUI/loader/Spinner'
 
+import Filters from './Filters'
 import ProductCard from './ProductCard'
 import QuantityProduct from './QuantityProduct'
 import { ProductSort, productSortOptions } from '@/lib/sortOptions'
@@ -24,7 +25,7 @@ const ProductComponentSortAndFilters = observer(
 		categorySlug,
 		subCategorySlug,
 		isDiscountMode,
-		typeSection,
+		typeSection = 'catalog',
 		isShowSort = true
 	}: {
 		locale: Locale
@@ -34,15 +35,16 @@ const ProductComponentSortAndFilters = observer(
 		typeSection?: 'home' | 'discounts' | 'catalog'
 		isShowSort?: boolean
 	}) => {
-		const { products, total, isLoading } = productStore
-		console.log('products', products)
-		console.log('categorySlug', categorySlug)
-		console.log('subCategorySlug', subCategorySlug)
+		const { products, total, isLoading, allCountries, minPrice, maxPrice } = productStore
+
 		// URL query
 		const { query, setQuery } = useListQuery({
 			page: '1',
 			limit: '18',
-			sort: 'DATE_ADDED' as ProductSort
+			sort: 'DATE_ADDED' as ProductSort,
+			countries: '',
+			minPrice: '',
+			maxPrice: ''
 		})
 		const { page, limit, sort } = query
 
@@ -59,26 +61,47 @@ const ProductComponentSortAndFilters = observer(
 		})
 
 		// Для рендеру grid (віднімемо 1 картку під Sort)
-		// const gridLimit = currentLimit - 1
 
 		const userLimit = limits.includes(Number(limit)) ? Number(limit) : limits[0]
-		const gridLimit = Math.min(userLimit) - 1
+
+		// чи рендериться картка фільтрів
+		const hasFiltersCard = currentLimit > 6 // lg+
+
+		const gridLimit = hasFiltersCard ? userLimit - 1 : userLimit
 		const fetchLimit = gridLimit
 
 		// реально фетчимо стільки, скільки вибрав користувач
 		// 🔹 Завантаження продуктів
 		useEffect(() => {
-			const fetchLimit = Number(query.limit) // беремо новий ліміт із URL
 			productStore.fetchProducts({
 				lang: locale,
-				categorySlug: categorySlug || 'all', // <- тут
+				categorySlug: categorySlug || 'all',
 				subCategorySlug: subCategorySlug || 'all',
 				sort,
 				page: Number(page),
-				limit: fetchLimit,
-				discountOnly: isDiscountMode ?? false
+				limit: Number(query.limit),
+				discountOnly: isDiscountMode ?? false,
+
+				// 👇 тільки якщо користувач реально вибрав
+				country: query.countries ? query.countries.split(',') : undefined,
+
+				priceRange:
+					query.minPrice && query.maxPrice
+						? [Number(query.minPrice), Number(query.maxPrice)]
+						: undefined
 			})
-		}, [locale, sort, query.limit, page, categorySlug, subCategorySlug, isDiscountMode])
+		}, [
+			locale,
+			sort,
+			page,
+			query.limit,
+			query.countries,
+			query.minPrice,
+			query.maxPrice,
+			categorySlug,
+			subCategorySlug,
+			isDiscountMode
+		])
 
 		return (
 			<div className='flex flex-col justify-between'>
@@ -89,14 +112,16 @@ const ProductComponentSortAndFilters = observer(
 							options={productSortOptions}
 							onChange={val => setQuery({ sort: val, page: '1' })}
 						/>
-						<QuantityProduct
-							locale={locale}
-							limits={limits}
-							value={userLimit as ProductLimit}
-							onChangeQuantityValue={val =>
-								setQuery({ limit: String(val), page: '1' })
-							}
-						/>
+						<div className='hidden lg:block'>
+							<QuantityProduct
+								locale={locale}
+								limits={limits}
+								value={userLimit as ProductLimit}
+								onChangeQuantityValue={val =>
+									setQuery({ limit: String(val), page: '1' })
+								}
+							/>
+						</div>
 					</div>
 				)}
 				{isLoading ? (
@@ -105,20 +130,34 @@ const ProductComponentSortAndFilters = observer(
 					</div>
 				) : (
 					<div className='mb-7 grid max-[939px]:grid-cols-2 min-[940px]:grid-cols-3 min-[1230px]:grid-cols-4 min-[1530px]:grid-cols-5 min-[1840px]:grid-cols-6 gap-4 lg:gap-6'>
-						<div className='hidden lg:h-[505px] w-full min-w-[162px] lg:min-w-[278px] max-w-[330px] rounded-md border-2 border-sc-1 lg:flex flex-col justify-between items-center relative product-card-shadow'>
-							Sort
+						<div className='hidden lg:h-[505px] w-full min-w-[162px] lg:min-w-[278px] max-w-[330px]  lg:flex flex-col justify-between items-center relative '>
+							<Filters
+								countriesList={allCountries}
+								minPriceDefault={minPrice ?? 0}
+								maxPriceDefault={maxPrice ?? 0}
+							/>
 						</div>
 						{products.slice(0, gridLimit).map(item => (
 							<ProductCard key={item._id} locale={locale} product={item} />
 						))}
 					</div>
 				)}
-				<Pagination
-					numberOfItems={total}
-					itemsPerPage={fetchLimit}
-					currentPage={Number(page)}
-					onPageChange={val => setQuery({ page: String(val) })}
-				/>
+				{typeSection !== 'home' && (
+					<Pagination
+						numberOfItems={total}
+						itemsPerPage={fetchLimit}
+						currentPage={Number(page)}
+						onPageChange={val => setQuery({ page: String(val) })}
+					/>
+				)}
+				<div className='lg:hidden mx-auto mt-8 mb-4'>
+					<QuantityProduct
+						locale={locale}
+						limits={limits}
+						value={userLimit as ProductLimit}
+						onChangeQuantityValue={val => setQuery({ limit: String(val), page: '1' })}
+					/>
+				</div>
 			</div>
 		)
 	}

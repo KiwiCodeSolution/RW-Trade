@@ -304,3 +304,21 @@
 ::-webkit-scrollbar {
 	display: none;
 }
+
+.slider-filter .range-slider__range {
+	background: linear-gradient(90deg, #5dafb1, #5e73c9) !important;
+	height: 2px !important;
+}
+
+.slider-filter .range-slider {
+	height: 4px !important;
+}
+
+.slider-filter .range-slider__thumb {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: linear-gradient(90deg, #e1a755 0%, #b76b00 100%) !important;
+	border: none;
+	cursor: pointer;
+}

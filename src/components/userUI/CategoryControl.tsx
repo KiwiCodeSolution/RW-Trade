@@ -10,22 +10,39 @@ interface CategoryControlProps {
 	categories: Category[]
 	activeSlug: string
 	locale: Locale
+
+	onChange?: (slug: string) => void
+	useUrlSync?: boolean
 }
 
-export default function CategoryControl({ categories, activeSlug, locale }: CategoryControlProps) {
+export default function CategoryControl({
+	categories,
+	activeSlug,
+	locale,
+	onChange,
+	useUrlSync = false
+}: CategoryControlProps) {
 	const router = useRouter()
 	const searchParams = useSearchParams()
 
 	const handleSelect = (slug?: string) => {
-		const params = new URLSearchParams(searchParams.toString())
-		if (slug && slug !== 'all') {
-			params.set('category', slug)
-			params.set('subCategory', 'all') // при зміні категорії підкатегорія скидається
+		if (!slug) return
+
+		if (useUrlSync) {
+			const params = new URLSearchParams(searchParams.toString())
+
+			if (slug !== 'all') {
+				params.set('category', slug)
+				params.set('subCategory', 'all')
+			} else {
+				params.delete('category')
+				params.delete('subCategory')
+			}
+
+			router.push(`?${params.toString()}`)
 		} else {
-			params.delete('category')
-			params.delete('subCategory')
+			onChange?.(slug)
 		}
-		router.push(`?${params.toString()}`)
 	}
 
 	const content: Record<Locale, string> = {

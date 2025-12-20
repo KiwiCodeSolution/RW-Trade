@@ -36,6 +36,11 @@ class ProductStore {
 	discountTotal = 0
 	shouldAskWholesale = false
 
+	allCountries: string[] = [] // 🔹 повний перелік для фільтра
+	filteredCountries: string[] = [] // 🔹 країни, які реально відфільтровані
+	minPrice = 0
+	maxPrice = 0
+
 	constructor() {
 		makeAutoObservable(this)
 
@@ -125,7 +130,7 @@ class ProductStore {
 				sort: 'DATE_ADDED',
 				limit: 24,
 				page: 1,
-				...params // дозволяє перевизначати фільтри
+				...params
 			})
 
 			runInAction(() => {
@@ -137,6 +142,16 @@ class ProductStore {
 				})
 
 				this.total = data.totalItems
+				this.minPrice = data.filter.minPrice.toFixed(2)
+				this.maxPrice = data.filter.maxPrice.toFixed(2)
+
+				// 🔹 Зберігаємо повний перелік лише при першому завантаженні
+				if (!this.allCountries.length) {
+					this.allCountries = data.filter.allCountries
+				}
+
+				// 🔹 Завжди зберігаємо перелік реально відфільтрованих країн
+				this.filteredCountries = data.filter.selectedCountries
 			})
 		} catch (error) {
 			console.error('❌ Failed to fetch filtered products:', error)
