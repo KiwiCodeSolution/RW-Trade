@@ -176,7 +176,6 @@ class ProductStore {
 				...params // дозволяє перевизначати фільтри
 			})
 
-			console.log('storeData----->', data)
 			runInAction(() => {
 				this.adminProducts = data.items
 

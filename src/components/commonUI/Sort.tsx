@@ -42,7 +42,7 @@ function Sort<T extends string>({
 			</button>
 
 			{open && (
-				<div className='w-full h-fit px-2 py-4 rounded-md border-2 border-sc-1 flex flex-col gap-y-3 bg-other-1 z-10 absolute top-12 xl:top-8 xl:right-0 xl:w-[200px]'>
+				<div className='w-full h-fit px-2 py-4 rounded-md border-2 border-sc-1 flex flex-col gap-y-3 bg-other-1 z-[100] absolute top-12 xl:top-8 xl:right-0 xl:w-[200px]'>
 					{options.map(item => (
 						<button
 							key={item.value}

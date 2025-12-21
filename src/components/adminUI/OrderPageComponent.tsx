@@ -6,7 +6,6 @@ import { ordersStore } from '@/store/OrderStore'
 
 import Pagination from '../commonUI/Pagination'
 import Sort from '../commonUI/Sort'
-import Spinner from '../commonUI/loader/Spinner'
 import QuantityProduct from '../userUI/QuantityProduct'
 
 import OrderItemComponent from './OrderItem'
@@ -114,7 +113,12 @@ const OrderPageComponent = observer(({ pageName = 'all' }: { pageName: 'all' | '
 			{/* 🔹 Контент */}
 			{isLoading ? (
 				<div className='flex flex-col gap-y-3 mt-3 max-h-[75vh] overflow-y-scroll pb-3'>
-					<Spinner />
+					{Array.from({ length: limitParam }).map((_, i) => (
+						<div
+							key={i}
+							className='w-full min-h-[200px] py-2 flex flex-col gap-y-2 rounded-lg bg-gray-200 animate-pulse'
+						/>
+					))}
 				</div>
 			) : (
 				<div className='flex flex-col gap-y-3 mt-3 max-h-[75vh] overflow-y-scroll pb-3'>

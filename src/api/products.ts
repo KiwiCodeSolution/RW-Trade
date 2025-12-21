@@ -95,6 +95,7 @@ export async function fetchFilteredAdminProducts(params: ItemsFilterParams) {
 	} = params
 
 	const q = new URLSearchParams()
+
 	if (lang) q.append('lang', lang)
 	if (categorySlug && categorySlug !== 'all') q.append('categorySlug', categorySlug)
 	if (subCategorySlug && subCategorySlug !== 'all') q.append('subCategorySlug', subCategorySlug)
@@ -105,7 +106,11 @@ export async function fetchFilteredAdminProducts(params: ItemsFilterParams) {
 	q.append('page', String(page))
 
 	const url = `${BASE_URL}/products/filter/admin?${q.toString()}`
-	const { data } = await axios.get(url)
+	const res = await fetchWithAuth(url, {
+		method: 'GET'
+	})
+	const data = await res.json()
+
 	return data
 }
 
