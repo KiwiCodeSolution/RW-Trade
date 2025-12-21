@@ -1131,3 +1131,28 @@ export const Filter = () => {
 		</svg>
 	)
 }
+
+export const OkIcon = () => {
+	return (
+		<svg
+			width='32px'
+			height='32px'
+			viewBox='0 0 12 12'
+			enableBackground='new 0 0 12 12'
+			id='Слой_1'
+			version='1.1'
+			xmlSpace='preserve'
+			xmlns='http://www.w3.org/2000/svg'
+			fill='#5e74c9'
+		>
+			<g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
+			<g id='SVGRepo_tracerCarrier' strokeLinecap='round' strokeLinejoin='round'></g>
+			<g id='SVGRepo_iconCarrier'>
+				<polygon
+					fill='#5e74c9'
+					points='5,9.8535156 0,4.8535156 0.7070313,4.1464844 5,8.4394531 11.2929688,2.1464844 12,2.8535156 '
+				></polygon>
+			</g>
+		</svg>
+	)
+}

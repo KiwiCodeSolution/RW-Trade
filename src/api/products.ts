@@ -54,6 +54,21 @@ export async function getExchangeRate() {
 	}
 }
 
+export async function updateExchangeRate({ rate }: { rate: number }) {
+	try {
+		const res = await fetchWithAuth(`${BASE_URL}/currency`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ rate })
+		})
+		if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+
+		return await res.json()
+	} catch (error) {
+		console.error('Failed to update exchange rate', error)
+		throw error
+	}
+}
 export async function fetchFilteredProducts(params: ItemsFilterParams) {
 	const {
 		lang,

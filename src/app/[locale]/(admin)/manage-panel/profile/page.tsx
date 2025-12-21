@@ -1,11 +1,27 @@
+import Currency from '@/components/adminUI/Currency'
+import CurrencyDatePicker from '@/components/adminUI/CurrencyDatePicker'
+import HeaderPage from '@/components/adminUI/HeaderPage'
+import TodayInfo from '@/components/adminUI/TodayInfo'
+
 import { Metadata } from 'next'
-import React from 'react'
 
 export const metadata: Metadata = {
 	title: 'Налаштування | RW-Trade'
 }
 const Profile = () => {
-	return <div>Admin Profile Page</div>
+	return (
+		<main className='w-full h-full flex flex-col '>
+			<HeaderPage pageName='Налаштування' />
+			<div className='grid grid-cols-3 gap-x-10 justify-between mt-10'>
+				<CurrencyDatePicker />
+				<TodayInfo />
+				<Currency />
+			</div>
+			<div className='h-0.5 w-full bg-primary my-5' />
+			<p className='text-xl mb-4'>Управління логіном та паролем</p>
+			<p className='italic'>Функціонал знаходиться на етапі реалізації</p>
+		</main>
+	)
 }
 
 export default Profile

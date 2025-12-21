@@ -32,25 +32,26 @@ const ProductComponentSortFilterAdmin = observer(
 		const { isLoading, adminProducts, totalAdmin } = productStore
 		const locale = 'uk'
 
-		// URL query
-		const { query, setQuery } = useListQuery({
-			page: '1',
-			limit: '16',
-			sort: 'DATE_ADDED' as ProductSort
-		})
-		const { page, limit, sort } = query
-
 		// Динамічні ліміти для grid
 		const { limits, limit: currentLimit } = useDynamicLimits({
 			breakpoints: [
 				{ min: 0, cols: 2 },
-				{ min: 940, cols: 3 },
-				{ min: 1230, cols: 4 },
-				{ min: 1530, cols: 5 },
+				{ min: 940, cols: 4 },
+				{ min: 1230, cols: 5 },
+				{ min: 1530, cols: 6 },
 				{ min: 1840, cols: 8 }
 			],
 			rows: [2, 3, 4]
 		})
+
+		// обираємо стартовий limit залежно від currentLimit
+		const { query, setQuery } = useListQuery({
+			page: '1',
+			limit: String(currentLimit), // динамічний стартовий ліміт
+			sort: 'DATE_ADDED' as ProductSort
+		})
+
+		const { page, limit, sort } = query
 
 		// Для рендеру grid (віднімемо 1 картку під Sort)
 
@@ -97,7 +98,7 @@ const ProductComponentSortFilterAdmin = observer(
 					</div>
 				)}
 				{isLoading ? (
-					<div className='grid md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-8 gap-6 mb-5'>
+					<div className='grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-8 gap-6 mb-5'>
 						{Array.from({ length: fetchLimit }).map((_, i) => (
 							<div
 								key={i}

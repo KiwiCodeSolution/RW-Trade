@@ -50,7 +50,7 @@ export default function CurrencyDatePicker() {
 	}, [])
 
 	return (
-		<div className='flex flex-col items-center gap-4 p-6 bg-gray-50 rounded-2xl'>
+		<div className='flex flex-col items-center gap-4 p-6 bg-gray-50 rounded-2xl border-[1px] border-sc-1'>
 			<DayPicker
 				mode='single'
 				locale={uk}
@@ -81,7 +81,7 @@ export default function CurrencyDatePicker() {
 							<p className='text-gray-700 font-medium'>
 								Обрано: {selected.toLocaleDateString('uk-UA')}
 							</p>
-							<div className='mt-2 space-y-2'>
+							<div className='mt-2 space-y-2 h-16 overflow-y-scroll'>
 								{records.map(r => (
 									<div
 										key={r._id}

@@ -13,6 +13,7 @@ import {
 	fetchFilteredAdminProducts,
 	fetchFilteredProducts,
 	getExchangeRate,
+	updateExchangeRate,
 	updateProductStatus,
 	updateProductVisibility
 } from '@/api/products'
@@ -28,7 +29,7 @@ class ProductStore {
 	discountSubcategories: Subcategory[] = []
 	currentProduct: Product | null = null
 	isLoading = false
-	exchangeRate = 41.5
+	exchangeRate = 0
 	isWholesale = false
 	total = 0
 	totalAdmin = 0
@@ -67,6 +68,7 @@ class ProductStore {
 				}
 			}
 		}
+		this.fetchExchangeRate()
 	}
 
 	get favoriteProducts() {
@@ -107,6 +109,7 @@ class ProductStore {
 			runInAction(() => {
 				this.exchangeRate = res.data.rate
 			})
+			console.log('Exchange rate:', this.exchangeRate)
 		} catch {
 			console.warn('Exchange rate unavailable — using fallback 1')
 			runInAction(() => {
@@ -119,6 +122,20 @@ class ProductStore {
 		}
 	}
 
+	setExchangeRate = async (rate: number) => {
+		try {
+			const updated = await updateExchangeRate({ rate })
+			runInAction(() => {
+				this.exchangeRate = updated.rate
+			})
+			toast.success('Курс валюти оновлено')
+			return updated
+		} catch (err: unknown) {
+			console.error('Failed to update exchange rate in store', err)
+			toast.error('Не вдалося оновити курс валюти')
+			return null
+		}
+	}
 	async fetchProducts(params?: Partial<ItemsFilterParams & { discountOnly?: boolean }>) {
 		try {
 			this.isLoading = true

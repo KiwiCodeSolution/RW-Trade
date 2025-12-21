@@ -15,7 +15,7 @@ import TextEditor from './formsComponents/TextEditor'
 
 import { observer } from 'mobx-react-lite'
 import { useSession } from 'next-auth/react'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -102,7 +102,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 
 	const price = watch('price')
 	const priceCurrency = watch('priceCurrency')
-
+	const router = useRouter()
 	useEffect(() => {
 		if (price != null && price !== 0) {
 			setValue('priceCurrency', undefined) // або 0, якщо тобі так зручно
@@ -182,6 +182,8 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		if (result) {
 			reset()
 			setValue('images', [])
+
+			router.push('/manage-panel/products')
 		}
 	}
 
