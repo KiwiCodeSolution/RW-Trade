@@ -49,7 +49,7 @@ const AdminHeader = observer(() => {
 
 		const init = async () => {
 			await notificationsStore.fetchNotifications()
-			await feedbackStore.fetchMessages(session.user.accessToken!)
+			await feedbackStore.fetchMessages()
 		}
 
 		init()
