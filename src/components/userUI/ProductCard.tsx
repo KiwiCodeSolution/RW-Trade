@@ -92,7 +92,9 @@ const ProductCard = ({ locale, type = 'our', typePage, product }: ProductCardPro
 					/>
 				</div>
 				{typePage !== 'admin' && type === 'our' && (
-					<p className='hidden xl:block'>Код товару:{product.sku}</p>
+					<p className='hidden xl:block'>
+						{locale === 'uk' ? 'Код товару' : 'Article'}: {product.sku}
+					</p>
 				)}
 			</div>
 		</article>

@@ -58,7 +58,7 @@ const FormSection = () => {
 					})}
 				</div>
 
-				<div className='items-center w-full max-w-[580px] mx-auto border-t-2 border-white pt-10 lg:pt-0'>
+				<div className='items-center w-full max-w-[580px] mx-auto border-t-2 border-white lg:border-none pt-10 lg:pt-0'>
 					<UserForm formTexts={formTexts} />
 				</div>
 			</div>

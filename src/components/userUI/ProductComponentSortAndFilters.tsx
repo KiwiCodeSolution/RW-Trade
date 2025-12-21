@@ -135,6 +135,7 @@ const ProductComponentSortAndFilters = observer(
 								countriesList={allCountries}
 								minPriceDefault={minPrice ?? 0}
 								maxPriceDefault={maxPrice ?? 0}
+								locale={locale}
 							/>
 						</div>
 						{products.slice(0, gridLimit).map(item => (

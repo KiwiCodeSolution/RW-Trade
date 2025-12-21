@@ -26,11 +26,13 @@ export default function CategoryControl({
 	const searchParams = useSearchParams()
 
 	const handleSelect = (slug?: string) => {
+		console.log('slug', slug)
 		if (!slug) return
+		console.log('slug2 after return', slug)
 
 		if (useUrlSync) {
 			const params = new URLSearchParams(searchParams.toString())
-
+			console.log('params', params)
 			if (slug !== 'all') {
 				params.set('category', slug)
 				params.set('subCategory', 'all')
@@ -38,6 +40,7 @@ export default function CategoryControl({
 				params.delete('category')
 				params.delete('subCategory')
 			}
+			console.log('params2', params)
 
 			router.push(`?${params.toString()}`)
 		} else {

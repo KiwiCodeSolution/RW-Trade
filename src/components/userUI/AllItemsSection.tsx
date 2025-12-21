@@ -72,6 +72,7 @@ const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 					categories={categories}
 					activeSlug={activeCategory?.slug ?? 'all'}
 					locale={locale}
+					useUrlSync
 				/>
 			</div>
 

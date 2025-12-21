@@ -82,7 +82,7 @@ const CartComponent = observer(({ step = 1, onClose }: Props) => {
 					</div>
 				</div>
 			) : (
-				<CartStepTwo setOrderSuccess={setOrderSuccess} />
+				<CartStepTwo setOrderSuccess={setOrderSuccess} locale={locale} />
 			)}
 		</div>
 	)

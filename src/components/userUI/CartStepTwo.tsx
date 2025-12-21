@@ -1,6 +1,6 @@
 'use client'
 
-import { DeliveryData, DeliveryInfo, OrderForm } from '@/types/baseTypes'
+import { DeliveryData, DeliveryInfo, Locale, OrderForm } from '@/types/baseTypes'
 
 import { OrderItem, cartStore } from '@/store/CartStore'
 
@@ -11,7 +11,13 @@ import { observer } from 'mobx-react-lite'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 
 const CartStepTwo = observer(
-	({ setOrderSuccess }: { setOrderSuccess: (value: boolean) => void }) => {
+	({
+		setOrderSuccess,
+		locale
+	}: {
+		setOrderSuccess: (value: boolean) => void
+		locale: Locale
+	}) => {
 		const { totalSum } = cartStore
 
 		const {
@@ -123,7 +129,7 @@ const CartStepTwo = observer(
 					{/* FULL NAME */}
 					<div className='flex flex-col gap-1 w-full relative'>
 						<label className='font-semibold' htmlFor='fullName'>
-							Прізвище, ім’я та по батькові
+							{locale === 'uk' ? 'Прізвище, ім’я та по батькові' : 'Full name'}
 						</label>
 						<input
 							type='text'
@@ -132,7 +138,7 @@ const CartStepTwo = observer(
 							autoComplete='new-password'
 							className='w-full h-8 border border-gr-2 rounded-lg px-3 outline-none text-base'
 							{...register('fullName', {
-								required: 'Вкажіть ПІБ'
+								required: locale === 'uk' ? 'Вкажіть ПІБ' : 'Enter full name'
 							})}
 						/>
 						{errors.fullName && (
@@ -145,7 +151,7 @@ const CartStepTwo = observer(
 					{/* PHONE */}
 					<div className='flex flex-col gap-1 w-full relative'>
 						<label className='font-semibold' htmlFor='phone'>
-							Телефон
+							{locale === 'uk' ? 'Телефон' : 'Phone'}
 						</label>
 						<input
 							type='text'
@@ -154,7 +160,7 @@ const CartStepTwo = observer(
 							autoComplete='new-password'
 							className='w-full h-8 border border-gr-2 rounded-lg px-3 outline-none text-base'
 							{...register('phone', {
-								required: 'Вкажіть телефон'
+								required: locale === 'uk' ? 'Вкажіть телефон' : 'Enter phone'
 							})}
 						/>
 						{errors.phone && (
@@ -166,7 +172,9 @@ const CartStepTwo = observer(
 
 					{/* PAY METHOD */}
 					<div className='flex flex-col gap-y-1'>
-						<p className='font-semibold'>Спосіб оплати</p>
+						<p className='font-semibold'>
+							{locale === 'uk' ? 'Спосіб оплати' : 'Payment method'}
+						</p>
 						<Controller
 							name='paymentMethod'
 							control={control}
@@ -178,7 +186,7 @@ const CartStepTwo = observer(
 
 					{/* DELIVERY SECTION */}
 					<div className='flex flex-col gap-y-1'>
-						<p className='font-semibold'>Перевізник</p>
+						<p className='font-semibold'>{locale === 'uk' ? 'Доставка' : 'Delivery'}</p>
 						<Controller
 							name='delivery'
 							control={control}
@@ -187,8 +195,12 @@ const CartStepTwo = observer(
 							)}
 							rules={{
 								validate: d => {
-									if (!d.city) return 'Оберіть місто'
-									if (!d.branch) return 'Оберіть відділення'
+									if (!d.city)
+										return locale === 'uk' ? 'Оберіть місто' : 'Select city'
+									if (!d.branch)
+										return locale === 'uk'
+											? 'Оберіть відділення'
+											: 'Select branch'
 									return true
 								}
 							}}
@@ -199,11 +211,11 @@ const CartStepTwo = observer(
 				{/* COMMENT */}
 				<div className='flex flex-col gap-1 w-full relative'>
 					<label className='font-semibold' htmlFor='comment'>
-						Коментар
+						{locale === 'uk' ? 'Коментар' : 'Comment'}
 					</label>
 					<textarea
 						id='comment'
-						placeholder='Ваш коментар'
+						placeholder={locale === 'uk' ? 'Вкажіть коментар' : 'Enter comment'}
 						className='w-full border border-gr-2 rounded-lg px-3 py-2 outline-none text-base resize-none'
 						{...register('comment')}
 					/>
@@ -213,7 +225,7 @@ const CartStepTwo = observer(
 					type='submit'
 					className='mt-4 px-4 py-2 bg-primary text-white rounded-lg mx-auto block mb-auto'
 				>
-					Підтвердити
+					{locale === 'uk' ? 'Замовити' : 'Order'}
 				</button>
 			</form>
 		)

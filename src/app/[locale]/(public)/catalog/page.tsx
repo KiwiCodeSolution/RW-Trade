@@ -21,12 +21,14 @@ const Catalog = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 	const { locale } = await params
 
 	const title = locale === 'uk' ? 'каталог' : 'catalog'
+	const description = locale === 'uk' ? 'Категорії товарів' : 'Categories'
+
 	return (
 		<div className=''>
 			<BaseSection>
 				<Path secondName={title} locale={locale} />
 			</BaseSection>
-			<CategoriesSection section='client' locale={locale} title='Категорії товарів' />
+			<CategoriesSection section='client' locale={locale} title={description} />
 			<AllItemsSection locale={locale} />
 		</div>
 	)

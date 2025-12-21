@@ -1,9 +1,10 @@
 'use client'
 
-import { DeliveryInfo } from '@/types/baseTypes'
+import { DeliveryInfo, Locale } from '@/types/baseTypes'
 
 import offices from '@/data/ukr_post.json'
 
+import { useLocale } from 'next-intl'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 interface PostOffice {
@@ -20,6 +21,7 @@ interface Props {
 }
 
 export default function UkrPoshtaFields({ value, onChange }: Props) {
+	const locale = useLocale() as Locale
 	const [searchByZip, setSearchByZip] = useState(false)
 	const [input, setInput] = useState(value?.branch || '')
 	const [selected, setSelected] = useState<PostOffice | null>(null)
@@ -103,14 +105,24 @@ export default function UkrPoshtaFields({ value, onChange }: Props) {
 						setSelected(null)
 					}}
 				/>
-				<label htmlFor='search-by-zip'>Шукати за індексом</label>
+				<label htmlFor='search-by-zip'>
+					{locale === 'uk' ? 'Пошук по індексу' : 'Search by zip'}
+				</label>
 			</div>
 
 			{/* INPUT */}
 			<input
 				type='text'
 				className='w-full h-8 border border-gr-2 rounded-lg px-3 outline-none text-base'
-				placeholder={searchByZip ? 'Введіть індекс' : 'Введіть адресу або назву відділення'}
+				placeholder={
+					searchByZip
+						? locale === 'uk'
+							? 'Ведіть індекс'
+							: 'Enter zip'
+						: locale === 'uk'
+							? 'Введіть адресу'
+							: 'Enter address'
+				}
 				value={input}
 				autoComplete='new-password'
 				onChange={e => {
@@ -139,13 +151,17 @@ export default function UkrPoshtaFields({ value, onChange }: Props) {
 			{/* ADDRESS */}
 			<div className='flex flex-col gap-1'>
 				<label htmlFor='up-address' className='font-semibold'>
-					Ваша адреса (необов’язково, можна уточнити)
+					{locale === 'uk'
+						? 'Ваша адреса (необов’язково, можна уточнити)'
+						: 'Your address (optional)'}
 				</label>
 				<textarea
 					id='up-address'
 					className='w-full border border-gr-2 rounded-lg px-3 py-2 outline-none text-base resize-none'
 					value={address}
-					placeholder='Вулиця, будинок, квартира'
+					placeholder={
+						locale === 'uk' ? 'Вулиця, будинок, квартира' : 'Street, building, flat'
+					}
 					onChange={e => setAddress(e.target.value)}
 				/>
 			</div>

@@ -4,6 +4,8 @@ import { Checked } from '@/assets/icons'
 
 import { useListQuery } from '@/hooks/useListQuery'
 
+import { Locale } from '@/types/baseTypes'
+
 import BtnSolid from '../commonUI/BtnSolid'
 
 import MultiRangeSlider from './MultiRangeSlider'
@@ -14,9 +16,15 @@ type FiltersProps = {
 	countriesList: string[]
 	minPriceDefault: number
 	maxPriceDefault: number
+	locale: Locale
 }
 
-export default function Filters({ countriesList, minPriceDefault, maxPriceDefault }: FiltersProps) {
+export default function Filters({
+	countriesList,
+	minPriceDefault,
+	maxPriceDefault,
+	locale
+}: FiltersProps) {
 	const { query, setQuery } = useListQuery({
 		countries: '',
 		minPrice: String(minPriceDefault),
@@ -50,7 +58,7 @@ export default function Filters({ countriesList, minPriceDefault, maxPriceDefaul
 		<div className='w-full flex flex-col gap-6'>
 			{/* Список країн */}
 			<div className='w-full border-[1px] border-sc-1 rounded-lg flex flex-col py-2 px-4 gap-y-2'>
-				<h4>Країна-виробник</h4>
+				<h4>{locale === 'uk' ? 'Країна-виробник' : 'Country manufacturer'}</h4>
 				{countriesList.map(country => (
 					<label key={country} className='flex items-center gap-3 cursor-pointer'>
 						<input
@@ -71,11 +79,12 @@ export default function Filters({ countriesList, minPriceDefault, maxPriceDefaul
 				max={maxPriceDefault}
 				priceRange={priceRange}
 				setPriceRange={setPriceRange}
+				locale={locale}
 			/>
 
 			{/* Кнопка застосування */}
 			<BtnSolid size='xxl' variant='primary' as='button' action={onApplyFilters}>
-				Застосувати фільтри
+				{locale === 'uk' ? 'Застосувати' : 'Apply'}
 			</BtnSolid>
 		</div>
 	)

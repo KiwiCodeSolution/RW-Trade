@@ -1,9 +1,10 @@
 'use client'
 
-import { DeliveryCity, DeliveryInfo, DeliveryWarehouse } from '@/types/baseTypes'
+import { DeliveryCity, DeliveryInfo, DeliveryWarehouse, Locale } from '@/types/baseTypes'
 
 import { deliveryAdapters } from './delivery.adapters'
 
+import { useLocale } from 'next-intl'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 interface NPFieldsProps {
@@ -12,6 +13,7 @@ interface NPFieldsProps {
 }
 
 export default function NPFields({ value, onChange }: NPFieldsProps) {
+	const locale = useLocale() as Locale
 	// ----------------- STATE -----------------
 	const [city, setCity] = useState<DeliveryCity | null>(null)
 	const [cityInput, setCityInput] = useState(value?.city ?? '')
@@ -102,7 +104,7 @@ export default function NPFields({ value, onChange }: NPFieldsProps) {
 				Promise.resolve().then(() => {
 					if (list.length === 0) {
 						setWarehousesError(
-							'Немає доступних відділень або служба тимчасово недоступна'
+							locale === 'en' ? 'No warehouses found' : 'Немає складів'
 						)
 					}
 					setWarehouses(list)
@@ -114,7 +116,11 @@ export default function NPFields({ value, onChange }: NPFieldsProps) {
 				Promise.resolve().then(() => {
 					setWarehouses([])
 					setLoadingWarehouses(false)
-					setWarehousesError('Нова Пошта тимчасово недоступна')
+					setWarehousesError(
+						locale === 'en'
+							? 'Service temporarily unavailable'
+							: 'Сервіс тимчасово не працює'
+					)
 				})
 			}
 		}
@@ -143,7 +149,7 @@ export default function NPFields({ value, onChange }: NPFieldsProps) {
 			{/* CITY INPUT */}
 			<div className='flex flex-col gap-2 w-full relative'>
 				<label className='font-semibold' htmlFor='city'>
-					Місто
+					{locale === 'uk' ? 'Місто' : 'City'}
 				</label>
 				<div className='relative'>
 					<input
@@ -151,7 +157,7 @@ export default function NPFields({ value, onChange }: NPFieldsProps) {
 						id='city'
 						className='w-full h-8 border border-gr-2 rounded-lg px-3 outline-none text-base'
 						value={cityInput}
-						placeholder='Почніть вводити місто'
+						placeholder={locale === 'uk' ? 'Вкажіть місто' : 'Enter city'}
 						autoComplete='new-password'
 						onChange={e => {
 							setCityInput(e.target.value)
@@ -185,7 +191,7 @@ export default function NPFields({ value, onChange }: NPFieldsProps) {
 			{city && (
 				<div className='flex flex-col gap-2 w-full relative'>
 					<label className='font-semibold' htmlFor='warehouse'>
-						Відділення
+						{locale === 'uk' ? 'Відділення' : 'Warehouse'}
 					</label>
 					<div className='relative'>
 						<input
@@ -194,7 +200,11 @@ export default function NPFields({ value, onChange }: NPFieldsProps) {
 							className='h-8 border border-gr-2 rounded-lg px-3 w-full outline-none text-base'
 							autoComplete='new-password'
 							value={warehouseInput}
-							placeholder='Введіть номер або адресу'
+							placeholder={
+								locale === 'uk'
+									? 'Вкажіть номер або адресу'
+									: 'Enter number or address'
+							}
 							onChange={e => {
 								setWarehouseInput(e.target.value)
 								setWarehouse(null)
@@ -215,7 +225,11 @@ export default function NPFields({ value, onChange }: NPFieldsProps) {
 											setAddress(w.description)
 										}}
 									>
-										<b>Відділення №{w.number}</b> — {w.short}
+										<b>
+											{locale === 'uk' ? 'Відділення' : 'Warehouse'} №
+											{w.number}
+										</b>{' '}
+										— {w.short}
 									</button>
 								))}
 							</div>
@@ -225,7 +239,9 @@ export default function NPFields({ value, onChange }: NPFieldsProps) {
 						<div className='text-sm text-red-600 mt-1'>{warehousesError}</div>
 					)}
 					{showWarehouses && !loadingWarehouses && filteredWarehouses.length === 0 && (
-						<div className='text-sm text-gray-600'>Немає результатів</div>
+						<div className='text-sm text-gray-600'>
+							{locale === 'uk' ? 'Нічого не знайдено' : 'Nothing found'}
+						</div>
 					)}
 				</div>
 			)}

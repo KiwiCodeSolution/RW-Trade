@@ -35,7 +35,7 @@ const TestimonialsSection = ({ locale }: Props) => {
 						: 'What people are saying about our work'}
 				</p>
 				<div className='grow'>
-					<TestimonialsCarousel />
+					<TestimonialsCarousel locale={locale} />
 				</div>
 			</div>
 		</BaseSection>

@@ -1,7 +1,8 @@
 'use client'
 
-import { DeliveryInfo } from '@/types/baseTypes'
+import { DeliveryInfo, Locale } from '@/types/baseTypes'
 
+import { useLocale } from 'next-intl'
 import { useEffect, useMemo, useRef, useState } from 'react'
 
 interface MeestBranchShort {
@@ -25,6 +26,7 @@ interface Props {
 }
 
 export default function MeestFields({ value, onChange }: Props) {
+	const locale = useLocale() as Locale
 	const [searchByZip, setSearchByZip] = useState(false)
 	const [input, setInput] = useState(value?.branch || '')
 	const [debouncedInput, setDebouncedInput] = useState(input)
@@ -151,13 +153,23 @@ export default function MeestFields({ value, onChange }: Props) {
 						setResults([])
 					}}
 				/>
-				<label htmlFor='meest-search'>Шукати за номером</label>
+				<label htmlFor='meest-search'>
+					{locale === 'uk' ? 'Пошук за номером' : 'Search by number'}
+				</label>
 			</div>
 
 			<input
 				type='text'
 				value={input}
-				placeholder={searchByZip ? 'Введіть номер' : 'Введіть місто або частину адреси'}
+				placeholder={
+					searchByZip
+						? locale === 'uk'
+							? 'Пошук за номером'
+							: 'Search by number'
+						: locale === 'uk'
+							? 'Введіть місто або частину адреси'
+							: 'Enter city or part of address'
+				}
 				className='w-full h-8 border rounded-lg px-3'
 				onChange={e => {
 					setInput(e.target.value)
@@ -165,7 +177,11 @@ export default function MeestFields({ value, onChange }: Props) {
 				}}
 			/>
 
-			{loading && <div className='text-sm opacity-70 px-1'>Завантажую…</div>}
+			{loading && (
+				<div className='text-sm opacity-70 px-1'>
+					{locale === 'uk' ? 'Завантаження...' : 'Loading...'}
+				</div>
+			)}
 
 			{display.length > 0 && (
 				<div className='absolute top-[110px] left-0 z-20 w-full max-h-[240px] overflow-y-auto border bg-white rounded-lg'>
