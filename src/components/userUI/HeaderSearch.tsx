@@ -9,7 +9,7 @@ import { Locale } from '@/types/baseTypes'
 import { Link } from '@/i18n/navigation'
 import '@/styles/globals.css'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface SearchResultItem {
 	type: 'product' | 'news'
@@ -17,10 +17,7 @@ interface SearchResultItem {
 		title: string
 		slugUk: string
 		slugEn: string
-		snippet?: {
-			field: string
-			text: string
-		} | null
+		snippet?: { field: string; text: string } | null
 	}
 	matchScore: number
 }
@@ -31,29 +28,8 @@ const HeaderSearch = ({ locale }: { locale: Locale }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [loading, setLoading] = useState(false)
 
-	// function debounceString(fn: (value: string) => Promise<void>, delay: number) {
-	// 	let timer: ReturnType<typeof setTimeout> | null = null
-	// 	return (value: string) => {
-	// 		if (timer) clearTimeout(timer)
-	// 		timer = setTimeout(() => void fn(value), delay)
-	// 	}
-	// }
-
-	function debounceAsync<T>(fn: (value: T, signal: AbortSignal) => Promise<void>, delay: number) {
-		let timer: NodeJS.Timeout | null = null
-		let controller: AbortController | null = null
-
-		return (value: T) => {
-			if (timer) clearTimeout(timer)
-			if (controller) controller.abort()
-
-			controller = new AbortController()
-
-			timer = setTimeout(() => {
-				fn(value, controller!.signal).catch(() => {})
-			}, delay)
-		}
-	}
+	const timerRef = useRef<NodeJS.Timeout | null>(null)
+	const controllerRef = useRef<AbortController | null>(null)
 
 	const fieldsTranscription: Record<string, { uk: string; en: string }> = {
 		title: { uk: 'Заголовок', en: 'Title' },
@@ -74,64 +50,57 @@ const HeaderSearch = ({ locale }: { locale: Locale }) => {
 		news: { uk: 'Новини', en: 'News' }
 	}
 
-	// const fetchResultsDebounced = useCallback(
-	// 	debounceString(async (value: string) => {
-	// 		if (!value.trim()) {
-	// 			setResults([])
-	// 			setIsOpen(false)
-	// 			return
-	// 		}
-
-	// 		try {
-	// 			setLoading(true)
-	// 			const res = await fetch(
-	// 				`${BASE_URL}/search?query=${encodeURIComponent(value)}&lang=${locale}`
-	// 			)
-	// 			const data = await res.json()
-	// 			setResults(data.results || [])
-	// 			setIsOpen(true)
-	// 		} finally {
-	// 			setLoading(false)
-	// 		}
-	// 	}, 300),
-	// 	[locale]
-	// )
-
-	const fetchResultsDebounced = useCallback(
-		debounceAsync<string>(async (value, signal) => {
+	const fetchResults = useCallback(
+		async (value: string, signal: AbortSignal) => {
 			if (!value.trim()) {
 				setResults([])
 				setIsOpen(false)
 				return
 			}
-
-			const res = await fetch(
-				`${BASE_URL}/search?query=${encodeURIComponent(value)}&lang=${locale}`,
-				{
-					signal
-				}
-			)
-
-			const data = await res.json()
-			setResults(data.results || [])
-			setIsOpen(true)
-		}, 300),
+			setLoading(true)
+			try {
+				const res = await fetch(
+					`${BASE_URL}/search?query=${encodeURIComponent(value)}&lang=${locale}`,
+					{ signal }
+				)
+				const data = await res.json()
+				setResults(data.results || [])
+				setIsOpen(true)
+			} catch {
+				// abort або помилка мережі
+			} finally {
+				setLoading(false)
+			}
+		},
 		[locale]
+	)
+
+	const fetchResultsDebounced = useCallback(
+		(value: string) => {
+			if (timerRef.current) clearTimeout(timerRef.current)
+			if (controllerRef.current) controllerRef.current.abort()
+
+			controllerRef.current = new AbortController()
+
+			timerRef.current = setTimeout(() => {
+				fetchResults(value, controllerRef.current!.signal).catch(() => {})
+			}, 300)
+		},
+		[fetchResults]
 	)
 
 	useEffect(() => {
 		fetchResultsDebounced(query)
 	}, [query, fetchResultsDebounced])
 
-	const handleBlur = () => {
-		setTimeout(() => setIsOpen(false), 150)
-	}
+	const handleBlur = () => setTimeout(() => setIsOpen(false), 150)
 
-	const getUrl = (item: SearchResultItem) => {
-		if (item.type === 'product') return `/product/${item.item.slugEn || item.item.slugUk}`
-		if (item.type === 'news') return `/news/${item.item.slugEn || item.item.slugUk}`
-		return '#'
-	}
+	const getUrl = (item: SearchResultItem) =>
+		item.type === 'product'
+			? `/product/${item.item.slugEn || item.item.slugUk}`
+			: item.type === 'news'
+				? `/news/${item.item.slugEn || item.item.slugUk}`
+				: '#'
 
 	return (
 		<div className='relative'>
@@ -139,13 +108,12 @@ const HeaderSearch = ({ locale }: { locale: Locale }) => {
 				<input
 					type='text'
 					className='h-[44px] grow bg-bg-light rounded-l-full outline-0 border-0 px-4'
-					placeholder='Пошук...'
+					placeholder={locale === 'uk' ? 'Пошук...' : 'Search...'}
 					value={query}
 					onChange={e => setQuery(e.target.value)}
 					onFocus={() => results.length > 0 && setIsOpen(true)}
 					onBlur={handleBlur}
 				/>
-
 				<div className='rounded-r-full bg-bg-light'>
 					<button className='w-[44px] h-[44px] rounded-full p-2 text-gr-2 cursor-pointer'>
 						<SearchIcon />
@@ -187,7 +155,9 @@ const HeaderSearch = ({ locale }: { locale: Locale }) => {
 
 			{isOpen && loading && (
 				<div className='absolute left-0 right-0 mt-2 bg-bg-light rounded-xl shadow-xl p-2 z-50'>
-					<div className='px-3 py-2 opacity-70'>Завантаження...</div>
+					<div className='px-3 py-2 opacity-70'>
+						{locale === 'uk' ? 'Знаходження...' : 'Searching...'}
+					</div>
 				</div>
 			)}
 		</div>

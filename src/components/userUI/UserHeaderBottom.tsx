@@ -5,7 +5,6 @@ import { Locale } from '@/types/baseTypes'
 
 import HeaderCartButton from './HeaderCartButton'
 import HeaderSearch from './HeaderSearch'
-import BaseSection from './baseComponents/BaseSection'
 import { Link } from '@/i18n/navigation'
 import '@/styles/globals.css'
 
@@ -14,7 +13,7 @@ import Image from 'next/image'
 const UserHeaderBottom = ({ locale }: { locale: Locale }) => {
 	return (
 		<div className='w-full header-shadow'>
-			<BaseSection>
+			<section className='w-full mx-auto xl:max-w-[1980px] px-4 xl:px-8'>
 				<div className='flex items-center h-[72px]'>
 					<Link href='/' className='hidden sm:block mr-4'>
 						<Image
@@ -24,7 +23,7 @@ const UserHeaderBottom = ({ locale }: { locale: Locale }) => {
 							alt='rw-logo'
 						/>
 					</Link>
-					<div className='grow sm:mr-6'>
+					<div className='grow sm:mr-6 '>
 						<HeaderSearch locale={locale} />
 					</div>
 					<div className='hidden sm:flex items-center gap-6'>
@@ -43,10 +42,10 @@ const UserHeaderBottom = ({ locale }: { locale: Locale }) => {
 							</Link>
 						</div>
 
-						<HeaderCartButton />
+						<HeaderCartButton locale={locale} />
 					</div>
 				</div>
-			</BaseSection>
+			</section>
 		</div>
 	)
 }

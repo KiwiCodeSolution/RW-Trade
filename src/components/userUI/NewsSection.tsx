@@ -9,7 +9,6 @@ import Spinner from '../commonUI/loader/Spinner'
 import NewsCard from './NewsCard'
 import NewsGallery from './NewsGallery'
 import Title from './baseComponents/Title'
-import { Link } from '@/i18n/navigation'
 import '@/styles/globals.css'
 
 import { observer } from 'mobx-react-lite'
@@ -65,13 +64,13 @@ const NewsSection = observer(({ section, title, subtitle, locale, bntText }: New
 			</div>
 			<NewsGallery news={news} />
 
-			{section === 'main' && (
+			{/* {section === 'main' && (
 				<div className='flex justify-center items-center'>
 					<Link href='/news' className='link-solid'>
 						{bntText}
 					</Link>
 				</div>
-			)}
+			)} */}
 		</section>
 	)
 })

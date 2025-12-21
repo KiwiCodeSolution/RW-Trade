@@ -33,7 +33,7 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
 				<NextIntlClientProvider>
 					<UserHeader locale={locale} />
 					<div className='min-h-[50vh] flex flex-col justify-between'>{children}</div>
-					<UserFooter />
+					<UserFooter locale={locale} />
 					<ScrollToTopButton />
 					{/* <div id='modal-root' /> */}
 				</NextIntlClientProvider>

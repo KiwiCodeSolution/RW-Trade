@@ -8,22 +8,10 @@ import Language from './Language'
 import MobileUserHeader from './MobileUserHeader'
 import RetailWholesale from './RetailWholesale'
 import { Link } from '@/i18n/navigation'
+import { navLinks } from '@/lib/navLinks'
 import '@/styles/globals.css'
 
 const UserHeaderTop = ({ locale }: { locale: Locale }) => {
-	const navLinks = [
-		{ title: { uk: 'Про компанію', en: 'About us' }, href: '/about' },
-		{
-			title: { uk: 'Оплата та доставка', en: 'Payment & Delivery' },
-			href: '/payment_delivery'
-		},
-		{
-			title: { uk: 'Гарантія та повернення', en: 'Warranty & Returns' },
-			href: '/warranty_return'
-		},
-		{ title: { uk: 'Контакти', en: 'Contacts' }, href: '/contacts' }
-	]
-
 	return (
 		<>
 			<div className='w-full sm:bg-nav'>
@@ -53,7 +41,7 @@ const UserHeaderTop = ({ locale }: { locale: Locale }) => {
 								className='flex gap-1 items-center hover:text-gr-5 duration-200'
 							>
 								<Person />
-								<div>Увійти</div>
+								<p>{locale === 'uk' ? 'Увійти' : 'Log in'}</p>
 							</Link>
 						</div>
 					</nav>
