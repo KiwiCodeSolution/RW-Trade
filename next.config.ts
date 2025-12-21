@@ -30,11 +30,16 @@ const nextConfig: NextConfig = {
 				protocol: 'https',
 				hostname: 'rw-trade.netlify.app'
 			},
-
 			{
 				protocol: 'http',
 				hostname: 'localhost',
 				port: '5000'
+			},
+			{
+				protocol: 'https',
+				hostname: 'devtestapps.online',
+				port: '',
+				pathname: '/uploads/**'
 			}
 		]
 	},
