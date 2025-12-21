@@ -50,24 +50,27 @@ const BannerForm = ({ banner, type, resultFnc }: Props) => {
 				return
 			}
 
-			const formData = new FormData()
-			formData.append('link', data.link)
-			formData.append('type', data.type)
-
-			// якщо вибране нове фото → відправляємо
-			if (data.imageFile) {
-				formData.append('image', data.imageFile)
-			}
-
 			if (banner?._id) {
-				await bannersStore.update(banner._id, { ...banner, ...data }, token)
+				// редагування існуючого банера — _id і isPublished гарантовані
+				const updatedBanner: Banner & { imageFile?: File | null } = {
+					...banner, // тут є _id і isPublished
+					...data, // лінк, image, type
+					imageFile: data.imageFile
+				}
+
+				await bannersStore.update(updatedBanner)
 			} else {
-				await bannersStore.create(data, token)
+				// створення нового банера
+				const newBanner: CreateBannerDto & { imageFile?: File | null } = {
+					...data,
+					imageFile: data.imageFile
+				}
+
+				await bannersStore.create(newBanner)
 			}
 
 			reset()
-
-			resultFnc() // закриваємо модалку
+			resultFnc()
 		} catch (err) {
 			console.error('Помилка при збереженні банера:', err)
 			toast.error('Не вдалося зберегти банер')
