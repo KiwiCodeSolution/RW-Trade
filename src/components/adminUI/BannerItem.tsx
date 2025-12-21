@@ -15,10 +15,9 @@ import { useState } from 'react'
 const BannerItem = observer(({ banner, fnc }: { banner: Banner; fnc: () => void }) => {
 	const { toggleVisibility, remove } = bannersStore
 
-	if (typeof window === 'undefined') return null
-
 	const [isShowModal, setIsShowModal] = useState(false)
 
+	if (typeof window === 'undefined') return null
 	function toggleVisible() {
 		toggleVisibility(banner._id)
 	}

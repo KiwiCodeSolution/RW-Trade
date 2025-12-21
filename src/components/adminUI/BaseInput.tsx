@@ -25,6 +25,8 @@ interface BaseInputProps<TFormValues extends FieldValues> {
 	label?: string
 	disabled?: boolean
 	validation?: RegisterOptions<TFormValues, Path<TFormValues>>
+	textColor?: string
+	borderColor?: string
 }
 
 /**
@@ -55,7 +57,9 @@ export const BaseInput = <TFormValues extends FieldValues>({
 	patternMessage,
 	label,
 	disabled,
-	validation
+	validation,
+	textColor = 'black',
+	borderColor = 'gr-2'
 }: BaseInputProps<TFormValues>) => {
 	const validationRules: RegisterOptions<TFormValues, Path<TFormValues>> = {}
 
@@ -78,7 +82,7 @@ export const BaseInput = <TFormValues extends FieldValues>({
 			{label && (
 				<label
 					htmlFor={String(name)}
-					className='font-semibold relative flex items-center gap-x-1'
+					className={`font-semibold relative flex items-center gap-x-1 text-${textColor}`}
 				>
 					{label}
 					{isRequired && <RequiredStar />}
@@ -92,7 +96,7 @@ export const BaseInput = <TFormValues extends FieldValues>({
 					autoComplete='off'
 					placeholder={placeholder}
 					disabled={disabled}
-					className={`border border-gr-2 focus:border-link-blue focus:outline-none px-3 py-2 text-base rounded-lg placeholder:text-sc-2 transition-colors duration-200`}
+					className={`border border-${borderColor} focus:border-link-blue focus:outline-none px-3 py-2 text-base rounded-lg placeholder:text-sc-2 transition-colors duration-200`}
 					{...register(name, fieldValidation)}
 				/>
 				{fieldError?.message && (

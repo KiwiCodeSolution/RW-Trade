@@ -330,6 +330,21 @@ export type Banner = CreateBannerDto & {
 	isPublished: boolean
 }
 
+export type CreatePromoBannerDto = {
+	title: LangField
+	subtitle: LangField
+	firstText: LangField
+	secondText: LangField
+	thirdText: LangField
+	link: string
+	image: string
+}
+
+export type PromoBanner = CreatePromoBannerDto & {
+	_id: string
+	isPublished: boolean
+}
+
 export interface PaginatedNews {
 	data: NewsArticle[]
 	total: number

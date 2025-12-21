@@ -73,9 +73,10 @@ const OrderPageComponent = observer(({ pageName = 'all' }: { pageName: 'all' | '
 	return (
 		<div className='flex flex-col justify-between gap-y-4 mt-2'>
 			{/* 🔹 Фільтри та сортування */}
-			<div className='w-full grid grid-cols-5 gap-x-[2px] bg-primary rounded-lg h-[38px] p-[2px]'>
-				{pageName === 'history' &&
-					statusOptions.map((s, idx) => (
+
+			{pageName === 'history' && (
+				<div className='w-full grid grid-cols-5 gap-x-[2px] bg-primary rounded-lg h-[38px] p-[2px]'>
+					{statusOptions.map((s, idx) => (
 						<button
 							key={s}
 							className={`w-full ${(statusParam ?? 'all') === s ? 'bg-transparent text-white' : 'bg-white text-nav'} ${idx === 0 ? 'rounded-l-lg' : ''} ${idx === statusOptions.length - 1 ? 'rounded-r-lg' : ''} transition-colors duration-300 font-semibold flex items-center justify-center`}
@@ -86,7 +87,9 @@ const OrderPageComponent = observer(({ pageName = 'all' }: { pageName: 'all' | '
 							{titleButton[s]}
 						</button>
 					))}
-			</div>
+				</div>
+			)}
+
 			<div className={`flex flex-wrap items-center justify-between gap-4 `}>
 				<p className='font-bold'>Всього замовлень: {total}</p>
 

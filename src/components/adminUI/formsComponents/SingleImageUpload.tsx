@@ -60,7 +60,7 @@ const SingleImageUpload = ({
 		<div className='flex gap-x-5 items-center'>
 			{!local ? (
 				<label
-					className={`inline-flex flex-col items-center justify-center rounded-md border-2 border-sc-1 cursor-pointer product-card-shadow ${className}`}
+					className={`inline-flex flex-col items-center justify-center rounded-md cursor-pointer ${className}`}
 				>
 					<input type='file' className='hidden' onChange={handleAdd} />
 					<div className='add-btn-link bg-primary mb-2'>

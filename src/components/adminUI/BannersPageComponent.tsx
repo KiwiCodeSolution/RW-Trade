@@ -1,5 +1,6 @@
 'use client'
 
+import SinglePromoBanner from './SinglePromoBanner'
 import SliderBanners from './SliderBanners'
 
 import Image from 'next/image'
@@ -59,7 +60,7 @@ const BannersPageComponent = () => {
 				)}
 			</div>
 			<div className='h-0.5 w-full bg-primary' />
-			<SliderBanners />
+			{bannerType === 'slider' ? <SliderBanners /> : <SinglePromoBanner />}
 		</div>
 	)
 }

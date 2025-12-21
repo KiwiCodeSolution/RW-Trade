@@ -129,6 +129,7 @@ const NewsForm = observer(({ news }: { news?: NewsArticle }) => {
 						setValue('image', preview?.url || '')
 						setValue('imageFile', preview?.file || null)
 					}}
+					className='border-2 border-sc-1 product-card-shadow'
 				/>
 				<div className='flex flex-col gap-y-2 w-4/5'>
 					<BaseInput<NewsFormValues>

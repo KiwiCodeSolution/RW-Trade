@@ -86,7 +86,7 @@ const BannerForm = ({ banner, type, resultFnc }: Props) => {
 					setValue('image', preview?.url || '')
 					setValue('imageFile', preview?.file || null)
 				}}
-				className='w-[372px] h-[176px]'
+				className='w-[372px] h-[176px] border-2 border-sc-1 product-card-shadow'
 			/>
 
 			{/* Лінк */}
