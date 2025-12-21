@@ -17,13 +17,15 @@ type FiltersProps = {
 	minPriceDefault: number
 	maxPriceDefault: number
 	locale: Locale
+	fnc?: () => void
 }
 
 export default function Filters({
 	countriesList,
 	minPriceDefault,
 	maxPriceDefault,
-	locale
+	locale,
+	fnc
 }: FiltersProps) {
 	const { query, setQuery } = useListQuery({
 		countries: '',
@@ -52,6 +54,8 @@ export default function Filters({
 			minPrice: String(priceRange[0]),
 			maxPrice: String(priceRange[1])
 		})
+
+		if (fnc) fnc()
 	}
 
 	return (
@@ -83,9 +87,16 @@ export default function Filters({
 			/>
 
 			{/* Кнопка застосування */}
-			<BtnSolid size='xxl' variant='primary' as='button' action={onApplyFilters}>
-				{locale === 'uk' ? 'Застосувати' : 'Apply'}
-			</BtnSolid>
+			<div className='hidden lg:block mx-auto w-full'>
+				<BtnSolid size='xxxl' variant='primary' as='button' action={onApplyFilters}>
+					{locale === 'uk' ? 'Застосувати' : 'Apply'}
+				</BtnSolid>
+			</div>
+			<div className='lg:hidden mx-auto'>
+				<BtnSolid size='m' variant='primary' as='button' action={onApplyFilters}>
+					{locale === 'uk' ? 'Застосувати' : 'Apply'}
+				</BtnSolid>
+			</div>
 		</div>
 	)
 }

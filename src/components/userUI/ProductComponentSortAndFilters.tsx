@@ -1,5 +1,7 @@
 'use client'
 
+import { Filter } from '@/assets/icons'
+
 import { useDynamicLimits } from '@/hooks/useDynamicLimits'
 import { useListQuery } from '@/hooks/useListQuery'
 
@@ -17,7 +19,7 @@ import QuantityProduct from './QuantityProduct'
 import { ProductSort, productSortOptions } from '@/lib/sortOptions'
 
 import { observer } from 'mobx-react-lite'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 const ProductComponentSortAndFilters = observer(
 	({
@@ -35,6 +37,7 @@ const ProductComponentSortAndFilters = observer(
 		typeSection?: 'home' | 'discounts' | 'catalog'
 		isShowSort?: boolean
 	}) => {
+		const [isShowFilters, setIsShowFilters] = useState(false)
 		const { products, total, isLoading, allCountries, minPrice, maxPrice } = productStore
 
 		// URL query
@@ -106,7 +109,7 @@ const ProductComponentSortAndFilters = observer(
 		return (
 			<div className='flex flex-col justify-between'>
 				{isShowSort && (
-					<div className='py-6 flex items-center justify-end gap-x-6 relative'>
+					<div className='py-6 flex items-center justify-end gap-x-2 lg:gap-x-6 relative'>
 						<Sort<ProductSort>
 							locale={locale}
 							options={productSortOptions}
@@ -121,6 +124,30 @@ const ProductComponentSortAndFilters = observer(
 									setQuery({ limit: String(val), page: '1' })
 								}
 							/>
+						</div>
+						<div className='relative lg:hidden w-1/2 shrink-0'>
+							<button
+								className='w-full h-12 flex items-center justify-center bg-primary rounded-lg p-0.5'
+								onClick={() => setIsShowFilters(!isShowFilters)}
+							>
+								<div className='w-full h-full rounded-lg mx-auto flex items-center justify-center gap-4  bg-bg-light'>
+									<Filter />
+									<p className='font-medium text-link-blue underline decoration-1 order-2 xl:order-1'>
+										{locale === 'uk' ? 'Фільтри' : 'Filters'}
+									</p>
+								</div>
+							</button>
+							{isShowFilters && (
+								<div className='h-fit w-fit min-w-[278px] max-w-[330px] flex flex-col justify-end items-center absolute z-10 top-12 right-0 bg-other-1 px-2 py-4 rounded-md border-2 border-sc-1'>
+									<Filters
+										countriesList={allCountries}
+										minPriceDefault={minPrice ?? 0}
+										maxPriceDefault={maxPrice ?? 0}
+										locale={locale}
+										fnc={() => setIsShowFilters(false)}
+									/>
+								</div>
+							)}
 						</div>
 					</div>
 				)}
@@ -138,6 +165,7 @@ const ProductComponentSortAndFilters = observer(
 								locale={locale}
 							/>
 						</div>
+
 						{products.slice(0, gridLimit).map(item => (
 							<ProductCard key={item._id} locale={locale} product={item} />
 						))}
