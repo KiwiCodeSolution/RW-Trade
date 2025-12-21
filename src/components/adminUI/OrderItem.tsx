@@ -61,14 +61,14 @@ const OrderItemComponent = observer(({ order }: OrderItemProps) => {
 	}
 
 	async function handleDeleteOrder(id: string) {
-		await deleteOrder(id, token || '')
+		await deleteOrder(id)
 		setIsShowModal(false)
 	}
 
 	async function handleChangeStatus(newStatus: OrderStatus) {
 		setIsStatusOpen(false)
 		if (!token) return
-		await updateOrderStatus(order._id, newStatus, token)
+		await updateOrderStatus(order._id, newStatus)
 	}
 
 	const delivery = servicesList.find(s => s.id === order.delivery.method)!
