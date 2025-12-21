@@ -9,7 +9,7 @@ interface TitleProps {
 
 const Title = ({ tag = 'h3', isPageTitle = false, styles = '', children }: TitleProps) => {
 	const baseTag = isPageTitle ? 'h1' : tag
-	const baseStyles = 'text-2xl leading-1 font-bold xl:leading-[48px] ' + styles
+	const baseStyles = 'text-2xl leading-normal font-bold xl:leading-[48px] ' + styles
 
 	switch (baseTag) {
 		case 'h1':

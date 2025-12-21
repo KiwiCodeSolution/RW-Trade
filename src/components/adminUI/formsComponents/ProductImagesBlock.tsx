@@ -70,6 +70,22 @@ const ProductImagesBlock = ({ images = [], onChange }: ProductImagesBlockProps) 
 			return result
 		})
 	}, [images])
+
+	useEffect(() => {
+		setLocal(prev => {
+			const filled = images.map(img => ({
+				id: img.id || `img-${crypto.randomUUID()}`,
+				url: img.url,
+				file: img.file
+			}))
+			const emptySlots = Array.from({ length: 10 - filled.length }, (_, i) => ({
+				id: `slot-${i}`,
+				url: undefined,
+				file: undefined
+			}))
+			return [...filled, ...emptySlots]
+		})
+	}, [images])
 	const handleAdd = (e: ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
 		if (!files) return

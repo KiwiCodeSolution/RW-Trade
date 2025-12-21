@@ -28,16 +28,16 @@ export default async function Contacts() {
 
 	return (
 		<main className='min-h-[80vh]'>
-			<div className='header-shadow' />
+			<div className='hidden lg:block header-shadow' />
 			<BaseSection>
-				<Title tag='h1' isPageTitle styles='text-center my-5'>
+				<Title tag='h1' isPageTitle styles='lg:text-center my-5'>
 					{t('title')}
 				</Title>
 
-				<div className='grid grid-cols-2 py-4 gap-10 sm:gap-24'>
-					<BabyAndLogo />
+				<div className='grid grid-cols-1 lg:grid-cols-2 pt-4 pb-4 gap-4 lg:gap-10 sm:gap-24'>
+					<BabyAndLogo styles='order-2 lg:order-1' />
 
-					<div className='max-w-[660px] text-2xl flex flex-col gap-y-8'>
+					<div className='max-w-[660px] text-2xl flex flex-col gap-y-8 order-1 lg:order-2'>
 						<p className='gradient-text font-semibold'>{t('slogan')}</p>
 						<div>
 							<p className='font-bold'>{t('office')}</p>

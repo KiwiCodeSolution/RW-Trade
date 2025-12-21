@@ -33,28 +33,32 @@ const FormSection = () => {
 	}
 
 	return (
-		<BaseSection className='bg-primary h-[488px] text-white'>
-			<div className='w-full h-full grid grid-cols-2 gap-4 py-14'>
+		<BaseSection className='bg-primary h-fit lg:h-[488px] text-white'>
+			<div className='w-full h-full grid grid-cols-1 lg:grid-cols-2 gap-4 py-4 lg:py-14'>
 				<div className='items-center max-w-[500px] mx-auto'>
-					<div className='flex justify-center'>
+					<div className='flex justify-center mb-3 lg:mb-0'>
 						<Image src={LogoWhite} alt='logo' width={156} height={58} />
 					</div>
-					<Title tag='h3' styles='text-center border-b-2 border-white mb-4'>
+
+					<Title
+						tag='h3'
+						styles='text-center border-b-2 border-white mb-4 pb-4 lg:pb-0 mx-[15px] lg:mx-0'
+					>
 						{t('title')}
 					</Title>
 
 					{items.map((text, index) => {
 						const Icon = icons[index]
 						return (
-							<div key={index} className='flex gap-6 mb-4 mx-8'>
+							<div key={index} className='flex gap-6 mb-4 mx-[15px] lg:mx-8'>
 								<Icon className='min-w-[33px] h-auto' />
-								<p className='text-xl leading-8'>{text}</p>
+								<p className='lg:text-xl leading-[1.5] lg:leading-8'>{text}</p>
 							</div>
 						)
 					})}
 				</div>
 
-				<div className='items-center w-full max-w-[580px] mx-auto'>
+				<div className='items-center w-full max-w-[580px] mx-auto border-t-2 border-white lg:border-none pt-10 lg:pt-0'>
 					<UserForm formTexts={formTexts} />
 				</div>
 			</div>

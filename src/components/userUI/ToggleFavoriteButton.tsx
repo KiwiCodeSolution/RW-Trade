@@ -1,12 +1,11 @@
 'use client'
 
-import { FavoriteHurt, FavoriteHurtSolid } from '@/assets/icons'
-
 import { Product } from '@/types/baseTypes'
 
 import { productStore } from '@/store/ProductsStore'
 
 import { observer } from 'mobx-react-lite'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 
 type ToggleFavoriteButtonProps = {
@@ -29,9 +28,13 @@ const ToggleFavoriteButton = observer(({ product }: ToggleFavoriteButtonProps) =
 	return (
 		<button
 			onClick={toggleFavorite}
-			className='cursor-pointer w-8 h-8 flex items-center justify-center'
+			className='cursor-pointer w-8 h-8 flex items-center justify-center text-red-500'
 		>
-			{favorite ? <FavoriteHurtSolid /> : <FavoriteHurt />}
+			{favorite ? (
+				<Image src='/icons/hurt_full.png' alt='heart' width={24} height={20} />
+			) : (
+				<Image src='/icons/hurt_empty.png' alt='heart' width={24} height={20} />
+			)}
 		</button>
 	)
 })

@@ -3,13 +3,13 @@
 import LeftIcon from '@/assets/icons/chevron-left-32.svg'
 import RightIcon from '@/assets/icons/chevron-right-32.svg'
 
+import { Locale } from '@/types/baseTypes'
+
 import TestimonialsCard from './TestimonialsCard'
 
 import { useState } from 'react'
 
-const TestimonialsCarousel = () => {
-	const lang = 'uk'
-
+const TestimonialsCarousel = ({ locale }: { locale: Locale }) => {
 	const testimonials = [
 		{
 			uk: {
@@ -155,12 +155,12 @@ const TestimonialsCarousel = () => {
 	}
 
 	return (
-		<div className='h-full flex flex-col py-5'>
+		<div className='h-full flex flex-col pt-8 pb-5 lg:py-5'>
 			<div className='grow'>
-				<div className='grid grid-cols-2 gap-10 mb-6'>
+				<div className='grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-10 mb-6'>
 					{currentTestimonials.map((item, index) => (
 						<div key={index} className='w-full flex justify-center'>
-							<TestimonialsCard key={index} testimonial={item[lang]} />
+							<TestimonialsCard key={index} testimonial={item[locale]} />
 						</div>
 					))}
 				</div>
@@ -177,7 +177,7 @@ const TestimonialsCarousel = () => {
 					<LeftIcon className='text-white' />
 				</button>
 
-				<span className='text-gray-700'>Наступні</span>
+				<span className='text-gray-700'>{locale === 'uk' ? 'Наступні' : 'Next'}</span>
 
 				<button
 					onClick={handleNext}

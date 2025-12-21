@@ -1,18 +1,16 @@
 'use client'
 
-import { BASE_URL } from '@/utils/config'
-
 import { FeedbackStatus, Message } from '@/types/baseTypes'
 
-import { getAllMessages } from '@/api/feedback'
+import { deleteMessage, getAllMessages, toggleStatusFeedback } from '@/api/feedback'
 
 import { notificationsStore } from './NotificationsStore'
 import { toast } from '@/lib/toast'
 
-import axios, { isAxiosError } from 'axios'
+import { isAxiosError } from 'axios'
 import { makeAutoObservable, runInAction } from 'mobx'
 
-class FeedbackStore {
+export class FeedbackStore {
 	messages: Message[] = []
 	newMessagesCount = 0
 	contactedCount = 0
@@ -23,50 +21,60 @@ class FeedbackStore {
 		makeAutoObservable(this)
 	}
 
-	async fetchMessages(token: string) {
+	async fetchMessages() {
+		this.isLoaded = false
 		try {
-			this.isLoaded = false
-			const res = await getAllMessages(token)
-
+			const res: Message[] = await getAllMessages()
 			runInAction(() => {
 				this.messages = res
-				this.newMessagesCount = res.filter(m => m.status === 'new').length
-				this.contactedCount = res.filter(m => m.status === 'contacted').length
-				this.importantCount = res.filter(m => m.status === 'important').length
+				this.recalculateCounts()
 				this.isLoaded = true
 			})
 		} catch (err: unknown) {
+			runInAction(() => (this.isLoaded = true))
 			const msg = isAxiosError(err)
 				? (err.response?.data?.message ?? 'Помилка при завантаженні звернень')
 				: 'Помилка при завантаженні звернень'
-			this.isLoaded = true
 			toast.error(msg)
 		}
 	}
 
-	async updateStatus(id: string, status: FeedbackStatus, token: string) {
-		try {
-			await axios.patch(
-				`${BASE_URL}/feedbacks/${id}/status`,
-				{ status },
-				{ headers: { Authorization: `Bearer ${token}` } }
-			)
+	private recalculateCounts() {
+		this.newMessagesCount = this.messages.filter(m => m.status === 'new').length
+		this.contactedCount = this.messages.filter(m => m.status === 'contacted').length
+		this.importantCount = this.messages.filter(m => m.status === 'important').length
+	}
 
+	async updateStatus(id: string, status: FeedbackStatus) {
+		try {
+			await toggleStatusFeedback(id, status)
 			runInAction(() => {
 				const msg = this.messages.find(m => m._id === id)
 				if (msg) msg.status = status
-
-				// після оновлення одразу перераховуємо кількість
-				this.newMessagesCount = this.messages.filter(m => m.status === 'new').length
-				this.contactedCount = this.messages.filter(m => m.status === 'contacted').length
-				this.importantCount = this.messages.filter(m => m.status === 'important').length
+				this.recalculateCounts()
 			})
-			// синхронізація з notificationsStore
-			await notificationsStore.fetchNotifications(token)
+			await notificationsStore.fetchNotifications()
+			toast.success('Статус успішно оновлено')
 		} catch (err: unknown) {
 			const msg = isAxiosError(err)
 				? (err.response?.data?.message ?? 'Помилка при зміні статусу')
 				: 'Помилка при зміні статусу'
+			toast.error(msg)
+		}
+	}
+
+	async removeMessage(id: string) {
+		try {
+			await deleteMessage(id)
+			runInAction(() => {
+				this.messages = this.messages.filter(m => m._id !== id)
+				this.recalculateCounts()
+			})
+			toast.success('Повідомлення видалено')
+		} catch (err: unknown) {
+			const msg = isAxiosError(err)
+				? (err.response?.data?.message ?? 'Помилка при видаленні звернення')
+				: 'Помилка при видаленні звернення'
 			toast.error(msg)
 		}
 	}

@@ -29,7 +29,7 @@ const BaseModal = ({
 		<ModalPortal>
 			<Backdrop onClose={onClose} closeOnOverlayClick closeOnEsc>
 				<div
-					className={`min-w-[720px] min-h-[400px] xl:min-w-[720px] xl:min-h-[400px] rounded-3xl p-2 bg-bg-light relative ${className}`}
+					className={`w-full lg:w-[800px] min-h-[400px] xl:min-w-[720px] xl:min-h-[400px] rounded-3xl p-2 bg-bg-light relative ${className}`}
 				>
 					{title && <ModalTitle title={title} isShowLogo={isShowLogo} />}
 					{children}

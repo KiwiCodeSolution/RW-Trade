@@ -2,13 +2,21 @@ import { BASE_URL } from '@/utils/config'
 
 import {
 	CreateProductDto,
+	ItemsFilterParams,
 	LangField,
 	Product,
-	ProductFilterParams,
 	Subcategory
 } from '@/types/baseTypes'
 
-import { fetchFilteredProducts, getExchangeRate } from '@/api/products'
+import {
+	deleteProduct,
+	fetchFilteredAdminProducts,
+	fetchFilteredProducts,
+	getExchangeRate,
+	updateExchangeRate,
+	updateProductStatus,
+	updateProductVisibility
+} from '@/api/products'
 
 import { toast } from '@/lib/toast'
 
@@ -16,15 +24,23 @@ import { makeAutoObservable, runInAction } from 'mobx'
 
 class ProductStore {
 	products: Product[] = []
+	adminProducts: Product[] = []
 	discountProducts: Product[] = [] // 👈 окремо
 	discountSubcategories: Subcategory[] = []
 	currentProduct: Product | null = null
 	isLoading = false
-	exchangeRate = 41.5
+	exchangeRate = 0
 	isWholesale = false
 	total = 0
+	totalAdmin = 0
+
 	discountTotal = 0
 	shouldAskWholesale = false
+
+	allCountries: string[] = [] // 🔹 повний перелік для фільтра
+	filteredCountries: string[] = [] // 🔹 країни, які реально відфільтровані
+	minPrice = 0
+	maxPrice = 0
 
 	constructor() {
 		makeAutoObservable(this)
@@ -52,6 +68,7 @@ class ProductStore {
 				}
 			}
 		}
+		this.fetchExchangeRate()
 	}
 
 	get favoriteProducts() {
@@ -92,6 +109,7 @@ class ProductStore {
 			runInAction(() => {
 				this.exchangeRate = res.data.rate
 			})
+			console.log('Exchange rate:', this.exchangeRate)
 		} catch {
 			console.warn('Exchange rate unavailable — using fallback 1')
 			runInAction(() => {
@@ -104,18 +122,32 @@ class ProductStore {
 		}
 	}
 
-	async fetchProducts(params?: Partial<ProductFilterParams & { discountOnly?: boolean }>) {
+	setExchangeRate = async (rate: number) => {
+		try {
+			const updated = await updateExchangeRate({ rate })
+			runInAction(() => {
+				this.exchangeRate = updated.rate
+			})
+			toast.success('Курс валюти оновлено')
+			return updated
+		} catch (err: unknown) {
+			console.error('Failed to update exchange rate in store', err)
+			toast.error('Не вдалося оновити курс валюти')
+			return null
+		}
+	}
+	async fetchProducts(params?: Partial<ItemsFilterParams & { discountOnly?: boolean }>) {
 		try {
 			this.isLoading = true
 
 			const data = await fetchFilteredProducts({
 				lang: 'uk',
-				categoryId: 'all',
-				subCategoryId: 'all',
+				categorySlug: 'all',
+				subCategorySlug: 'all',
 				sort: 'DATE_ADDED',
 				limit: 24,
 				page: 1,
-				...params // дозволяє перевизначати фільтри
+				...params
 			})
 
 			runInAction(() => {
@@ -127,6 +159,44 @@ class ProductStore {
 				})
 
 				this.total = data.totalItems
+				this.minPrice = data.filter.minPrice.toFixed(2)
+				this.maxPrice = data.filter.maxPrice.toFixed(2)
+
+				// 🔹 Зберігаємо повний перелік лише при першому завантаженні
+				if (!this.allCountries.length) {
+					this.allCountries = data.filter.allCountries
+				}
+
+				// 🔹 Завжди зберігаємо перелік реально відфільтрованих країн
+				this.filteredCountries = data.filter.selectedCountries
+			})
+		} catch (error) {
+			console.error('❌ Failed to fetch filtered products:', error)
+		} finally {
+			runInAction(() => {
+				this.isLoading = false
+			})
+		}
+	}
+
+	async fetchAdminProducts(params?: Partial<ItemsFilterParams & { discountOnly?: boolean }>) {
+		try {
+			this.isLoading = true
+
+			const data = await fetchFilteredAdminProducts({
+				lang: 'uk',
+				categorySlug: 'all',
+				subCategorySlug: 'all',
+				sort: 'DATE_ADDED',
+				limit: 24,
+				page: 1,
+				...params // дозволяє перевизначати фільтри
+			})
+
+			runInAction(() => {
+				this.adminProducts = data.items
+
+				this.totalAdmin = data.totalItems
 			})
 		} catch (error) {
 			console.error('❌ Failed to fetch filtered products:', error)
@@ -429,13 +499,6 @@ class ProductStore {
 		}
 	}
 
-	// toggleFavorite(id: string) {
-	// 	this.products = this.products.map(p =>
-	// 		p._id === id ? { ...p, isFavorite: !p.isFavorite } : p
-	// 	)
-	// 	this.updateFavoritesStorage()
-	// }
-
 	setWholesale = (isWholesale: boolean) => {
 		this.isWholesale = isWholesale
 		localStorage.setItem('isWholesale', String(isWholesale))
@@ -451,33 +514,65 @@ class ProductStore {
 		return this.isWholesale ? +(base * 0.93).toFixed(2) : +base.toFixed(2)
 	}
 
-	// getFavoritesFromStorage(): Product[] {
-	// 	try {
-	// 		const favs = JSON.parse(localStorage.getItem('favorites-RWTrade') || '[]')
-	// 		return favs
-	// 	} catch {
-	// 		return []
-	// 	}
-	// }
+	toggleVisible(id: string) {
+		this.products = this.products.map(p => {
+			if (p._id === id) {
+				return { ...p, isVisible: !p.isPublished }
+			}
+			return p
+		})
+	}
 
-	// updateFavoritesStorage() {
-	// 	const favorites = this.products
-	// 		.filter(p => p.isFavorite)
-	// 		.map(p => ({
-	// 			_id: p._id,
-	// 			title: p.title,
-	// 			price: p.price,
-	// 			priceCurrency: p.priceCurrency,
-	// 			images: p.images,
-	// 			inStock: p.inStock
-	// 			// тут можна додати інші поля, які потрібні для UI
-	// 		}))
-	// 	localStorage.setItem('favorites-RWTrade', JSON.stringify(favorites))
-	// }
+	async toggleVisibility(product: Product) {
+		try {
+			const updated = await updateProductVisibility(
+				product._id,
+				!(product.isPublished ?? false)
+			)
 
-	// get favoriteProducts() {
-	// 	return this.products.filter(p => p.isFavorite)
-	// }
+			runInAction(() => {
+				product.isPublished = updated.isPublished
+			})
+
+			toast.success('Видимість товару оновлено')
+		} catch (error) {
+			console.error(error)
+			toast.error('Не вдалося змінити видимість товару')
+		}
+	}
+
+	async changeStatus(product: Product, status: Product['status']) {
+		try {
+			const updated = await updateProductStatus(product._id, status)
+
+			runInAction(() => {
+				product.status = updated.status
+			})
+
+			toast.success('Статус товару оновлено')
+		} catch (error) {
+			console.error(error)
+			toast.error('Не вдалося змінити статус товару')
+		}
+	}
+
+	removeProduct = async (id: string) => {
+		try {
+			await deleteProduct(id)
+
+			runInAction(() => {
+				this.products = this.products.filter(p => p._id !== id)
+				this.adminProducts = this.adminProducts.filter(p => p._id !== id)
+				this.total = this.total - 1
+				this.totalAdmin = this.totalAdmin - 1
+			})
+
+			toast.success('Товар видалено')
+		} catch (error) {
+			console.error(error)
+			toast.error('Не вдалося видалити товар')
+		}
+	}
 }
 
 export const productStore = new ProductStore()

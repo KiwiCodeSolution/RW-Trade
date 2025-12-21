@@ -32,6 +32,7 @@ const TextEditor = <T extends FieldValues>({
 					<>
 						<Editor
 							apiKey={process.env.NEXT_PUBLIC_TINYMCE_API_KEY}
+							id={String(name)}
 							value={value}
 							onEditorChange={onChange}
 							init={{

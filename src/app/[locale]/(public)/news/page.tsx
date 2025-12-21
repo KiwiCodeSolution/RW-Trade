@@ -1,34 +1,36 @@
-import NewsCard from '@/components/userUI/NewsCard'
-
 import { Locale } from '@/types/baseTypes'
 
-export type NewsArticle = {
-	id: string | number
-	title: string
-	body: string
-	imgUrl: string
+import { Metadata } from 'next'
+import { redirect } from 'next/navigation'
+
+export const metadata: Metadata = {
+	title: 'RW-Trade | Новини та статті',
+	description: 'Новини та статті'
 }
+
+// async function getAllNews() {
+// 	const res = await getNewsWithPagination({ page: 1, limit: 20 })
+
+// 	return res
+// }
 
 const News = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 	const { locale } = await params
+	// const news = await getAllNews()
 
-	const res = await fetch('https://jsonplaceholder.typicode.com/posts')
-	const posts = (await res.json()) as NewsArticle[]
+	// return (
+	// 	<main className='min-h-[80vh]'>
+	// 		<div className='header-shadow' />
+	// 		<BaseSection>
+	// 			<Title tag='h1' isPageTitle styles='text-center my-5'>
+	// 				{locale === 'uk' ? 'Новини та статті' : 'News and Articles'}
+	// 			</Title>
+	// 		</BaseSection>
+	// 		<NewsList locale={locale} posts={news.items} />
+	// 	</main>
+	// )
 
-	return (
-		<div className='user-container'>
-			<h3 className='font-bold text-[40px] text-center'>
-				{locale === 'uk' ? 'Новини та статті' : 'News and Articles'}
-			</h3>
-			<div className='grid lg:grid-cols-2 gap-10 py-10'>
-				{posts.map((item, index) => (
-					<div key={index}>
-						<NewsCard article={item} />
-					</div>
-				))}
-			</div>
-		</div>
-	)
+	redirect(`/${locale}/catalog`)
 }
 
 export default News

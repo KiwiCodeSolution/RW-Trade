@@ -198,6 +198,7 @@ class CartStore {
 			// очистка кошика
 			this.items = []
 			this.totalSum = 0
+			this.saveToStorage()
 
 			return {
 				success: true,

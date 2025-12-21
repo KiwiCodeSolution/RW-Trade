@@ -15,19 +15,50 @@ export default async function ProductPage({
 }) {
 	const { slug, locale } = await params
 
-	const res = await fetch(`${BASE_URL}/products/slug/${slug}`, {
+	const productRes = await fetch(`${BASE_URL}/products/slug/${slug}`, {
 		next: { revalidate: 60 }
 	})
 
-	if (!res.ok) throw new Error('Failed to fetch product')
-	const product: Product = await res.json()
+	if (!productRes.ok) throw new Error('Failed to fetch product')
+	const product: Product = await productRes.json()
 
+	const partnersRes = await fetch(
+		`${BASE_URL}/products/partners` +
+			`?subCategoryId=${product.subCategoryId ?? ''}` +
+			`&categoryId=${product.categoryId}` +
+			`&excludeProductId=${product._id}`,
+		{ next: { revalidate: 60 } }
+	)
+
+	const partnerProducts: Product[] = partnersRes.ok ? await partnersRes.json() : []
+
+	const popularRes = await fetch(
+		`${BASE_URL}/products/popular-products` +
+			`?subCategoryId=${product.subCategoryId ?? ''}` +
+			`&categoryId=${product.categoryId}` +
+			`&excludeProductId=${product._id}`,
+		{ next: { revalidate: 60 } }
+	)
+
+	const popularProducts: Product[] = popularRes.ok ? await popularRes.json() : []
+
+	if (!product)
+		return (
+			<BaseSection className='flex flex-col pt-4 pb-8'>
+				<Title isPageTitle tag='h1' styles='text-center'>
+					{locale === 'uk' ? 'Вибачте, товар не знайдено' : 'Sorry, product not found'}
+				</Title>
+			</BaseSection>
+		)
 	const secondName = locale === 'uk' ? 'каталог' : 'catalog'
 
 	return (
 		<main className='w-full min-h-[80vh]'>
-			<BaseSection>
+			<BaseSection className='hidden lg:flex'>
 				<Path secondName={secondName} thirdName={product.title[locale]} locale={locale} />
+			</BaseSection>
+			<BaseSection className='lg:hidden'>
+				<Path secondName={secondName} locale={locale} />
 			</BaseSection>
 			<BaseSection className='flex flex-col pt-4 pb-8'>
 				<Title isPageTitle tag='h1' styles='text-center'>
@@ -36,7 +67,12 @@ export default async function ProductPage({
 			</BaseSection>
 
 			<HeroProductPageComponent product={product} locale={locale} />
-			<OtherInformation product={product} locale={locale} />
+			<OtherInformation
+				product={product}
+				locale={locale}
+				partnersProducts={partnerProducts}
+				popularProducts={popularProducts}
+			/>
 		</main>
 	)
 }

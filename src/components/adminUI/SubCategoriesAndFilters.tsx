@@ -70,7 +70,7 @@ const SubCategoriesAndFilters = ({
 											setIsShowConfirmModal(true)
 										}}
 									>
-										<Trash />
+										<Trash className='w-4 h-4' />
 									</button>
 								</div>
 							</div>

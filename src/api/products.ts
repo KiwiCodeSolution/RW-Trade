@@ -1,7 +1,10 @@
+'use client'
+
 import { BASE_URL } from '@/utils/config'
 
-import { ProductFilterParams } from '@/types/baseTypes'
+import { ItemsFilterParams } from '@/types/baseTypes'
 
+import { fetchWithAuth } from './fetchWithAuth'
 import { toast } from '@/lib/toast'
 
 import axios, { isAxiosError } from 'axios'
@@ -20,6 +23,28 @@ export async function getProducts() {
 	}
 }
 
+export async function getProductsByCategoryId({ categoryId }: { categoryId: string }) {
+	try {
+		const res = await axios.get(`${BASE_URL}/products/by-category/${categoryId}`)
+		const products = res.data
+
+		// Сортування по статусу
+		const statusOrder: Record<string, number> = { in_stock: 0, expect: 1, on_order: 2 }
+		const sortedProducts = products.sort(
+			(a: { status: string }, b: { status: string }) =>
+				(statusOrder[a.status] ?? 99) - (statusOrder[b.status] ?? 99)
+		)
+
+		return sortedProducts
+	} catch (err: unknown) {
+		const msg = isAxiosError(err)
+			? (err.response?.data?.message ?? 'Помилка отримання продуктів')
+			: 'Помилка отримання продуктів'
+		toast.error(msg)
+		throw err
+	}
+}
+
 export async function getExchangeRate() {
 	try {
 		const rate = await axios.get(`${BASE_URL}/currency/latest`)
@@ -29,11 +54,26 @@ export async function getExchangeRate() {
 	}
 }
 
-export async function fetchFilteredProducts(params: ProductFilterParams) {
+export async function updateExchangeRate({ rate }: { rate: number }) {
+	try {
+		const res = await fetchWithAuth(`${BASE_URL}/currency`, {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ rate })
+		})
+		if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+
+		return await res.json()
+	} catch (error) {
+		console.error('Failed to update exchange rate', error)
+		throw error
+	}
+}
+export async function fetchFilteredProducts(params: ItemsFilterParams) {
 	const {
 		lang,
-		categoryId,
-		subCategoryId,
+		categorySlug,
+		subCategorySlug,
 		priceRange,
 		country,
 		sort,
@@ -42,17 +82,93 @@ export async function fetchFilteredProducts(params: ProductFilterParams) {
 	} = params
 
 	const q = new URLSearchParams()
-	q.append('lang', lang)
-
-	if (categoryId && categoryId !== 'all') q.append('categoryId', categoryId)
-	if (subCategoryId && subCategoryId !== 'all') q.append('subCategoryId', subCategoryId)
+	if (lang) q.append('lang', lang)
+	if (categorySlug && categorySlug !== 'all') q.append('categorySlug', categorySlug)
+	if (subCategorySlug && subCategorySlug !== 'all') q.append('subCategorySlug', subCategorySlug)
 	if (priceRange?.length === 2) q.append('priceRange', `${priceRange[0]},${priceRange[1]}`)
 	if (country?.length) q.append('country', country.join(','))
 	if (sort) q.append('sort', sort)
 	q.append('limit', String(limit))
 	q.append('page', String(page))
 
+	console.log('q', q)
 	const url = `${BASE_URL}/products/filter?${q.toString()}`
 	const { data } = await axios.get(url)
 	return data
+}
+
+export async function fetchFilteredAdminProducts(params: ItemsFilterParams) {
+	const {
+		lang,
+		categorySlug,
+		subCategorySlug,
+		priceRange,
+		country,
+		sort,
+		limit = 16,
+		page = 1
+	} = params
+
+	const q = new URLSearchParams()
+
+	if (lang) q.append('lang', lang)
+	if (categorySlug && categorySlug !== 'all') q.append('categorySlug', categorySlug)
+	if (subCategorySlug && subCategorySlug !== 'all') q.append('subCategorySlug', subCategorySlug)
+	if (priceRange?.length === 2) q.append('priceRange', `${priceRange[0]},${priceRange[1]}`)
+	if (country?.length) q.append('country', country.join(','))
+	if (sort) q.append('sort', sort)
+	q.append('limit', String(limit))
+	q.append('page', String(page))
+
+	const url = `${BASE_URL}/products/filter/admin?${q.toString()}`
+	const res = await fetchWithAuth(url, {
+		method: 'GET'
+	})
+	const data = await res.json()
+
+	return data
+}
+
+export async function updateProductVisibility(id: string, isPublished: boolean) {
+	try {
+		const res = await fetchWithAuth(`${BASE_URL}/products/${id}/visibility`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ isPublished })
+		})
+
+		return await res.json()
+	} catch {
+		toast.error('Не вдалося змінити видимість товару')
+		throw new Error()
+	}
+}
+
+export async function updateProductStatus(
+	id: string,
+	status: 'in_stock' | 'expected' | 'on_order'
+) {
+	try {
+		const res = await fetchWithAuth(`${BASE_URL}/products/${id}/status`, {
+			method: 'PATCH',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ status })
+		})
+
+		return await res.json()
+	} catch {
+		toast.error('Не вдалося змінити статус товару')
+		throw new Error()
+	}
+}
+
+export async function deleteProduct(id: string) {
+	try {
+		await fetchWithAuth(`${BASE_URL}/products/${id}`, {
+			method: 'DELETE'
+		})
+	} catch {
+		toast.error('Не вдалося видалити товар')
+		throw new Error()
+	}
 }

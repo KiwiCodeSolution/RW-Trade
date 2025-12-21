@@ -1,5 +1,3 @@
-import UserFooter from '@/components/userUI/UserFooter'
-
 import Image from 'next/image'
 
 const NotFound = () => {
@@ -14,7 +12,6 @@ const NotFound = () => {
 					{/* <CrashImage className='w-full h-auto' /> */}
 				</div>
 			</div>
-			<UserFooter />
 		</div>
 	)
 }

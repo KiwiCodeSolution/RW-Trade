@@ -49,7 +49,7 @@ const UserForm = ({ formTexts }: UserFormProps) => {
 
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className='py-7 flex flex-col gap-y-3 text-white'
+				className='py-5 lg:py-7 flex flex-col gap-y-3 text-white'
 			>
 				{/* name */}
 				<div className='flex flex-col relative'>

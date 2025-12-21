@@ -1,6 +1,8 @@
 import HeartIcon from '@/assets/icons/heart-primary-50.svg'
 import PhoneIcon from '@/assets/icons/phone-primary-50.svg'
 
+import { Locale } from '@/types/baseTypes'
+
 import HeaderCartButton from './HeaderCartButton'
 import HeaderSearch from './HeaderSearch'
 import { Link } from '@/i18n/navigation'
@@ -8,10 +10,10 @@ import '@/styles/globals.css'
 
 import Image from 'next/image'
 
-const UserHeaderBottom = () => {
+const UserHeaderBottom = ({ locale }: { locale: Locale }) => {
 	return (
 		<div className='w-full header-shadow'>
-			<div className='user-container'>
+			<section className='w-full mx-auto xl:max-w-[1980px] px-4 xl:px-8'>
 				<div className='flex items-center h-[72px]'>
 					<Link href='/' className='hidden sm:block mr-4'>
 						<Image
@@ -21,8 +23,8 @@ const UserHeaderBottom = () => {
 							alt='rw-logo'
 						/>
 					</Link>
-					<div className='grow sm:mr-6'>
-						<HeaderSearch />
+					<div className='grow sm:mr-6 '>
+						<HeaderSearch locale={locale} />
 					</div>
 					<div className='hidden sm:flex items-center gap-6'>
 						<Link
@@ -32,13 +34,18 @@ const UserHeaderBottom = () => {
 							<HeartIcon />
 						</Link>
 						<div className='rounded-full hover:shadow-lg hover:scale-102 duration-200'>
-							<PhoneIcon />
+							<Link
+								href='/contacts'
+								className='rounded-full hover:shadow-lg hover:scale-102 duration-200'
+							>
+								<PhoneIcon />
+							</Link>
 						</div>
 
-						<HeaderCartButton />
+						<HeaderCartButton locale={locale} />
 					</div>
 				</div>
-			</div>
+			</section>
 		</div>
 	)
 }

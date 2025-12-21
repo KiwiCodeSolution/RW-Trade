@@ -1,15 +1,16 @@
+import { Locale } from '@/types/baseTypes'
+
 import UserFooterBottom from './UserFooterBottom'
 import UserFooterTop from './UserFooterTop'
+import BaseSection from './baseComponents/BaseSection'
 
-import React from 'react'
-
-const UserFooter = () => {
+const UserFooter = ({ locale }: { locale: Locale }) => {
 	return (
 		<footer>
-			<div className='user-container'>
-				<UserFooterTop />
+			<BaseSection>
+				<UserFooterTop locale={locale} />
 				<UserFooterBottom />
-			</div>
+			</BaseSection>
 		</footer>
 	)
 }

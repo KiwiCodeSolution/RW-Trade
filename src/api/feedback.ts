@@ -1,7 +1,8 @@
 import { BASE_URL } from '@/utils/config'
 
-import { Feedback, Message } from '@/types/baseTypes'
+import { Feedback, FeedbackStatus, Message } from '@/types/baseTypes'
 
+import { fetchWithAuth } from './fetchWithAuth'
 import { toast } from '@/lib/toast'
 
 import axios, { isAxiosError } from 'axios'
@@ -23,31 +24,28 @@ export async function sendFeedback(
 	}
 }
 
-export async function toggleStatusFeedback(id: string) {
+export async function toggleStatusFeedback(id: string, status: FeedbackStatus) {
 	try {
-		const res = await axios.patch(`${BASE_URL}/feedbacks/${id}/status`, id)
-
-		return res.data
+		const res = await fetchWithAuth(`${BASE_URL}/feedbacks/${id}/status`, {
+			method: 'PATCH',
+			body: JSON.stringify({ status }),
+			headers: {
+				'Content-Type': 'application/json'
+			}
+		})
+		return res
 	} catch (err: unknown) {
 		const msg = isAxiosError(err)
 			? (err.response?.data?.message ?? 'Помилка зміни статусу')
 			: 'Помилка зміни статусу'
 		toast.error(msg)
-
 		throw err
 	}
 }
 
-export async function getAllMessages(token: string) {
+export async function getAllMessages() {
 	try {
-		const res = await fetch(`${BASE_URL}/feedbacks`, {
-			headers: {
-				Authorization: `Bearer ${token ?? ''}`,
-				'Content-Type': 'application/json'
-			},
-			cache: 'no-store'
-		})
-
+		const res = await fetchWithAuth(`${BASE_URL}/feedbacks`, { cache: 'no-store' })
 		if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
 
 		const data: Message[] = await res.json()
@@ -56,5 +54,16 @@ export async function getAllMessages(token: string) {
 	} catch (error) {
 		console.error('Помилка при отриманні звернень:', error)
 		return []
+	}
+}
+
+export async function deleteMessage(id: string) {
+	try {
+		const res = await fetchWithAuth(`${BASE_URL}/feedbacks/${id}`, { method: 'DELETE' })
+
+		if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
+		return res
+	} catch (error) {
+		console.error('Помилка при видаленні звернення:', error)
 	}
 }

@@ -12,13 +12,15 @@ import BaseSection from './baseComponents/BaseSection'
 import Title from './baseComponents/Title'
 
 import { observer } from 'mobx-react-lite'
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 const DiscountsSection = observer(
 	({ title, btn, locale }: { title: string; btn: string; locale: Locale }) => {
-		const { discountSubcategories = [], discountProducts = [] } = productStore
+		const { discountSubcategories, discountProducts } = productStore
 
-		const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<string>('all')
+		// 🔹 ТІЛЬКИ SLUG
+		const [activeSubcategorySlug, setActiveSubcategorySlug] = useState<string>('all')
+
 		const [mounted, setMounted] = useState(false)
 
 		useEffect(() => {
@@ -26,17 +28,40 @@ const DiscountsSection = observer(
 		}, [])
 
 		useEffect(() => {
-			if (productStore.discountProducts.length === 0) {
+			if (discountProducts.length === 0) {
 				productStore.fetchDiscountProducts()
 			}
-		}, [])
+		}, [discountProducts.length])
+
+		// 🔹 SLUG-BASED FILTER
+		const subcategorySlugToIdMap = useMemo(() => {
+			const map = new Map<string, string>()
+
+			discountSubcategories.forEach(sc => {
+				if (sc.subCategorySlug && sc._id) {
+					map.set(sc.subCategorySlug, sc._id)
+				}
+			})
+
+			return map
+		}, [discountSubcategories])
+
+		const activeSubcategoryId =
+			activeSubcategorySlug === 'all'
+				? null
+				: subcategorySlugToIdMap.get(activeSubcategorySlug)
+
+		const filteredProducts = useMemo(() => {
+			if (!activeSubcategoryId) return discountProducts
+			return discountProducts.filter(p => p.subCategoryId === activeSubcategoryId)
+		}, [discountProducts, activeSubcategoryId])
+
+		const filteredProductsMob = useMemo(() => {
+			if (filteredProducts.length <= 4) return filteredProducts
+			return filteredProducts.slice(0, 4)
+		}, [filteredProducts])
 
 		if (!mounted) return null
-
-		const filteredProducts =
-			selectedSubcategoryId === 'all'
-				? discountProducts
-				: discountProducts.filter(p => p.subCategoryId === selectedSubcategoryId)
 
 		return (
 			<BaseSection className='py-9'>
@@ -45,15 +70,35 @@ const DiscountsSection = observer(
 				</Title>
 
 				<SubCategoryControl
-					setSubCategory={setSelectedSubcategoryId}
-					subcategories={discountSubcategories!}
+					subcategories={discountSubcategories}
 					locale={locale}
+					activeSlug={activeSubcategorySlug}
+					onChange={setActiveSubcategorySlug}
 				/>
+
 				{(discountSubcategories?.length ?? 0) === 0 ? (
-					<p className='text-center my-20'>No products with discounts available.</p>
+					<p className='text-center my-20'>
+						{locale === 'en'
+							? 'No products with discounts available.'
+							: 'Немає товарів з знижками.'}
+					</p>
 				) : (
 					<div className='mt-3'>
-						<CardRow products={filteredProducts} locale={locale} section='discounts' />
+						<div className='lg:hidden'>
+							<CardRow
+								products={filteredProductsMob}
+								locale={locale}
+								section='discounts'
+							/>
+						</div>
+						<div className='hidden lg:block'>
+							<CardRow
+								products={filteredProducts}
+								locale={locale}
+								section='discounts'
+							/>
+						</div>
+
 						<div className='mt-9 flex justify-center items-center'>
 							<BtnSolid variant='bronze' size='m' as='link' href='/catalog/discounts'>
 								{btn}

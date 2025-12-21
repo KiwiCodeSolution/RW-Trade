@@ -11,7 +11,7 @@ const UserHeader = ({ locale }: UserHeaderProps) => {
 	return (
 		<header>
 			<UserHeaderTop locale={locale} />
-			<UserHeaderBottom />
+			<UserHeaderBottom locale={locale} />
 		</header>
 	)
 }

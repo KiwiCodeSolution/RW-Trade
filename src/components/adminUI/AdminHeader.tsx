@@ -1,9 +1,9 @@
 'use client'
 
-import { HomeIcon } from '@/assets/icons'
-
 import { feedbackStore } from '@/store/FeedbackStore'
 import { notificationsStore } from '@/store/NotificationsStore'
+
+import BtnSolid from '../commonUI/BtnSolid'
 
 import Count from './Count'
 
@@ -15,7 +15,7 @@ import { useEffect } from 'react'
 
 const AdminLink = ({ href, title, count }: { href: string; title: string; count?: number }) => {
 	const pathname = usePathname() ?? ''
-	const isActive = pathname && (pathname === `/uk${href}` || pathname.includes(href))
+	const isActive = pathname === `/uk${href}`
 
 	return (
 		<div
@@ -48,8 +48,8 @@ const AdminHeader = observer(() => {
 		if (!session?.user?.accessToken) return
 
 		const init = async () => {
-			await notificationsStore.fetchNotifications(session.user.accessToken!)
-			await feedbackStore.fetchMessages(session.user.accessToken!)
+			await notificationsStore.fetchNotifications()
+			await feedbackStore.fetchMessages()
 		}
 
 		init()
@@ -62,22 +62,16 @@ const AdminHeader = observer(() => {
 	}
 
 	return (
-		<header className='flex flex-col gap-7 bg-[#3C4447] text-txt-white p-2 min-h-screen rounded-tr-4xl rounded-br-4xl justify-center sticky top-0'>
-			{/* <div className='flex justify-center pt-4'>
-				<Link href='/manage-panel' className='mx-auto'>
-					<BaseImageItem src={'/logos/LOGO_252_white.png'} />
-				</Link>
-			</div> */}
-
-			<div className='flex flex-col gap-7 px-2 overflow-y-auto '>
-				<div className='mt-4'>
+		<header className='flex flex-col gap-4 bg-[#3C4447] text-txt-white px-2 py-3 min-h-screen rounded-tr-4xl rounded-br-4xl justify-center sticky top-0 overflow-y-auto'>
+			<div className='flex flex-col gap-6 '>
+				{/* <div className='mt-4'>
 					<Link
 						href='/manage-panel'
 						className='text-3xl font-bold w-7 h-7 rounded-full flex items-center justify-center hover:shadow-lg hover:product-card-shadow transition duration-300'
 					>
 						<HomeIcon />
 					</Link>
-				</div>
+				</div> */}
 
 				<div className='flex flex-col gap-2'>
 					<TitleNavAdmin text="Зворотній зв&nbsp;'язок" />
@@ -128,13 +122,20 @@ const AdminHeader = observer(() => {
 				<div className='flex flex-col gap-2'>
 					<TitleNavAdmin text='Новини та статті' />
 
-					<AdminLink href='/manage-panel/news/editor' title='Додати / редагувати' />
+					<AdminLink href='/manage-panel/news' title='Всі новини' />
+					{/* <AdminLink href='/manage-panel/news/editor' title='Додати / редагувати' /> */}
+				</div>
+
+				<div className='flex flex-col gap-2'>
+					<TitleNavAdmin text='Рекламні банери' />
+
+					<AdminLink href='/manage-panel/banners' title='Управління банерами' />
 				</div>
 
 				<div className='flex flex-col gap-2'>
 					<TitleNavAdmin text='Статистика' />
 
-					<AdminLink href='/manage-panel/statistics' title='Категорії товарів' />
+					<AdminLink href='/manage-panel/statistics' title='Статистика за категоріями' />
 				</div>
 
 				<div className='flex flex-col gap-2'>
@@ -143,15 +144,15 @@ const AdminHeader = observer(() => {
 					<AdminLink href='/manage-panel/profile' title='Профілі користувачів' />
 				</div>
 
-				<button onClick={handleLogout}>LogOut</button>
-
-				{/* <div className='flex flex-col gap-2'>
-					<h2 className='text-2xl'>Сторінки сайта</h2>
-					<div className='h-0.5 w-full bg-primary'></div>
-					<Link href='/' className='text-link-bronze'>
-						Головна
-					</Link>
-				</div> */}
+				<BtnSolid
+					variant='primary'
+					action={handleLogout}
+					as='button'
+					btnType='button'
+					className='mx-auto'
+				>
+					Вийти
+				</BtnSolid>
 			</div>
 		</header>
 	)

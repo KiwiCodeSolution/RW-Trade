@@ -1,4 +1,4 @@
-import CategoriesControlAdminPage from '@/components/adminUI/CategoriesControlAdminPage'
+import CategoriesAdminContainer from '@/components/adminUI/CategoriesAdminContainer'
 import HeaderPage from '@/components/adminUI/HeaderPage'
 
 import { Metadata } from 'next'
@@ -10,7 +10,8 @@ const Cards = () => {
 	return (
 		<div className='w-full relative'>
 			<HeaderPage pageName='Всі продукти' />
-			<CategoriesControlAdminPage />
+			{/* <CategoriesControlAdminPage /> */}
+			<CategoriesAdminContainer locale='uk' />
 		</div>
 	)
 }

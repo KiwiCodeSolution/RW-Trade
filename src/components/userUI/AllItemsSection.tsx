@@ -1,15 +1,18 @@
 'use client'
 
-import { Category, Locale, Subcategory } from '@/types/baseTypes'
+import { Locale, Subcategory } from '@/types/baseTypes'
 
 import { categoryStore } from '@/store/CategoryStore'
 
 import CategoryControl from './CategoryControl'
 import ProductComponentSortAndFilters from './ProductComponentSortAndFilters'
 import SubCategoryControl from './SubCategoryControl'
+import BaseSection from './baseComponents/BaseSection'
+import Title from './baseComponents/Title'
 
 import { observer } from 'mobx-react-lite'
-import { useEffect, useMemo, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { useMemo } from 'react'
 
 interface Props {
 	locale: Locale
@@ -17,59 +20,83 @@ interface Props {
 
 const AllItemsSection: React.FC<Props> = observer(({ locale }) => {
 	const { categories } = categoryStore
+	const searchParams = useSearchParams()
 
-	const [category, setCategory] = useState<Category | undefined>(undefined)
-	const [subCategory, setSubCategory] = useState<string>('all')
+	/* ---------------- URL params ---------------- */
+	const categorySlug = searchParams.get('category') ?? 'all'
+	const subCategorySlug = searchParams.get('subCategory') ?? 'all'
+
+	/* ---------------- Active category (derived) ---------------- */
+	const activeCategory = useMemo(() => {
+		// 1️⃣ якщо категорія явно в URL
+		if (categorySlug !== 'all') {
+			return categories.find(c => c.slug === categorySlug)
+		}
+
+		// 2️⃣ якщо категорії нема, але є підкатегорія
+		if (subCategorySlug !== 'all') {
+			return categories.find(c =>
+				c.subcategories?.some(sc => sc.subCategorySlug === subCategorySlug)
+			)
+		}
+
+		return undefined
+	}, [categorySlug, subCategorySlug, categories])
+
+	/* ---------------- Subcategories to display ---------------- */
+	const displayedSubcategories: Subcategory[] = useMemo(() => {
+		if (activeCategory) {
+			return activeCategory.subcategories ?? []
+		}
+
+		return categories.flatMap(c => c.subcategories ?? [])
+	}, [activeCategory, categories])
+
+	/* ---------------- Discounts mode ---------------- */
+	const isDiscountsCategory = activeCategory?.slug === 'discounts'
 
 	const title: Record<Locale, string> = {
 		uk: 'Всі товари на сайті',
 		en: 'All products on the site'
 	}
 
-	// 🧩 при зміні категорії — скидаємо підкатегорію
-	useEffect(() => {
-		setSubCategory('all')
-	}, [category])
-
-	// 🧩 створюємо масив усіх підкатегорій для випадку "немає вибраної категорії"
-	const allSubcategories: Subcategory[] = useMemo(() => {
-		return categories.flatMap(cat => cat.subcategories ?? [])
-	}, [categories])
-
-	// визначаємо, які підкатегорії показувати
-	const displayedSubcategories = category ? (category.subcategories ?? []) : allSubcategories
-
-	// 🧩 Перевіряємо, чи це категорія "Discounts"
-	const isDiscountsCategory = category?.slug === 'discounts'
-
 	return (
-		<section>
-			<h2 className='font-bold text-[40px] mb-7'>{title[locale]}</h2>
+		<BaseSection className='py-4 lg:py-9'>
+			<Title tag='h2' styles='mb-4 lg:mb-7'>
+				{title[locale]}
+			</Title>
 
-			{/* категорії */}
+			{/* -------- Categories -------- */}
 			<div className='mb-7'>
-				<CategoryControl setCategory={setCategory} categories={categories} />
+				<CategoryControl
+					categories={categories}
+					activeSlug={activeCategory?.slug ?? 'all'}
+					locale={locale}
+					useUrlSync
+				/>
 			</div>
 
-			{/* підкатегорії */}
+			{/* -------- Subcategories -------- */}
 			{displayedSubcategories.length > 0 && (
 				<div className='mb-7'>
 					<SubCategoryControl
 						subcategories={displayedSubcategories}
-						setSubCategory={setSubCategory}
+						activeSlug={subCategorySlug}
 						locale={locale}
+						useUrlSync
 					/>
 				</div>
 			)}
 
-			{/* товари */}
+			{/* -------- Products -------- */}
 			<ProductComponentSortAndFilters
 				locale={locale}
-				categoryId={isDiscountsCategory ? undefined : category?._id}
-				subCategoryId={subCategory}
-				isDiscountMode={isDiscountsCategory} // 👈 це головне
+				categorySlug={isDiscountsCategory ? undefined : activeCategory?.slug}
+				subCategorySlug={subCategorySlug !== 'all' ? subCategorySlug : undefined}
+				isDiscountMode={isDiscountsCategory}
+				typeSection='catalog'
 			/>
-		</section>
+		</BaseSection>
 	)
 })
 

@@ -29,11 +29,11 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
 
 	return (
 		<html lang={locale} suppressHydrationWarning className={roboto.className}>
-			<body className='bg-bg-light'>
+			<body className='bg-bg-light relative'>
 				<NextIntlClientProvider>
 					<UserHeader locale={locale} />
 					<div className='min-h-[50vh] flex flex-col justify-between'>{children}</div>
-					<UserFooter />
+					<UserFooter locale={locale} />
 					<ScrollToTopButton />
 					{/* <div id='modal-root' /> */}
 				</NextIntlClientProvider>

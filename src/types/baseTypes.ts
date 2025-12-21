@@ -21,41 +21,6 @@ export interface SeoBlock {
 	keywords?: LangField | string[]
 }
 
-// export interface Product {
-// 	_id: string // якщо приходить з бекенду після створення
-// 	title: LangField
-// 	description: LangField
-// 	price: number
-// 	priceCurrency: number
-// 	wholesalePrice: number
-// 	inStock?: number
-// 	sku: string
-// 	images?: string[]
-// 	categoryId: string
-// 	subCategoryId?: string
-// 	newArrival?: boolean
-// 	isHit?: boolean
-// 	showDiscountBlock?: boolean
-// 	showOfferBlock?: boolean
-// 	videoUrl?: string
-// 	characteristics?: LangField
-// 	compatibility?: LangField
-// 	kit?: LangField
-// 	deliveryTerms?: string
-// 	initialRatingSum?: number
-// 	initialRatingCount?: number
-// 	isPublished?: boolean
-// 	seo?: SeoBlock
-// 	slugUk: string
-// 	slugEn: string
-// 	isFavorite?: boolean
-// 	status: ProductStatus
-// 	isPartner?: boolean
-// 	rating: number
-// 	country?: string
-// 	brand?: string
-// }
-
 export type Price =
 	| { price: number; priceCurrency?: never } // ціна в грн
 	| { priceCurrency: number; price?: never } // ціна у валюті
@@ -95,6 +60,8 @@ export type Product = CreateProductDto & {
 	slugEn: string
 	rating: number
 	status: ProductStatus
+	subCategorySlug: string
+	categorySlug: string
 }
 
 export type ProductPrint = { product: Product; locale: Locale }
@@ -116,6 +83,8 @@ export interface Subcategory {
 	title: LangField
 	description?: LangField
 	categoryId?: string
+	slug: string
+	subCategorySlug?: string
 }
 
 export type FeedbackStatus = 'new' | 'read' | 'contacted' | 'important'
@@ -144,20 +113,6 @@ export interface Message {
 	updatedAt?: string
 }
 
-export interface News {
-	_id?: string
-	title: LangField
-	subtitle?: LangField
-	content: LangField
-	slugUk: string
-	slugEn: string
-	videoUrl?: string
-	image?: string
-	seo?: SeoBlock
-	createdAt?: string
-	updatedAt?: string
-}
-
 export type DeliveryMethod = 'nova_poshta' | 'Ukrposhta' | 'Meest' | 'courier' // або точний перелік з бекенду, якщо є enum
 
 export interface NPAddressItem {
@@ -167,6 +122,7 @@ export interface NPAddressItem {
 	Area: string
 	Region: string
 	ParentRegionCode?: string
+	DeliveryCity: string
 }
 
 export interface DeliveryAPI {
@@ -283,6 +239,15 @@ export interface OrderPayload {
 	}[]
 }
 
+export type OrdersResponse = {
+	data: Order[]
+	total: number
+	page: number
+	limit: number
+	totalPages: number
+	totalByStatus?: Partial<Record<OrderStatus, number>>
+}
+
 export interface CreateOrderSuccess {
 	success: true
 	data: unknown // можу замінити на точний OrderModel з бекенду
@@ -312,27 +277,81 @@ export interface Notification {
 	updatedAt?: string
 }
 
-export type ProductSort =
-	| 'PRICE_ASC'
-	| 'PRICE_DESC'
-	| 'DATE_ADDED'
-	| 'RATING'
-	| 'NAME_ASC'
-	| 'NAME_DESC'
+export type ItemsSort =
+	| 'PRICE_ASC' // ціна зростання
+	| 'PRICE_DESC' // ціна зменшення
+	| 'DATE_ADDED' //дата створення
+	| 'RATING' //рейтинг
+	| 'NAME_ASC' // назва а-я
+	| 'NAME_DESC' // назва я-а
 
 export type ProductLimit = 16 | 32 | 48
+export type NewsLimit = 4 | 8 | 12
 
-export type ProductFilterParams = {
-	lang: Locale
-	categoryId?: string | 'all'
-	subCategoryId?: string | 'all'
-	priceRange?: [number, number]
-	country?: string[]
-	sort?: ProductSort
+export type ItemsFilterParams = {
+	lang?: Locale
+	categorySlug?: string | 'all' // для продуктів
+	subCategorySlug?: string | 'all' // для продуктів
+	priceRange?: [number, number] // для продуктів
+	country?: string[] // для продуктів
+	sort?: ItemsSort
 	limit?: number
 	page?: number
 }
 
+export type CreateNewsDto = {
+	title: LangField
+	subtitle?: LangField
+	content: LangField
+	videoUrl?: string
+	image?: string
+	seo?: SeoBlock
+	isNews: boolean
+	isPublished?: boolean
+}
+
+export type NewsArticle = CreateNewsDto & {
+	_id: string
+	createdAt: string
+	slugUk: string
+	slugEn: string
+}
+
+export type BannerType = 'left' | 'right' | 'center'
+
+export type CreateBannerDto = {
+	link: string
+	image: string
+	type: BannerType
+}
+
+export type Banner = CreateBannerDto & {
+	_id: string
+	isPublished: boolean
+}
+
+export type CreatePromoBannerDto = {
+	title: LangField
+	subtitle: LangField
+	firstText: LangField
+	secondText: LangField
+	thirdText: LangField
+	link: string
+	image: string
+}
+
+export type PromoBanner = CreatePromoBannerDto & {
+	_id: string
+	isPublished: boolean
+}
+
+export interface PaginatedNews {
+	data: NewsArticle[]
+	total: number
+	page: number
+	limit: number
+	totalPages: number
+}
 // users, auth
 
 export type RoleContext = 'admin' | 'user'
@@ -343,4 +362,36 @@ export enum AdminRole {
 	BASEADMIN = 'baseadmin',
 	SELLER = 'seller',
 	CONTENT_MANAGER = 'content-manager'
+}
+
+// stats
+
+export interface CategoryStatsItem {
+	count: number
+	subcategories?: Record<string, number>
+}
+
+export interface MonthlyOrdersItem {
+	total: number
+	pending?: number
+	shipped?: number
+	delivered?: number
+	cancelled?: number
+}
+
+export interface OrderStats {
+	_id: string
+
+	// Статистика по статусах
+	pending?: number
+	shipped?: number
+	delivered?: number
+	cancelled?: number
+	totalOrders: number
+
+	// Категорії та підкатегорії
+	categoryStats: Record<string, CategoryStatsItem>
+
+	// Місячна статистика
+	monthlyOrders: Record<string, MonthlyOrdersItem>
 }

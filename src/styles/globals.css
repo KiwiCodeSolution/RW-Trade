@@ -42,6 +42,14 @@
 	@apply bg-linear-to-r from-[#5dafb1] to-[#5e73c9];
 }
 
+.bg-primary-reverse {
+	@apply bg-linear-to-l from-[#5dafb1] to-[#5e73c9];
+}
+
+.bg-primary-bottom {
+	@apply bg-linear-to-t from-[#5dafb1] to-[#5e73c9];
+}
+
 .bg-bronze {
 	@apply bg-linear-to-r from-[#e1a755] to-[#b76b00];
 }
@@ -66,6 +74,16 @@
 	background: linear-gradient(180deg, rgba(226, 252, 255, 0.3) 0%, rgba(180, 223, 254, 0.3) 100%);
 }
 
+.mob-menu {
+	background:
+		/* linear-gradient(0deg, #ffffff, #ffffff), */ linear-gradient(
+		180deg,
+		rgba(248, 250, 250, 0.3) 0%,
+		rgba(180, 223, 254, 0.3) 100%
+	);
+	box-shadow: 0px 0px 8px 0px rgba(170, 185, 228, 1);
+}
+
 .video {
 	background: linear-gradient(180deg, rgba(255, 147, 38, 0.2) 0%, rgba(150, 84, 230, 0.2) 100%);
 	box-shadow: 0px 0px 2px 0px #ffb90033;
@@ -76,7 +94,13 @@
 }
 
 .header-shadow {
-	box-shadow: 0px 0px 6px 0px rgba(94, 117, 200, 1);
+	@media screen and (min-width: 1024px) {
+		box-shadow: 0px 0px 6px 0px rgba(94, 117, 200, 1);
+	}
+}
+
+.btn-shadow {
+	box-shadow: 0px 0px 4px 0px rgba(25, 144, 186, 0.5);
 }
 
 .product-card-shadow {
@@ -177,16 +201,6 @@
 	.proposal-li::marker {
 		color: var(--color-txt-white) !important;
 	}
-
-	/* img {
-		display: block;
-	} */
-
-	/* ul,
-	li,
-	ol {
-		list-style: none;
-	} */
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -287,4 +301,26 @@
 
 .blink-blue {
 	animation: blinkBlue 1s ease-in-out 3; /* 3 рази */
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
+.slider-filter .range-slider__range {
+	background: linear-gradient(90deg, #5dafb1, #5e73c9) !important;
+	height: 2px !important;
+}
+
+.slider-filter .range-slider {
+	height: 4px !important;
+}
+
+.slider-filter .range-slider__thumb {
+	width: 24px;
+	height: 24px;
+	border-radius: 50%;
+	background: linear-gradient(90deg, #e1a755 0%, #b76b00 100%) !important;
+	border: none;
+	cursor: pointer;
 }

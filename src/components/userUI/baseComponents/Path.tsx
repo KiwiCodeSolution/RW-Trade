@@ -1,4 +1,4 @@
-import { PathArrowIcon } from '@/assets/icons'
+import { ArrowGoBack, PathArrowIcon } from '@/assets/icons'
 
 import { Link } from '@/i18n/navigation'
 
@@ -33,24 +33,38 @@ const pathLinks: Record<string, string> = {
 
 const Path = ({ secondName, thirdName, fourthName, locale }: PathProps) => {
 	const firstName = locale === 'uk' ? 'Головна' : 'Home'
-	const pathItems = [firstName, secondName, thirdName, fourthName].filter(
-		(item): item is string => Boolean(item)
-	)
+	const paths = [firstName, secondName, thirdName, fourthName]
+	const pathItems = paths.filter((item): item is string => Boolean(item))
+
+	const pathMob = pathItems[pathItems.length - 1] ?? firstName
 
 	return (
-		<div className='flex items-center gap-x-2 h-7 my-4'>
-			{pathItems.map((item, index) => (
-				<span key={index} className='flex items-center gap-x-2'>
-					<Link
-						className='text-gr-4 text-sm leading-2 capitalize'
-						href={pathLinks[item] || '/'}
-					>
-						{item}
-					</Link>
-					{index < pathItems.length - 1 && <PathArrowIcon color='var(--color-gr-4)' />}
-				</span>
-			))}
-		</div>
+		<>
+			<div className='hidden lg:flex items-center gap-x-2 h-7 my-4'>
+				{pathItems.map((item, index) => (
+					<span key={index} className='flex items-center gap-x-2'>
+						<Link
+							className='text-gr-4 text-sm leading-2 capitalize'
+							href={pathLinks[item] || '/'}
+						>
+							{item}
+						</Link>
+						{index < pathItems.length - 1 && (
+							<PathArrowIcon color='var(--color-gr-4)' />
+						)}
+					</span>
+				))}
+			</div>
+			<div className='flex lg:hidden items-center gap-x-2 pt-4 pb-[10px]'>
+				<ArrowGoBack className='' />
+				<Link
+					className='gradient-text text-base leading-normal capitalize'
+					href={pathLinks[pathMob] || '/'}
+				>
+					{pathMob}
+				</Link>
+			</div>
+		</>
 	)
 }
 

@@ -8,9 +8,9 @@ import { notificationsStore } from '@/store/NotificationsStore'
 
 import { observer } from 'mobx-react-lite'
 
-type Props = { notice: Notification; token: string }
+type Props = { notice: Notification }
 
-const Notice = observer(({ notice, token }: Props) => {
+const Notice = observer(({ notice }: Props) => {
 	const isUnread = notice.status === 'unread'
 
 	const textColor = isUnread ? 'text-white' : 'gradient-text'
@@ -20,9 +20,7 @@ const Notice = observer(({ notice, token }: Props) => {
 			: `Повідомлення з основної сторінки сайту від ${notice.name}`
 
 	const link =
-		notice.type === 'order'
-			? `/manage-panel/orders#${notice.refId}`
-			: `/manage-panel/messages#${notice.refId}`
+		notice.type == 'order' ? `/manage-panel/orders` : `/manage-panel/messages#${notice.refId}`
 
 	const formatDate = (iso: string) => {
 		const d = new Date(iso)
@@ -34,7 +32,7 @@ const Notice = observer(({ notice, token }: Props) => {
 
 	const handleMarkRead = async () => {
 		if (isUnread) {
-			await notificationsStore.toggleStatus(notice._id, token)
+			await notificationsStore.toggleStatus(notice._id)
 		}
 	}
 
