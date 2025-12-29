@@ -1,0 +1,1158 @@
+export const PathArrowIcon = ({ color }: { color: string }) => {
+	return (
+		<svg
+			width='18'
+			height='9'
+			viewBox='0 0 18 9'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M-2.98023e-07 4.57143L16 4.57143M16 4.57143L11.4286 8M16 4.57143L11.4286 1.14286'
+				stroke={color}
+				strokeWidth='1.5'
+			/>
+		</svg>
+	)
+}
+
+export const FavoriteHurt = () => {
+	return (
+		<svg
+			width='32'
+			height='32'
+			viewBox='0 0 32 32'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M5.75738 8.42438C5.20023 8.98153 4.75826 9.64297 4.45673 10.3709C4.1552 11.0989 4 11.8791 4 12.667C4 13.455 4.1552 14.2352 4.45673 14.9632C4.75826 15.6911 5.20023 16.3526 5.75738 16.9097L16.0001 27.1524L26.2427 16.9097C27.3679 15.7845 28.0001 14.2584 28.0001 12.667C28.0001 11.0757 27.3679 9.5496 26.2427 8.42438C25.1175 7.29915 23.5914 6.66701 22.0001 6.66701C20.4087 6.66701 18.8826 7.29915 17.7574 8.42438L16.0001 10.1817L14.2427 8.42438C13.6856 7.86722 13.0241 7.42525 12.2962 7.12372C11.5682 6.82219 10.788 6.66699 10.0001 6.66699C9.21211 6.66699 8.43189 6.82219 7.70393 7.12372C6.97598 7.42525 6.31454 7.86722 5.75738 8.42438Z'
+				stroke='url(#paint0_linear_429_8489)'
+				strokeWidth='2'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_429_8489'
+					x1='4'
+					y1='16.9097'
+					x2='28.0001'
+					y2='16.9097'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#E1A755' />
+					<stop offset='1' stopColor='#B76B00' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const FavoriteHurtSolid = () => {
+	return (
+		<svg
+			width='32'
+			height='32'
+			viewBox='0 0 32 32'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M5.75738 8.42438C5.20023 8.98153 4.75826 9.64297 4.45673 10.3709C4.1552 11.0989 4 11.8791 4 12.667C4 13.455 4.1552 14.2352 4.45673 14.9632C4.75826 15.6911 5.20023 16.3526 5.75738 16.9097L16.0001 27.1524L26.2427 16.9097C27.3679 15.7845 28.0001 14.2584 28.0001 12.667C28.0001 11.0757 27.3679 9.5496 26.2427 8.42438C25.1175 7.29915 23.5914 6.66701 22.0001 6.66701C20.4087 6.66701 18.8826 7.29915 17.7574 8.42438L16.0001 10.1817L14.2427 8.42438C13.6856 7.86722 13.0241 7.42525 12.2962 7.12372C11.5682 6.82219 10.788 6.66699 10.0001 6.66699C9.21211 6.66699 8.43189 6.82219 7.70393 7.12372C6.97598 7.42525 6.31454 7.86722 5.75738 8.42438Z'
+				fill='url(#paint0_linear_429_8491)'
+				stroke='url(#paint1_linear_429_8491)'
+				strokeWidth='2'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_429_8491'
+					x1='4'
+					y1='16.9097'
+					x2='28.0001'
+					y2='16.9097'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#E1A755' />
+					<stop offset='1' stopColor='#B76B00' />
+				</linearGradient>
+				<linearGradient
+					id='paint1_linear_429_8491'
+					x1='4'
+					y1='16.9097'
+					x2='28.0001'
+					y2='16.9097'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#E1A755' />
+					<stop offset='1' stopColor='#B76B00' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const CartBronze = () => {
+	return (
+		<svg
+			width='24'
+			height='24'
+			viewBox='0 0 24 24'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M3 3H5L5.4 5M5.4 5H21L17 13H7M5.4 5L7 13M7 13L4.707 15.293C4.077 15.923 4.523 17 5.414 17H17M17 17C16.4696 17 15.9609 17.2107 15.5858 17.5858C15.2107 17.9609 15 18.4696 15 19C15 19.5304 15.2107 20.0391 15.5858 20.4142C15.9609 20.7893 16.4696 21 17 21C17.5304 21 18.0391 20.7893 18.4142 20.4142C18.7893 20.0391 19 19.5304 19 19C19 18.4696 18.7893 17.9609 18.4142 17.5858C18.0391 17.2107 17.5304 17 17 17ZM9 19C9 19.5304 8.78929 20.0391 8.41421 20.4142C8.03914 20.7893 7.53043 21 7 21C6.46957 21 5.96086 20.7893 5.58579 20.4142C5.21071 20.0391 5 19.5304 5 19C5 18.4696 5.21071 17.9609 5.58579 17.5858C5.96086 17.2107 6.46957 17 7 17C7.53043 17 8.03914 17.2107 8.41421 17.5858C8.78929 17.9609 9 18.4696 9 19Z'
+				stroke='url(#paint0_linear_4031_19344)'
+				strokeWidth='2'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4031_19344'
+					x1='3'
+					y1='12'
+					x2='21'
+					y2='12'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#E1A755' />
+					<stop offset='1' stopColor='#B76B00' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+type CartProps = {
+	className?: string
+	variant?: 'default' | 'white' | 'gradient'
+	type?: 'cart' | 'notice'
+}
+
+export const Cart = ({ className, variant = 'default', type = 'cart' }: CartProps) => {
+	const stroke =
+		variant === 'white'
+			? 'white'
+			: variant === 'gradient'
+				? 'url(#cartGradient)'
+				: 'currentColor'
+
+	const fill =
+		variant === 'white'
+			? 'white'
+			: variant === 'gradient'
+				? 'url(#cartGradient)'
+				: 'currentColor'
+
+	return (
+		<svg
+			width='35'
+			height='28'
+			viewBox='0 0 35 28'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<path
+				d='M3.16797 5H5.16797L5.56797 7M5.56797 7H21.168L17.168 15H7.16797M5.56797 7L7.16797 15M7.16797 15L4.87497 17.293C4.24497 17.923 4.69097 19 5.58197 19H17.168M17.168 19C16.6375 19 16.1288 19.2107 15.7538 19.5858C15.3787 19.9609 15.168 20.4696 15.168 21C15.168 21.5304 15.3787 22.0391 15.7538 22.4142C16.1288 22.7893 16.6375 23 17.168 23C17.6984 23 18.2071 22.7893 18.5822 22.4142C18.9573 22.0391 19.168 21.5304 19.168 21C19.168 20.4696 18.9573 19.9609 18.5822 19.5858C18.2071 19.2107 17.6984 19 17.168 19ZM9.16797 21C9.16797 21.5304 8.95725 22.0391 8.58218 22.4142C8.20711 22.7893 7.6984 23 7.16797 23C6.63754 23 6.12883 22.7893 5.75376 22.4142C5.37868 22.0391 5.16797 21.5304 5.16797 21C5.16797 20.4696 5.37868 19.9609 5.75376 19.5858C6.12883 19.2107 6.63754 19 7.16797 19C7.6984 19 8.20711 19.2107 8.58218 19.5858C8.95725 19.9609 9.16797 20.4696 9.16797 21Z'
+				stroke={stroke}
+				strokeWidth='2'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			{type !== 'notice' && (
+				<path
+					d='M31.6758 13.373V15.0723H21.9297V13.373H31.6758ZM27.7109 9.22266V19.5742H25.9043V9.22266H27.7109Z'
+					fill={fill}
+				/>
+			)}
+
+			{variant === 'gradient' && (
+				<defs>
+					<linearGradient
+						id='cartGradient'
+						x1='3'
+						y1='14'
+						x2='32'
+						y2='14'
+						gradientUnits='userSpaceOnUse'
+					>
+						<stop stopColor='#5DAFB1' />
+						<stop offset='1' stopColor='#5E73C9' />
+					</linearGradient>
+				</defs>
+			)}
+		</svg>
+	)
+}
+
+export const Timer = ({
+	className,
+	color = 'currentColor'
+}: {
+	className?: string
+	color?: string
+}) => {
+	return (
+		<svg
+			width='30'
+			height='30'
+			viewBox='0 0 36 36'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<path
+				d='M2 18C2 20.1012 2.41385 22.1817 3.21793 24.1229C4.022 26.0641 5.20055 27.828 6.68629 29.3137C8.17203 30.7994 9.93586 31.978 11.8771 32.7821C13.8183 33.5861 15.8989 34 18 34C20.1012 34 22.1817 33.5861 24.1229 32.7821C26.0641 31.978 27.828 30.7994 29.3137 29.3137C30.7994 27.828 31.978 26.0641 32.7821 24.1229C33.5861 22.1817 34 20.1012 34 18C34 13.7565 32.3143 9.68687 29.3137 6.68629C26.3131 3.68571 22.2435 2 18 2C13.7565 2 9.68687 3.68571 6.68629 6.68629C3.68571 9.68687 2 13.7565 2 18Z'
+				stroke={color}
+				strokeWidth='2.5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M18 9.11133V18.0002L23.3333 23.3336'
+				stroke={color}
+				strokeWidth='2.5'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+		</svg>
+	)
+}
+
+export const GradientBtn = ({
+	className,
+	width,
+	height
+}: {
+	className?: string
+	width?: number
+	height?: number
+}) => {
+	return (
+		<svg
+			width={width || 32}
+			height={height || 32}
+			viewBox='0 0 32 32'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<path
+				d='M8.5 15C7.94772 15 7.5 15.4477 7.5 16C7.5 16.5523 7.94772 17 8.5 17L8.5 15ZM25.2071 16.7071C25.5976 16.3166 25.5976 15.6834 25.2071 15.2929L18.8431 8.92893C18.4526 8.53841 17.8195 8.53841 17.4289 8.92893C17.0384 9.31946 17.0384 9.95262 17.4289 10.3431L23.0858 16L17.4289 21.6569C17.0384 22.0474 17.0384 22.6805 17.4289 23.0711C17.8195 23.4616 18.4526 23.4616 18.8431 23.0711L25.2071 16.7071ZM8.5 17L24.5 17L24.5 15L8.5 15L8.5 17Z'
+				fill='url(#paint0_linear_4031_6551)'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4031_6551'
+					x1='8.5'
+					y1='16.5'
+					x2='24.5'
+					y2='16.5'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const Bell = () => {
+	return (
+		<svg
+			width='16'
+			height='20'
+			viewBox='0 0 16 20'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				fillRule='evenodd'
+				clipRule='evenodd'
+				d='M11.085 2.853C11.2039 2.40837 11.4431 2.00515 11.7764 1.68775C12.1097 1.37035 12.5241 1.15107 12.974 1.05405C13.4239 0.957039 13.8918 0.98605 14.3263 1.13789C14.7608 1.28974 15.1449 1.55852 15.4365 1.91466C15.728 2.2708 15.9156 2.70048 15.9786 3.15638C16.0416 3.61229 15.9776 4.07675 15.7937 4.49862C15.6097 4.92049 15.3128 5.28341 14.9359 5.54743C14.5589 5.81145 14.1163 5.96632 13.657 5.995C13.8846 6.63894 14.0006 7.31702 14 8V14H15C15.55 14 16 14.45 16 15C16 15.55 15.55 16 15 16H11V17C11 17.7956 10.6839 18.5587 10.1213 19.1213C9.55871 19.6839 8.79565 20 8 20C7.20435 20 6.44129 19.6839 5.87868 19.1213C5.31607 18.5587 5 17.7956 5 17V16H1C0.45 16 0 15.55 0 15C0 14.45 0.45 14 1 14H2V8C1.99978 6.58192 2.50184 5.20959 3.41713 4.12645C4.33241 3.0433 5.60175 2.31935 7 2.083V1C7 0.734784 7.10536 0.48043 7.29289 0.292893C7.48043 0.105357 7.73478 0 8 0C8.26522 0 8.51957 0.105357 8.70711 0.292893C8.89464 0.48043 9 0.734784 9 1V2.083C9.73689 2.20758 10.444 2.46872 11.085 2.853ZM8 18C8.26522 18 8.51957 17.8946 8.70711 17.7071C8.89464 17.5196 9 17.2652 9 17V16H7V17C7 17.2652 7.10536 17.5196 7.29289 17.7071C7.48043 17.8946 7.73478 18 8 18ZM4 14H12V8C12 6.93913 11.5786 5.92172 10.8284 5.17157C10.0783 4.42143 9.06087 4 8 4C6.93913 4 5.92172 4.42143 5.17157 5.17157C4.42143 5.92172 4 6.93913 4 8V14Z'
+				fill='white'
+			/>
+		</svg>
+	)
+}
+
+export type VariantProps = {
+	variant?: 'white' | 'gradient'
+	className?: string
+}
+
+export const Envelope = ({ variant = 'white' }: VariantProps) => (
+	<svg width='22' height='18' viewBox='0 0 22 18' fill='none' xmlns='http://www.w3.org/2000/svg'>
+		<path
+			d='M1 9C1 5.229 1 3.343 2.172 2.172C3.344 1.001 5.229 1 9 1H13C16.771 1 18.657 1 19.828 2.172C20.999 3.344 21 5.229 21 9C21 12.771 21 14.657 19.828 15.828C18.656 16.999 16.771 17 13 17H9C5.229 17 3.343 17 2.172 15.828C1.001 14.656 1 12.771 1 9Z'
+			stroke={variant === 'white' ? 'white' : 'url(#paint0_linear)'}
+			strokeWidth='2'
+		/>
+		<path
+			d='M5 5L7.159 6.8C8.996 8.33 9.914 9.095 11 9.095C12.086 9.095 13.005 8.33 14.841 6.799L17 5'
+			stroke={variant === 'white' ? 'white' : 'url(#paint1_linear)'}
+			strokeWidth='2'
+			strokeLinecap='round'
+		/>
+		{variant === 'gradient' && (
+			<defs>
+				<linearGradient
+					id='paint0_linear'
+					x1='1'
+					y1='9'
+					x2='21'
+					y2='9'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+				<linearGradient
+					id='paint1_linear'
+					x1='5'
+					y1='7.0475'
+					x2='17'
+					y2='7.0475'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		)}
+	</svg>
+)
+
+export const Border = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			preserveAspectRatio='none'
+			viewBox='0 0 343 40'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<rect
+				x='1'
+				y='1'
+				width='341'
+				height='38'
+				rx='7'
+				stroke='url(#paint0_linear_4135_18682)'
+				strokeWidth='2'
+			/>
+
+			<path
+				d='M319 17.1084C319.796 17.1084 320.559 17.4245 321.121 17.9871C321.684 18.5497 322 19.3127 322 20.1084C322 20.904 321.684 21.6671 321.121 22.2297C320.559 22.7923 319.796 23.1084 319 23.1084C318.204 23.1084 317.441 22.7923 316.879 22.2297C316.316 21.6671 316 20.904 316 20.1084C316 19.3127 316.316 18.5497 316.879 17.9871C317.441 17.4245 318.204 17.1084 319 17.1084ZM319 12.6084C324 12.6084 328.27 15.7184 330 20.1084C328.27 24.4984 324 27.6084 319 27.6084C314 27.6084 309.73 24.4984 308 20.1084C309.73 15.7184 314 12.6084 319 12.6084ZM310.18 20.1084C310.988 21.7587 312.243 23.1491 313.802 24.1217C315.362 25.0942 317.162 25.6097 319 25.6097C320.838 25.6097 322.638 25.0942 324.198 24.1217C325.757 23.1491 327.012 21.7587 327.82 20.1084C327.012 18.4581 325.757 17.0677 324.198 16.0951C322.638 15.1226 320.838 14.6071 319 14.6071C317.162 14.6071 315.362 15.1226 313.802 16.0951C312.243 17.0677 310.988 18.4581 310.18 20.1084Z'
+				fill='url(#paint1_linear_4135_18682)'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4135_18682'
+					x1='0'
+					y1='20'
+					x2='343'
+					y2='20'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const BorderSmall = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			preserveAspectRatio='none'
+			viewBox='0 0 200 40'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<rect
+				x='0.5'
+				y='0.5'
+				width='99%' // 🔹 заміна з фіксованого 167 на 100%
+				height='39'
+				rx='8'
+				stroke='url(#paint0_linear_4135_16730)'
+				vectorEffect='non-scaling-stroke'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4135_16730'
+					x1='0'
+					y1='20'
+					x2='200'
+					y2='20'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const Show = () => {
+	return (
+		<svg
+			width='22'
+			height='15'
+			viewBox='0 0 22 15'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M11 4.5C11.7956 4.5 12.5587 4.81607 13.1213 5.37868C13.6839 5.94129 14 6.70435 14 7.5C14 8.29565 13.6839 9.05871 13.1213 9.62132C12.5587 10.1839 11.7956 10.5 11 10.5C10.2044 10.5 9.44129 10.1839 8.87868 9.62132C8.31607 9.05871 8 8.29565 8 7.5C8 6.70435 8.31607 5.94129 8.87868 5.37868C9.44129 4.81607 10.2044 4.5 11 4.5ZM11 0C16 0 20.27 3.11 22 7.5C20.27 11.89 16 15 11 15C6 15 1.73 11.89 0 7.5C1.73 3.11 6 0 11 0ZM2.18 7.5C2.98825 9.15031 4.24331 10.5407 5.80248 11.5133C7.36165 12.4858 9.1624 13.0013 11 13.0013C12.8376 13.0013 14.6383 12.4858 16.1975 11.5133C17.7567 10.5407 19.0117 9.15031 19.82 7.5C19.0117 5.84969 17.7567 4.45925 16.1975 3.48675C14.6383 2.51424 12.8376 1.99868 11 1.99868C9.1624 1.99868 7.36165 2.51424 5.80248 3.48675C4.24331 4.45925 2.98825 5.84969 2.18 7.5Z'
+				fill='url(#paint0_linear_4540_6908)'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4540_6908'
+					x1='0'
+					y1='7.5'
+					x2='22'
+					y2='7.5'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const Hide = () => {
+	return (
+		<svg
+			width='20'
+			height='20'
+			viewBox='0 0 20 20'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M8.58555 8.58691C8.21054 8.96206 7.99991 9.47082 8 10.0013C8.00009 10.5317 8.2109 11.0404 8.58605 11.4154C8.9612 11.7904 9.46996 12.0011 10.0004 12.001C10.5309 12.0009 11.0395 11.7901 11.4146 11.4149'
+				stroke='url(#paint0_linear_4540_6985)'
+				strokeWidth='2'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<path
+				d='M14.681 14.673C13.2786 15.5515 11.6548 16.0119 10 16C6.4 16 3.4 14 1 10C2.272 7.88 3.712 6.322 5.32 5.326M8.18 4.18C8.77898 4.05836 9.3888 3.99804 10 4C13.6 4 16.6 6 19 10C18.3333 11.11 17.6207 12.0667 16.862 12.87M1 1L19 19'
+				stroke='url(#paint1_linear_4540_6985)'
+				strokeWidth='2'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4540_6985'
+					x1='8'
+					y1='10.2939'
+					x2='11.4146'
+					y2='10.2939'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+				<linearGradient
+					id='paint1_linear_4540_6985'
+					x1='1'
+					y1='10'
+					x2='19'
+					y2='10'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const Arrow = ({ variant = 'white', className }: VariantProps) => {
+	return (
+		<svg
+			width='12'
+			height='8'
+			viewBox='0 0 12 8'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<path
+				d='M0.75 0.75L5.75 6.75L10.75 0.75'
+				stroke={variant === 'white' ? 'white' : 'url(#paint0_linear_4135_23033)'}
+				strokeWidth='1.5'
+				strokeLinecap='round'
+			/>
+			{variant === 'gradient' && (
+				<defs>
+					<linearGradient
+						id='paint0_linear_4135_23033'
+						x1='0.75'
+						y1='3.75'
+						x2='10.75'
+						y2='3.75'
+						gradientUnits='userSpaceOnUse'
+					>
+						<stop stopColor='#5DAFB1' />
+						<stop offset='1' stopColor='#5E73C9' />
+					</linearGradient>
+				</defs>
+			)}
+		</svg>
+	)
+}
+
+export const CrossGrad = () => {
+	return (
+		<svg
+			width='10'
+			height='12'
+			viewBox='0 0 10 12'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M1.84375 0L4.57812 4.35938L7.3125 0H9.07031L5.47656 5.63281L9.15625 11.375H7.38281L4.57812 6.92969L1.77344 11.375H0L3.67969 5.63281L0.0859375 0H1.84375Z'
+				fill='url(#paint0_linear_4135_22867)'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4135_22867'
+					x1='-0.453125'
+					y1='5.875'
+					x2='10.5469'
+					y2='5.875'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const Pen = () => {
+	return (
+		<svg
+			width='12'
+			height='12'
+			viewBox='0 0 12 12'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M1.33333 10.6667H2.28333L8.8 4.15L7.85 3.2L1.33333 9.71667V10.6667ZM0 12V9.16667L8.8 0.383333C8.93333 0.261111 9.08067 0.166667 9.242 0.1C9.40333 0.0333334 9.57267 0 9.75 0C9.92733 0 10.0996 0.0333334 10.2667 0.1C10.4338 0.166667 10.5782 0.266667 10.7 0.4L11.6167 1.33333C11.75 1.45556 11.8473 1.6 11.9087 1.76667C11.97 1.93333 12.0004 2.1 12 2.26667C12 2.44444 11.9696 2.614 11.9087 2.77533C11.8478 2.93667 11.7504 3.08378 11.6167 3.21667L2.83333 12H0ZM8.31667 3.68333L7.85 3.2L8.8 4.15L8.31667 3.68333Z'
+				fill='white'
+			/>
+		</svg>
+	)
+}
+
+export const Trash = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			className={className}
+			viewBox='0 0 11 12'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M2 12C1.63334 12 1.31956 11.8696 1.05867 11.6087C0.79778 11.3478 0.667113 11.0338 0.666669 10.6667V2C0.47778 2 0.319558 1.936 0.192002 1.808C0.0644468 1.68 0.000446743 1.52178 2.29885e-06 1.33333C-0.000442146 1.14489 0.0635579 0.986667 0.192002 0.858667C0.320447 0.730667 0.478669 0.666667 0.666669 0.666667H3.33334C3.33334 0.477778 3.39734 0.319556 3.52534 0.192C3.65334 0.0644445 3.81156 0.000444444 4 0H6.66667C6.85556 0 7.014 0.0640001 7.142 0.192C7.27 0.32 7.33378 0.478222 7.33334 0.666667H10C10.1889 0.666667 10.3473 0.730667 10.4753 0.858667C10.6033 0.986667 10.6671 1.14489 10.6667 1.33333C10.6662 1.52178 10.6022 1.68022 10.4747 1.80867C10.3471 1.93711 10.1889 2.00089 10 2V10.6667C10 11.0333 9.86956 11.3473 9.60867 11.6087C9.34778 11.87 9.03378 12.0004 8.66667 12H2ZM8.66667 2H2V10.6667H8.66667V2ZM4 9.33333C4.18889 9.33333 4.34734 9.26933 4.47534 9.14133C4.60334 9.01333 4.66711 8.85511 4.66667 8.66667V4C4.66667 3.81111 4.60267 3.65289 4.47467 3.52533C4.34667 3.39778 4.18845 3.33378 4 3.33333C3.81156 3.33289 3.65334 3.39689 3.52534 3.52533C3.39734 3.65378 3.33334 3.812 3.33334 4V8.66667C3.33334 8.85555 3.39734 9.014 3.52534 9.142C3.65334 9.27 3.81156 9.33378 4 9.33333ZM6.66667 9.33333C6.85556 9.33333 7.014 9.26933 7.142 9.14133C7.27 9.01333 7.33378 8.85511 7.33334 8.66667V4C7.33334 3.81111 7.26934 3.65289 7.14134 3.52533C7.01334 3.39778 6.85511 3.33378 6.66667 3.33333C6.47822 3.33289 6.32 3.39689 6.192 3.52533C6.064 3.65378 6 3.812 6 4V8.66667C6 8.85555 6.064 9.014 6.192 9.142C6.32 9.27 6.47822 9.33378 6.66667 9.33333Z'
+				fill='white'
+			/>
+		</svg>
+	)
+}
+
+export const ArrowXGradient = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			width='32'
+			height='32'
+			viewBox='0 0 32 32'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<path
+				d='M8.5 15C7.94772 15 7.5 15.4477 7.5 16C7.5 16.5523 7.94772 17 8.5 17L8.5 15ZM25.2071 16.7071C25.5976 16.3166 25.5976 15.6834 25.2071 15.2929L18.8431 8.92893C18.4526 8.53841 17.8195 8.53841 17.4289 8.92893C17.0384 9.31946 17.0384 9.95262 17.4289 10.3431L23.0858 16L17.4289 21.6569C17.0384 22.0474 17.0384 22.6805 17.4289 23.0711C17.8195 23.4616 18.4526 23.4616 18.8431 23.0711L25.2071 16.7071ZM8.5 17L24.5 17L24.5 15L8.5 15L8.5 17Z'
+				fill='url(#paint0_linear_4031_6551)'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4031_6551'
+					x1='8.5'
+					y1='16.5'
+					x2='24.5'
+					y2='16.5'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const ArrowGoBack = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			width='24'
+			height='9'
+			viewBox='0 0 24 9'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<path
+				d='M0 4.33008L7.5 8.66021V-4.91142e-05L0 4.33008ZM24 4.33008V3.58008L6.75 3.58008V4.33008V5.08008L24 5.08008V4.33008Z'
+				fill='#1990BA'
+			/>
+		</svg>
+	)
+}
+
+export const Add = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			width='40'
+			height='40'
+			viewBox='0 0 40 40'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				fillRule='evenodd'
+				clipRule='evenodd'
+				d='M3.33203 19.9997C3.33203 10.7947 10.7937 3.33301 19.9987 3.33301C29.2037 3.33301 36.6654 10.7947 36.6654 19.9997C36.6654 29.2047 29.2037 36.6663 19.9987 36.6663C10.7937 36.6663 3.33203 29.2047 3.33203 19.9997ZM19.9987 6.66634C16.4625 6.66634 13.0711 8.0711 10.5706 10.5716C8.07012 13.0721 6.66536 16.4635 6.66536 19.9997C6.66536 23.5359 8.07012 26.9273 10.5706 29.4278C13.0711 31.9282 16.4625 33.333 19.9987 33.333C23.5349 33.333 26.9263 31.9282 29.4268 29.4278C31.9273 26.9273 33.332 23.5359 33.332 19.9997C33.332 16.4635 31.9273 13.0721 29.4268 10.5716C26.9263 8.0711 23.5349 6.66634 19.9987 6.66634Z'
+				fill='white'
+			/>
+			<path
+				fillRule='evenodd'
+				clipRule='evenodd'
+				d='M21.6667 11.6667C21.6667 11.2246 21.4911 10.8007 21.1785 10.4882C20.8659 10.1756 20.442 10 20 10C19.558 10 19.134 10.1756 18.8215 10.4882C18.5089 10.8007 18.3333 11.2246 18.3333 11.6667V18.3333H11.6667C11.2246 18.3333 10.8007 18.5089 10.4882 18.8215C10.1756 19.134 10 19.558 10 20C10 20.442 10.1756 20.8659 10.4882 21.1785C10.8007 21.4911 11.2246 21.6667 11.6667 21.6667H18.3333V28.3333C18.3333 28.7754 18.5089 29.1993 18.8215 29.5118C19.134 29.8244 19.558 30 20 30C20.442 30 20.8659 29.8244 21.1785 29.5118C21.4911 29.1993 21.6667 28.7754 21.6667 28.3333V21.6667H28.3333C28.7754 21.6667 29.1993 21.4911 29.5118 21.1785C29.8244 20.8659 30 20.442 30 20C30 19.558 29.8244 19.134 29.5118 18.8215C29.1993 18.5089 28.7754 18.3333 28.3333 18.3333H21.6667V11.6667Z'
+				fill='white'
+			/>
+		</svg>
+	)
+}
+
+export const BagIcon = ({ color }: { color?: string }) => {
+	return (
+		<svg
+			width='20'
+			height='20'
+			viewBox='0 0 20 20'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M3.21942 13.7125C2.50442 10.8525 2.14692 9.42333 2.89775 8.46167C3.64858 7.5 5.12275 7.5 8.07025 7.5H11.9286C14.8769 7.5 16.3503 7.5 17.1011 8.46167C17.8519 9.42333 17.4944 10.8533 16.7794 13.7125C16.3244 15.5317 16.0978 16.4408 15.4194 16.9708C14.7411 17.5 13.8036 17.5 11.9286 17.5H8.07025C6.19525 17.5 5.25775 17.5 4.57942 16.9708C3.90108 16.4408 3.67358 15.5317 3.21942 13.7125Z'
+				stroke={color || 'currentColor'}
+				strokeWidth='1.5'
+			/>
+			<path
+				d='M16.25 7.91634L15.6583 5.74551C15.43 4.90801 15.3158 4.48967 15.0817 4.17384C14.8482 3.86006 14.5311 3.61834 14.1667 3.47634C13.8 3.33301 13.3667 3.33301 12.5 3.33301M3.75 7.91634L4.34167 5.74551C4.57 4.90801 4.68417 4.48967 4.91833 4.17384C5.15181 3.86006 5.46891 3.61834 5.83333 3.47634C6.2 3.33301 6.63333 3.33301 7.5 3.33301'
+				stroke={color || 'currentColor'}
+				strokeWidth='1.5'
+			/>
+			<path
+				d='M7.5 3.33333C7.5 3.11232 7.5878 2.90036 7.74408 2.74408C7.90036 2.5878 8.11232 2.5 8.33333 2.5H11.6667C11.8877 2.5 12.0996 2.5878 12.2559 2.74408C12.4122 2.90036 12.5 3.11232 12.5 3.33333C12.5 3.55435 12.4122 3.76631 12.2559 3.92259C12.0996 4.07887 11.8877 4.16667 11.6667 4.16667H8.33333C8.11232 4.16667 7.90036 4.07887 7.74408 3.92259C7.5878 3.76631 7.5 3.55435 7.5 3.33333Z'
+				stroke={color || 'currentColor'}
+				strokeWidth='1.5'
+			/>
+		</svg>
+	)
+}
+
+export const BoxIcon = ({ color }: { color?: string }) => {
+	return (
+		<svg
+			width='20'
+			height='20'
+			viewBox='0 0 20 20'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<g clipPath='url(#clip0_2013_10733)'>
+				<path
+					d='M18.3213 8.33366C18.2905 7.24116 18.1871 6.54449 17.8371 5.95033C17.3388 5.10449 16.4421 4.63366 14.6496 3.69366L12.983 2.81866C11.5196 2.05116 10.788 1.66699 10.0013 1.66699C9.21464 1.66699 8.48297 2.05033 7.01964 2.81866L5.35297 3.69366C3.56047 4.63366 2.6638 5.10449 2.16547 5.95033C1.66797 6.79533 1.66797 7.84783 1.66797 9.95199V10.0495C1.66797 12.1528 1.66797 13.2053 2.16547 14.0503C2.6638 14.8962 3.56047 15.367 5.35297 16.3078L7.01964 17.182C8.48297 17.9495 9.21464 18.3337 10.0013 18.3337C10.788 18.3337 11.5196 17.9503 12.983 17.182L14.6496 16.307C16.4421 15.3662 17.3388 14.8962 17.8371 14.0503C18.1871 13.4562 18.2905 12.7595 18.3213 11.667M17.5013 6.25033L14.168 7.91699M14.168 7.91699L13.7513 8.12533L10.0013 10.0003M14.168 7.91699V10.8337M14.168 7.91699L6.2513 3.75033M10.0013 10.0003L2.5013 6.25033M10.0013 10.0003V17.917'
+					stroke={color || 'currentColor'}
+					strokeWidth='1.5'
+					strokeLinecap='round'
+				/>
+			</g>
+			<defs>
+				<clipPath id='clip0_2013_10733'>
+					<rect width='20' height='20' fill='white' />
+				</clipPath>
+			</defs>
+		</svg>
+	)
+}
+export const Settings = () => {
+	return (
+		<svg
+			width='26'
+			height='27'
+			viewBox='0 0 26 27'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M11.1267 26.6667C10.5267 26.6667 10.0102 26.4667 9.57733 26.0667C9.14444 25.6667 8.88311 25.1778 8.79333 24.6L8.49333 22.4C8.20444 22.2889 7.93244 22.1556 7.67733 22C7.42222 21.8444 7.172 21.6778 6.92667 21.5L4.86 22.3667C4.30444 22.6111 3.74889 22.6333 3.19333 22.4333C2.63778 22.2333 2.20444 21.8778 1.89333 21.3667L0.326666 18.6333C0.0155554 18.1222 -0.0733333 17.5778 0.0600001 17C0.193333 16.4222 0.493333 15.9444 0.96 15.5667L2.72667 14.2333C2.70444 14.0778 2.69333 13.9276 2.69333 13.7827V12.8827C2.69333 12.7387 2.70444 12.5889 2.72667 12.4333L0.96 11.1C0.493333 10.7222 0.193333 10.2444 0.0600001 9.66667C-0.0733333 9.08889 0.0155554 8.54444 0.326666 8.03333L1.89333 5.3C2.20444 4.78889 2.63778 4.43333 3.19333 4.23333C3.74889 4.03333 4.30444 4.05556 4.86 4.3L6.92667 5.16667C7.17111 4.98889 7.42667 4.82222 7.69333 4.66667C7.96 4.51111 8.22667 4.37778 8.49333 4.26667L8.79333 2.06667C8.88222 1.48889 9.14355 1 9.57733 0.6C10.0111 0.2 10.5276 0 11.1267 0H14.26C14.86 0 15.3769 0.2 15.8107 0.6C16.2444 1 16.5053 1.48889 16.5933 2.06667L16.8933 4.26667C17.1822 4.37778 17.4547 4.51111 17.7107 4.66667C17.9667 4.82222 18.2164 4.98889 18.46 5.16667L20.5267 4.3C21.0822 4.05556 21.6378 4.03333 22.1933 4.23333C22.7489 4.43333 23.1822 4.78889 23.4933 5.3L25.06 8.03333C25.3711 8.54444 25.46 9.08889 25.3267 9.66667C25.1933 10.2444 24.8933 10.7222 24.4267 11.1L22.66 12.4333C22.6822 12.5889 22.6933 12.7391 22.6933 12.884V13.7827C22.6933 13.9276 22.6711 14.0778 22.6267 14.2333L24.3933 15.5667C24.86 15.9444 25.16 16.4222 25.2933 17C25.4267 17.5778 25.3378 18.1222 25.0267 18.6333L23.4267 21.3667C23.1156 21.8778 22.6822 22.2333 22.1267 22.4333C21.5711 22.6333 21.0156 22.6111 20.46 22.3667L18.46 21.5C18.2156 21.6778 17.96 21.8444 17.6933 22C17.4267 22.1556 17.16 22.2889 16.8933 22.4L16.5933 24.6C16.5044 25.1778 16.2436 25.6667 15.8107 26.0667C15.3778 26.4667 14.8609 26.6667 14.26 26.6667H11.1267ZM11.36 24H13.9933L14.46 20.4667C15.1489 20.2889 15.788 20.028 16.3773 19.684C16.9667 19.34 17.5053 18.9231 17.9933 18.4333L21.2933 19.8L22.5933 17.5333L19.7267 15.3667C19.8378 15.0556 19.9156 14.728 19.96 14.384C20.0044 14.04 20.0267 13.6898 20.0267 13.3333C20.0267 12.9769 20.0044 12.6271 19.96 12.284C19.9156 11.9409 19.8378 11.6129 19.7267 11.3L22.5933 9.13333L21.2933 6.86667L17.9933 8.26667C17.5044 7.75555 16.9658 7.328 16.3773 6.984C15.7889 6.64 15.1498 6.37867 14.46 6.2L14.0267 2.66667H11.3933L10.9267 6.2C10.2378 6.37778 9.59911 6.63911 9.01067 6.984C8.42222 7.32889 7.88311 7.74533 7.39333 8.23333L4.09333 6.86667L2.79333 9.13333L5.66 11.2667C5.54889 11.6 5.47111 11.9333 5.42667 12.2667C5.38222 12.6 5.36 12.9556 5.36 13.3333C5.36 13.6889 5.38222 14.0333 5.42667 14.3667C5.47111 14.7 5.54889 15.0333 5.66 15.3667L2.79333 17.5333L4.09333 19.8L7.39333 18.4C7.88222 18.9111 8.42133 19.3391 9.01067 19.684C9.6 20.0289 10.2387 20.2898 10.9267 20.4667L11.36 24ZM12.76 18C14.0489 18 15.1489 17.5444 16.06 16.6333C16.9711 15.7222 17.4267 14.6222 17.4267 13.3333C17.4267 12.0444 16.9711 10.9444 16.06 10.0333C15.1489 9.12222 14.0489 8.66667 12.76 8.66667C11.4489 8.66667 10.3436 9.12222 9.444 10.0333C8.54444 10.9444 8.09422 12.0444 8.09333 13.3333C8.09244 14.6222 8.54267 15.7222 9.444 16.6333C10.3453 17.5444 11.4507 18 12.76 18Z'
+				fill='url(#paint0_linear_4647_12210)'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4647_12210'
+					x1='0'
+					y1='13.3333'
+					x2='25.3867'
+					y2='13.3333'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#E1A755' />
+					<stop offset='1' stopColor='#B76B00' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const ArrowUp = ({ color }: { color?: string }) => {
+	return (
+		<svg
+			width='12'
+			height='8'
+			viewBox='0 0 12 8'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M0.75 0.75L5.75 6.75L10.75 0.75'
+				stroke={color || '#282828'}
+				strokeWidth='1.5'
+				strokeLinecap='round'
+			/>
+		</svg>
+	)
+}
+
+export const InputField = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			preserveAspectRatio='none'
+			viewBox='0 0 535 40'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<rect
+				x='0.5'
+				y='0.5'
+				width='534'
+				height='39'
+				rx='7.5'
+				stroke='url(#paint0_linear_4135_16719)'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4135_16719'
+					x1='0'
+					y1='20'
+					x2='535'
+					y2='20'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const RequiredStar = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			fill='#b76b00'
+			height='8px'
+			width='8px'
+			version='1.1'
+			id='Capa_1'
+			xmlns='http://www.w3.org/2000/svg'
+			viewBox='0 0 209.17 209.17'
+			xmlSpace='preserve'
+			transform='matrix(1, 0, 0, 1, 0, 0)rotate(0)'
+			className={className}
+		>
+			<g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
+			<g
+				id='SVGRepo_tracerCarrier'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+				stroke='#CCCCCC'
+				strokeWidth='5.856816'
+			></g>
+			<g id='SVGRepo_iconCarrier'>
+				{' '}
+				<path d='M198.855,132.631l-43.571-28.045l43.571-28.044c4.701-3.026,6.064-9.312,3.038-14.013l-18.726-29.094 c-1.875-2.913-5.065-4.652-8.533-4.652c-1.945,0-3.84,0.558-5.48,1.614l-37.128,23.898V10.139C132.025,4.549,127.477,0,121.886,0 h-34.6c-5.591,0-10.139,4.549-10.139,10.139v44.155L40.019,30.396c-1.64-1.056-3.536-1.614-5.48-1.614 c-3.468,0-6.658,1.739-8.532,4.652L7.279,62.528c-3.026,4.701-1.663,10.987,3.038,14.013l43.571,28.044l-43.571,28.045 c-4.701,3.026-6.064,9.312-3.038,14.013l18.726,29.093c1.875,2.913,5.065,4.653,8.533,4.653c1.945,0,3.84-0.558,5.48-1.614 l37.128-23.898v44.154c0,5.591,4.549,10.139,10.139,10.139h34.6c5.591,0,10.139-4.549,10.139-10.139v-44.154l37.128,23.898 c1.641,1.056,3.535,1.614,5.48,1.614c0,0,0.001,0,0.001,0c3.467,0,6.657-1.739,8.532-4.653l18.726-29.093 C204.918,141.943,203.555,135.657,198.855,132.631z'></path>{' '}
+			</g>
+		</svg>
+	)
+}
+
+export const BorderUnified = ({
+	className,
+	width = 343
+}: {
+	className?: string
+	width?: number
+}) => (
+	<svg
+		preserveAspectRatio='none'
+		viewBox='0 0 343 40'
+		fill='none'
+		xmlns='http://www.w3.org/2000/svg'
+		className={className}
+		style={{ width, height: 40 }}
+	>
+		<rect
+			x='1'
+			y='1'
+			width='341'
+			height='38'
+			rx='7'
+			stroke='url(#border-gradient)'
+			strokeWidth='2'
+		/>
+		<defs>
+			<linearGradient
+				id='border-gradient'
+				x1='0'
+				y1='20'
+				x2='343'
+				y2='20'
+				gradientUnits='userSpaceOnUse'
+			>
+				<stop stopColor='#5DAFB1' />
+				<stop offset='1' stopColor='#5E73C9' />
+			</linearGradient>
+		</defs>
+	</svg>
+)
+
+export const Checked = ({ isCheck }: { isCheck?: boolean }) => {
+	return (
+		<svg
+			width='20'
+			height='20'
+			viewBox='0 0 20 20'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<rect
+				x='0.5'
+				y='0.5'
+				width='19'
+				height='19'
+				rx='3.5'
+				stroke='url(#paint0_linear_4135_28199)'
+			/>
+			{isCheck && (
+				<path
+					d='M9.36641 14.0001L5.56641 10.2001L6.51641 9.25007L9.36641 12.1001L15.4831 5.9834L16.4331 6.9334L9.36641 14.0001Z'
+					fill='url(#paint1_linear_4135_28199)'
+				/>
+			)}
+
+			<defs>
+				<linearGradient
+					id='paint0_linear_4135_28199'
+					x1='0'
+					y1='10'
+					x2='20'
+					y2='10'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+				<linearGradient
+					id='paint1_linear_4135_28199'
+					x1='5.56641'
+					y1='9.99173'
+					x2='16.4331'
+					y2='9.99173'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const HomeIcon = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			xmlns='http://www.w3.org/2000/svg'
+			fill='none'
+			viewBox='0 0 24 24'
+			strokeWidth='1.5'
+			stroke='currentColor'
+			className='size-6'
+		>
+			<path
+				strokeLinecap='round'
+				strokeLinejoin='round'
+				d='m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25'
+			/>
+		</svg>
+	)
+}
+
+export const SortIcon = ({ className }: { className?: string }) => {
+	return (
+		<svg
+			width='16'
+			height='18'
+			viewBox='0 0 16 18'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<path
+				d='M4 17V7M4 17L1 14M4 17L7 14M12 1V11M12 1L15 4M12 1L9 4'
+				stroke='#058FE2'
+				strokeWidth='2'
+				strokeLinecap='round'
+				strokeLinejoin='round'
+			/>
+		</svg>
+	)
+}
+
+export const GradientStar = ({ className }: { className?: string }) => (
+	<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' className={className}>
+		<defs>
+			<linearGradient id='starGradient' x1='0%' y1='0%' x2='100%' y2='0%'>
+				<stop offset='0%' stopColor='#E1A755' />
+				<stop offset='100%' stopColor='#B76B00' />
+			</linearGradient>
+		</defs>
+		<path
+			d='M12 2l2.9 6.2 6.8.9-5 4.9 1.2 6.8L12 17.8l-5.9 3.1 1.2-6.8-5-4.9 6.8-.9L12 2z'
+			fill='url(#starGradient)' // ось магія
+			stroke='none'
+		/>
+	</svg>
+)
+
+export const NavArrow = ({
+	className,
+	isGradient
+}: {
+	className?: string
+	isGradient?: boolean
+}) => {
+	return (
+		<svg
+			width='30'
+			height='30'
+			viewBox='0 0 32 32'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+			className={className}
+		>
+			<path
+				d='M8.5 15C7.94772 15 7.5 15.4477 7.5 16C7.5 16.5523 7.94772 17 8.5 17L8.5 15ZM25.2071 16.7071C25.5976 16.3166 25.5976 15.6834 25.2071 15.2929L18.8431 8.92893C18.4526 8.53841 17.8195 8.53841 17.4289 8.92893C17.0384 9.31946 17.0384 9.95262 17.4289 10.3431L23.0858 16L17.4289 21.6569C17.0384 22.0474 17.0384 22.6805 17.4289 23.0711C17.8195 23.4616 18.4526 23.4616 18.8431 23.0711L25.2071 16.7071ZM8.5 17L24.5 17L24.5 15L8.5 15L8.5 17Z'
+				fill={isGradient ? 'url(#paint0_linear_4031_6551)' : 'currentColor'}
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_4031_6551'
+					x1='8.5'
+					y1='16.5'
+					x2='24.5'
+					y2='16.5'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const Minus = () => {
+	return (
+		<svg
+			width='64px'
+			height='64px'
+			viewBox='0 0 24 24'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
+			<g id='SVGRepo_tracerCarrier' strokeLinecap='round' strokeLinejoin='round'></g>
+			<g id='SVGRepo_iconCarrier'>
+				<path
+					d='M5 12H19'
+					stroke='#ffffff'
+					strokeWidth='2'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+				></path>
+			</g>
+		</svg>
+	)
+}
+
+export const Plus = () => {
+	return (
+		<svg
+			width='64px'
+			height='64px'
+			viewBox='0 0 24 24'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
+			<g id='SVGRepo_tracerCarrier' strokeLinecap='round' strokeLinejoin='round'></g>
+			<g id='SVGRepo_iconCarrier'>
+				<path
+					d='M5 12H19'
+					stroke='#fff'
+					strokeWidth='2'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+				></path>
+				<path
+					d='M12 5L12 19'
+					stroke='#fff'
+					strokeWidth='2'
+					strokeLinecap='round'
+					strokeLinejoin='round'
+				></path>
+			</g>
+		</svg>
+	)
+}
+
+export const YoutubeIcon = ({ className = 'w-8 h-6' }: { className?: string }) => {
+	return (
+		<svg
+			width='32px'
+			height='32px'
+			viewBox='0 0 16 16'
+			xmlns='http://www.w3.org/2000/svg'
+			fill='none'
+		>
+			<g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
+			<g id='SVGRepo_tracerCarrier' strokeLinecap='round' strokeLinejoin='round'></g>
+			<g id='SVGRepo_iconCarrier'>
+				<path
+					fill='red'
+					d='M14.712 4.633a1.754 1.754 0 00-1.234-1.234C12.382 3.11 8 3.11 8 3.11s-4.382 0-5.478.289c-.6.161-1.072.634-1.234 1.234C1 5.728 1 8 1 8s0 2.283.288 3.367c.162.6.635 1.073 1.234 1.234C3.618 12.89 8 12.89 8 12.89s4.382 0 5.478-.289a1.754 1.754 0 001.234-1.234C15 10.272 15 8 15 8s0-2.272-.288-3.367z'
+				></path>
+				<path fill='#ffffff' d='M6.593 10.11l3.644-2.098-3.644-2.11v4.208z'></path>
+			</g>
+		</svg>
+	)
+}
+
+export const EditIcon = () => {
+	return (
+		<svg
+			width='20'
+			height='20'
+			viewBox='0 0 16 16'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M3.33333 12.6667H4.28333L10.8 6.15L9.85 5.2L3.33333 11.7167V12.6667ZM2 14V11.1667L10.8 2.38333C10.9333 2.26111 11.0807 2.16667 11.242 2.1C11.4033 2.03333 11.5727 2 11.75 2C11.9273 2 12.0996 2.03333 12.2667 2.1C12.4338 2.16667 12.5782 2.26667 12.7 2.4L13.6167 3.33333C13.75 3.45556 13.8473 3.6 13.9087 3.76667C13.97 3.93333 14.0004 4.1 14 4.26667C14 4.44444 13.9696 4.614 13.9087 4.77533C13.8478 4.93667 13.7504 5.08378 13.6167 5.21667L4.83333 14H2ZM10.3167 5.68333L9.85 5.2L10.8 6.15L10.3167 5.68333Z'
+				fill='var(--color-gr-2)'
+			/>
+		</svg>
+	)
+}
+
+export const Filter = () => {
+	return (
+		<svg
+			width='17'
+			height='16'
+			viewBox='0 0 17 16'
+			fill='none'
+			xmlns='http://www.w3.org/2000/svg'
+		>
+			<path
+				d='M2.86631 0H10.0125C10.4833 0 10.8924 2.32253e-07 11.2128 0.0331037C11.5291 0.0640003 11.9185 0.137931 12.2359 0.417104C12.6449 0.776828 12.8757 1.31531 12.8788 1.87586C12.8808 2.30621 12.7016 2.67697 12.5285 2.97049C12.3554 3.26842 12.105 3.62152 11.8124 4.03421L11.7805 4.07835L11.7702 4.09269L9.13776 7.81022C8.87812 8.17656 8.81322 8.27367 8.76788 8.37298C8.72066 8.47698 8.68637 8.58716 8.66588 8.7007C8.64528 8.81105 8.64218 8.93463 8.64218 9.40029V14.0822C8.64218 14.3117 8.64218 14.5368 8.62776 14.72C8.61231 14.901 8.57418 15.1912 8.39697 15.4516C8.18061 15.7683 7.8437 15.9735 7.4697 15.9978C7.15855 16.0188 6.90612 15.8842 6.75879 15.7959C6.61043 15.7076 6.44043 15.5807 6.26837 15.4538L5.2494 14.7002L5.19994 14.6637C5.00315 14.5192 4.78473 14.3592 4.62091 14.1374C4.47854 13.9461 4.37249 13.7268 4.30873 13.4919C4.23558 13.2226 4.23661 12.9402 4.23661 12.6775V9.40029C4.23661 8.93463 4.23249 8.81105 4.21291 8.7007C4.19209 8.58711 4.15745 8.47693 4.10988 8.37298C4.06558 8.27367 4.00067 8.17656 3.74103 7.81022L1.10758 4.09269L1.09728 4.07945L1.06637 4.03532C0.773762 3.62152 0.523398 3.26842 0.349277 2.97049C0.177217 2.67697 -0.00102586 2.30621 4.44536e-06 1.87586C0.000547977 1.59707 0.0584364 1.32182 0.169554 1.06969C0.280671 0.817568 0.442288 0.594757 0.642913 0.417104C0.960247 0.137931 1.3497 0.0639999 1.666 0.0319998C1.98643 -2.13755e-07 2.39443 0 2.86631 0ZM3.27534 4.4138L4.97225 6.80829L5.00831 6.86015C5.2154 7.15146 5.38025 7.38429 5.50079 7.64911C5.60657 7.88231 5.68281 8.12691 5.72952 8.38291C5.78206 8.67091 5.78103 8.96443 5.78103 9.33629V12.6113C5.78103 12.7857 5.78206 12.8839 5.78618 12.9578L5.79237 13.0262C5.79944 13.0555 5.81207 13.0829 5.82946 13.1068L5.8717 13.1443C5.92322 13.1884 5.99534 13.2414 6.12721 13.3385L7.09673 14.0557V9.33519C7.09673 8.96332 7.09673 8.6698 7.14928 8.3818C7.19598 8.12654 7.27222 7.88194 7.378 7.64801C7.49855 7.38318 7.6634 7.15146 7.87049 6.85904L7.90655 6.80829L9.60243 4.4138H3.27534ZM10.7759 2.75862C10.9769 2.47173 11.1201 2.26207 11.219 2.09214C11.3014 1.95311 11.3261 1.88469 11.3323 1.86373C11.329 1.80873 11.3083 1.75658 11.2736 1.71586C11.2062 1.69666 11.1371 1.68482 11.0675 1.68055C10.8285 1.65628 10.4947 1.65517 9.9754 1.65517H2.9034C2.38412 1.65517 2.05031 1.65517 1.81128 1.68055C1.74165 1.68482 1.67261 1.69666 1.60522 1.71586C1.57054 1.75658 1.54982 1.80873 1.54649 1.86373C1.55267 1.88469 1.5774 1.95311 1.65982 2.09214C1.75873 2.26318 1.90194 2.47173 2.10285 2.75862H10.7759ZM12.3636 6.34484C12.3636 6.12535 12.4451 5.91485 12.59 5.75964C12.7349 5.60444 12.9314 5.51725 13.1364 5.51725H16.2273C16.4322 5.51725 16.6288 5.60444 16.7737 5.75964C16.9186 5.91485 17 6.12535 17 6.34484C17 6.56433 16.9186 6.77483 16.7737 6.93003C16.6288 7.08523 16.4322 7.17242 16.2273 7.17242H13.1364C12.9314 7.17242 12.7349 7.08523 12.59 6.93003C12.4451 6.77483 12.3636 6.56433 12.3636 6.34484ZM10.8182 9.10346C10.8182 8.88397 10.8996 8.67347 11.0445 8.51827C11.1894 8.36307 11.386 8.27587 11.5909 8.27587H16.2273C16.4322 8.27587 16.6288 8.36307 16.7737 8.51827C16.9186 8.67347 17 8.88397 17 9.10346C17 9.32295 16.9186 9.53345 16.7737 9.68865C16.6288 9.84386 16.4322 9.93105 16.2273 9.93105H11.5909C11.386 9.93105 11.1894 9.84386 11.0445 9.68865C10.8996 9.53345 10.8182 9.32295 10.8182 9.10346ZM10.303 11.8621C10.303 11.6426 10.3844 11.4321 10.5294 11.2769C10.6743 11.1217 10.8708 11.0345 11.0758 11.0345H16.2273C16.4322 11.0345 16.6288 11.1217 16.7737 11.2769C16.9186 11.4321 17 11.6426 17 11.8621C17 12.0816 16.9186 12.2921 16.7737 12.4473C16.6288 12.6025 16.4322 12.6897 16.2273 12.6897H11.0758C10.8708 12.6897 10.6743 12.6025 10.5294 12.4473C10.3844 12.2921 10.303 12.0816 10.303 11.8621ZM10.303 14.6207C10.303 14.4012 10.3844 14.1907 10.5294 14.0355C10.6743 13.8803 10.8708 13.7931 11.0758 13.7931H13.6515C13.8565 13.7931 14.053 13.8803 14.1979 14.0355C14.3428 14.1907 14.4242 14.4012 14.4242 14.6207C14.4242 14.8402 14.3428 15.0507 14.1979 15.2059C14.053 15.3611 13.8565 15.4483 13.6515 15.4483H11.0758C10.8708 15.4483 10.6743 15.3611 10.5294 15.2059C10.3844 15.0507 10.303 14.8402 10.303 14.6207Z'
+				fill='url(#paint0_linear_291_6725)'
+			/>
+			<defs>
+				<linearGradient
+					id='paint0_linear_291_6725'
+					x1='0'
+					y1='8'
+					x2='17'
+					y2='8'
+					gradientUnits='userSpaceOnUse'
+				>
+					<stop stopColor='#5DAFB1' />
+					<stop offset='1' stopColor='#5E73C9' />
+				</linearGradient>
+			</defs>
+		</svg>
+	)
+}
+
+export const OkIcon = () => {
+	return (
+		<svg
+			width='32px'
+			height='32px'
+			viewBox='0 0 12 12'
+			enableBackground='new 0 0 12 12'
+			id='Слой_1'
+			version='1.1'
+			xmlSpace='preserve'
+			xmlns='http://www.w3.org/2000/svg'
+			fill='#5e74c9'
+		>
+			<g id='SVGRepo_bgCarrier' strokeWidth='0'></g>
+			<g id='SVGRepo_tracerCarrier' strokeLinecap='round' strokeLinejoin='round'></g>
+			<g id='SVGRepo_iconCarrier'>
+				<polygon
+					fill='#5e74c9'
+					points='5,9.8535156 0,4.8535156 0.7070313,4.1464844 5,8.4394531 11.2929688,2.1464844 12,2.8535156 '
+				></polygon>
+			</g>
+		</svg>
+	)
+}
