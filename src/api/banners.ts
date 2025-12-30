@@ -1,75 +1,68 @@
-import { BASE_URL } from '@/utils/config'
+import { api } from '@/utils/axios'
 
 import { Banner, CreateBannerDto } from '@/types/baseTypes'
 
-import { fetchWithAuth } from './fetchWithAuth'
+import { toast } from '@/lib/toast'
 
 // Отримати всі банери
-export async function getAllBanners() {
+export const getAllBanners = async (): Promise<Banner[]> => {
 	try {
-		const res = await fetch(`${BASE_URL}/banners`, { cache: 'no-store' })
-		if (!res.ok) throw new Error()
-		return res.json() as Promise<Banner[]>
-	} catch (e) {
-		console.error('Помилка отримання банерів:', e)
+		const { data } = await api.get('/banners')
+		return data
+	} catch (err: unknown) {
+		console.error('Помилка отримання банерів:', err)
+		toast.error('Не вдалося отримати банери')
 		return []
 	}
 }
 
 // Створити банер
-export async function createBanner(data: CreateBannerDto & { imageFile?: File | null }) {
+export const createBanner = async (
+	data: CreateBannerDto & { imageFile?: File | null }
+): Promise<Banner | null> => {
 	try {
 		const formData = new FormData()
 		formData.append('link', data.link)
 		formData.append('type', data.type)
 		if (data.imageFile) formData.append('image', data.imageFile)
 
-		const res = await fetchWithAuth(`${BASE_URL}/banners`, {
-			method: 'POST',
-			body: formData
-		})
-
-		if (!res.ok) throw new Error()
-		return (await res.json()) as Banner
-	} catch (e) {
-		console.error('Помилка створення банера:', e)
+		const { data: res } = await api.post('/banners', formData)
+		return res
+	} catch (err: unknown) {
+		console.error('Помилка створення банера:', err)
+		toast.error('Не вдалося створити банер')
 		return null
 	}
 }
 
 // Оновити банер
-export async function updateBanner(data: Banner & { imageFile?: File | null }) {
+export const updateBanner = async (
+	data: Banner & { imageFile?: File | null }
+): Promise<Banner | null> => {
 	try {
 		const formData = new FormData()
 		formData.append('link', data.link)
 		formData.append('type', data.type)
-		formData.append('isPublished', data.isPublished.toString())
+		formData.append('isPublished', String(data.isPublished))
 		if (data.imageFile) formData.append('image', data.imageFile)
 
-		const res = await fetchWithAuth(`${BASE_URL}/banners/${data._id}`, {
-			method: 'PATCH',
-			body: formData
-		})
-
-		if (!res.ok) throw new Error()
-		return (await res.json()) as Banner
-	} catch (e) {
-		console.error('Помилка оновлення банера:', e)
+		const { data: res } = await api.patch(`/banners/${data._id}`, formData)
+		return res
+	} catch (err: unknown) {
+		console.error('Помилка оновлення банера:', err)
+		toast.error('Не вдалося оновити банер')
 		return null
 	}
 }
 
 // Видалити банер
-export async function deleteBanner(id: string) {
+export const deleteBanner = async (id: string): Promise<boolean> => {
 	try {
-		const res = await fetchWithAuth(`${BASE_URL}/banners/${id}`, {
-			method: 'DELETE'
-		})
-
-		if (!res.ok) throw new Error()
+		await api.delete(`/banners/${id}`)
 		return true
-	} catch (e) {
-		console.error('Помилка видалення банера:', e)
+	} catch (err: unknown) {
+		console.error('Помилка видалення банера:', err)
+		toast.error('Не вдалося видалити банер')
 		return false
 	}
 }

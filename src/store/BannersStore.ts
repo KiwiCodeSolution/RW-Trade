@@ -32,8 +32,7 @@ class BannersStore {
 			if (!banner) return null
 
 			const updatedData = { ...banner, isPublished: !banner.isPublished }
-
-			const result = await updateBanner(updatedData) // токен підставиться автоматично
+			const result = await updateBanner(updatedData)
 			if (!result) return null
 
 			runInAction(() => {
@@ -44,9 +43,7 @@ class BannersStore {
 			toast.success(result.isPublished ? 'Банер показано' : 'Банер сховано')
 			return result
 		} finally {
-			runInAction(() => {
-				this.isLoading = false
-			})
+			this.isLoading = false
 		}
 	}
 
@@ -82,13 +79,13 @@ class BannersStore {
 		}
 	}
 
-	remove = async (id: string, fnc: () => void) => {
+	remove = async (id: string, callback?: () => void) => {
 		this.isLoading = true
 		try {
 			const ok = await deleteBanner(id)
 			if (!ok) return false
 
-			fnc()
+			callback?.()
 			runInAction(() => {
 				this.banners = this.banners.filter(b => b._id !== id)
 			})
@@ -96,7 +93,9 @@ class BannersStore {
 			toast.success('Банер видалено')
 			return true
 		} finally {
-			this.isLoading = false
+			runInAction(() => {
+				this.isLoading = false
+			})
 		}
 	}
 }

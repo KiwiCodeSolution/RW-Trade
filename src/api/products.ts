@@ -71,22 +71,6 @@ export const fetchFilteredProducts = async (params: ItemsFilterParams) => {
 	return data
 }
 
-// -------------------- ADMIN / PRIVATE --------------------
-
-// створення продукту
-// export const createProductApi = async (dto: CreateProductDto, files?: File[]) => {
-// 	const form = new FormData()
-// 	Object.entries(dto).forEach(([key, value]) => {
-// 		if (key === 'images') return
-// 		if (typeof value === 'object') form.append(key, JSON.stringify(value))
-// 		else if (value !== undefined && value !== null) form.append(key, String(value))
-// 	})
-// 	files?.forEach(f => form.append('images', f))
-
-// 	const { data } = await api.post('/products', form)
-// 	return data
-// }
-
 export const createProductApi = async (dto: CreateProductDto, files?: File[]) => {
 	const form = new FormData()
 
@@ -105,21 +89,6 @@ export const createProductApi = async (dto: CreateProductDto, files?: File[]) =>
 	const { data } = await api.post('/products', form)
 	return data
 }
-
-// оновлення продукту
-// export const updateProductApi = async (id: string, dto: CreateProductDto, files?: File[]) => {
-// 	const form = new FormData()
-// 	Object.entries(dto).forEach(([key, value]) => {
-// 		if (['_id', 'slugUk', 'slugEn', 'createdAt', 'updatedAt', '__v', 'images'].includes(key))
-// 			return
-// 		if (typeof value === 'object') form.append(key, JSON.stringify(value))
-// 		else if (value !== undefined && value !== null) form.append(key, String(value))
-// 	})
-// 	files?.forEach(f => form.append('images', f))
-
-// 	const { data } = await api.patch(`/products/${id}`, form)
-// 	return data
-// }
 
 export const updateProductApi = async (id: string, dto: CreateProductDto, files?: File[]) => {
 	const form = new FormData()
