@@ -1,22 +1,6 @@
-import { BASE_URL } from '@/utils/config'
+import { CreateProductDto, ItemsFilterParams, Product, Subcategory } from '@/types/baseTypes'
 
-import {
-	CreateProductDto,
-	ItemsFilterParams,
-	LangField,
-	Product,
-	Subcategory
-} from '@/types/baseTypes'
-
-import {
-	deleteProduct,
-	fetchFilteredAdminProducts,
-	fetchFilteredProducts,
-	getExchangeRate,
-	updateExchangeRate,
-	updateProductStatus,
-	updateProductVisibility
-} from '@/api/products'
+import * as productApi from '@/api/products'
 
 import { toast } from '@/lib/toast'
 
@@ -25,7 +9,7 @@ import { makeAutoObservable, runInAction } from 'mobx'
 class ProductStore {
 	products: Product[] = []
 	adminProducts: Product[] = []
-	discountProducts: Product[] = [] // 👈 окремо
+	discountProducts: Product[] = []
 	discountSubcategories: Subcategory[] = []
 	currentProduct: Product | null = null
 	isLoading = false
@@ -33,41 +17,32 @@ class ProductStore {
 	isWholesale = false
 	total = 0
 	totalAdmin = 0
-
 	discountTotal = 0
 	shouldAskWholesale = false
-
-	allCountries: string[] = [] // 🔹 повний перелік для фільтра
-	filteredCountries: string[] = [] // 🔹 країни, які реально відфільтровані
+	allCountries: string[] = []
+	filteredCountries: string[] = []
 	minPrice = 0
 	maxPrice = 0
 
 	constructor() {
 		makeAutoObservable(this)
 
-		// Завантажуємо isWholesale
 		if (typeof window !== 'undefined') {
 			const saved = localStorage.getItem('isWholesale')
-			if (saved === null) {
-				this.shouldAskWholesale = true
-			} else {
-				this.isWholesale = saved === 'true'
-			}
+			this.shouldAskWholesale = saved === null
+			this.isWholesale = saved === 'true'
 
-			// Завантажуємо фаворитів
 			const savedFavorites = localStorage.getItem('favorites-RWTrade')
 			if (savedFavorites) {
 				try {
 					const favProducts: Product[] = JSON.parse(savedFavorites)
-					this.products = [
-						...this.products,
-						...favProducts.map(p => ({ ...p, isFavorite: true }))
-					]
+					this.products = favProducts.map(p => ({ ...p, isFavorite: true }))
 				} catch {
 					console.warn('Favorites parse error')
 				}
 			}
 		}
+
 		this.fetchExchangeRate()
 	}
 
@@ -77,14 +52,8 @@ class ProductStore {
 
 	toggleFavorite(product: Product) {
 		const exists = this.products.find(p => p._id === product._id)
-
-		if (exists) {
-			exists.isFavorite = !exists.isFavorite
-		} else {
-			// якщо немає в products, додаємо його як фаворит
-			this.products.push({ ...product, isFavorite: true })
-		}
-
+		if (exists) exists.isFavorite = !exists.isFavorite
+		else this.products.push({ ...product, isFavorite: true })
 		this.updateFavoritesStorage()
 	}
 
@@ -102,45 +71,35 @@ class ProductStore {
 	}
 
 	async fetchExchangeRate() {
+		this.isLoading = true
 		try {
-			this.isLoading = true
-			const res = await getExchangeRate()
-			if (!res || !res.data) throw new Error('No data')
-			runInAction(() => {
-				this.exchangeRate = res.data.rate
-			})
-			console.log('Exchange rate:', this.exchangeRate)
+			const data = await productApi.getExchangeRate()
+			runInAction(() => (this.exchangeRate = data.rate ?? 1))
 		} catch {
 			console.warn('Exchange rate unavailable — using fallback 1')
-			runInAction(() => {
-				this.exchangeRate = 1
-			})
+			runInAction(() => (this.exchangeRate = 1))
 		} finally {
-			runInAction(() => {
-				this.isLoading = false
-			})
+			runInAction(() => (this.isLoading = false))
 		}
 	}
 
 	setExchangeRate = async (rate: number) => {
 		try {
-			const updated = await updateExchangeRate({ rate })
-			runInAction(() => {
-				this.exchangeRate = updated.rate
-			})
+			const data = await productApi.updateExchangeRate({ rate })
+			runInAction(() => (this.exchangeRate = data.rate))
 			toast.success('Курс валюти оновлено')
-			return updated
+			return data
 		} catch (err: unknown) {
 			console.error('Failed to update exchange rate in store', err)
 			toast.error('Не вдалося оновити курс валюти')
 			return null
 		}
 	}
-	async fetchProducts(params?: Partial<ItemsFilterParams & { discountOnly?: boolean }>) {
-		try {
-			this.isLoading = true
 
-			const data = await fetchFilteredProducts({
+	async fetchProducts(params?: Partial<ItemsFilterParams & { discountOnly?: boolean }>) {
+		this.isLoading = true
+		try {
+			const data = await productApi.fetchFilteredProducts({
 				lang: 'uk',
 				categorySlug: 'all',
 				subCategorySlug: 'all',
@@ -149,71 +108,52 @@ class ProductStore {
 				page: 1,
 				...params
 			})
-
 			runInAction(() => {
 				const favsFromStorage = this.getFavoritesFromStorage()
-
 				this.products = data.items.map((p: Product) => {
 					const fav = favsFromStorage.find(f => f._id === p._id)
 					return fav ? { ...fav, isFavorite: true } : { ...p, isFavorite: false }
 				})
-
 				this.total = data.totalItems
 				this.minPrice = data.filter.minPrice.toFixed(2)
 				this.maxPrice = data.filter.maxPrice.toFixed(2)
-
-				// 🔹 Зберігаємо повний перелік лише при першому завантаженні
-				if (!this.allCountries.length) {
-					this.allCountries = data.filter.allCountries
-				}
-
-				// 🔹 Завжди зберігаємо перелік реально відфільтрованих країн
+				if (!this.allCountries.length) this.allCountries = data.filter.allCountries
 				this.filteredCountries = data.filter.selectedCountries
 			})
 		} catch (error) {
 			console.error('❌ Failed to fetch filtered products:', error)
 		} finally {
-			runInAction(() => {
-				this.isLoading = false
-			})
+			runInAction(() => (this.isLoading = false))
 		}
 	}
 
-	async fetchAdminProducts(params?: Partial<ItemsFilterParams & { discountOnly?: boolean }>) {
+	async fetchAdminProducts(params?: Partial<ItemsFilterParams>) {
+		this.isLoading = true
 		try {
-			this.isLoading = true
-
-			const data = await fetchFilteredAdminProducts({
+			const data = await productApi.fetchFilteredAdminProducts({
 				lang: 'uk',
 				categorySlug: 'all',
 				subCategorySlug: 'all',
 				sort: 'DATE_ADDED',
 				limit: 24,
 				page: 1,
-				...params // дозволяє перевизначати фільтри
+				...params
 			})
-
 			runInAction(() => {
 				this.adminProducts = data.items
-
 				this.totalAdmin = data.totalItems
 			})
 		} catch (error) {
-			console.error('❌ Failed to fetch filtered products:', error)
+			console.error('❌ Failed to fetch admin products:', error)
 		} finally {
-			runInAction(() => {
-				this.isLoading = false
-			})
+			runInAction(() => (this.isLoading = false))
 		}
 	}
 
 	async fetchDiscountProducts() {
 		this.isLoading = true
 		try {
-			const res = await fetch(`${BASE_URL}/products/discounts`)
-			if (!res.ok) throw new Error('Помилка запиту /products/discounts')
-			const data = await res.json()
-
+			const data = await productApi.fetchDiscountProductsApi()
 			runInAction(() => {
 				this.discountProducts = data.items
 				this.discountSubcategories = data.subcategories
@@ -222,9 +162,7 @@ class ProductStore {
 		} catch (err) {
 			console.error('❌ Failed to fetch discount products:', err)
 		} finally {
-			runInAction(() => {
-				this.isLoading = false
-			})
+			runInAction(() => (this.isLoading = false))
 		}
 	}
 
@@ -233,269 +171,76 @@ class ProductStore {
 		return this.discountProducts.filter(p => p.subCategoryId === subId)
 	}
 
-	async createProduct({
-		product,
-		token,
-		files
-	}: {
-		product: CreateProductDto
-		token: string
-		files?: File[]
-	}) {
+	async createProduct({ product, files }: { product: CreateProductDto; files?: File[] }) {
 		this.isLoading = true
 		try {
-			const formData = new FormData()
-
-			// 1) звичайні поля → JSON/рядок
-			Object.entries(product).forEach(([key, value]) => {
-				if (key === 'images') return // важливо: пропускаємо!
-				if (
-					typeof value === 'boolean' ||
-					Array.isArray(value) ||
-					(typeof value === 'object' && value !== null)
-				) {
-					formData.append(key, JSON.stringify(value))
-				} else if (value !== undefined && value !== null) {
-					formData.append(key, String(value))
-				}
-			})
-
-			// 2) файли — тільки реальні File
-			;(files ?? []).forEach(file => {
-				formData.append('images', file) // ключ має бути рівно 'images'
-			})
-
-			const res = await fetch(`${BASE_URL}/products`, {
-				method: 'POST',
-				body: formData,
-				credentials: 'include',
-				headers: { Authorization: `Bearer ${token}` }
-			})
-
-			if (res.status === 401) {
-				toast.error('Сесія завершена. Увійди знову.')
-				window.location.href = '/uk/signin'
-				return null
-			}
-
-			if (!res.ok) {
-				const msg = await res.text()
-				throw new Error(`Помилка створення продукту: ${msg}`)
-			}
-
-			const created = await res.json()
-			runInAction(() => this.products.push(created))
+			const data = await productApi.createProductApi(product, files)
+			runInAction(() => this.products.push(data))
 			toast.success('Товар успішно збережено')
-			return created
+			return data
 		} catch (err: unknown) {
 			console.error('Create product error:', err)
-
-			let msg = 'Помилка при збереженні товару'
-
-			if (err instanceof Error) {
-				try {
-					const clean = err.message.replace('Помилка створення продукту: ', '')
-					const parsed = JSON.parse(clean)
-					if (parsed?.message) msg = parsed.message
-					else msg = err.message
-				} catch {
-					msg = err.message
-				}
-			}
-
-			toast.error(msg)
+			toast.error('Помилка при збереженні товару')
 			return null
 		} finally {
-			runInAction(() => {
-				this.isLoading = false
-			})
+			runInAction(() => (this.isLoading = false))
 		}
 	}
 
 	async updateProduct({
 		id,
 		product,
-		token,
 		files
 	}: {
 		id: string
 		product: CreateProductDto
-		token: string
 		files?: File[]
 	}) {
 		this.isLoading = true
 		try {
-			const formData = new FormData()
-
-			// 1️⃣ Серіалізуємо звичайні поля, без _id / slug / timestamps
-			Object.entries(product).forEach(([key, value]) => {
-				if (['_id', 'slugUk', 'slugEn', 'createdAt', 'updatedAt', '__v'].includes(key))
-					return
-				if (key === 'images') return // окремо обробляємо нижче
-
-				if (key === 'kit' || key === 'compatibility') {
-					const field = value as LangField // чітко типізуємо
-					formData.append(key, JSON.stringify(field))
-					return
-				}
-
-				if (
-					typeof value === 'boolean' ||
-					Array.isArray(value) ||
-					(typeof value === 'object' && value !== null)
-				) {
-					formData.append(key, JSON.stringify(value))
-				} else if (value !== undefined && value !== null) {
-					formData.append(key, String(value))
-				}
-			})
-
-			// 2️⃣ Файли — лише нові (реальні File)
-			;(files ?? []).forEach(file => {
-				formData.append('images', file)
-			})
-
-			// 3️⃣ Відправляємо PATCH (оновлення)
-			const res = await fetch(`${BASE_URL}/products/${id}`, {
-				method: 'PATCH',
-				body: formData,
-				headers: { Authorization: `Bearer ${token}` },
-				credentials: 'include'
-			})
-
-			if (res.status === 401) {
-				toast.error('Сесія завершена. Увійди знову.')
-				window.location.href = '/uk/signin'
-				return null
-			}
-
-			if (!res.ok) {
-				const msg = await res.text()
-				throw new Error(`Помилка оновлення продукту: ${msg}`)
-			}
-
-			const updated = await res.json()
-
+			const data = await productApi.updateProductApi(id, product, files)
 			runInAction(() => {
-				this.products = this.products.map(p => (p._id === updated._id ? updated : p))
-				if (this.currentProduct?._id === updated._id) this.currentProduct = updated
+				this.products = this.products.map(p => (p._id === data._id ? data : p))
+				if (this.currentProduct?._id === data._id) this.currentProduct = data
 			})
-
 			toast.success('Товар успішно оновлено')
-			return updated
+			return data
 		} catch (err: unknown) {
 			console.error('Update product error:', err)
-
-			let msg = 'Помилка при оновленні товару'
-
-			if (err instanceof Error) {
-				try {
-					const clean = err.message.replace('Помилка оновлення продукту: ', '')
-					const parsed = JSON.parse(clean)
-					if (parsed?.message) msg = parsed.message
-					else msg = err.message
-				} catch {
-					msg = err.message
-				}
-			}
-
-			toast.error(msg)
+			toast.error('Помилка при оновленні товару')
 			return null
 		} finally {
-			runInAction(() => {
-				this.isLoading = false
-			})
+			runInAction(() => (this.isLoading = false))
 		}
 	}
 
-	async fetchProductById(id: string, token: string) {
+	async fetchProductById(id: string) {
 		this.isLoading = true
 		try {
-			const res = await fetch(`${BASE_URL}/products/${id}`, {
-				method: 'GET',
-				credentials: 'include',
-				headers: { Authorization: `Bearer ${token}` }
-			})
-
-			if (res.status === 401) {
-				toast.error('Сесія завершена. Увійди знову.')
-				window.location.href = '/uk/signin'
-				return null
-			}
-
-			if (!res.ok) {
-				const msg = await res.text()
-				throw new Error(`Помилка завантаження продукту: ${msg}`)
-			}
-
-			const product = await res.json()
-			this.currentProduct = product
-			return product
-		} catch (err: unknown) {
+			const data = await productApi.getProductByIdApi(id)
+			this.currentProduct = data
+			return data
+		} catch (err) {
 			console.error('Fetch product by ID error:', err)
-
-			let msg = 'Помилка при завантаженні товару'
-
-			if (err instanceof Error) {
-				try {
-					const clean = err.message.replace('Помилка завантаження продукту: ', '')
-					const parsed = JSON.parse(clean)
-					if (parsed?.message) msg = parsed.message
-					else msg = err.message
-				} catch {
-					msg = err.message
-				}
-			}
-
-			toast.error(msg)
+			toast.error('Помилка при завантаженні товару')
 			return null
 		} finally {
-			this.isLoading = false
+			runInAction(() => (this.isLoading = false))
 		}
 	}
 
-	async removePhoto(productId: string, photoUrl: string, token: string) {
+	async removePhoto(productId: string, photoUrl: string) {
 		this.isLoading = true
 		try {
-			const res = await fetch(`${BASE_URL}/products/${productId}/photos/${photoUrl}`, {
-				method: 'DELETE',
-				credentials: 'include',
-				headers: { Authorization: `Bearer ${token}` }
-			})
-
-			if (res.status === 401) {
-				toast.error('Сесія завершена. Увійди знову.')
-				window.location.href = '/uk/signin'
-				return false
-			}
-
-			if (!res.ok) {
-				const msg = await res.text()
-				throw new Error(`Помилка видалення фото: ${msg}`)
-			}
-
+			await productApi.deleteProductApi(`${productId}/photos/${photoUrl}`)
 			toast.success('Фото успішно видалено')
 			return true
-		} catch (err: unknown) {
+		} catch (err) {
 			console.error('Remove photo error:', err)
-
-			let msg = 'Помилка при видаленні фото'
-
-			if (err instanceof Error) {
-				try {
-					const clean = err.message.replace('Помилка видалення фото: ', '')
-					const parsed = JSON.parse(clean)
-					if (parsed?.message) msg = parsed.message
-					else msg = err.message
-				} catch {
-					msg = err.message
-				}
-			}
-
-			toast.error(msg)
+			toast.error('Помилка при видаленні фото')
 			return null
 		} finally {
-			this.isLoading = false
+			runInAction(() => (this.isLoading = false))
 		}
 	}
 
@@ -514,26 +259,11 @@ class ProductStore {
 		return this.isWholesale ? +(base * 0.93).toFixed(2) : +base.toFixed(2)
 	}
 
-	toggleVisible(id: string) {
-		this.products = this.products.map(p => {
-			if (p._id === id) {
-				return { ...p, isVisible: !p.isPublished }
-			}
-			return p
-		})
-	}
-
 	async toggleVisibility(product: Product) {
+		console.log('product', product, product.isPublished)
 		try {
-			const updated = await updateProductVisibility(
-				product._id,
-				!(product.isPublished ?? false)
-			)
-
-			runInAction(() => {
-				product.isPublished = updated.isPublished
-			})
-
+			const data = await productApi.updateProductVisibility(product._id, !product.isPublished)
+			runInAction(() => (product.isPublished = data.isPublished))
 			toast.success('Видимість товару оновлено')
 		} catch (error) {
 			console.error(error)
@@ -543,12 +273,8 @@ class ProductStore {
 
 	async changeStatus(product: Product, status: Product['status']) {
 		try {
-			const updated = await updateProductStatus(product._id, status)
-
-			runInAction(() => {
-				product.status = updated.status
-			})
-
+			const data = await productApi.updateProductStatus(product._id, status)
+			runInAction(() => (product.status = data.status))
 			toast.success('Статус товару оновлено')
 		} catch (error) {
 			console.error(error)
@@ -558,15 +284,13 @@ class ProductStore {
 
 	removeProduct = async (id: string) => {
 		try {
-			await deleteProduct(id)
-
+			await productApi.deleteProductApi(id)
 			runInAction(() => {
 				this.products = this.products.filter(p => p._id !== id)
 				this.adminProducts = this.adminProducts.filter(p => p._id !== id)
-				this.total = this.total - 1
-				this.totalAdmin = this.totalAdmin - 1
+				this.total -= 1
+				this.totalAdmin -= 1
 			})
-
 			toast.success('Товар видалено')
 		} catch (error) {
 			console.error(error)

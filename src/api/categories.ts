@@ -16,12 +16,8 @@ export async function getCategories() {
 		const res = await axios.get(`${BASE_URL}/categories`)
 
 		return res.data
-	} catch (err: unknown) {
-		const msg = isAxiosError(err)
-			? (err.response?.data?.message ?? 'Помилка отримання категорій')
-			: 'Помилка отримання категорій'
-		toast.error(msg)
-		throw err
+	} catch (e) {
+		console.error('Помилка отримання категорій:', e)
 	}
 }
 

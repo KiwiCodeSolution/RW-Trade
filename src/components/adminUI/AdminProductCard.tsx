@@ -23,6 +23,7 @@ const AdminProductCard = ({ type, product }: ProductCardProps) => {
 	const bgColor = type === 'partners' ? 'bg-other-2' : 'bg-other-1'
 	const [isShowSettings, setIsShowSettings] = useState(false)
 	const correctRating = product.rating ? parseFloat(Math.min(product.rating, 5).toFixed(1)) : 0
+	console.log('sku', product.sku, 'isPublished', product.isPublished)
 
 	return (
 		<article

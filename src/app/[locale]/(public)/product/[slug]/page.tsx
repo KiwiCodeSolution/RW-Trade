@@ -6,7 +6,27 @@ import Title from '@/components/userUI/baseComponents/Title'
 
 import { BASE_URL } from '@/utils/config'
 
-import { Locale, Product } from '@/types/baseTypes'
+import { LangField, Locale, Product } from '@/types/baseTypes'
+
+type Params = { locale: Locale; slug: string }
+
+export async function generateMetadata({ params: { slug, locale } }: { params: Params }) {
+	const productRes = await fetch(`${BASE_URL}/products/slug/${slug}`, {
+		next: { revalidate: 60 }
+	})
+	const product: Product = await productRes.json()
+
+	if (!product) return null
+	const seo = product.seo
+
+	if (!product || !seo) return null
+
+	return {
+		title: product.title[locale] ?? product.title.uk,
+		description: seo.description?.[locale] ?? seo.description?.uk,
+		keywords: (seo.keywords as LangField)[locale] ?? (seo.keywords as string[])
+	}
+}
 
 export default async function ProductPage({
 	params

@@ -1,19 +1,18 @@
-'use client'
+import { api } from '@/utils/axios'
 
-import { BASE_URL } from '@/utils/config'
+import { CreateProductDto, ItemsFilterParams } from '@/types/baseTypes'
 
-import { ItemsFilterParams } from '@/types/baseTypes'
-
-import { fetchWithAuth } from './fetchWithAuth'
 import { toast } from '@/lib/toast'
 
-import axios, { isAxiosError } from 'axios'
+import { isAxiosError } from 'axios'
 
-export async function getProducts() {
+// -------------------- PUBLIC --------------------
+
+// список продуктів (публічний)
+export const getProducts = async () => {
 	try {
-		const res = await axios.get(`${BASE_URL}/products`)
-
-		return res.data
+		const { data } = await api.get('/products')
+		return data
 	} catch (err: unknown) {
 		const msg = isAxiosError(err)
 			? (err.response?.data?.message ?? 'Помилка отримання продуктів')
@@ -23,14 +22,13 @@ export async function getProducts() {
 	}
 }
 
-export async function getProductsByCategoryId({ categoryId }: { categoryId: string }) {
+// отримати продукти по категорії (публічний)
+export const getProductsByCategoryId = async ({ categoryId }: { categoryId: string }) => {
 	try {
-		const res = await axios.get(`${BASE_URL}/products/by-category/${categoryId}`)
-		const products = res.data
+		const { data } = await api.get(`/products/by-category/${categoryId}`)
 
-		// Сортування по статусу
 		const statusOrder: Record<string, number> = { in_stock: 0, expect: 1, on_order: 2 }
-		const sortedProducts = products.sort(
+		const sortedProducts = data.sort(
 			(a: { status: string }, b: { status: string }) =>
 				(statusOrder[a.status] ?? 99) - (statusOrder[b.status] ?? 99)
 		)
@@ -45,130 +43,141 @@ export async function getProductsByCategoryId({ categoryId }: { categoryId: stri
 	}
 }
 
-export async function getExchangeRate() {
+// отримати курс (публічний)
+export const getExchangeRate = async () => {
 	try {
-		const rate = await axios.get(`${BASE_URL}/currency/latest`)
-		return rate
-	} catch (error) {
-		console.error('Failed to fetch exchange rate', error)
+		const { data } = await api.get('/currency/latest')
+		return data
+	} catch (err: unknown) {
+		toast.error('Не вдалося отримати курс')
+		throw err
 	}
 }
 
-export async function updateExchangeRate({ rate }: { rate: number }) {
+// знижки (публічний)
+export const fetchDiscountProductsApi = async () => {
 	try {
-		const res = await fetchWithAuth(`${BASE_URL}/currency`, {
-			method: 'POST',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ rate })
-		})
-		if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`)
-
-		return await res.json()
-	} catch (error) {
-		console.error('Failed to update exchange rate', error)
-		throw error
+		const { data } = await api.get('/products/discounts')
+		return data
+	} catch (err: unknown) {
+		toast.error('Не вдалося отримати знижки')
+		throw err
 	}
 }
-export async function fetchFilteredProducts(params: ItemsFilterParams) {
-	const {
-		lang,
-		categorySlug,
-		subCategorySlug,
-		priceRange,
-		country,
-		sort,
-		limit = 16,
-		page = 1
-	} = params
 
-	const q = new URLSearchParams()
-	if (lang) q.append('lang', lang)
-	if (categorySlug && categorySlug !== 'all') q.append('categorySlug', categorySlug)
-	if (subCategorySlug && subCategorySlug !== 'all') q.append('subCategorySlug', subCategorySlug)
-	if (priceRange?.length === 2) q.append('priceRange', `${priceRange[0]},${priceRange[1]}`)
-	if (country?.length) q.append('country', country.join(','))
-	if (sort) q.append('sort', sort)
-	q.append('limit', String(limit))
-	q.append('page', String(page))
-
-	console.log('q', q)
-	const url = `${BASE_URL}/products/filter?${q.toString()}`
-	const { data } = await axios.get(url)
+// фільтрація (публічна)
+export const fetchFilteredProducts = async (params: ItemsFilterParams) => {
+	const { data } = await api.get('/products/filter', { params })
 	return data
 }
 
-export async function fetchFilteredAdminProducts(params: ItemsFilterParams) {
-	const {
-		lang,
-		categorySlug,
-		subCategorySlug,
-		priceRange,
-		country,
-		sort,
-		limit = 16,
-		page = 1
-	} = params
+// -------------------- ADMIN / PRIVATE --------------------
 
-	const q = new URLSearchParams()
+// створення продукту
+// export const createProductApi = async (dto: CreateProductDto, files?: File[]) => {
+// 	const form = new FormData()
+// 	Object.entries(dto).forEach(([key, value]) => {
+// 		if (key === 'images') return
+// 		if (typeof value === 'object') form.append(key, JSON.stringify(value))
+// 		else if (value !== undefined && value !== null) form.append(key, String(value))
+// 	})
+// 	files?.forEach(f => form.append('images', f))
 
-	if (lang) q.append('lang', lang)
-	if (categorySlug && categorySlug !== 'all') q.append('categorySlug', categorySlug)
-	if (subCategorySlug && subCategorySlug !== 'all') q.append('subCategorySlug', subCategorySlug)
-	if (priceRange?.length === 2) q.append('priceRange', `${priceRange[0]},${priceRange[1]}`)
-	if (country?.length) q.append('country', country.join(','))
-	if (sort) q.append('sort', sort)
-	q.append('limit', String(limit))
-	q.append('page', String(page))
+// 	const { data } = await api.post('/products', form)
+// 	return data
+// }
 
-	const url = `${BASE_URL}/products/filter/admin?${q.toString()}`
-	const res = await fetchWithAuth(url, {
-		method: 'GET'
+export const createProductApi = async (dto: CreateProductDto, files?: File[]) => {
+	const form = new FormData()
+
+	Object.entries(dto).forEach(([key, value]) => {
+		if (key === 'images') {
+			form.append('images', JSON.stringify(value ?? []))
+			return
+		}
+
+		if (typeof value === 'object') form.append(key, JSON.stringify(value))
+		else if (value !== undefined && value !== null) form.append(key, String(value))
 	})
-	const data = await res.json()
+
+	files?.forEach(f => form.append('images', f))
+
+	const { data } = await api.post('/products', form)
+	return data
+}
+
+// оновлення продукту
+// export const updateProductApi = async (id: string, dto: CreateProductDto, files?: File[]) => {
+// 	const form = new FormData()
+// 	Object.entries(dto).forEach(([key, value]) => {
+// 		if (['_id', 'slugUk', 'slugEn', 'createdAt', 'updatedAt', '__v', 'images'].includes(key))
+// 			return
+// 		if (typeof value === 'object') form.append(key, JSON.stringify(value))
+// 		else if (value !== undefined && value !== null) form.append(key, String(value))
+// 	})
+// 	files?.forEach(f => form.append('images', f))
+
+// 	const { data } = await api.patch(`/products/${id}`, form)
+// 	return data
+// }
+
+export const updateProductApi = async (id: string, dto: CreateProductDto, files?: File[]) => {
+	const form = new FormData()
+
+	Object.entries(dto).forEach(([key, value]) => {
+		// пропускаємо системні поля, але НЕ images
+		if (['_id', 'slugUk', 'slugEn', 'createdAt', 'updatedAt', '__v'].includes(key)) return
+
+		if (key === 'images') {
+			// ✅ надсилаємо масив URL/плейсхолдерів як JSON
+			form.append('images', JSON.stringify(value ?? []))
+			return
+		}
+
+		if (typeof value === 'object') form.append(key, JSON.stringify(value))
+		else if (value !== undefined && value !== null) form.append(key, String(value))
+	})
+
+	// ✅ файли лишаємо як є (те саме поле images для multer)
+	files?.forEach(f => form.append('images', f))
+
+	const { data } = await api.patch(`/products/${id}`, form)
+	return data
+}
+
+// отримати продукт за id
+export const getProductByIdApi = async (id: string) => {
+	const { data } = await api.get(`/products/${id}`)
+	return data
+}
+
+// видалення
+export const deleteProductApi = async (id: string) => {
+	const { data } = await api.delete(`/products/${id}`)
+	return data
+}
+
+// зміна видимості
+export const updateProductVisibility = async (id: string, isPublished: boolean) => {
+	const { data } = await api.patch(`/products/${id}/visibility`, { isPublished })
 
 	return data
 }
 
-export async function updateProductVisibility(id: string, isPublished: boolean) {
-	try {
-		const res = await fetchWithAuth(`${BASE_URL}/products/${id}/visibility`, {
-			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ isPublished })
-		})
-
-		return await res.json()
-	} catch {
-		toast.error('Не вдалося змінити видимість товару')
-		throw new Error()
-	}
+// зміна статусу
+export const updateProductStatus = async (id: string, status: string) => {
+	const { data } = await api.patch(`/products/${id}/status`, { status })
+	return data
 }
 
-export async function updateProductStatus(
-	id: string,
-	status: 'in_stock' | 'expected' | 'on_order'
-) {
-	try {
-		const res = await fetchWithAuth(`${BASE_URL}/products/${id}/status`, {
-			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ status })
-		})
-
-		return await res.json()
-	} catch {
-		toast.error('Не вдалося змінити статус товару')
-		throw new Error()
-	}
+// редагування курсу (для адміна, через інтерсептор)
+export const updateExchangeRate = async (body: { rate: number }) => {
+	const { data } = await api.patch('/currency', body)
+	return data
 }
 
-export async function deleteProduct(id: string) {
-	try {
-		await fetchWithAuth(`${BASE_URL}/products/${id}`, {
-			method: 'DELETE'
-		})
-	} catch {
-		toast.error('Не вдалося видалити товар')
-		throw new Error()
-	}
+// фільтрація для адміна (тільки через інтерсептор, якщо треба)
+export const fetchFilteredAdminProducts = async (params: ItemsFilterParams) => {
+	const { data } = await api.get('/products/filter/admin', { params })
+	return data
 }

@@ -59,6 +59,8 @@ export type Product = CreateProductDto & {
 	slugUk: string
 	slugEn: string
 	rating: number
+	ratingCount: number
+	ratingSum: number
 	status: ProductStatus
 	subCategorySlug: string
 	categorySlug: string
