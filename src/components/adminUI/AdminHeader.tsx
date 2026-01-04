@@ -135,9 +135,9 @@ const AdminHeader = observer(() => {
 				</div>
 
 				<div className='flex flex-col gap-2'>
-					<TitleNavAdmin text='Налаштування' />
+					<TitleNavAdmin text='Інше' />
 
-					<AdminLink href='/manage-panel/profile' title='Профілі користувачів' />
+					<AdminLink href='/manage-panel/profile' title='Налаштування' />
 				</div>
 
 				<BtnSolid

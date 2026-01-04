@@ -66,7 +66,7 @@ export default function CurrencyDatePicker() {
 	}, [])
 
 	return (
-		<div className='flex flex-col items-center gap-4 p-6 bg-gray-50 rounded-2xl border-[1px] border-sc-1 settings-datepicker'>
+		<div className='flex flex-col items-center gap-4 p-4 bg-gray-50 rounded-2xl border-[1px] border-sc-1 settings-datepicker'>
 			<DayPicker
 				mode='single'
 				locale={uk}

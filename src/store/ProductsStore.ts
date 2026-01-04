@@ -99,7 +99,7 @@ class ProductStore {
 	async fetchProducts(params?: Partial<ItemsFilterParams & { discountOnly?: boolean }>) {
 		this.isLoading = true
 		try {
-			const { priceRange, country, ...rest } = params || {}
+			const { priceRange, countries, ...rest } = params || {}
 
 			// ⚡ Формуємо API-параметри
 			const apiParams: Partial<ItemsFilterParams & { discountOnly?: boolean }> = {
@@ -111,12 +111,11 @@ class ProductStore {
 				page: 1,
 				...rest,
 				priceRange, // передаємо відразу, як прийшло
-				country:
-					typeof country === 'string'
-						? [country]
-						: Array.isArray(country) && country.length === 1
-							? country
-							: undefined
+				countries: countries
+					? Array.isArray(countries)
+						? countries.join(',') // ✅ рядок для бекенду
+						: countries
+					: undefined
 			}
 
 			const data = await productApi.fetchFilteredProducts(apiParams)

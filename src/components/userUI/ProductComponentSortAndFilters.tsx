@@ -73,43 +73,7 @@ const ProductComponentSortAndFilters = observer(
 		const gridLimit = hasFiltersCard ? userLimit - 1 : userLimit
 		const fetchLimit = gridLimit
 
-		console.log('query.limit', query.limit)
-		// реально фетчимо стільки, скільки вибрав користувач
-		// 🔹 Завантаження продуктів
-		// useEffect(() => {
-		// 	productStore.fetchProducts({
-		// 		lang: locale,
-		// 		categorySlug: categorySlug || 'all',
-		// 		subCategorySlug: subCategorySlug || 'all',
-		// 		sort,
-		// 		page: Number(page),
-		// 		limit: Number(query.limit),
-		// 		discountOnly: isDiscountMode ?? false,
-
-		// 		// 👇 тільки якщо користувач реально вибрав
-		// 		country: query.countries ? query.countries.split(',') : undefined,
-
-		// 		priceRange:
-		// 			query.minPrice && query.maxPrice
-		// 				? [Number(query.minPrice), Number(query.maxPrice)]
-		// 				: undefined
-		// 	})
-		// }, [
-		// 	locale,
-		// 	sort,
-		// 	page,
-		// 	query.limit,
-		// 	query.countries,
-		// 	query.minPrice,
-		// 	query.maxPrice,
-		// 	categorySlug,
-		// 	subCategorySlug,
-		// 	isDiscountMode
-		// ])
-
 		useEffect(() => {
-			const min = query.minPrice ? Number(query.minPrice) : minPrice
-			const max = query.maxPrice ? Number(query.maxPrice) : maxPrice
 			productStore.fetchProducts({
 				lang: locale,
 				categorySlug: categorySlug || 'all',
@@ -118,7 +82,7 @@ const ProductComponentSortAndFilters = observer(
 				page: Number(page),
 				limit: Number(query.limit),
 				discountOnly: isDiscountMode ?? false,
-				country: query.countries ? query.countries.split(',') : undefined,
+				countries: query.countries ? query.countries.split(',') : undefined,
 				priceRange:
 					query.minPrice && query.maxPrice
 						? [Number(query.minPrice), Number(query.maxPrice)]

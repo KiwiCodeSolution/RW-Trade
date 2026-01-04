@@ -33,7 +33,6 @@ export default function Filters({
 		maxPrice: String(maxPriceDefault)
 	})
 
-	console.log('Filters', minPriceDefault, maxPriceDefault)
 	// Локальний стан ініціалізується разово через lazy-init
 	const [selectedCountries, setSelectedCountries] = useState<string[]>(() =>
 		query.countries ? query.countries.split(',') : []

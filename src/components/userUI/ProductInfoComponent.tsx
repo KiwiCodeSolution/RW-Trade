@@ -67,7 +67,7 @@ const ProductInfoComponent = observer(
 				<p
 					className={`${typePage === 'admin' ? 'text-sm' : type === 'partners' ? 'text-base' : 'text-sm xl:text-xl'} font-medium`}
 				>
-					{locale === 'en' ? 'Price:' : 'Ціна:'} {priceLocal}₴
+					{locale === 'en' ? 'Price:' : 'Ціна:'} {priceLocal} ₴
 				</p>
 				<AddCartBtn product={product} typePage={typePage} type={type} />
 			</div>
@@ -84,7 +84,7 @@ const ProductInfoComponent = observer(
 						<p
 							className={`${typePage === 'admin' ? 'text-sm' : 'text-sm xl:text-base'} font-medium`}
 						>
-							{locale === 'en' ? 'Price:' : 'Ціна:'} {priceLocal}₴
+							{locale === 'en' ? 'Price:' : 'Ціна:'} {priceLocal} ₴
 						</p>
 					)}
 				</div>
