@@ -27,8 +27,8 @@ export async function generateMetadata({ params: { slug, locale } }: { params: P
 	}
 }
 
-const OneNews = async ({ params }: { params: Promise<Params> }) => {
-	const { slug, locale } = await params
+const OneNews = async ({ params }: { params: Params }) => {
+	const { slug, locale } = params
 
 	const t = await getTranslations({ locale })
 	const titles = [
