@@ -27,9 +27,7 @@ export async function generateMetadata({ params: { slug, locale } }: { params: P
 	}
 }
 
-type PageProps = { params: { slug: string; locale: Locale } }
-
-export default async function OneNews(params: Promise<{ slug: string; locale: Locale }>) {
+export default async function OneNews({ params }: { params: Promise<Params> }) {
 	const { slug, locale } = await params
 
 	const t = await getTranslations({ locale })
@@ -40,7 +38,6 @@ export default async function OneNews(params: Promise<{ slug: string; locale: Lo
 	]
 
 	const res = await fetch(`${BASE_URL}/news/slug/${slug}`, { cache: 'no-cache' })
-
 	const post = (await res.json()) as NewsArticle
 
 	if (!post) return null
