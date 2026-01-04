@@ -7,7 +7,6 @@ import { productStore } from '@/store/ProductsStore'
 import ProductForm from './ProductForm'
 
 import { observer } from 'mobx-react-lite'
-import { getSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
 const ProductByID = observer(({ id }: { id: string }) => {
@@ -16,9 +15,8 @@ const ProductByID = observer(({ id }: { id: string }) => {
 	useEffect(() => {
 		const loadProduct = async () => {
 			if (!id) return
-			const session = await getSession()
-			const token = session?.user?.accessToken || ''
-			const data = await productStore.fetchProductById(id, token)
+
+			const data = await productStore.fetchProductById(id)
 			if (data) setProduct(data)
 		}
 		loadProduct()

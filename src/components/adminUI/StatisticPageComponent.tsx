@@ -3,17 +3,15 @@
 import { statisticsStore } from '@/store/StatStore'
 
 import StatsPopularCategories from './StatsPopularCategories'
-import { useRouter } from '@/i18n/navigation'
 
 import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 const StatisticPageComponent = observer(() => {
 	const { stats, fetchStats } = statisticsStore
-	const router = useRouter()
 
 	useEffect(() => {
-		if (!stats) fetchStats(router)
+		if (!stats) fetchStats()
 	}, [])
 
 	console.log(stats)

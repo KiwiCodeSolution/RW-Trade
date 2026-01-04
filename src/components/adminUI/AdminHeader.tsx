@@ -8,7 +8,7 @@ import BtnSolid from '../commonUI/BtnSolid'
 import Count from './Count'
 
 import { observer } from 'mobx-react-lite'
-import { signOut, useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
@@ -42,18 +42,14 @@ const TitleNavAdmin = ({ text }: { text: string }) => {
 }
 
 const AdminHeader = observer(() => {
-	const { data: session } = useSession()
-
 	useEffect(() => {
-		if (!session?.user?.accessToken) return
-
 		const init = async () => {
 			await notificationsStore.fetchNotifications()
 			await feedbackStore.fetchMessages()
 		}
 
 		init()
-	}, [session?.user?.accessToken])
+	}, [])
 
 	const handleLogout = async () => {
 		await signOut({

@@ -1,55 +1,51 @@
-import { BASE_URL } from '@/utils/config'
+import { api } from '@/utils/axios'
 
 import { Order, OrderStatus, OrdersResponse } from '@/types/baseTypes'
 
-import { fetchWithAuth } from './fetchWithAuth'
 import { OrderSort } from '@/lib/sortOptions'
 
+// -------------------- GET ORDERS --------------------
 type GetOrdersParams = {
 	page?: number
 	limit?: number
 	status?: OrderStatus
 	sort?: OrderSort
 }
+
 export async function getOrders(params: GetOrdersParams = {}): Promise<OrdersResponse> {
 	const query = new URLSearchParams()
 	if (params.page) query.set('page', String(params.page))
 	if (params.limit) query.set('limit', String(params.limit))
 	if (params.status) query.set('status', params.status)
-	if (params.sort) query.set('sort', params.sort) // прямо OrderSort
+	if (params.sort) query.set('sort', params.sort)
 
-	const res = await fetchWithAuth(`${BASE_URL}/orders?${query.toString()}`, {
-		cache: 'no-store'
-	})
-
-	if (!res.ok) throw new Error('Помилка отримання ордерів')
-	return await res.json()
+	try {
+		const { data } = await api.get<OrdersResponse>(`/orders?${query.toString()}`)
+		return data
+	} catch (err) {
+		console.error('Помилка отримання ордерів', err)
+		throw err
+	}
 }
 
-// Видалити замовлення
-export async function deleteOrder(id: string) {
+// -------------------- DELETE ORDER --------------------
+export async function deleteOrder(id: string): Promise<boolean> {
 	try {
-		const res = await fetchWithAuth(`${BASE_URL}/orders/${id}`, { method: 'DELETE' })
-		if (!res.ok) throw new Error('Помилка видалення ордеру')
+		await api.delete(`/orders/${id}`)
 		return true
 	} catch (err) {
-		console.error(err)
+		console.error('Помилка видалення ордеру', err)
 		return false
 	}
 }
 
-// Оновити статус замовлення
-export async function patchOrderStatus(id: string, status: OrderStatus) {
+// -------------------- PATCH ORDER STATUS --------------------
+export async function patchOrderStatus(id: string, status: OrderStatus): Promise<Order | null> {
 	try {
-		const res = await fetchWithAuth(`${BASE_URL}/orders/${id}/status`, {
-			method: 'PATCH',
-			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ status })
-		})
-		if (!res.ok) throw new Error('Помилка оновлення статусу')
-		return (await res.json()) as Order
+		const { data } = await api.patch<Order>(`/orders/${id}/status`, { status })
+		return data
 	} catch (err) {
-		console.error(err)
+		console.error('Помилка оновлення статусу ордеру', err)
 		return null
 	}
 }

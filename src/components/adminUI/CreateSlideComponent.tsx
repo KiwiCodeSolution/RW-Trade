@@ -8,7 +8,6 @@ import { BaseInput } from './BaseInput'
 import SingleImageUpload from './formsComponents/SingleImageUpload'
 import { toast } from '@/lib/toast'
 
-import { useSession } from 'next-auth/react'
 import { useForm } from 'react-hook-form'
 
 type Props = {
@@ -40,16 +39,8 @@ const BannerForm = ({ banner, type, resultFnc }: Props) => {
 
 	const image = watch('image')
 
-	const { data: session } = useSession()
-	const token = session?.user?.accessToken
-
 	const onSubmit = async (data: BannerFormValues) => {
 		try {
-			if (!token) {
-				toast.error('Ви не авторизовані')
-				return
-			}
-
 			if (banner?._id) {
 				// редагування існуючого банера — _id і isPublished гарантовані
 				const updatedBanner: Banner & { imageFile?: File | null } = {

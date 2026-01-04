@@ -49,6 +49,7 @@ export default function Filters({
 			query.maxPrice ? Number(query.maxPrice) : maxPriceDefault
 		]
 
+		// eslint-disable-next-line react-hooks/set-state-in-effect
 		setPriceRange(prev =>
 			prev[0] === newRange[0] && prev[1] === newRange[1] ? prev : newRange
 		)
