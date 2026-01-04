@@ -29,8 +29,8 @@ export async function generateMetadata({ params: { slug, locale } }: { params: P
 
 type PageProps = { params: { slug: string; locale: Locale } }
 
-export default async function OneNews({ params }: PageProps) {
-	const { slug, locale } = params
+export default async function OneNews(params: Promise<{ slug: string; locale: Locale }>) {
+	const { slug, locale } = await params
 
 	const t = await getTranslations({ locale })
 
