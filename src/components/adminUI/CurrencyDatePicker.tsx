@@ -1,6 +1,6 @@
 'use client'
 
-import { BASE_URL } from '@/utils/config'
+import { api } from '@/utils/axios'
 
 import { uk } from 'date-fns/locale'
 import { useEffect, useState } from 'react'
@@ -16,6 +16,7 @@ type CurrencyRecord = {
 
 export default function CurrencyDatePicker() {
 	const [selected, setSelected] = useState<Date | null>(null)
+	const [highlightedDays, setHighlightedDays] = useState<Date[]>([])
 	const [records, setRecords] = useState<CurrencyRecord[]>([])
 	const [loading, setLoading] = useState(false)
 
@@ -32,12 +33,13 @@ export default function CurrencyDatePicker() {
 			String(day.getDate()).padStart(2, '0')
 
 		try {
-			const res = await fetch(`${BASE_URL}/currency/get-all/by-date?date=${iso}&all=true`)
-			if (!res.ok) throw new Error('Bad response')
-			const data = await res.json()
+			const { data } = await api.get<CurrencyRecord[]>(`/currency/get-all/by-date`, {
+				params: { date: iso, all: true }
+			})
+
 			setRecords(Array.isArray(data) ? data : [])
 		} catch (err) {
-			console.error(err)
+			console.error('Failed to fetch rates:', err)
 			setRecords([])
 		} finally {
 			setLoading(false)
@@ -49,8 +51,22 @@ export default function CurrencyDatePicker() {
 		fetchRates(today)
 	}, [])
 
+	useEffect(() => {
+		const loadDates = async () => {
+			try {
+				const { data } = await api.get<string[]>('/currency/dates-with-records')
+
+				setHighlightedDays(data.map(d => new Date(d)))
+			} catch (e) {
+				console.error('Не вдалося завантажити дні з курсами', e)
+			}
+		}
+
+		loadDates()
+	}, [])
+
 	return (
-		<div className='flex flex-col items-center gap-4 p-6 bg-gray-50 rounded-2xl border-[1px] border-sc-1'>
+		<div className='flex flex-col items-center gap-4 p-6 bg-gray-50 rounded-2xl border-[1px] border-sc-1 settings-datepicker'>
 			<DayPicker
 				mode='single'
 				locale={uk}
@@ -64,11 +80,15 @@ export default function CurrencyDatePicker() {
 					head_row: 'flex justify-between px-2 text-gray-500',
 					row: 'flex justify-between',
 					cell: 'text-center w-10 h-10 flex items-center justify-center',
-					day: 'cursor-pointer rounded-full hover:bg-emerald-100 transition'
+					day: 'cursor-pointer rounded-full hover:bg-gr-10 transition'
+				}}
+				modifiers={{
+					hasRate: highlightedDays // ⚡ тут ми передаємо дати з підсвіткою
 				}}
 				modifiersClassNames={{
-					selected: 'bg-emerald-500 text-white',
-					today: 'border border-emerald-500'
+					selected: 'bg-primary text-white',
+					today: 'border border-nav',
+					hasRate: 'bg-bronze text-white'
 				}}
 			/>
 

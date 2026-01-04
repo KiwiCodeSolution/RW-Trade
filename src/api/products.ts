@@ -66,8 +66,17 @@ export const fetchDiscountProductsApi = async () => {
 }
 
 // фільтрація (публічна)
-export const fetchFilteredProducts = async (params: ItemsFilterParams) => {
-	const { data } = await api.get('/products/filter', { params })
+export const fetchFilteredProducts = async (
+	params: ItemsFilterParams & { priceRange?: [number, number] }
+) => {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	const query: any = { ...params }
+
+	if (params.priceRange?.length === 2) {
+		query.priceRange = `${params.priceRange[0]},${params.priceRange[1]}` // рядок для бекенду
+	}
+
+	const { data } = await api.get('/products/filter', { params: query })
 	return data
 }
 
@@ -141,7 +150,7 @@ export const updateProductStatus = async (id: string, status: string) => {
 
 // редагування курсу (для адміна, через інтерсептор)
 export const updateExchangeRate = async (body: { rate: number }) => {
-	const { data } = await api.patch('/currency', body)
+	const { data } = await api.post('/currency', body)
 	return data
 }
 

@@ -4,14 +4,16 @@ import { Locale, NewsArticle } from '@/types/baseTypes'
 
 import BaseImageItem from './baseComponents/BaseImageItem'
 
+import Image from 'next/image'
 import Link from 'next/link'
 
 type NewsCardProps = {
 	article: NewsArticle
 	locale: Locale
+	typePage?: 'client' | 'admin'
 }
 
-const NewsCard = ({ article, locale }: NewsCardProps) => {
+const NewsCard = ({ article, locale, typePage }: NewsCardProps) => {
 	const slug = locale === 'uk' ? article.slugUk : article.slugEn
 	const type = article.isNews
 		? locale === 'uk'
@@ -24,8 +26,20 @@ const NewsCard = ({ article, locale }: NewsCardProps) => {
 	return (
 		<Link
 			href={`/news/${slug}`}
-			className={`mx-auto w-full hover:shadow-xl rounded-2xl overflow-hidden duration-300 transition-all`}
+			className={`mx-auto w-full hover:shadow-xl rounded-2xl overflow-hidden duration-300 transition-all relative`}
 		>
+			{!article.isPublished && typePage === 'admin' && (
+				<div className='flex justify-center absolute top-0 left-0 w-full h-full bg-black/60 z-[11]'>
+					<Image
+						src='/images/hide.png'
+						alt=''
+						width={72}
+						height={72}
+						className='object-contain'
+					/>
+				</div>
+			)}
+
 			<div
 				className={`bg-primary h-[132px] w-full rounded-2xl flex items-center gap-x-2 lg:gap-4 p-2 lg:p-4 relative`}
 			>

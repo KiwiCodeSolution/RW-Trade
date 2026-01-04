@@ -10,7 +10,7 @@ import BtnSolid from '../commonUI/BtnSolid'
 
 import MultiRangeSlider from './MultiRangeSlider'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 type FiltersProps = {
 	countriesList: string[]
@@ -33,6 +33,7 @@ export default function Filters({
 		maxPrice: String(maxPriceDefault)
 	})
 
+	console.log('Filters', minPriceDefault, maxPriceDefault)
 	// Локальний стан ініціалізується разово через lazy-init
 	const [selectedCountries, setSelectedCountries] = useState<string[]>(() =>
 		query.countries ? query.countries.split(',') : []
@@ -42,6 +43,16 @@ export default function Filters({
 		query.maxPrice ? Number(query.maxPrice) : maxPriceDefault
 	])
 
+	useEffect(() => {
+		const newRange: [number, number] = [
+			query.minPrice ? Number(query.minPrice) : minPriceDefault,
+			query.maxPrice ? Number(query.maxPrice) : maxPriceDefault
+		]
+
+		setPriceRange(prev =>
+			prev[0] === newRange[0] && prev[1] === newRange[1] ? prev : newRange
+		)
+	}, [minPriceDefault, maxPriceDefault, query.minPrice, query.maxPrice])
 	const toggleCountry = (country: string) => {
 		setSelectedCountries(prev =>
 			prev.includes(country) ? prev.filter(c => c !== country) : [...prev, country]

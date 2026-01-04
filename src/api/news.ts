@@ -1,193 +1,152 @@
 // api/news.ts
-import { BASE_URL } from '@/utils/config'
+import { api } from '@/utils/axios'
 
 import { CreateNewsDto, NewsArticle } from '@/types/baseTypes'
 
 import { NewsSort } from '@/lib/sortOptions'
 import { toast } from '@/lib/toast'
 
-// Створення новини з файлами
-export async function createNewsArticle({
-	data,
-	token,
-	files
-}: {
-	data: CreateNewsDto
-	token: string
-	files?: File[]
-}): Promise<NewsArticle> {
-	if (!token) {
-		toast.error('Ви не авторизовані')
-		throw new Error('Ви не авторизовані')
-	}
+import { AxiosError } from 'axios'
 
+// -------------------- PUBLIC --------------------
+
+// Отримання новин з пагінацією
+export const getNewsWithPagination = async (params?: {
+	page?: number
+	limit?: number
+	sort?: NewsSort
+}) => {
 	try {
-		const formData = new FormData()
-
-		// Додаємо всі звичайні поля
-		Object.entries(data).forEach(([key, value]) => {
-			if (key === 'image') return
-
-			if (typeof value === 'object' && value !== null) {
-				formData.append(key, JSON.stringify(value))
-				return
-			}
-
-			if (typeof value === 'boolean') {
-				formData.append(key, JSON.stringify(value)) // ✅ boolean як JSON
-				return
-			}
-
-			if (value !== undefined && value !== null) {
-				formData.append(key, value.toString())
-			}
+		const q = new URLSearchParams({
+			page: String(params?.page ?? 1),
+			limit: String(params?.limit ?? 16),
+			sort: String(params?.sort ?? 'date_desc')
 		})
-
-		// Додаємо файли окремо
-		;(files ?? []).forEach(file => formData.append('image', file))
-
-		const res = await fetch(`${BASE_URL}/news`, {
-			method: 'POST',
-			body: formData,
-			headers: { Authorization: `Bearer ${token}` },
-			credentials: 'include'
-		})
-
-		if (!res.ok) {
-			const msg = await res.text()
-			throw new Error(`Помилка створення новини: ${msg}`)
-		}
-
-		return res.json()
+		const { data } = await api.get<{ items: NewsArticle[]; totalItems: number }>(
+			`/news?${q.toString()}`
+		)
+		console.log('data', data)
+		return data
 	} catch (err: unknown) {
-		console.error(err)
-		toast.error('Не вдалося створити новину')
+		if (err instanceof AxiosError)
+			toast.error(err.response?.data?.message ?? 'Не вдалося отримати новини')
+		else if (err instanceof Error) toast.error(err.message)
+		else toast.error('Не вдалося отримати новини')
 		throw err
 	}
 }
 
-export async function updateNewsArticle({
+export const getAllNewsAdmin = async (params?: {
+	page?: number
+	limit?: number
+	sort?: NewsSort
+}) => {
+	console.log('params', params)
+	const res = await api.get('/news/admin', {
+		params: {
+			page: params?.page ?? 1,
+			limit: params?.limit ?? 20,
+			sort: String(params?.sort ?? 'date_desc')
+		}
+	})
+
+	return res.data
+}
+// Отримати новину по id
+export const getNewsById = async (id: string) => {
+	try {
+		const { data } = await api.get<NewsArticle>(`/news/${id}`)
+		return data
+	} catch (err: unknown) {
+		if (typeof window !== 'undefined') {
+			if (err instanceof AxiosError)
+				toast.error(err.response?.data?.message ?? 'Не вдалося отримати новину')
+			else if (err instanceof Error) toast.error(err.message)
+			else toast.error('Не вдалося отримати новину')
+		}
+		throw err
+	}
+}
+
+// Створення новини
+export const createNewsArticle = async ({
+	data,
+	files
+}: {
+	data: CreateNewsDto
+	files?: File[]
+}) => {
+	try {
+		const formData = new FormData()
+		Object.entries(data).forEach(([key, value]) => {
+			if (key === 'image') return
+			if (typeof value === 'object' && value !== null)
+				formData.append(key, JSON.stringify(value))
+			else if (typeof value === 'boolean') formData.append(key, JSON.stringify(value))
+			else if (value !== undefined && value !== null) formData.append(key, String(value))
+		})
+		files?.forEach(file => formData.append('image', file))
+
+		const { data: res } = await api.post<NewsArticle>('/news', formData)
+		toast.success('Новину успішно створено')
+		return res
+	} catch (err: unknown) {
+		if (err instanceof AxiosError)
+			toast.error(err.response?.data?.message ?? 'Не вдалося створити новину')
+		else if (err instanceof Error) toast.error(err.message)
+		else toast.error('Не вдалося створити новину')
+		throw err
+	}
+}
+
+// Оновлення новини
+export const updateNewsArticle = async ({
 	id,
 	data,
-	token,
 	files
 }: {
 	id: string
 	data: CreateNewsDto
-	token: string
 	files?: File[]
-}): Promise<NewsArticle> {
-	if (!token) {
-		toast.error('Ви не авторизовані')
-		throw new Error('Ви не авторизовані')
-	}
-
+}) => {
 	try {
+		let res
 		const hasFiles = (files ?? []).length > 0
-
-		let res: Response
-
 		if (hasFiles) {
-			// Якщо є файли — multipart/form-data
 			const formData = new FormData()
-
 			Object.entries(data).forEach(([key, value]) => {
-				// не додаємо undefined/null
 				if (value === undefined || value === null) return
-
-				// для об'єктів — stringify
-				if (typeof value === 'object') {
-					formData.append(key, JSON.stringify(value))
-					return
-				}
-
-				// boolean -> stringified JSON (сервер має парсити)
-				if (typeof value === 'boolean') {
-					formData.append(key, JSON.stringify(value))
-					return
-				}
-
-				formData.append(key, String(value))
+				if (typeof value === 'object') formData.append(key, JSON.stringify(value))
+				else if (typeof value === 'boolean') formData.append(key, JSON.stringify(value))
+				else formData.append(key, String(value))
 			})
-
 			files!.forEach(file => formData.append('image', file))
-
-			res = await fetch(`${BASE_URL}/news/${id}`, {
-				method: 'PATCH',
-				body: formData,
-				headers: { Authorization: `Bearer ${token}` },
-				credentials: 'include'
-			})
+			res = await api.patch<NewsArticle>(`/news/${id}`, formData)
 		} else {
-			// Якщо файлів нема — надсилаємо чистий JSON
-			res = await fetch(`${BASE_URL}/news/${id}`, {
-				method: 'PATCH',
-				body: JSON.stringify(data),
-				headers: {
-					'Content-Type': 'application/json',
-					Authorization: `Bearer ${token}`
-				},
-				credentials: 'include'
-			})
+			res = await api.patch<NewsArticle>(`/news/${id}`, data)
 		}
-
-		if (!res.ok) {
-			const msg = await res.text()
-			throw new Error(`Помилка оновлення новини: ${msg}`)
-		}
-		console.log('res', res)
-		return res.json()
+		toast.success('Новину успішно оновлено')
+		return res.data
 	} catch (err: unknown) {
-		console.error(err)
-		toast.error('Не вдалося оновити новину')
+		if (err instanceof AxiosError)
+			toast.error(err.response?.data?.message ?? 'Не вдалося оновити новину')
+		else if (err instanceof Error) toast.error(err.message)
+		else toast.error('Не вдалося оновити новину')
 		throw err
 	}
 }
 
-// Отримання новин з пагінацією
-export async function getNewsWithPagination(params?: {
-	page?: number
-	limit?: number
-	sort?: NewsSort
-}) {
-	const q = new URLSearchParams({
-		page: String(params?.page ?? 1),
-		limit: String(params?.limit ?? 16),
-		sort: String(params?.sort ?? 'date_desc')
-	})
-
-	const res = await fetch(`${BASE_URL}/news?${q.toString()}`)
-
-	return res.json()
-}
-
-export async function getNewsById(id: string, token: string) {
-	if (!token) {
-		toast.error('Ви не авторизовані')
-		throw new Error('Ви не авторизовані')
+// Видалення новини
+export const deleteNews = async (id: string) => {
+	try {
+		const { data } = await api.delete(`/news/${id}`)
+		toast.success('Новину успішно видалено')
+		return data
+	} catch (err: unknown) {
+		if (err instanceof AxiosError)
+			toast.error(err.response?.data?.message ?? 'Не вдалося видалити новину')
+		else if (err instanceof Error) toast.error(err.message)
+		else toast.error('Не вдалося видалити новину')
+		throw err
 	}
-	const res = await fetch(`${BASE_URL}/news/${id}`, {
-		headers: {
-			Authorization: `Bearer ${token ?? ''}`,
-			'Content-Type': 'application/json'
-		}
-	})
-
-	return res.json()
-}
-
-export async function deleteNews(id: string, token: string) {
-	if (!token) {
-		toast.error('Ви не авторизовані')
-		throw new Error('Ви не авторизовані')
-	}
-	const res = await fetch(`${BASE_URL}/news/${id}`, {
-		method: 'DELETE',
-		headers: {
-			Authorization: `Bearer ${token ?? ''}`,
-			'Content-Type': 'application/json'
-		}
-	})
-
-	return res.json()
 }

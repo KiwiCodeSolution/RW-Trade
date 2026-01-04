@@ -324,3 +324,7 @@
 	border: none;
 	cursor: pointer;
 }
+
+.settings-datepicker .rdp-chevron {
+	fill: var(--color-link-bronze) !important;
+}

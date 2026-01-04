@@ -22,18 +22,15 @@ import { Link } from '@/i18n/navigation'
 import { NewsSort, newsSortOptions } from '@/lib/sortOptions'
 
 import { observer } from 'mobx-react-lite'
-import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 
 const NewsSortAndPaginationComponent = observer(({ locale }: { locale: Locale }) => {
-	const { news, total, isLoading, deleteNews } = newsStore
-	const { data: session } = useSession()
-	const token = session?.user?.accessToken
+	const { adminNews, total, isLoading, deleteNews } = newsStore
 
 	// 📌 useQueryParams для page, limit, sort
 	const { query, setQuery } = useListQuery({
 		page: '1',
-		limit: '16',
+		limit: '12',
 		sort: 'date_desc' as NewsSort
 	})
 
@@ -55,7 +52,7 @@ const NewsSortAndPaginationComponent = observer(({ locale }: { locale: Locale })
 
 	// 🔹 Завантаження новин зі стору
 	useEffect(() => {
-		newsStore.fetchNews({
+		newsStore.fetchAdminNews({
 			page: Number(page),
 			limit: Number(limit),
 			sort
@@ -63,8 +60,7 @@ const NewsSortAndPaginationComponent = observer(({ locale }: { locale: Locale })
 	}, [page, limit, sort])
 
 	async function handleDeleteNews(id: string) {
-		if (!token) return
-		await deleteNews(id, token)
+		await deleteNews(id)
 		setIsShowModal(null)
 	}
 
@@ -94,9 +90,9 @@ const NewsSortAndPaginationComponent = observer(({ locale }: { locale: Locale })
 			) : (
 				<div className='mb-7 grid min-[940px]:grid-cols-1 min-[1840px]:grid-cols-2 gap-6'>
 					<CreateNewsBtn />
-					{news.map(item => (
+					{adminNews.map(item => (
 						<div key={item._id} className='flex gap-x-1'>
-							<NewsCard locale={locale} article={item} />
+							<NewsCard locale={locale} article={item} typePage='admin' />
 							<div className='flex flex-col gap-y-2 xl:gap-y-3 shrink-0 mt-auto py-1'>
 								<Link
 									className='w-7 h-7 xl:w-8 xl:h-8 rounded-full flex items-center justify-center bg-white border border-gr-2 hover:shadow-ms transform duration-300 transition-transform hover:scale-105'

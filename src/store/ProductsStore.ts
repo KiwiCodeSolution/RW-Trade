@@ -99,31 +99,49 @@ class ProductStore {
 	async fetchProducts(params?: Partial<ItemsFilterParams & { discountOnly?: boolean }>) {
 		this.isLoading = true
 		try {
-			const data = await productApi.fetchFilteredProducts({
+			const { priceRange, country, ...rest } = params || {}
+
+			// ⚡ Формуємо API-параметри
+			const apiParams: Partial<ItemsFilterParams & { discountOnly?: boolean }> = {
 				lang: 'uk',
 				categorySlug: 'all',
 				subCategorySlug: 'all',
 				sort: 'DATE_ADDED',
 				limit: 24,
 				page: 1,
-				...params
-			})
+				...rest,
+				priceRange, // передаємо відразу, як прийшло
+				country:
+					typeof country === 'string'
+						? [country]
+						: Array.isArray(country) && country.length === 1
+							? country
+							: undefined
+			}
+
+			const data = await productApi.fetchFilteredProducts(apiParams)
+
 			runInAction(() => {
 				const favsFromStorage = this.getFavoritesFromStorage()
+
 				this.products = data.items.map((p: Product) => {
 					const fav = favsFromStorage.find(f => f._id === p._id)
 					return fav ? { ...fav, isFavorite: true } : { ...p, isFavorite: false }
 				})
+
 				this.total = data.totalItems
 				this.minPrice = data.filter.minPrice.toFixed(2)
 				this.maxPrice = data.filter.maxPrice.toFixed(2)
+
 				if (!this.allCountries.length) this.allCountries = data.filter.allCountries
 				this.filteredCountries = data.filter.selectedCountries
 			})
 		} catch (error) {
 			console.error('❌ Failed to fetch filtered products:', error)
 		} finally {
-			runInAction(() => (this.isLoading = false))
+			runInAction(() => {
+				this.isLoading = false
+			})
 		}
 	}
 

@@ -296,6 +296,8 @@ export type ItemsFilterParams = {
 	subCategorySlug?: string | 'all' // для продуктів
 	priceRange?: [number, number] // для продуктів
 	country?: string[] // для продуктів
+	minPrice?: number
+	maxPrice?: number
 	sort?: ItemsSort
 	limit?: number
 	page?: number

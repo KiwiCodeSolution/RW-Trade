@@ -10,7 +10,7 @@ interface CategoryControlProps {
 	categories: Category[]
 	activeSlug: string
 	locale: Locale
-
+	pageType?: 'admin' | 'client'
 	onChange?: (slug: string) => void
 	useUrlSync?: boolean
 }
@@ -19,6 +19,7 @@ export default function CategoryControl({
 	categories,
 	activeSlug,
 	locale,
+	pageType = 'client',
 	onChange,
 	useUrlSync = false
 }: CategoryControlProps) {
@@ -26,13 +27,11 @@ export default function CategoryControl({
 	const searchParams = useSearchParams()
 
 	const handleSelect = (slug?: string) => {
-		console.log('slug', slug)
 		if (!slug) return
-		console.log('slug2 after return', slug)
 
 		if (useUrlSync) {
 			const params = new URLSearchParams(searchParams.toString())
-			console.log('params', params)
+
 			if (slug !== 'all') {
 				params.set('category', slug)
 				params.set('subCategory', 'all')
@@ -40,7 +39,6 @@ export default function CategoryControl({
 				params.delete('category')
 				params.delete('subCategory')
 			}
-			console.log('params2', params)
 
 			router.push(`?${params.toString()}`)
 		} else {
@@ -56,20 +54,22 @@ export default function CategoryControl({
 	return (
 		<div className='relative mb-7'>
 			<ScrollableTrack>
-				<button
-					className={`p-0.5 rounded-md w-fit cursor-pointer ${activeSlug === 'all' ? 'bg-primary' : ''}`}
-					onClick={() => handleSelect('all')}
-				>
-					<div className='bg-bg-light w-full h-full flex justify-center items-center rounded-sm'>
-						<div
-							className={`text-nowrap px-4 py-2 bg-primary bg-clip-text hover:text-transparent ${
-								activeSlug === 'all' ? 'text-transparent' : ''
-							}`}
-						>
-							{content[locale]}
+				{pageType !== 'admin' && (
+					<button
+						className={`p-0.5 rounded-md w-fit cursor-pointer ${activeSlug === 'all' ? 'bg-primary' : ''}`}
+						onClick={() => handleSelect('all')}
+					>
+						<div className='bg-bg-light w-full h-full flex justify-center items-center rounded-sm'>
+							<div
+								className={`text-nowrap px-4 py-2 bg-primary bg-clip-text hover:text-transparent ${
+									activeSlug === 'all' ? 'text-transparent' : ''
+								}`}
+							>
+								{content[locale]}
+							</div>
 						</div>
-					</div>
-				</button>
+					</button>
+				)}
 
 				{categories.map(item => (
 					<button

@@ -21,6 +21,7 @@ class NotificationsStore {
 	/** --- Отримати всі нотифікації --- */
 	fetchNotifications = async (router?: { push: (path: string) => void }) => {
 		this.isLoaded = false
+		this.isLoading = true
 		try {
 			const data = await getAllNotifications()
 			runInAction(() => {
@@ -35,6 +36,8 @@ class NotificationsStore {
 				router.push('/login')
 			}
 			runInAction(() => (this.isLoaded = true))
+		} finally {
+			runInAction(() => (this.isLoading = false))
 		}
 	}
 
@@ -52,9 +55,6 @@ class NotificationsStore {
 					}
 				})
 			}
-		} catch (err) {
-			console.error(err)
-			toast.error('Не вдалося оновити статус нотифікації')
 		} finally {
 			runInAction(() => (this.isLoading = false))
 		}
