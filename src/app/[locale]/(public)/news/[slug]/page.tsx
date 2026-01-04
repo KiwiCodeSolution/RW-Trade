@@ -13,7 +13,9 @@ import { getTranslations } from 'next-intl/server'
 
 type Params = { locale: Locale; slug: string }
 
-export async function generateMetadata({ params: { slug, locale } }: { params: Params }) {
+export async function generateMetadata({ params }: { params: Promise<Params> }) {
+	const { slug, locale } = await params
+
 	const res = await fetch(`${BASE_URL}/news/slug/${slug}`, { cache: 'no-cache' })
 	const post = (await res.json()) as NewsArticle
 	const seo = post.seo
