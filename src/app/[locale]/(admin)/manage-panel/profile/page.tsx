@@ -1,3 +1,4 @@
+import ChangePasswordForm from '@/components/adminUI/ChangePasswordForm'
 import Currency from '@/components/adminUI/Currency'
 import CurrencyDatePicker from '@/components/adminUI/CurrencyDatePicker'
 import HeaderPage from '@/components/adminUI/HeaderPage'
@@ -19,7 +20,8 @@ const Profile = () => {
 			</div>
 			<div className='h-0.5 w-full bg-primary my-5' />
 			<p className='text-xl mb-4'>Управління логіном та паролем</p>
-			<p className='italic'>Функціонал знаходиться на етапі реалізації</p>
+
+			<ChangePasswordForm />
 		</main>
 	)
 }

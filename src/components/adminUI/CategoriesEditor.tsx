@@ -8,7 +8,6 @@ import Spinner from '../commonUI/loader/Spinner'
 
 import { toast } from '@/lib/toast'
 
-import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 
 export default function CategoriesEditor({
@@ -23,8 +22,6 @@ export default function CategoriesEditor({
 	const [titleUk, setTitleUk] = useState(initialData?.title.uk ?? '')
 	const [titleEn, setTitleEn] = useState(initialData?.title.en ?? '')
 	const [isLoading, setIsLoading] = useState(false)
-	const { data: session } = useSession()
-	const token: string = session?.user?.accessToken ?? ''
 
 	const disabled = !titleUk.trim() || !titleEn.trim()
 
@@ -43,8 +40,7 @@ export default function CategoriesEditor({
 							uk: titleUk.trim(),
 							en: titleEn.trim()
 						}
-					},
-					token
+					}
 				})
 			} else {
 				await createSubCategory({
@@ -54,8 +50,7 @@ export default function CategoriesEditor({
 							uk: titleUk.trim(),
 							en: titleEn.trim()
 						}
-					},
-					token
+					}
 				})
 			}
 			setTitleUk('')

@@ -1,25 +1,28 @@
+'use client'
+
 import GoBackBtn from '@/components/adminUI/GoBackBtn'
 import HeaderPage from '@/components/adminUI/HeaderPage'
 import NewsForm from '@/components/adminUI/formsComponents/NewsForm'
 
+import { NewsArticle } from '@/types/baseTypes'
+
 import { getNewsById } from '@/api/news'
 
-import { authOptions } from '@/lib/authOptions'
+import { use, useEffect, useState } from 'react'
 
-import { Metadata } from 'next'
-import { getServerSession } from 'next-auth'
-
-export const metadata: Metadata = {
-	title: 'Новина | RW-Trade'
+interface PageProps {
+	params: { id: string } // тут вже не Promise
 }
-export default async function page({ params }: { params: Promise<{ id: string }> }) {
-	const { id } = await params
-	const pageName = id ? 'Редагування новини / запису' : 'Створення новини / запису'
-	const session = await getServerSession(authOptions)
-	const token = session?.user?.accessToken
-	const news = await getNewsById(id, token || '')
 
-	console.log(news)
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
+	const { id } = use(params) // unwrap Promise
+	const [news, setNews] = useState<NewsArticle | undefined>(undefined)
+
+	useEffect(() => {
+		if (id) getNewsById(id).then(setNews).catch(console.error)
+	}, [id])
+
+	const pageName = id ? 'Редагування новини / запису' : 'Створення новини / запису'
 
 	return (
 		<div className='w-full h-full relative'>

@@ -5,11 +5,17 @@ import { OkIcon } from '@/assets/icons'
 import { productStore } from '@/store/ProductsStore'
 
 import { observer } from 'mobx-react-lite'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const Currency = observer(() => {
 	const { exchangeRate, setExchangeRate } = productStore
-	const [inputValue, setInputValue] = useState(exchangeRate.toString())
+	const [inputValue, setInputValue] = useState('')
+	const [mounted, setMounted] = useState(false)
+
+	useEffect(() => {
+		setMounted(true)
+		setInputValue(exchangeRate.toString())
+	}, [exchangeRate])
 
 	const updateRate = async () => {
 		const rate = Number(inputValue)
@@ -19,6 +25,8 @@ const Currency = observer(() => {
 		}
 		await setExchangeRate(rate)
 	}
+
+	if (!mounted) return null
 
 	return (
 		<div className='flex flex-col gap-2'>

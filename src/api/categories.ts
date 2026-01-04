@@ -1,8 +1,6 @@
-import { BASE_URL } from '@/utils/config'
+import { api } from '@/utils/axios'
 
 import { toast } from '@/lib/toast'
-
-import axios, { isAxiosError } from 'axios'
 
 type SubcategoryPayload = {
 	title: {
@@ -11,115 +9,69 @@ type SubcategoryPayload = {
 	}
 }
 
+// ---------------- GET ALL CATEGORIES ----------------
 export async function getCategories() {
 	try {
-		const res = await axios.get(`${BASE_URL}/categories`)
-
+		const res = await api.get('/categories')
 		return res.data
 	} catch (err: unknown) {
-		const msg = isAxiosError(err)
-			? (err.response?.data?.message ?? 'Помилка отримання категорій')
-			: 'Помилка отримання категорій'
-		toast.error(msg)
+		console.error('Помилка отримання категорій:', err)
+		toast.error('Не вдалося отримати категорії')
 		throw err
 	}
 }
 
-export async function getCategoriesByID({ id, token }: { id: string; token: string }) {
-	console.log('TOKEN', token)
+// ---------------- GET CATEGORY BY ID ----------------
+export async function getCategoriesByID({ id }: { id: string }) {
 	try {
-		const res = await axios.get(`${BASE_URL}/categories/${id}`, {
-			headers: {
-				Authorization: `Bearer ${token ?? ''}`,
-				'Content-Type': 'application/json'
-			}
-		})
-
+		const res = await api.get(`/categories/${id}`)
 		return res.data
 	} catch (err: unknown) {
 		console.error(err)
-		toast.error('Не вдалося оновити категорію')
+		toast.error('Не вдалося отримати категорію')
 		throw err
 	}
 }
 
-export async function createSubCategory({
-	id,
-	data,
-	token
-}: {
-	id: string
-	data: SubcategoryPayload
-	token: string
-}) {
+// ---------------- CREATE SUBCATEGORY ----------------
+export async function createSubCategory({ id, data }: { id: string; data: SubcategoryPayload }) {
 	try {
-		const res = await axios.post(`${BASE_URL}/categories/${id}/subcategories`, data, {
-			headers: {
-				Authorization: `Bearer ${token ?? ''}`,
-				'Content-Type': 'application/json'
-			}
-		})
-
+		const res = await api.post(`/categories/${id}/subcategories`, data)
 		return res.data
 	} catch (err: unknown) {
-		const msg = isAxiosError(err)
-			? (err.response?.data?.message ?? 'Помилка створення підкатегорій')
-			: 'Помилка створення підкатегорій'
+		const msg = err instanceof Error ? err.message : 'Помилка створення підкатегорії'
 		toast.error(msg)
 		throw err
 	}
 }
 
+// ---------------- UPDATE SUBCATEGORY ----------------
 export async function updateSubCategory({
 	id,
-	data,
-	token,
-	subId
+	subId,
+	data
 }: {
 	id: string
 	subId: string
 	data: SubcategoryPayload
-	token: string
 }) {
 	try {
-		const res = await axios.patch(`${BASE_URL}/categories/${id}/subcategories/${subId}`, data, {
-			headers: {
-				Authorization: `Bearer ${token ?? ''}`,
-				'Content-Type': 'application/json'
-			}
-		})
-
+		const res = await api.patch(`/categories/${id}/subcategories/${subId}`, data)
 		return res.data
 	} catch (err: unknown) {
-		const msg = isAxiosError(err)
-			? (err.response?.data?.message ?? 'Помилка оновлення підкатегорій')
-			: 'Помилка оновлення підкатегорій'
+		const msg = err instanceof Error ? err.message : 'Помилка оновлення підкатегорії'
 		toast.error(msg)
 		throw err
 	}
 }
 
-export async function deleteSubCategory({
-	id,
-	subId,
-	token
-}: {
-	id: string
-	subId: string
-	token: string
-}) {
+// ---------------- DELETE SUBCATEGORY ----------------
+export async function deleteSubCategory({ id, subId }: { id: string; subId: string }) {
 	try {
-		const res = await axios.delete(`${BASE_URL}/categories/${id}/subcategories/${subId}`, {
-			headers: {
-				Authorization: `Bearer ${token ?? ''}`,
-				'Content-Type': 'application/json'
-			}
-		})
+		const res = await api.delete(`/categories/${id}/subcategories/${subId}`)
 		return res.data
 	} catch (err: unknown) {
-		const msg = isAxiosError(err)
-			? (err.response?.data?.message ?? 'Помилка видалення підкатегорії')
-			: 'Помилка видалення підкатегорії'
+		const msg = err instanceof Error ? err.message : 'Помилка видалення підкатегорії'
 		toast.error(msg)
 		throw err
 	}

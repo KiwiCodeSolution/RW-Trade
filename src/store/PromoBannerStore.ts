@@ -20,22 +20,22 @@ class PromoBannerStore {
 		this.fetchPromoBanner()
 	}
 
-	async fetchPromoBanner(): Promise<PromoBanner | null> {
+	fetchPromoBanner = async (): Promise<PromoBanner | null> => {
+		this.isLoading = true
 		try {
 			const res = await getPromoBanner()
 			runInAction(() => {
 				this.banner = res
 			})
-
 			return res
-		} catch (e) {
+		} finally {
 			runInAction(() => {
-				this.banner = null
+				this.isLoading = false
 			})
-			return null
 		}
 	}
-	async create(data: CreatePromoBannerDto & { imageFile: File }) {
+
+	create = async (data: CreatePromoBannerDto & { imageFile: File }) => {
 		if (!data.imageFile) {
 			toast.error('Зображення обов’язкове')
 			return null
@@ -50,11 +50,13 @@ class PromoBannerStore {
 			toast.success('Промо-банер створено')
 			return result
 		} finally {
-			this.isLoading = false
+			runInAction(() => {
+				this.isLoading = false
+			})
 		}
 	}
 
-	async update(data: PromoBanner & { imageFile?: File | null }) {
+	update = async (data: PromoBanner & { imageFile?: File | null }) => {
 		this.isLoading = true
 		try {
 			const result = await updatePromoBanner(data)
@@ -64,11 +66,13 @@ class PromoBannerStore {
 			toast.success('Промо-банер оновлено')
 			return result
 		} finally {
-			this.isLoading = false
+			runInAction(() => {
+				this.isLoading = false
+			})
 		}
 	}
 
-	async remove() {
+	remove = async () => {
 		this.isLoading = true
 		try {
 			const ok = await deletePromoBanner()
@@ -78,7 +82,9 @@ class PromoBannerStore {
 			toast.success('Промо-банер видалено')
 			return true
 		} finally {
-			this.isLoading = false
+			runInAction(() => {
+				this.isLoading = false
+			})
 		}
 	}
 }

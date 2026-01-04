@@ -72,9 +72,9 @@ const ProductComponentSortFilterAdmin = observer(
 				subCategorySlug: subCategorySlug || 'all',
 				sort,
 				page: Number(page),
-				limit: Number(query.limit)
+				limit: fetchLimit
 			})
-		}, [sort, page, query.limit, categorySlug, subCategorySlug])
+		}, [sort, page, query.limit, categorySlug, subCategorySlug, fetchLimit])
 
 		return (
 			<div className='flex flex-col justify-between'>

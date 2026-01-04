@@ -22,7 +22,7 @@ type NewsSectionProps = {
 	bntText: string
 }
 
-const NewsSection = observer(({ section, title, subtitle, locale, bntText }: NewsSectionProps) => {
+const NewsSection = observer(({ section, title, subtitle, locale }: NewsSectionProps) => {
 	const { news, isLoading } = newsStore
 
 	useEffect(() => {
@@ -35,7 +35,10 @@ const NewsSection = observer(({ section, title, subtitle, locale, bntText }: New
 
 	if (isLoading) return <Spinner />
 
-	const articles = news.filter(n => !n.isNews).length > 2 ? news.filter(n => !n.isNews) : news
+	// фільтруємо новини та статті
+	const nonNews = news.filter(n => !n.isNews)
+	const allNews = news.filter(n => n.isNews)
+	const rightBlock = nonNews.length > 0 ? nonNews.slice(0, 3) : allNews.slice(0, 3)
 
 	return (
 		<section className={section === 'main' ? 'py-14' : 'lg:py-10'}>
@@ -45,32 +48,26 @@ const NewsSection = observer(({ section, title, subtitle, locale, bntText }: New
 			{section === 'main' && <p className='mt-1 lg:mt-4 lg:text-center'>{subtitle}</p>}
 
 			<div className='w-full hidden lg:flex items-center justify-center gap-x-10 py-10'>
+				{/* Лівий блок — новини */}
 				<div className='w-full lg:w-1/2 grid lg:grid-rows-3 gap-10 '>
-					{news
-						.filter(n => n.isNews)
-						.map((item, index) => (
-							<div key={index}>
-								<NewsCard article={item} locale={locale} />
-							</div>
-						))}
+					{allNews.map((item, index) => (
+						<div key={index}>
+							<NewsCard article={item} locale={locale} />
+						</div>
+					))}
 				</div>
+
+				{/* Правий блок — статті або новини */}
 				<div className='w-full lg:w-1/2 grid lg:grid-rows-3 gap-10 '>
-					{articles.map((item, index) => (
+					{rightBlock.map((item, index) => (
 						<div key={index}>
 							<NewsCard article={item} locale={locale} />
 						</div>
 					))}
 				</div>
 			</div>
-			<NewsGallery news={news} />
 
-			{/* {section === 'main' && (
-				<div className='flex justify-center items-center'>
-					<Link href='/news' className='link-solid'>
-						{bntText}
-					</Link>
-				</div>
-			)} */}
+			<NewsGallery news={news} />
 		</section>
 	)
 })

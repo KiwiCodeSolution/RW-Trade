@@ -22,34 +22,27 @@ const CategoriesAdminContainer: React.FC<Props> = observer(({ locale }) => {
 	const searchParams = useSearchParams()
 
 	/* ---------------- URL params ---------------- */
-	const categorySlug = searchParams.get('category') ?? 'all'
+	const categorySlug = searchParams.get('category') ?? categories[0]?.slug
 	const subCategorySlug = searchParams.get('subCategory') ?? 'all'
 
-	/* ---------------- Active category (derived) ---------------- */
+	// ---------------- Active category (derived) ----------------
 	const activeCategory = useMemo(() => {
-		// 1️⃣ якщо категорія явно в URL
-		if (categorySlug !== 'all') {
+		// якщо категорія явно в URL
+		if (categorySlug) {
 			return categories.find(c => c.slug === categorySlug)
 		}
 
-		// 2️⃣ якщо категорії нема, але є підкатегорія
-		if (subCategorySlug !== 'all') {
-			return categories.find(c =>
-				c.subcategories?.some(sc => sc.subCategorySlug === subCategorySlug)
-			)
-		}
+		// якщо категорії нема в URL, беремо першу
+		return categories[0]
+	}, [categorySlug, categories])
 
-		return undefined
-	}, [categorySlug, subCategorySlug, categories])
-
-	/* ---------------- Subcategories to display ---------------- */
+	// ---------------- Subcategories to display ----------------
 	const displayedSubcategories: Subcategory[] = useMemo(() => {
 		if (activeCategory) {
 			return activeCategory.subcategories ?? []
 		}
-
-		return categories.flatMap(c => c.subcategories ?? [])
-	}, [activeCategory, categories])
+		return []
+	}, [activeCategory])
 
 	/* ---------------- Discounts mode ---------------- */
 	const isDiscountsCategory = activeCategory?.slug === 'discounts'
@@ -63,6 +56,7 @@ const CategoriesAdminContainer: React.FC<Props> = observer(({ locale }) => {
 					activeSlug={activeCategory?.slug ?? 'all'}
 					locale={locale}
 					useUrlSync
+					pageType='admin'
 				/>
 			</div>
 

@@ -2,8 +2,6 @@ import { OrderStats } from '@/types/baseTypes'
 
 import { getAllData } from '@/api/stats'
 
-import { toast } from '@/lib/toast'
-
 import { makeAutoObservable, runInAction } from 'mobx'
 
 class StatisticsStore {
@@ -15,7 +13,7 @@ class StatisticsStore {
 		makeAutoObservable(this)
 	}
 
-	fetchStats = async (router?: { push: (path: string) => void }) => {
+	fetchStats = async () => {
 		this.loading = true
 		this.error = null
 
@@ -27,10 +25,7 @@ class StatisticsStore {
 			})
 		} catch (err: unknown) {
 			console.error(err)
-			if (err instanceof Error && err.message.includes('401') && router) {
-				toast.error('Ви не авторизовані. Будь ласка, увійдіть.')
-				router.push('/login')
-			}
+
 			runInAction(() => (this.loading = false))
 		}
 	}

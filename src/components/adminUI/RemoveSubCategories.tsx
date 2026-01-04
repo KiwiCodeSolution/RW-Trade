@@ -8,8 +8,6 @@ import BtnSolid from '../commonUI/BtnSolid'
 
 import { toast } from '@/lib/toast'
 
-import { useSession } from 'next-auth/react'
-
 const RemoveSubCategories = ({
 	categoryId,
 	subCategoryID,
@@ -21,8 +19,6 @@ const RemoveSubCategories = ({
 	onCloseModal: () => void
 	onSuccess: () => void
 }) => {
-	const { data: session } = useSession()
-	const token: string = session?.user?.accessToken ?? ''
 	if (!subCategoryID) return
 
 	async function handleRemove() {
@@ -30,8 +26,7 @@ const RemoveSubCategories = ({
 			try {
 				await deleteSubCategory({
 					id: categoryId,
-					subId: subCategoryID,
-					token
+					subId: subCategoryID
 				})
 
 				onSuccess()

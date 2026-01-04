@@ -1,17 +1,16 @@
-import { BASE_URL } from '@/utils/config'
+import { api } from '@/utils/axios'
 
 import { OrderStats } from '@/types/baseTypes'
 
-import { fetchWithAuth } from './fetchWithAuth'
+import { toast } from '@/lib/toast'
 
-// Отримати всі нотифікації
 export async function getAllData(): Promise<OrderStats> {
-	const res = await fetchWithAuth(`${BASE_URL}/statistics`, { cache: 'no-store' })
-
-	if (!res.ok) {
-		throw new Error(`HTTP ${res.status}`)
+	try {
+		const { data } = await api.get<OrderStats>('/statistics', { params: { cache: 'no-store' } })
+		return data
+	} catch (err) {
+		toast.error('Помилка отримання статистики')
+		console.error('Помилка отримання статистики', err)
+		throw err
 	}
-
-	const data: OrderStats = await res.json()
-	return data
 }

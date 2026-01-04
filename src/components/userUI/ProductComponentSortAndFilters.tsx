@@ -73,8 +73,6 @@ const ProductComponentSortAndFilters = observer(
 		const gridLimit = hasFiltersCard ? userLimit - 1 : userLimit
 		const fetchLimit = gridLimit
 
-		// реально фетчимо стільки, скільки вибрав користувач
-		// 🔹 Завантаження продуктів
 		useEffect(() => {
 			productStore.fetchProducts({
 				lang: locale,
@@ -84,10 +82,7 @@ const ProductComponentSortAndFilters = observer(
 				page: Number(page),
 				limit: Number(query.limit),
 				discountOnly: isDiscountMode ?? false,
-
-				// 👇 тільки якщо користувач реально вибрав
-				country: query.countries ? query.countries.split(',') : undefined,
-
+				countries: query.countries ? query.countries.split(',') : undefined,
 				priceRange:
 					query.minPrice && query.maxPrice
 						? [Number(query.minPrice), Number(query.maxPrice)]
@@ -103,7 +98,9 @@ const ProductComponentSortAndFilters = observer(
 			query.maxPrice,
 			categorySlug,
 			subCategorySlug,
-			isDiscountMode
+			isDiscountMode,
+			minPrice,
+			maxPrice
 		])
 
 		return (

@@ -59,6 +59,8 @@ export type Product = CreateProductDto & {
 	slugUk: string
 	slugEn: string
 	rating: number
+	ratingCount: number
+	ratingSum: number
 	status: ProductStatus
 	subCategorySlug: string
 	categorySlug: string
@@ -293,7 +295,9 @@ export type ItemsFilterParams = {
 	categorySlug?: string | 'all' // для продуктів
 	subCategorySlug?: string | 'all' // для продуктів
 	priceRange?: [number, number] // для продуктів
-	country?: string[] // для продуктів
+	countries?: string | string[] // для продуктів
+	minPrice?: number
+	maxPrice?: number
 	sort?: ItemsSort
 	limit?: number
 	page?: number

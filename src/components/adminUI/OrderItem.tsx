@@ -13,7 +13,6 @@ import BaseModal from '../commonUI/modal/BaseModal'
 import ConfirmAdminComponent from '../commonUI/modal/ConfirmAdminComponent'
 
 import { observer } from 'mobx-react-lite'
-import { useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -26,8 +25,7 @@ const OrderItemComponent = observer(({ order }: OrderItemProps) => {
 	const [isStatusOpen, setIsStatusOpen] = useState(false)
 	const { deleteOrder, updateOrderStatus } = ordersStore
 	const status = order.status || 'pending'
-	const { data: session } = useSession()
-	const token = session?.user?.accessToken
+
 	const [isShowModal, setIsShowModal] = useState(false)
 
 	const orderStatuses: { label: string; value: OrderStatus; color: string }[] = [
@@ -67,7 +65,7 @@ const OrderItemComponent = observer(({ order }: OrderItemProps) => {
 
 	async function handleChangeStatus(newStatus: OrderStatus) {
 		setIsStatusOpen(false)
-		if (!token) return
+
 		await updateOrderStatus(order._id, newStatus)
 	}
 

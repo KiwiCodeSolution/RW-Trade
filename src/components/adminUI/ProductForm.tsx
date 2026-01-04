@@ -14,7 +14,6 @@ import ProductImagesBlock from './formsComponents/ProductImagesBlock'
 import TextEditor from './formsComponents/TextEditor'
 
 import { observer } from 'mobx-react-lite'
-import { useSession } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useEffect, useMemo } from 'react'
 import { useForm } from 'react-hook-form'
@@ -74,15 +73,18 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 
 	useEffect(() => {
 		if (!product) return
-		reset({
-			...(product as Product),
-			images: toPreviewItems(product.images as string[] | undefined)
-		})
-		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [product?._id])
 
-	const { data: session } = useSession()
-	const token = session?.user?.accessToken
+		reset({
+			...product,
+			images: toPreviewItems(product.images as string[] | undefined),
+			initialRatingSum: product.ratingSum ?? 0,
+			initialRatingCount: product.ratingCount ?? 0,
+			price: product.price ?? 0,
+			priceCurrency: product.priceCurrency ?? 0
+		})
+	}, [product?._id, reset])
+
+	console.log(product)
 
 	const searchParams = useSearchParams()
 	const categoryIdFromQuery = searchParams.get('category')
@@ -100,20 +102,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [categoryId])
 
-	const price = watch('price')
-	const priceCurrency = watch('priceCurrency')
 	const router = useRouter()
-	useEffect(() => {
-		if (price != null && price !== 0) {
-			setValue('priceCurrency', undefined) // або 0, якщо тобі так зручно
-		}
-	}, [price, setValue])
-
-	useEffect(() => {
-		if (priceCurrency != null && priceCurrency !== 0) {
-			setValue('price', undefined)
-		}
-	}, [priceCurrency, setValue])
 
 	useEffect(() => {
 		if (categoryStore.categories.length === 0) categoryStore.fetchCategories()
@@ -131,58 +120,143 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 
 	const images = watch('images')
 
+	// const onSubmit = async (data: ProductFormValues) => {
+	// 	const orderedFiles: File[] = []
+	// 	const orderedImages: string[] = []
+
+	// 	for (const item of data.images ?? []) {
+	// 		if (item.file) {
+	// 			const idx = orderedFiles.length
+	// 			orderedFiles.push(item.file)
+	// 			orderedImages.push(`__new__${idx}`) // плейсхолдер
+	// 		} else if (item.url) {
+	// 			orderedImages.push(item.url)
+	// 		}
+	// 	}
+
+	// 	// формуємо DTO для бекенду
+	// 	let prepared: CreateProductDto
+
+	// 	if (data.price && data.price !== 0) {
+	// 		prepared = {
+	// 			...data,
+	// 			images: orderedImages,
+	// 			price: data.price,
+	// 			priceCurrency: undefined, // для уніону TS
+
+	// 			inStock: status === ProductStatus.IN_STOCK ? Number(data.inStock) || 0 : 0
+	// 		} as CreateProductDto
+	// 	} else if (data.priceCurrency && data.priceCurrency !== 0) {
+	// 		prepared = {
+	// 			...data,
+	// 			images: orderedImages,
+	// 			price: undefined, // для уніону TS
+	// 			priceCurrency: data.priceCurrency,
+
+	// 			inStock: status === ProductStatus.IN_STOCK ? Number(data.inStock) || 0 : 0
+	// 		} as CreateProductDto
+	// 	} else {
+	// 		// якщо ціна не вказана взагалі
+	// 		throw new Error('Вкажіть або гривневу, або валютну ціну')
+	// 	}
+
+	// 	let result: Created = null
+
+	// 	if (product?._id) {
+	// 		result = await productStore.updateProduct({
+	// 			id: product._id,
+	// 			product: prepared,
+	// 			files: orderedFiles
+	// 		})
+	// 	} else {
+	// 		result = await productStore.createProduct({
+	// 			product: prepared,
+	// 			files: orderedFiles
+	// 		})
+	// 	}
+
+	// 	if (result) {
+	// 		reset()
+	// 		setValue('images', [])
+	// 		router.push('/manage-panel/products')
+	// 	}
+	// }
+
 	const onSubmit = async (data: ProductFormValues) => {
-		const filesOnly = (data.images ?? []).filter(
-			(i): i is PreviewItem & { file: File } => !!i?.file
-		)
+		// ----------------------------------
+		// 1. Формуємо порядок зображень
+		// ----------------------------------
+		const orderedFiles: File[] = []
+		const orderedImages: string[] = []
 
-		// Гарантуємо лише string[]
-		const imageUrls = (data.images ?? [])
-			.map(i => i.url)
-			.filter((u): u is string => typeof u === 'string')
+		for (const item of data.images ?? []) {
+			if (item.file) {
+				orderedFiles.push(item.file)
+				orderedImages.push(`__new__${orderedFiles.length - 1}`)
+			} else if (item.url) {
+				orderedImages.push(item.url)
+			}
+		}
 
+		// ----------------------------------
+		// 2. Виймаємо images з form data
+		// ----------------------------------
+		const { images: _images, ...rest } = data
+
+		// ----------------------------------
+		// 3. Формуємо DTO БЕЗ images
+		// ----------------------------------
 		let prepared: CreateProductDto
 
-		if (data.price !== undefined && data.price !== 0) {
+		if (rest.price && rest.price !== 0) {
 			prepared = {
-				...data,
-				price: data.price,
+				...rest,
+				price: rest.price,
 				priceCurrency: undefined,
-				images: imageUrls,
-				inStock: isInStock ? Number(data.inStock) || 0 : 0
+				inStock: status === ProductStatus.IN_STOCK ? Number(rest.inStock) || 0 : 0
 			}
-		} else if (data.priceCurrency !== undefined && data.priceCurrency !== 0) {
+		} else if (rest.priceCurrency && rest.priceCurrency !== 0) {
 			prepared = {
-				...data,
-				priceCurrency: data.priceCurrency,
+				...rest,
 				price: undefined,
-				images: imageUrls,
-				inStock: isInStock ? Number(data.inStock) || 0 : 0
+				priceCurrency: rest.priceCurrency,
+				inStock: status === ProductStatus.IN_STOCK ? Number(rest.inStock) || 0 : 0
 			}
 		} else {
-			throw new Error('Вкажи або price, або priceCurrency')
+			throw new Error('Вкажіть або гривневу, або валютну ціну')
 		}
+
+		// ----------------------------------
+		// 4. images ТІЛЬКИ для UPDATE
+		// ----------------------------------
+		if (product?._id) {
+			prepared.images = orderedImages
+		}
+
+		// ----------------------------------
+		// 5. API
+		// ----------------------------------
 		let result: Created = null
 
 		if (product?._id) {
 			result = await productStore.updateProduct({
 				id: product._id,
 				product: prepared,
-				token: token ?? '',
-				files: filesOnly.map(i => i.file)
+				files: orderedFiles
 			})
 		} else {
 			result = await productStore.createProduct({
 				product: prepared,
-				token: token ?? '',
-				files: filesOnly.map(i => i.file)
+				files: orderedFiles
 			})
 		}
 
+		// ----------------------------------
+		// 6. Завершення
+		// ----------------------------------
 		if (result) {
 			reset()
 			setValue('images', [])
-
 			router.push('/manage-panel/products')
 		}
 	}
@@ -211,9 +285,10 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 					onChange={imgs => {
 						const prev = images ?? []
 						const changed =
-							prev.length !== imgs.length ||
-							prev.some((p, i) => p.url !== imgs[i]?.url)
-						if (changed) setValue('images', imgs)
+							prev.length !== imgs.length || prev.some((p, i) => p.id !== imgs[i]?.id)
+
+						if (changed)
+							setValue('images', imgs, { shouldDirty: true, shouldValidate: true })
 					}}
 				/>
 				<Collapse title='SEO-блок' sectionType='form'>

@@ -16,7 +16,6 @@ import { useRouter } from '@/i18n/navigation'
 import { toast } from '@/lib/toast'
 
 import { observer } from 'mobx-react-lite'
-import { useSession } from 'next-auth/react'
 import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -48,7 +47,7 @@ const NewsForm = observer(({ news }: { news?: NewsArticle }) => {
 						description: { uk: '', en: '' },
 						keywords: { uk: '', en: '' }
 					},
-					isNews: true,
+					isNews: undefined,
 					isPublished: true,
 					imageFile: null
 				}
@@ -65,27 +64,19 @@ const NewsForm = observer(({ news }: { news?: NewsArticle }) => {
 
 	const router = useRouter()
 
-	const { data: session } = useSession()
-	const token = session?.user?.accessToken
-
 	const image = watch('image')
 	const isPublished = watch('isPublished')
 	const isNews = watch('isNews')
 
 	const onSubmit = async (data: CreateNewsDto & { imageFile?: File | null }) => {
 		try {
-			if (!token) {
-				toast.error('Ви не авторизовані')
-				return
-			}
-
 			// Формуємо payload так, як чекає сервер
 			const prepared: CreateNewsDto = {
 				title: data.title, // залишаємо об'єкт
 				subtitle: data.subtitle, // залишаємо об'єкт
 				content: data.content, // залишаємо об'єкт
 				seo: data.seo, // залишаємо об'єкт
-				videoUrl: data.videoUrl || '',
+				videoUrl: data.videoUrl || undefined,
 				// image: data.image || '',
 				isNews: Boolean(data.isNews),
 				isPublished: Boolean(data.isPublished)
@@ -97,13 +88,13 @@ const NewsForm = observer(({ news }: { news?: NewsArticle }) => {
 				result = await newsStore.updateNews({
 					id: news._id,
 					data: prepared,
-					token,
+
 					files: data.imageFile ? [data.imageFile] : undefined
 				})
 			} else {
 				result = await newsStore.addNews({
 					data: prepared,
-					token,
+
 					files: data.imageFile ? [data.imageFile] : undefined
 				})
 			}
@@ -129,7 +120,7 @@ const NewsForm = observer(({ news }: { news?: NewsArticle }) => {
 						setValue('image', preview?.url || '')
 						setValue('imageFile', preview?.file || null)
 					}}
-					className='border-2 border-sc-1 product-card-shadow'
+					className='border-2 border-sc-1 product-card-shadow w-[162px] h-[162px]'
 				/>
 				<div className='flex flex-col gap-y-2 w-4/5'>
 					<BaseInput<NewsFormValues>
