@@ -10,7 +10,8 @@ import { LangField, Locale, Product } from '@/types/baseTypes'
 
 type Params = { locale: Locale; slug: string }
 
-export async function generateMetadata({ params: { slug, locale } }: { params: Params }) {
+export async function generateMetadata({ params }: { params: Promise<Params> }) {
+	const { slug, locale } = await params
 	const productRes = await fetch(`${BASE_URL}/products/slug/${slug}`, {
 		next: { revalidate: 60 }
 	})
@@ -28,11 +29,7 @@ export async function generateMetadata({ params: { slug, locale } }: { params: P
 	}
 }
 
-export default async function ProductPage({
-	params
-}: {
-	params: Promise<{ slug: string; locale: Locale }>
-}) {
+export default async function ProductPage({ params }: { params: Promise<Params> }) {
 	const { slug, locale } = await params
 
 	const productRes = await fetch(`${BASE_URL}/products/slug/${slug}`, {
