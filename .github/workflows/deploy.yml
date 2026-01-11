@@ -1,0 +1,76 @@
+name: Deploy Frontend to VPS
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    name: Build & Deploy Frontend
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # --- Етап збірки та перевірки на GitHub (опціонально, щоб не вантажити сервер помилками) ---
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies (Validation)
+        run: npm ci
+
+      - name: Run Build (Validation)
+        run: npm run build
+        env:
+           # Вказуємо змінні, щоб білд пройшов успішно (вони не потраплять на сервер, це тільки тест збірки)
+           NEXT_PUBLIC_API_URL: "https://devtestapps.online/rest"
+
+      # --- Етап Деплою на сервер ---
+      - name: Setup SSH Agent
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Server
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "
+            cd ${{ secrets.DEPLOY_PATH }} &&
+
+            echo '🔹 1. Зберігаємо .env файли...' &&
+            # Якщо файли існують, переміщуємо їх, щоб git reset їх не зачепив (хоча вони в .gitignore)
+            if [ -f .env.local ]; then cp .env.local ../.env.local.bak; fi &&
+
+            echo '🔹 2. Оновлюємо код...' &&
+            # Використовуємо СПЕЦІАЛЬНИЙ ключ для фронтенду, який ми створили
+            GIT_SSH_COMMAND='ssh -i ${{ secrets.GIT_KEY_PATH }} -o IdentitiesOnly=yes' git fetch origin dev &&
+            git reset --hard origin/dev &&
+
+            echo '🔹 3. Відновлюємо .env файли...' &&
+            if [ -f ../.env.local.bak ]; then mv ../.env.local.bak .env.local; fi &&
+
+            echo '🔹 4. Встановлюємо залежності та збираємо...' &&
+            npm install &&
+            npm run build &&
+
+            echo '🔹 5. Перезапускаємо PM2...' &&
+            pm2 restart rw-frontend &&
+            pm2 save
+          "
+
+      - name: Send Telegram Notification
+        if: always()
+        run: |
+          if [ "${{ job.status }}" = "success" ]; then
+            MESSAGE="✅ *Frontend* Успішно задеплоєно для репозиторія RW-Trade!%0ABranch: dev%0AUrl: https://devtestapps.online";
+          else
+            MESSAGE="❌ *Frontend* Помилка деплою для репо RW-Trade";
+          fi
+          curl -s -X POST "https://api.telegram.org/bot${{ secrets.TELEGRAM_BOT_TOKEN }}/sendMessage" \
+               -d "chat_id=${{ secrets.TELEGRAM_CHAT_ID }}" \
+               -d "parse_mode=Markdown" \
+               -d "text=${MESSAGE}"
