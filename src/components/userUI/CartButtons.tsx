@@ -43,7 +43,7 @@ const CartButtons = observer(({ product, locale }: ProductPrint) => {
 					onClose={() => setIsShowModal(false)}
 					title='Оформлення замовлення'
 				>
-					<CartComponent step={2} />
+					<CartComponent step={2} type='oneClick' />
 				</BaseModal>
 			)}
 		</>

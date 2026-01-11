@@ -133,7 +133,7 @@ export default function UkrPoshtaFields({ value, onChange }: Props) {
 
 			{/* RESULTS DROPDOWN */}
 			{filteredResults.length > 0 && (
-				<div className='absolute top-[50px] left-0 z-10 w-full max-h-[150px] overflow-y-auto border bg-bg-light rounded-lg'>
+				<div className='absolute top-[62px] left-0 z-10 w-full max-h-[150px] overflow-y-auto border bg-bg-light rounded-lg'>
 					{filteredResults.map((r, index) => (
 						<button
 							key={`${r.zip ?? r.name}-${r.name}-${index}`}

@@ -184,7 +184,7 @@ export default function MeestFields({ value, onChange }: Props) {
 			)}
 
 			{display.length > 0 && (
-				<div className='absolute top-[110px] left-0 z-20 w-full max-h-[240px] overflow-y-auto border bg-white rounded-lg'>
+				<div className='absolute top-[64px] left-0 z-20 w-full max-h-[240px] overflow-y-auto border bg-white rounded-lg'>
 					{display.map((r, i) => {
 						const city = r.city?.ua || ''
 						const num = r.num_showcase || r.num || ''
