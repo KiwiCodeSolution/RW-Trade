@@ -25,7 +25,7 @@ export const getNewsWithPagination = async (params?: {
 		const { data } = await api.get<{ items: NewsArticle[]; totalItems: number }>(
 			`/news?${q.toString()}`
 		)
-		console.log('data', data)
+
 		return data
 	} catch (err: unknown) {
 		if (err instanceof AxiosError)

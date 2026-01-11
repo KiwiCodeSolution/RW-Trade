@@ -168,11 +168,11 @@ export default function NPFields({ value, onChange }: NPFieldsProps) {
 						}}
 					/>
 					{cities.length > 0 && (
-						<div className='border rounded-lg mt-1 max-h-[240px] w-full bg-bg-light overflow-y-auto absolute z-10 flex flex-col gap-y-0.5'>
+						<div className='border rounded-lg mt-1 max-h-[240px] w-full bg-bg-light overflow-y-auto absolute z-10 flex flex-col gap-y-0.5 '>
 							{cities.map(c => (
 								<button
 									key={c.ref}
-									className='px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm'
+									className='px-3 py-2 hover:bg-gray-100 cursor-pointer text-sm text-left'
 									onClick={() => {
 										setCity(c)
 										setCityInput(c.full)

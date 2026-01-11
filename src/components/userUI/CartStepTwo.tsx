@@ -6,6 +6,7 @@ import { OrderItem, cartStore } from '@/store/CartStore'
 
 import DeliverySection from './delivery/DeliverySection'
 import PayMethodSection from './delivery/PayMethodSection'
+import { toast } from '@/lib/toast'
 
 import { observer } from 'mobx-react-lite'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
@@ -13,10 +14,12 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 const CartStepTwo = observer(
 	({
 		setOrderSuccess,
-		locale
+		locale,
+		type = 'base'
 	}: {
 		setOrderSuccess: (value: boolean) => void
 		locale: Locale
+		type: 'oneClick' | 'base'
 	}) => {
 		const { totalSum } = cartStore
 
@@ -42,6 +45,8 @@ const CartStepTwo = observer(
 				}
 			}
 		})
+
+		console.log('type:', type)
 
 		const mapDeliveryDataToBackend = (delivery: DeliveryData): DeliveryInfo => {
 			const cityName =
@@ -93,14 +98,26 @@ const CartStepTwo = observer(
 		const onSubmit: SubmitHandler<OrderForm & { delivery: DeliveryData }> = async data => {
 			const deliveryForBackend = mapDeliveryDataToBackend(data.delivery)
 
-			const preparedItems = cartStore.items.map(i => ({
-				productId: i.productId,
-				productName: getProductName(i.productName),
-				quantity: i.quantity,
-				finalPrice: i.finalPrice,
-				categoryId: i.categoryId,
-				subCategoryId: i.subCategoryId ?? undefined
-			}))
+			const preparedItems =
+				type === 'oneClick' && cartStore.oneStepBuyItem
+					? [
+							{
+								productId: cartStore.oneStepBuyItem.productId,
+								productName: getProductName(cartStore.oneStepBuyItem.productName),
+								quantity: cartStore.oneStepBuyItem.quantity,
+								finalPrice: cartStore.oneStepBuyItem.finalPrice,
+								categoryId: cartStore.oneStepBuyItem.categoryId,
+								subCategoryId: cartStore.oneStepBuyItem.subCategoryId ?? undefined
+							}
+						]
+					: cartStore.items.map(i => ({
+							productId: i.productId,
+							productName: getProductName(i.productName),
+							quantity: i.quantity,
+							finalPrice: i.finalPrice,
+							categoryId: i.categoryId,
+							subCategoryId: i.subCategoryId ?? undefined
+						}))
 
 			const payload = {
 				fullName: data.fullName,
@@ -109,16 +126,20 @@ const CartStepTwo = observer(
 				paymentMethod: data.paymentMethod,
 				comment: data.comment,
 				items: preparedItems,
-				totalPrice: totalSum
+				totalPrice:
+					type === 'oneClick' && cartStore.oneStepBuyItem
+						? cartStore.oneStepBuyItem.finalPrice
+						: totalSum
 			}
 
 			const result = await cartStore.createOrder(payload)
 
 			if (result.success) {
 				setOrderSuccess(true)
-				console.log('Order created successfully:', result.data)
+
 				// тут можеш зробити редірект чи зміну стану
 			} else {
+				toast.error('Не вдалося створити замовлення')
 				console.log('Failed to create order:', result.error)
 			}
 		}

@@ -18,9 +18,10 @@ import { useState } from 'react'
 type Props = {
 	step: number
 	onClose?: () => void
+	type?: 'oneClick' | 'base'
 }
 
-const CartComponent = observer(({ step = 1, onClose }: Props) => {
+const CartComponent = observer(({ step = 1, onClose, type = 'base' }: Props) => {
 	const locale = useLocale() as Locale
 	const { items, oneStepBuyItem, totalSum } = cartStore
 
@@ -82,7 +83,7 @@ const CartComponent = observer(({ step = 1, onClose }: Props) => {
 					</div>
 				</div>
 			) : (
-				<CartStepTwo setOrderSuccess={setOrderSuccess} locale={locale} />
+				<CartStepTwo setOrderSuccess={setOrderSuccess} locale={locale} type={type} />
 			)}
 		</div>
 	)
