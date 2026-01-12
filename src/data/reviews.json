@@ -1,0 +1,122 @@
+[
+	{
+		"uk": {
+			"name": "Олександр К.",
+			"imgUrl": "",
+			"text": "Дуже задоволений сервісом, все пройшло швидко та якісно."
+		},
+		"en": {
+			"name": "Alexander K.",
+			"imgUrl": "",
+			"text": "Very satisfied with the service, everything was fast and high-quality."
+		}
+	},
+	{
+		"uk": {
+			"name": "Марія П.",
+			"imgUrl": "",
+			"text": "Платформа зручна та інтуїтивно зрозуміла. Рекомендую!"
+		},
+		"en": {
+			"name": "Maria P.",
+			"imgUrl": "",
+			"text": "The platform is convenient and intuitive. Highly recommend!"
+		}
+	},
+	{
+		"uk": {
+			"name": "Іван С.",
+			"imgUrl": "",
+			"text": "Відчутно покращив свої навички завдяки навчальним матеріалам."
+		},
+		"en": {
+			"name": "Ivan S.",
+			"imgUrl": "",
+			"text": "Significantly improved my skills thanks to the learning materials."
+		}
+	},
+	{
+		"uk": {
+			"name": "Анна Л.",
+			"imgUrl": "",
+			"text": "Підтримка користувачів на високому рівні, завжди швидко відповідають."
+		},
+		"en": {
+			"name": "Anna L.",
+			"imgUrl": "",
+			"text": "User support is top-notch, always responds quickly."
+		}
+	},
+	{
+		"uk": {
+			"name": "Дмитро К.",
+			"imgUrl": "",
+			"text": "Навчальні сесії добре структуровані і цікаві."
+		},
+		"en": {
+			"name": "Dmytro K.",
+			"imgUrl": "",
+			"text": "Learning sessions are well-structured and interesting."
+		}
+	},
+	{
+		"uk": {
+			"name": "Ольга Т.",
+			"imgUrl": "",
+			"text": "Легко знайти потрібну інформацію та взаємодіяти з іншими учасниками."
+		},
+		"en": {
+			"name": "Olga T.",
+			"imgUrl": "",
+			"text": "Easy to find the needed information and interact with other participants."
+		}
+	},
+	{
+		"uk": {
+			"name": "Сергій М.",
+			"imgUrl": "",
+			"text": "Дуже корисний ресурс для розвитку професійних навичок."
+		},
+		"en": {
+			"name": "Serhiy M.",
+			"imgUrl": "",
+			"text": "Very useful resource for developing professional skills."
+		}
+	},
+	{
+		"uk": {
+			"name": "Катерина Ф.",
+			"imgUrl": "",
+			"text": "Інтерфейс красивий і зручний, приємно користуватися."
+		},
+		"en": {
+			"name": "Kateryna F.",
+			"imgUrl": "",
+			"text": "The interface is beautiful and convenient, pleasant to use."
+		}
+	},
+	{
+		"uk": {
+			"name": "Володимир Я.",
+			"imgUrl": "",
+			"text": "Матеріали оновлюються регулярно, що дуже важливо."
+		},
+		"en": {
+			"name": "Volodymyr Y.",
+			"imgUrl": "",
+			"text": "Materials are updated regularly, which is very important."
+		}
+	},
+	{
+		"uk": {
+			"name": "Людмила Р.",
+			"imgUrl": "",
+			"text": "Всі функції працюють стабільно, немає жодних проблем."
+		},
+		"en": {
+			"name": "Lyudmyla R.",
+			"imgUrl": "",
+			"text": "All functions work stably, no issues at all."
+		}
+	}
+]
