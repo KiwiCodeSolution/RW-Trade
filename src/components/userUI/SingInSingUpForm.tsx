@@ -10,7 +10,7 @@ import Loader from '../commonUI/loader/Loader'
 import { toast } from '@/lib/toast'
 
 import { signIn } from 'next-auth/react'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation'
 import { useState } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -25,37 +25,29 @@ const SignInForm = ({ pageType }: { pageType: PageContext }) => {
 		handleSubmit,
 		formState: { errors, isSubmitting },
 		reset
-	} = useForm<SignInFormValues>({
-		mode: 'onTouched'
-	})
+	} = useForm<SignInFormValues>({ mode: 'onTouched' })
+
 	const [showPassword, setShowPassword] = useState(false)
 	const togglePassword = () => setShowPassword(p => !p)
 
 	const role = pageType === 'admin' ? 'admin' : 'user'
 
-	const router = useRouter()
 	const searchParams = useSearchParams()
-	const callbackUrl = searchParams.get('callbackUrl') || '/manage-panel/notifications'
+	const callbackUrl = searchParams.get('callbackUrl') || '/uk/manage-panel/'
 
 	const onSubmit = async (data: SignInFormValues) => {
 		const formData = { ...data, roleContext: role }
 		console.log('formData', formData)
 
 		try {
-			const res = await signIn('credentials', {
+			// Використовуємо redirect: true — NextAuth сам зробить редірект
+			await signIn('credentials', {
 				...formData,
-				redirect: false,
+				redirect: true,
 				callbackUrl
 			})
 
-			if (res?.ok && res.url && !res.error) {
-				// toast.success('Вхід успішний')
-				// await router.replace(callbackUrl)
-				router.push(res.url)
-				reset()
-			} else {
-				toast.error('Неправильний логін або пароль')
-			}
+			reset()
 		} catch (err) {
 			console.error('Помилка авторизації:', err)
 			toast.error('Сталася помилка. Спробуйте пізніше.')
@@ -81,10 +73,8 @@ const SignInForm = ({ pageType }: { pageType: PageContext }) => {
 						id='login'
 						autoComplete='off'
 						placeholder='Введіть логін'
-						className={`w-[375px] outline-none px-3 py-2 relative z-[1] text-base placeholder:text-sc-2`}
-						{...register('login', {
-							required: 'Login є обовʼязковим'
-						})}
+						className='w-[375px] outline-none px-3 py-2 relative z-[1] text-base placeholder:text-sc-2'
+						{...register('login', { required: 'Login є обовʼязковим' })}
 					/>
 					{errors.login && (
 						<p className='text-sc-5 italic text-sm absolute -bottom-6 left-1'>
@@ -106,16 +96,12 @@ const SignInForm = ({ pageType }: { pageType: PageContext }) => {
 						type={showPassword ? 'text' : 'password'}
 						autoComplete='off'
 						placeholder='Введіть пароль'
-						className={`w-[375px] outline-none px-3 py-2 relative z-[1] text-base placeholder:text-sc-2`}
+						className='w-[375px] outline-none px-3 py-2 relative z-[1] text-base placeholder:text-sc-2'
 						{...register('password', {
 							required: 'Пароль є обовʼязковим',
-							minLength: {
-								value: 6,
-								message: 'Мінімум 6 символів'
-							}
+							minLength: { value: 6, message: 'Мінімум 6 символів' }
 						})}
 					/>
-					{/* Іконка */}
 					<button
 						type='button'
 						onClick={togglePassword}
@@ -135,13 +121,6 @@ const SignInForm = ({ pageType }: { pageType: PageContext }) => {
 			<BtnSolid as='button' btnType='submit' variant='primary'>
 				{isSubmitting ? 'Зачекайте...' : 'Увійти'}
 			</BtnSolid>
-			{/* <button
-				type='submit'
-				disabled={isSubmitting}
-				className='w-1/2 h-10 border border-red rounded-2xl text-red text-xl font-semibold hover:bg-red hover:text-white mx-auto transition-colors duration-300 disabled:opacity-70'
-			>
-				{isSubmitting ? 'Зачекайте...' : 'Увійти'}
-			</button> */}
 		</form>
 	)
 }
