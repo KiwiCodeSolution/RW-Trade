@@ -118,7 +118,7 @@ const SignInForm = ({ pageType }: { pageType: PageContext }) => {
 			</div>
 
 			{/* SUBMIT */}
-			<BtnSolid as='button' btnType='submit' variant='primary'>
+			<BtnSolid as='button' btnType='submit' variant='primary' size='xxxl'>
 				{isSubmitting ? 'Зачекайте...' : 'Увійти'}
 			</BtnSolid>
 		</form>

@@ -1,7 +1,5 @@
 'use client'
 
-import { BASE_IMG_URL } from '@/utils/config'
-
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -20,19 +18,33 @@ const BaseImageItem = ({
 	alt = 'product image',
 	className
 }: BaseImageItemProps) => {
-	const [fallbackSrc, setFallbackSrc] = useState('/images/NotFound.png')
+	const [fallbackSrc] = useState('/images/NotFound.png')
 
-	// Формуємо повний шлях до картинки
-	const imgSrc = src ? `${BASE_IMG_URL}${src.startsWith('/') ? src : `/${src}`}` : fallbackSrc
+	const resolveImgSrc = (src?: string) => {
+		if (!src) return fallbackSrc
+
+		if (src.startsWith('http://') || src.startsWith('https://')) {
+			return src
+		}
+
+		if (src.startsWith('/uploads')) {
+			return `/api${src}`
+		}
+
+		if (src.startsWith('/images')) {
+			return src
+		}
+
+		return fallbackSrc
+	}
 
 	return (
 		<Image
-			src={imgSrc}
+			src={resolveImgSrc(src)}
 			alt={alt}
 			width={width}
 			height={height}
 			className={`h-full w-full object-cover ${className || ''}`}
-			onError={() => setFallbackSrc('/images/NotFound.png')}
 		/>
 	)
 }

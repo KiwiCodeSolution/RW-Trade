@@ -2,8 +2,7 @@
 
 import Title from '@/components/userUI/baseComponents/Title'
 
-import CarTrash from '@/assets/icons/car-crash.svg'
-
+import Image from 'next/image'
 import { useEffect } from 'react'
 
 export default function Error({
@@ -19,7 +18,13 @@ export default function Error({
 
 	return (
 		<div className='flex items-center justify-center min-h-[60vh]'>
-			<CarTrash />
+			<Image
+				src='/icons/car-crash.svg'
+				alt='зображення автомобіля, що врізався у ліхтар'
+				width={600}
+				height={600}
+			/>
+
 			<div className='min-w-[400px] flex flex-col items-center gap-y-12'>
 				<Title tag='h2' styles=''>
 					Something went wrong!

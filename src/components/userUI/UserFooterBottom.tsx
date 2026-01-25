@@ -1,4 +1,4 @@
-import KiwiCodeLogo from '@/assets/logos/KIWICode.svg'
+import { KiwiCodeLogo } from '@/assets/icons_logos'
 
 const UserFooterBottom = () => {
 	return (

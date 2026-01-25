@@ -8,9 +8,9 @@ export default async function AboutPage() {
 	const t = await getTranslations('AboutPage')
 
 	return (
-		<main className='min-h-[80vh]'>
+		<main className='min-h-[80vh] '>
 			<div className='hidden lg:block header-shadow' />
-			<BaseSection>
+			<BaseSection className=''>
 				<Title tag='h1' isPageTitle styles='lg:text-center my-5'>
 					{t('title')}
 				</Title>

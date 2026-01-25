@@ -1,6 +1,6 @@
 'use client'
 
-import SearchIcon from '@/assets/icons/search-20.svg'
+import { SearchIcon } from '@/assets/icons'
 
 import { BASE_URL } from '@/utils/config'
 

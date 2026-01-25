@@ -1,7 +1,3 @@
-import FormIcon_1 from '@/assets/icons/form_1.svg'
-import FormIcon_2 from '@/assets/icons/form_2.svg'
-import FormIcon_3 from '@/assets/icons/form_3.svg'
-import FormIcon_4 from '@/assets/icons/form_4.svg'
 import LogoWhite from '@/assets/logos/LOGO_152_white.png'
 
 import UserForm from './UserForm'
@@ -11,7 +7,12 @@ import Title from './baseComponents/Title'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 
-const icons = [FormIcon_1, FormIcon_2, FormIcon_3, FormIcon_4]
+const icons = [
+	'/images/form/FormIcon_1.png',
+	'/images/form/FormIcon_2.png',
+	'/images/form/FormIcon_3.png',
+	'/images/form/FormIcon_4.png'
+]
 
 const FormSection = () => {
 	const t = useTranslations('HomePage.form_section')
@@ -48,10 +49,15 @@ const FormSection = () => {
 					</Title>
 
 					{items.map((text, index) => {
-						const Icon = icons[index]
 						return (
 							<div key={index} className='flex gap-6 mb-4 mx-[15px] lg:mx-8'>
-								<Icon className='min-w-[33px] h-auto' />
+								<Image
+									src={icons[index]}
+									alt={`icon-${index}`}
+									width={33}
+									height={33}
+									className='h-auto'
+								/>
 								<p className='lg:text-xl leading-[1.5] lg:leading-8'>{text}</p>
 							</div>
 						)

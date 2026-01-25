@@ -1,6 +1,6 @@
 'use client'
 
-import WorldIcon from '@/assets/icons/world-16.svg'
+import { WorldIcon } from '@/assets/icons'
 
 import { Locale } from '@/types/baseTypes'
 
@@ -17,9 +17,6 @@ const LanguageSwitcher = ({ locale }: { locale: Locale }) => {
 	// Поточна локаль з URL
 	const segments = pathname.split('/').filter(Boolean)
 	const firstSegment = segments[0]
-	// const currentLocale = routing.locales.includes(firstSegment as Locale)
-	// 	? (firstSegment as Locale)
-	// 	: routing.defaultLocale
 
 	const pathWithoutLocale = routing.locales.includes(firstSegment as Locale)
 		? `/${segments.slice(1).join('/')}`

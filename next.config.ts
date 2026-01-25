@@ -1,20 +1,9 @@
-import { NextConfig } from 'next'
+import type { NextConfig } from 'next'
 import createNextIntlPlugin from 'next-intl/plugin'
 
 const withNextIntl = createNextIntlPlugin()
 
 const nextConfig: NextConfig = {
-	experimental: {
-		turbo: {
-			rules: {
-				'*.svg': {
-					loaders: ['@svgr/webpack'],
-					as: '*.jsx'
-				}
-			}
-		}
-	},
-
 	async rewrites() {
 		return [
 			{
@@ -38,19 +27,9 @@ const nextConfig: NextConfig = {
 			{
 				protocol: 'https',
 				hostname: 'devtestapps.online',
-				port: '',
 				pathname: '/uploads/**'
 			}
 		]
-	},
-
-	// 🟡 Fallback для Netlify — тут гарантуємо, що .svg рендериться як React-компонент
-	webpack(config) {
-		config.module.rules.push({
-			test: /\.svg$/,
-			use: ['@svgr/webpack']
-		})
-		return config
 	}
 }
 

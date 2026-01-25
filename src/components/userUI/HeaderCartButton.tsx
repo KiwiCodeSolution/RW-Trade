@@ -1,6 +1,6 @@
 'use client'
 
-import CartIcon from '@/assets/icons/cart-bronze-50.svg'
+import { CartBronzeIcon } from '@/assets/icons'
 
 import { Locale } from '@/types/baseTypes'
 
@@ -19,7 +19,7 @@ const HeaderCartButton = ({ locale }: { locale: Locale }) => {
 				className='w-[50px] h-[50px] relative rounded-full hover:shadow-lg hover:scale-102 duration-200'
 				onClick={() => setIsShowModal(true)}
 			>
-				<CartIcon />
+				<CartBronzeIcon />
 				<CartCount />
 			</button>
 			{isShowModal && (

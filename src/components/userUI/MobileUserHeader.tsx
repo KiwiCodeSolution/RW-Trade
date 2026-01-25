@@ -1,6 +1,6 @@
 'use client'
 
-import BurgerIcon from '@/assets/icons/burger-primary-24.svg'
+import { BurgerIcon } from '@/assets/icons'
 import { LogoBlue } from '@/assets/icons_logos'
 
 import { Locale } from '@/types/baseTypes'

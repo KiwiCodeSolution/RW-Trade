@@ -45,7 +45,7 @@ export default async function OneNews({ params }: { params: Promise<Params> }) {
 	if (!post) return null
 
 	return (
-		<BaseSection>
+		<BaseSection className='xl:max-w-[1280px]!'>
 			<div className='py-4 mb-4 mx-auto'>
 				<div className='flex items-center mb-4 lg:mb-8'>
 					<div className='w-[100px] h-[100px] min-w-[100px] flex justify-center items-center mr-8'>

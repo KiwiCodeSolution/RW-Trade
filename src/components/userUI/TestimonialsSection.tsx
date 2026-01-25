@@ -1,10 +1,12 @@
-import BabyImg from '@/assets/images/baby.svg'
-
 import { Locale } from '@/types/baseTypes'
+
+import Baby from '../../../public/images/baby.png'
 
 import TestimonialsCarousel from './TestimonialsCarousel'
 import BaseSection from './baseComponents/BaseSection'
 import Title from './baseComponents/Title'
+
+import Image from 'next/image'
 
 interface Props {
 	locale: Locale
@@ -22,7 +24,13 @@ const TestimonialsSection = ({ locale }: Props) => {
 					: 'What people are saying about our work'}
 			</p>
 			<div className='flex items-center justify-center'>
-				<BabyImg className='max-w-[600px] h-auto' />
+				<Image
+					src={Baby}
+					alt='baby'
+					width={600}
+					height={600}
+					className='max-w-[600px] h-auto'
+				/>
 			</div>
 			<div className='flex flex-col'>
 				<Title tag='h2' styles='mb-6 hidden lg:block'>

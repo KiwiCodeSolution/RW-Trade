@@ -1,6 +1,6 @@
 'use client'
 
-import Person from '@/assets/icons/person-16.svg'
+import { Person } from '@/assets/icons'
 
 import { Locale } from '@/types/baseTypes'
 
