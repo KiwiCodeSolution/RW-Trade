@@ -2,8 +2,6 @@
 
 import { Add, Trash } from '@/assets/icons'
 
-import { BASE_IMG_URL } from '@/utils/config'
-
 import Image from 'next/image'
 import { ChangeEvent, useEffect, useState } from 'react'
 
@@ -30,11 +28,29 @@ const SingleImageUpload = ({
 		setLocal(image)
 	}, [image])
 
+	// const resolveImageUrl = (url?: string) => {
+	// 	if (!url) return ''
+	// 	if (url.startsWith('blob:')) return url
+	// 	if (url.startsWith('http://') || url.startsWith('https://')) return url
+	// 	return `${BASE_IMG_URL}${url.startsWith('/') ? url : `/${url}`}`
+	// }
+
 	const resolveImageUrl = (url?: string) => {
 		if (!url) return ''
+
+		// локальне превʼю
 		if (url.startsWith('blob:')) return url
+
+		// абсолютний url
 		if (url.startsWith('http://') || url.startsWith('https://')) return url
-		return `${BASE_IMG_URL}${url.startsWith('/') ? url : `/${url}`}`
+
+		// файли з бекенду
+		if (url.startsWith('/uploads')) return `/api${url}`
+
+		// fallback (на всяк випадок)
+		if (url.startsWith('/images')) return url
+
+		return ''
 	}
 
 	const handleAdd = (e: ChangeEvent<HTMLInputElement>) => {

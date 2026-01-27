@@ -20,10 +20,10 @@ class CategoryStore {
 		this.fetchCategories()
 	}
 
-	async fetchCategories() {
+	async fetchCategories({ pageType }: { pageType?: 'admin' | 'user' } = { pageType: 'user' }) {
 		this.loading = true
 		try {
-			const data: Category[] = await getCategories()
+			const data: Category[] = await getCategories({ pageType })
 			runInAction(() => {
 				this.categories = data
 			})

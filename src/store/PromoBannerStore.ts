@@ -7,6 +7,7 @@ import {
 	updatePromoBanner
 } from '@/api/promoBanner'
 
+import { authGuard } from '@/lib/authGuard'
 import { toast } from '@/lib/toast'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -17,10 +18,14 @@ class PromoBannerStore {
 
 	constructor() {
 		makeAutoObservable(this)
-		this.fetchPromoBanner()
+		this.fetchPromoBanner({ pageType: 'client' })
 	}
 
-	fetchPromoBanner = async (): Promise<PromoBanner | null> => {
+	fetchPromoBanner = async ({
+		pageType
+	}: {
+		pageType: 'client' | 'admin'
+	}): Promise<PromoBanner | null> => {
 		this.isLoading = true
 		try {
 			const res = await getPromoBanner()
@@ -28,6 +33,19 @@ class PromoBannerStore {
 				this.banner = res
 			})
 			return res
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (pageType === 'admin') {
+				if (error?.isAuthError) {
+					authGuard.expireSession()
+				} else {
+					toast.error('Не вдалося отримати промо-банер')
+				}
+			}
+
+			return null
 		} finally {
 			runInAction(() => {
 				this.isLoading = false
@@ -44,11 +62,21 @@ class PromoBannerStore {
 		this.isLoading = true
 		try {
 			const result = await createPromoBanner(data)
-			if (!result) return null
 
 			runInAction(() => (this.banner = result))
 			toast.success('Промо-банер створено')
 			return result
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося створити промо-банер')
+			}
+
+			return null
 		} finally {
 			runInAction(() => {
 				this.isLoading = false
@@ -65,6 +93,17 @@ class PromoBannerStore {
 			runInAction(() => (this.banner = result))
 			toast.success('Промо-банер оновлено')
 			return result
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося оновити промо-банер')
+			}
+
+			return null
 		} finally {
 			runInAction(() => {
 				this.isLoading = false
@@ -81,6 +120,17 @@ class PromoBannerStore {
 			runInAction(() => (this.banner = null))
 			toast.success('Промо-банер видалено')
 			return true
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося видалити промо-банер')
+			}
+
+			return null
 		} finally {
 			runInAction(() => {
 				this.isLoading = false

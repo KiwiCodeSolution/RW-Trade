@@ -1,5 +1,7 @@
 import { api } from '@/utils/axios'
 
+import { ApiError } from '@/types/apiError'
+
 import { toast } from '@/lib/toast'
 
 type SubcategoryPayload = {
@@ -10,13 +12,18 @@ type SubcategoryPayload = {
 }
 
 // ---------------- GET ALL CATEGORIES ----------------
-export async function getCategories() {
+export async function getCategories(
+	{ pageType }: { pageType?: 'admin' | 'user' } = { pageType: 'user' }
+) {
 	try {
 		const res = await api.get('/categories')
 		return res.data
 	} catch (err: unknown) {
 		console.error('Помилка отримання категорій:', err)
-		toast.error('Не вдалося отримати категорії')
+		if (pageType === 'admin') {
+			toast.error('Не вдалося отримати категорії')
+		}
+
 		throw err
 	}
 }
@@ -26,10 +33,14 @@ export async function getCategoriesByID({ id }: { id: string }) {
 	try {
 		const res = await api.get(`/categories/${id}`)
 		return res.data
-	} catch (err: unknown) {
-		console.error(err)
-		toast.error('Не вдалося отримати категорію')
-		throw err
+	} catch (err) {
+		const error = err as ApiError
+
+		if (error.isAuthError) {
+			throw error
+		}
+
+		throw error
 	}
 }
 
@@ -38,10 +49,14 @@ export async function createSubCategory({ id, data }: { id: string; data: Subcat
 	try {
 		const res = await api.post(`/categories/${id}/subcategories`, data)
 		return res.data
-	} catch (err: unknown) {
-		const msg = err instanceof Error ? err.message : 'Помилка створення підкатегорії'
-		toast.error(msg)
-		throw err
+	} catch (err) {
+		const error = err as ApiError
+
+		if (error.isAuthError) {
+			throw error
+		}
+
+		throw error
 	}
 }
 
@@ -58,10 +73,14 @@ export async function updateSubCategory({
 	try {
 		const res = await api.patch(`/categories/${id}/subcategories/${subId}`, data)
 		return res.data
-	} catch (err: unknown) {
-		const msg = err instanceof Error ? err.message : 'Помилка оновлення підкатегорії'
-		toast.error(msg)
-		throw err
+	} catch (err) {
+		const error = err as ApiError
+
+		if (error.isAuthError) {
+			throw error
+		}
+
+		throw error
 	}
 }
 
@@ -70,9 +89,13 @@ export async function deleteSubCategory({ id, subId }: { id: string; subId: stri
 	try {
 		const res = await api.delete(`/categories/${id}/subcategories/${subId}`)
 		return res.data
-	} catch (err: unknown) {
-		const msg = err instanceof Error ? err.message : 'Помилка видалення підкатегорії'
-		toast.error(msg)
-		throw err
+	} catch (err) {
+		const error = err as ApiError
+
+		if (error.isAuthError) {
+			throw error
+		}
+
+		throw error
 	}
 }

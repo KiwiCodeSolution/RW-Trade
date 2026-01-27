@@ -2,6 +2,7 @@
 
 import AdminHeader from '@/components/adminUI/AdminHeader'
 
+import { AuthExpiredListener } from './AuthExpiredListener'
 import '@/styles/globals.css'
 
 import { SessionProvider } from 'next-auth/react'
@@ -9,6 +10,7 @@ import { SessionProvider } from 'next-auth/react'
 export default function ClientAdminLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<SessionProvider>
+			<AuthExpiredListener />
 			<div className='flex'>
 				<div className='w-[320px] shrink-0'>
 					<AdminHeader />

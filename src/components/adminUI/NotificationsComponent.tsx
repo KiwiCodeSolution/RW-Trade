@@ -3,17 +3,15 @@
 import { notificationsStore } from '@/store/NotificationsStore'
 
 import Notice from './Notice'
-import { useRouter } from '@/i18n/navigation'
 
 import { observer } from 'mobx-react-lite'
 import { useEffect } from 'react'
 
 const NotificationsComponent = observer(() => {
 	const { notifications, fetchNotifications } = notificationsStore
-	const router = useRouter()
 
 	useEffect(() => {
-		if (notifications.length === 0) fetchNotifications(router)
+		if (notifications.length === 0) fetchNotifications()
 	}, [])
 
 	//сортуємо по статусу (сповіщення прочитані/непрочитані) та даті

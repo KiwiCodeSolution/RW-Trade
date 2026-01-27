@@ -25,7 +25,7 @@ const CategoriesSection = observer(({ section, title, locale }: CategorySectionP
 
 	useEffect(() => {
 		if (categories.length > 0) return
-		categoryStore.fetchCategories()
+		categoryStore.fetchCategories({ pageType: 'admin' })
 	}, [])
 
 	return (

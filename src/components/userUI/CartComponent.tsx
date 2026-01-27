@@ -23,7 +23,7 @@ type Props = {
 
 const CartComponent = observer(({ step = 1, onClose, type = 'base' }: Props) => {
 	const locale = useLocale() as Locale
-	const { items, oneStepBuyItem, totalSum } = cartStore
+	const { items, oneStepBuyItem, totalSum, orderNumber } = cartStore
 
 	const [currentStep, setCurrentStep] = useState(step)
 	const [orderSuccess, setOrderSuccess] = useState(false)
@@ -43,10 +43,17 @@ const CartComponent = observer(({ step = 1, onClose, type = 'base' }: Props) => 
 
 	if (orderSuccess)
 		return (
-			<div className='w-full min-h-[200px] flex items-center justify-center'>
+			<div className='w-full min-h-[200px] items-center justify-center flex flex-col gap-y-6'>
 				<Title tag='h2' styles='text-center'>
 					{locale === 'en' ? 'Order sent successfully!' : 'Замовлення успішно надіслано!'}
 				</Title>
+				{orderNumber && (
+					<Title tag='h3' styles='text-center'>
+						{locale === 'en'
+							? `Order number: ${orderNumber}`
+							: `Номер замовлення: ${orderNumber}`}
+					</Title>
+				)}
 			</div>
 		)
 

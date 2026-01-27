@@ -1,12 +1,10 @@
 // api/news.ts
 import { api } from '@/utils/axios'
 
+import { ApiError } from '@/types/apiError'
 import { CreateNewsDto, NewsArticle } from '@/types/baseTypes'
 
 import { NewsSort } from '@/lib/sortOptions'
-import { toast } from '@/lib/toast'
-
-import { AxiosError } from 'axios'
 
 // -------------------- PUBLIC --------------------
 
@@ -27,12 +25,9 @@ export const getNewsWithPagination = async (params?: {
 		)
 
 		return data
-	} catch (err: unknown) {
-		if (err instanceof AxiosError)
-			toast.error(err.response?.data?.message ?? 'Не вдалося отримати новини')
-		else if (err instanceof Error) toast.error(err.message)
-		else toast.error('Не вдалося отримати новини')
-		throw err
+	} catch (err) {
+		const error = err as ApiError
+		throw error
 	}
 }
 
@@ -41,30 +36,29 @@ export const getAllNewsAdmin = async (params?: {
 	limit?: number
 	sort?: NewsSort
 }) => {
-	console.log('params', params)
-	const res = await api.get('/news/admin', {
-		params: {
-			page: params?.page ?? 1,
-			limit: params?.limit ?? 20,
-			sort: String(params?.sort ?? 'date_desc')
-		}
-	})
+	try {
+		const res = await api.get('/news/admin', {
+			params: {
+				page: params?.page ?? 1,
+				limit: params?.limit ?? 20,
+				sort: String(params?.sort ?? 'date_desc')
+			}
+		})
 
-	return res.data
+		return res.data
+	} catch (err) {
+		const error = err as ApiError
+		throw error
+	}
 }
 // Отримати новину по id
 export const getNewsById = async (id: string) => {
 	try {
 		const { data } = await api.get<NewsArticle>(`/news/${id}`)
 		return data
-	} catch (err: unknown) {
-		if (typeof window !== 'undefined') {
-			if (err instanceof AxiosError)
-				toast.error(err.response?.data?.message ?? 'Не вдалося отримати новину')
-			else if (err instanceof Error) toast.error(err.message)
-			else toast.error('Не вдалося отримати новину')
-		}
-		throw err
+	} catch (err) {
+		const error = err as ApiError
+		throw error
 	}
 }
 
@@ -88,14 +82,11 @@ export const createNewsArticle = async ({
 		files?.forEach(file => formData.append('image', file))
 
 		const { data: res } = await api.post<NewsArticle>('/news', formData)
-		toast.success('Новину успішно створено')
+
 		return res
-	} catch (err: unknown) {
-		if (err instanceof AxiosError)
-			toast.error(err.response?.data?.message ?? 'Не вдалося створити новину')
-		else if (err instanceof Error) toast.error(err.message)
-		else toast.error('Не вдалося створити новину')
-		throw err
+	} catch (err) {
+		const error = err as ApiError
+		throw error
 	}
 }
 
@@ -125,28 +116,17 @@ export const updateNewsArticle = async ({
 		} else {
 			res = await api.patch<NewsArticle>(`/news/${id}`, data)
 		}
-		toast.success('Новину успішно оновлено')
+
 		return res.data
-	} catch (err: unknown) {
-		if (err instanceof AxiosError)
-			toast.error(err.response?.data?.message ?? 'Не вдалося оновити новину')
-		else if (err instanceof Error) toast.error(err.message)
-		else toast.error('Не вдалося оновити новину')
-		throw err
+	} catch (err) {
+		const error = err as ApiError
+		throw error
 	}
 }
 
 // Видалення новини
 export const deleteNews = async (id: string) => {
-	try {
-		const { data } = await api.delete(`/news/${id}`)
-		toast.success('Новину успішно видалено')
-		return data
-	} catch (err: unknown) {
-		if (err instanceof AxiosError)
-			toast.error(err.response?.data?.message ?? 'Не вдалося видалити новину')
-		else if (err instanceof Error) toast.error(err.message)
-		else toast.error('Не вдалося видалити новину')
-		throw err
-	}
+	const { data } = await api.delete(`/news/${id}`)
+
+	return data
 }

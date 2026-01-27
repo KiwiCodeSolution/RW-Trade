@@ -2,8 +2,6 @@
 
 import { Add, Trash } from '@/assets/icons'
 
-import { BASE_IMG_URL } from '@/utils/config'
-
 import Image from 'next/image'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ReactSortable } from 'react-sortablejs'
@@ -31,11 +29,29 @@ const ProductImagesBlock = ({ images = [], onChange }: ProductImagesBlockProps) 
 		images.length ? [...images, ...createEmptySlots()].slice(0, 10) : createEmptySlots()
 	)
 
+	// const resolveImageUrl = (url?: string) => {
+	// 	if (!url) return ''
+	// 	if (url.startsWith('blob:') || url.startsWith('http://') || url.startsWith('https://'))
+	// 		return url
+	// 	return `${BASE_IMG_URL}${url.startsWith('/') ? url : `/${url}`}`
+	// }
+
 	const resolveImageUrl = (url?: string) => {
 		if (!url) return ''
-		if (url.startsWith('blob:') || url.startsWith('http://') || url.startsWith('https://'))
-			return url
-		return `${BASE_IMG_URL}${url.startsWith('/') ? url : `/${url}`}`
+
+		// локальне превʼю
+		if (url.startsWith('blob:')) return url
+
+		// абсолютний url
+		if (url.startsWith('http://') || url.startsWith('https://')) return url
+
+		// файли з бекенду
+		if (url.startsWith('/uploads')) return `/api${url}`
+
+		// статичні картинки
+		if (url.startsWith('/images')) return url
+
+		return ''
 	}
 
 	// 🔹 відправляємо на бек тільки заповнені фото, але UI зберігає всі слоти

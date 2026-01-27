@@ -2,6 +2,9 @@ import { OrderStats } from '@/types/baseTypes'
 
 import { getAllData } from '@/api/stats'
 
+import { authGuard } from '@/lib/authGuard'
+import { toast } from '@/lib/toast'
+
 import { makeAutoObservable, runInAction } from 'mobx'
 
 class StatisticsStore {
@@ -24,9 +27,20 @@ class StatisticsStore {
 				this.loading = false
 			})
 		} catch (err: unknown) {
-			console.error(err)
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
 
-			runInAction(() => (this.loading = false))
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося отримати статистику')
+			}
+
+			return null
+		} finally {
+			runInAction(() => {
+				this.loading = false
+			})
 		}
 	}
 }

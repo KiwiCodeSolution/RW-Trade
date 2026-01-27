@@ -1,20 +1,15 @@
-import { Locale } from './types/baseTypes'
+// middleware.ts
+import type { Locale } from '@/types/baseTypes'
+
+import { auth } from '@/auth'
 import { routing } from '@/i18n/routing'
 
-import { getToken } from 'next-auth/jwt'
 import { NextRequest, NextResponse } from 'next/server'
 
-const protectedRoutes = [
-	'/uk/manage-panel',
-	'/uk/manage-panel/',
-	'/en/manage-panel',
-	'/en/manage-panel/'
-]
-
 export async function middleware(request: NextRequest) {
-	const { pathname } = request.nextUrl
+	const { pathname, search } = request.nextUrl
 
-	// 1. Пропускаємо статику та API
+	// 1️⃣ Пропускаємо системні маршрути
 	if (
 		pathname.startsWith('/_next') ||
 		pathname.startsWith('/api') ||
@@ -24,64 +19,52 @@ export async function middleware(request: NextRequest) {
 		return NextResponse.next()
 	}
 
-	// 2. Визначаємо локаль
-	const pathSegments = pathname.split('/').filter(Boolean)
-	const firstSegmentRaw = pathSegments[0]
-	const rawCookieLang = request.cookies.get('NEXT_LOCALE')?.value
-	const cookieLang =
-		rawCookieLang && routing.locales.includes(rawCookieLang as Locale)
-			? rawCookieLang
+	// 2️⃣ Розбиваємо шлях
+	const segments = pathname.split('/').filter(Boolean)
+	const firstSegment = segments[0]
+
+	// 3️⃣ Беремо локаль з cookie
+	const cookieLocaleRaw = request.cookies.get('NEXT_LOCALE')?.value
+	const cookieLocale =
+		cookieLocaleRaw && routing.locales.includes(cookieLocaleRaw as Locale)
+			? (cookieLocaleRaw as Locale)
 			: undefined
 
-	// 3. Якщо є локаль
-	if (firstSegmentRaw && routing.locales.includes(firstSegmentRaw as Locale)) {
-		const firstSegment = firstSegmentRaw as (typeof routing.locales)[number]
+	// 🟥 4️⃣ AUTH GUARD — ДО будь-якого рендеру
+	if (
+		firstSegment &&
+		routing.locales.includes(firstSegment as Locale) &&
+		segments[1] === 'manage-panel'
+	) {
+		const session = await auth()
 
-		if (cookieLang !== firstSegment) {
-			const response = NextResponse.next()
-			response.cookies.set('NEXT_LOCALE', firstSegment, {
+		if (!session) {
+			const locale = firstSegment as Locale
+			return NextResponse.redirect(new URL(`/${locale}/signin`, request.url))
+		}
+	}
+
+	// 5️⃣ Якщо локаль є в URL — просто пропускаємо
+	if (firstSegment && routing.locales.includes(firstSegment as Locale)) {
+		if (cookieLocale !== firstSegment) {
+			const res = NextResponse.next()
+			res.cookies.set('NEXT_LOCALE', firstSegment, {
 				path: '/',
 				maxAge: 60 * 60 * 24 * 365,
 				sameSite: 'strict'
 			})
-			return response
-		}
-
-		// 4. Перевірка авторизації
-		const requiresAuth = protectedRoutes.some(route => pathname.startsWith(route))
-
-		if (requiresAuth) {
-			const token = await getToken({
-				req: request,
-				secret: process.env.NEXTAUTH_SECRET
-			})
-
-			//моделюємо протухання токену
-			// if (token) token.exp = 1
-			// якщо токена немає або він протух
-			const isExpired = token?.exp && Date.now() >= Number(token.exp) * 1000
-
-			if (!token || isExpired) {
-				const callbackUrl = encodeURIComponent(request.nextUrl.pathname)
-				return NextResponse.redirect(
-					new URL(`/uk/signin?callbackUrl=${callbackUrl}`, request.url)
-				)
-			}
+			return res
 		}
 
 		return NextResponse.next()
 	}
 
-	// 5. Якщо локалі немає — редірект
-	// const langToUse = cookieLang || routing.defaultLocale
-	// return NextResponse.redirect(new URL(`/${langToUse}${pathname}`, request.url))
-	// 5. Якщо локалі немає — редірект
-	const langToUse = cookieLang || routing.defaultLocale
+	// 6️⃣ Якщо локалі нема — додаємо
+	const localeToUse = cookieLocale || routing.defaultLocale
+	const redirectUrl = new URL(`/${localeToUse}${pathname}`, request.url)
+	redirectUrl.search = search
 
-	const url = new URL(`/${langToUse}${pathname}`, request.url)
-	url.search = request.nextUrl.search // ✅ переносимо всі query-параметри (наприклад ?category=...)
-
-	return NextResponse.redirect(url)
+	return NextResponse.redirect(redirectUrl)
 }
 
 export const config = {

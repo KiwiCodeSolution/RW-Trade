@@ -1,18 +1,22 @@
 import { api } from '@/utils/axios'
 
+import { ApiError } from '@/types/apiError'
 import { Notification } from '@/types/baseTypes'
-
-import { toast } from '@/lib/toast'
 
 // Отримати всі нотифікації
 export const getAllNotifications = async (): Promise<Notification[]> => {
 	try {
 		const { data } = await api.get('/notifications', { params: { cache: 'no-store' } })
+
 		return data
 	} catch (err) {
-		console.error('Помилка отримання нотифікацій:', err)
-		toast.error('Не вдалося отримати нотифікації')
-		throw err
+		const error = err as ApiError
+
+		if (error.isAuthError) {
+			throw error
+		}
+
+		throw error
 	}
 }
 
@@ -22,8 +26,12 @@ export const toggleStatusNotification = async (id: string): Promise<Notification
 		const { data } = await api.patch(`/notifications/${id}/read`)
 		return data
 	} catch (err) {
-		console.error('Помилка при оновленні статусу:', err)
-		toast.error('Не вдалося оновити статус нотифікації')
-		return null
+		const error = err as ApiError
+
+		if (error.isAuthError) {
+			throw error
+		}
+
+		throw error
 	}
 }

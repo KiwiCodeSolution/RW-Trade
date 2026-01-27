@@ -42,7 +42,9 @@ const SinglePromoBanner = () => {
 
 	useEffect(() => {
 		const fetchBanner = async () => {
-			const banner: PromoBanner | null = await promoBannerStore.fetchPromoBanner()
+			const banner: PromoBanner | null = await promoBannerStore.fetchPromoBanner({
+				pageType: 'admin'
+			})
 			if (banner) {
 				reset({
 					title: banner.title,
