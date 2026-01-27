@@ -107,7 +107,7 @@ const UserForm = ({ formTexts }: UserFormProps) => {
 						id='message'
 						className='min-h-[100px] bg-white rounded-md mb-3 outline-0 text-txt-dark px-2 py-1 resize-none'
 						placeholder={formTexts.placeholder_3}
-						{...register('message', { required: true })}
+						{...register('message', { required: true, maxLength: 500 })}
 					/>
 					{errors.message && (
 						<span className='absolute -bottom-[10px] left-0 text-[12px] text-sc-5 italic'>

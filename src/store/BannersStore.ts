@@ -1,12 +1,6 @@
 import { Banner, CreateBannerDto } from '@/types/baseTypes'
 
-import {
-	createBanner,
-	deleteBanner,
-	getAllAdminBanners,
-	getAllBanners,
-	updateBanner
-} from '@/api/banners'
+import { createBanner, deleteBanner, getAllBanners, updateBanner } from '@/api/banners'
 
 import { authGuard } from '@/lib/authGuard'
 import { toast } from '@/lib/toast'
