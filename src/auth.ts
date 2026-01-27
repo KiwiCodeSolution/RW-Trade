@@ -5,7 +5,7 @@ import Credentials from 'next-auth/providers/credentials'
 
 async function refreshAccessToken(token: JWT): Promise<JWT> {
 	try {
-		const res = await fetch(`${process.env.BACKEND_URL}/auth/refresh`, {
+		const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({
@@ -51,7 +51,7 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
 			async authorize(credentials) {
 				console.log('credentials', credentials)
 
-				const res = await fetch(`${process.env.BACKEND_URL}/auth/signin`, {
+				const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/signin`, {
 					method: 'POST',
 					headers: { 'Content-Type': 'application/json' },
 					body: JSON.stringify({

@@ -5,6 +5,8 @@ import Path from '@/components/userUI/baseComponents/Path'
 
 import { Locale } from '@/types/baseTypes'
 
+import { fetchPublicCategories } from '@/api/api-fetch/categories'
+
 export async function generateMetadata({
 	params
 }: {
@@ -20,6 +22,8 @@ export async function generateMetadata({
 const Catalog = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 	const { locale } = await params
 
+	const categories = await fetchPublicCategories()
+
 	const title = locale === 'uk' ? 'каталог' : 'catalog'
 	const description = locale === 'uk' ? 'Категорії товарів' : 'Categories'
 
@@ -28,7 +32,12 @@ const Catalog = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 			<BaseSection>
 				<Path secondName={title} locale={locale} />
 			</BaseSection>
-			<CategoriesSection section='client' locale={locale} title={description} />
+			<CategoriesSection
+				section='client'
+				locale={locale}
+				title={description}
+				initialCategories={categories}
+			/>
 			<AllItemsSection locale={locale} />
 		</div>
 	)

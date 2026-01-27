@@ -18,7 +18,11 @@ class PromoBannerStore {
 
 	constructor() {
 		makeAutoObservable(this)
-		this.fetchPromoBanner({ pageType: 'client' })
+		// this.fetchPromoBanner({ pageType: 'client' })
+	}
+
+	setBanner(banner: PromoBanner | null) {
+		this.banner = banner
 	}
 
 	fetchPromoBanner = async ({

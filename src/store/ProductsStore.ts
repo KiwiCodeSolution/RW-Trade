@@ -369,6 +369,18 @@ class ProductStore {
 			}
 		}
 	}
+
+	setDiscountProducts(products: Product[]) {
+		this.discountProducts = products
+	}
+
+	setDiscountSubcategories(subcategories: Subcategory[]) {
+		this.discountSubcategories = subcategories
+	}
+
+	setDiscountTotal(total: number) {
+		this.discountTotal = total
+	}
 }
 
 export const productStore = new ProductStore()

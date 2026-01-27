@@ -170,6 +170,10 @@ class BannersStore {
 			})
 		}
 	}
+
+	setBanners(banners: Banner[]) {
+		this.banners = banners
+	}
 }
 
 export const bannersStore = new BannersStore()

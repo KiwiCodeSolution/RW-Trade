@@ -17,7 +17,11 @@ class CategoryStore {
 
 	constructor() {
 		makeAutoObservable(this)
-		this.fetchCategories()
+		// this.fetchCategories()
+	}
+
+	setCategories(categories: Category[]) {
+		this.categories = categories
 	}
 
 	async fetchCategories({ pageType }: { pageType?: 'admin' | 'user' } = { pageType: 'user' }) {

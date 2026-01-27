@@ -26,7 +26,7 @@ class NewsStore {
 
 	constructor() {
 		makeAutoObservable(this)
-		this.fetchNews()
+		// this.fetchNews()
 	}
 
 	// публічні новини (тільки isPublished)
@@ -158,6 +158,11 @@ class NewsStore {
 
 			return null
 		}
+	}
+
+	setNews(items: NewsArticle[], total: number) {
+		this.news = items
+		this.total = total
 	}
 }
 

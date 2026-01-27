@@ -12,7 +12,6 @@ import Title from './baseComponents/Title'
 import '@/styles/globals.css'
 
 import { observer } from 'mobx-react-lite'
-import { useEffect } from 'react'
 
 type NewsSectionProps = {
 	section: string
@@ -24,14 +23,6 @@ type NewsSectionProps = {
 
 const NewsSection = observer(({ section, title, subtitle, locale }: NewsSectionProps) => {
 	const { news, isLoading } = newsStore
-
-	useEffect(() => {
-		newsStore.fetchNews({
-			page: 1,
-			limit: 6,
-			sort: 'date_desc'
-		})
-	}, [])
 
 	if (isLoading) return <Spinner />
 
