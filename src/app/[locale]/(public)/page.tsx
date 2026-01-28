@@ -1,15 +1,17 @@
-import AddSectionFirst from '@/components/userUI/AddSectionFirst'
-import AddSectionSecond from '@/components/userUI/AddSectionSecond'
-import DiscountsSection from '@/components/userUI/DiscountsSection'
+import AddSectionSecondServer from '@/components/userUI/AddSectionSecondServer'
+import BannersPageComponent from '@/components/userUI/BannersPageComponent'
+import DiscountsSectionServer from '@/components/userUI/DiscountsSectionServer'
 import FormSection from '@/components/userUI/FormSection'
-import NewsSection from '@/components/userUI/NewsSection'
+import NewsSectionServer from '@/components/userUI/NewsSectionServer'
 import PopularCategories from '@/components/userUI/PopularCategories'
-import PopularProducts from '@/components/userUI/PopularProducts'
+import PopularProductsServer from '@/components/userUI/PopularProductsServer'
 import RetailWholesaleModal from '@/components/userUI/RetailWholesaleModal'
 import TestimonialsSection from '@/components/userUI/TestimonialsSection'
 import BaseSection from '@/components/userUI/baseComponents/BaseSection'
 
 import { Locale } from '@/types/baseTypes'
+
+import { fetchPublicBanners } from '@/api/api-fetch/banners'
 
 import { getTranslations } from 'next-intl/server'
 
@@ -22,21 +24,24 @@ const Main = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 		t('NewsSectionAllPages.title_newsPage')
 	]
 
+	const banners = await fetchPublicBanners()
+
 	return (
 		<main className='min-h-[80vh]'>
 			<BaseSection className='min-h-[200px] xl:min-h-[400px]'>
-				<AddSectionFirst />
+				<BannersPageComponent banners={banners} />
 			</BaseSection>
 
-			<PopularProducts />
+			<PopularProductsServer locale={locale} />
 
-			<AddSectionSecond locale={locale} />
+			<AddSectionSecondServer locale={locale} />
 
-			<DiscountsSection
+			<DiscountsSectionServer
 				btn={t('HomePage.discounts.btn')}
 				title={t('HomePage.discounts.title')}
 				locale={locale}
 			/>
+
 			<PopularCategories />
 
 			<FormSection />
@@ -44,7 +49,7 @@ const Main = async ({ params }: { params: Promise<{ locale: Locale }> }) => {
 			<TestimonialsSection locale={locale} />
 
 			<BaseSection>
-				<NewsSection
+				<NewsSectionServer
 					section='main'
 					locale={locale}
 					title={titles}

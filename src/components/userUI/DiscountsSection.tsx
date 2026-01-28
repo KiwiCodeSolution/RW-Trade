@@ -27,12 +27,6 @@ const DiscountsSection = observer(
 			setMounted(true)
 		}, [])
 
-		useEffect(() => {
-			if (discountProducts.length === 0) {
-				productStore.fetchDiscountProducts()
-			}
-		}, [discountProducts.length])
-
 		// 🔹 SLUG-BASED FILTER
 		const subcategorySlugToIdMap = useMemo(() => {
 			const map = new Map<string, string>()

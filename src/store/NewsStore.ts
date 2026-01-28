@@ -8,6 +8,7 @@ import {
 	updateNewsArticle
 } from '@/api/news'
 
+import { authGuard } from '@/lib/authGuard'
 import { NewsSort } from '@/lib/sortOptions'
 import { toast } from '@/lib/toast'
 
@@ -25,7 +26,7 @@ class NewsStore {
 
 	constructor() {
 		makeAutoObservable(this)
-		this.fetchNews()
+		// this.fetchNews()
 	}
 
 	// публічні новини (тільки isPublished)
@@ -44,7 +45,6 @@ class NewsStore {
 			})
 		} catch (error) {
 			console.error('❌ Failed to fetch news:', error)
-			toast.error('Не вдалося завантажити новини')
 		} finally {
 			runInAction(() => (this.isLoading = false))
 		}
@@ -64,9 +64,15 @@ class NewsStore {
 				this.adminNews = res.items
 				this.adminTotal = res.totalItems
 			})
-		} catch (error) {
-			console.error('❌ Failed to fetch admin news:', error)
-			toast.error('Не вдалося завантажити новини для адмінки')
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося завантажити новини')
+			}
 		} finally {
 			runInAction(() => (this.adminLoading = false))
 		}
@@ -81,10 +87,17 @@ class NewsStore {
 				this.total += 1
 			})
 
+			toast.success('Новину успішно створено')
 			return newArticle
-		} catch (err) {
-			console.error(err)
-			toast.error('Не вдалося створити новину')
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося створити новину')
+			}
+
 			return null
 		} finally {
 			runInAction(() => (this.isLoading = false))
@@ -104,20 +117,27 @@ class NewsStore {
 				if (adminIndex !== -1) this.adminNews[adminIndex] = updated
 			})
 
+			toast.success('Новину успішно оновлено')
 			return updated
-		} catch (err) {
-			console.error(err)
-			toast.error('Не вдалося оновити новину')
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося оновити новину')
+			}
+
 			return null
 		} finally {
 			runInAction(() => (this.isLoading = false))
 		}
 	}
 
-	async deleteNews(id: string) {
-		this.isLoading = true
+	deleteNews = async (id: string) => {
 		try {
 			await deleteNews(id)
+
 			runInAction(() => {
 				this.news = this.news.filter(n => n._id !== id)
 				this.total -= 1
@@ -125,13 +145,24 @@ class NewsStore {
 				this.adminNews = this.adminNews.filter(n => n._id !== id)
 				this.adminTotal -= 1
 			})
+
 			toast.success('Новину успішно видалено')
-		} catch (err) {
-			console.error(err)
-			toast.error('Не вдалося видалити новину')
-		} finally {
-			runInAction(() => (this.isLoading = false))
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося видалити новину')
+			}
+
+			return null
 		}
+	}
+
+	setNews(items: NewsArticle[], total: number) {
+		this.news = items
+		this.total = total
 	}
 }
 

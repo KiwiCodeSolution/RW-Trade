@@ -17,13 +17,17 @@ class CategoryStore {
 
 	constructor() {
 		makeAutoObservable(this)
-		this.fetchCategories()
+		// this.fetchCategories()
 	}
 
-	async fetchCategories() {
+	setCategories(categories: Category[]) {
+		this.categories = categories
+	}
+
+	async fetchCategories({ pageType }: { pageType?: 'admin' | 'user' } = { pageType: 'user' }) {
 		this.loading = true
 		try {
-			const data: Category[] = await getCategories()
+			const data: Category[] = await getCategories({ pageType })
 			runInAction(() => {
 				this.categories = data
 			})

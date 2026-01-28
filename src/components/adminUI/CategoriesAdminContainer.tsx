@@ -1,6 +1,6 @@
 'use client'
 
-import { Subcategory } from '@/types/baseTypes'
+import { Category, Subcategory } from '@/types/baseTypes'
 
 import { categoryStore } from '@/store/CategoryStore'
 
@@ -11,14 +11,20 @@ import ProductComponentSortFilterAdmin from './ProductComponentSortFilterAdmin'
 
 import { observer } from 'mobx-react-lite'
 import { useSearchParams } from 'next/navigation'
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 
 interface Props {
 	locale: 'uk' | 'en'
+	initialCategories: Category[]
 }
 
-const CategoriesAdminContainer: React.FC<Props> = observer(({ locale }) => {
+const CategoriesAdminContainer: React.FC<Props> = observer(({ locale, initialCategories }) => {
 	const { categories } = categoryStore
+
+	useEffect(() => {
+		categoryStore.setCategories(initialCategories)
+	}, [initialCategories])
+
 	const searchParams = useSearchParams()
 
 	/* ---------------- URL params ---------------- */

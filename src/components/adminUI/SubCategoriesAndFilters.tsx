@@ -11,6 +11,7 @@ import BaseModal from '../commonUI/modal/BaseModal'
 
 import CategoriesEditor from './CategoriesEditor'
 import RemoveSubCategories from './RemoveSubCategories'
+import { authGuard } from '@/lib/authGuard'
 import { toast } from '@/lib/toast'
 
 import { useEffect, useState } from 'react'
@@ -38,9 +39,15 @@ export default function SubCategoriesAndFilters({ categoryId }: Props) {
 		try {
 			const category = await getCategoriesByID({ id: categoryId })
 			setSub(category.subcategories ?? [])
-		} catch (err) {
-			console.error(err)
-			toast.error('Не вдалося завантажити підкатегорії')
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося завантажити підкатегорії')
+			}
 		} finally {
 			setLoading(false)
 		}

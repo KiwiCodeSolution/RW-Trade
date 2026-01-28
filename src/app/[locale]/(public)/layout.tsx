@@ -21,19 +21,21 @@ export const metadata: Metadata = {
 
 type RootLayoutProps = {
 	children: React.ReactNode
-	params: { locale: Locale }
+	params: Promise<{ locale: string }>
 }
 
 export default async function RootLayout({ children, params }: RootLayoutProps) {
 	const { locale } = await params
 
+	const safeLocale: Locale = locale === 'uk' ? 'uk' : 'en'
+
 	return (
-		<html lang={locale} suppressHydrationWarning className={roboto.className}>
+		<html lang={safeLocale} suppressHydrationWarning className={roboto.className}>
 			<body className='bg-bg-light relative'>
 				<NextIntlClientProvider>
-					<UserHeader locale={locale} />
+					<UserHeader locale={safeLocale} />
 					<div className='min-h-[50vh] flex flex-col justify-between'>{children}</div>
-					<UserFooter locale={locale} />
+					<UserFooter locale={safeLocale} />
 					<ScrollToTopButton />
 					{/* <div id='modal-root' /> */}
 				</NextIntlClientProvider>

@@ -1,5 +1,4 @@
-import HeartIcon from '@/assets/icons/heart-primary-50.svg'
-import PhoneIcon from '@/assets/icons/phone-primary-50.svg'
+import { HeartIcon, PhoneIcon } from '@/assets/icons'
 
 import { Locale } from '@/types/baseTypes'
 

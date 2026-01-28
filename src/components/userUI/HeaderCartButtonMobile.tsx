@@ -1,6 +1,6 @@
 'use client'
 
-import CartIcon from '@/assets/icons/cart-bronze-24.svg'
+import { CartIcon } from '@/assets/icons'
 
 import { Locale } from '@/types/baseTypes'
 

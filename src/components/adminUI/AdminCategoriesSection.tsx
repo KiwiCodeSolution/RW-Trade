@@ -6,6 +6,7 @@ import { getCategoriesByID } from '@/api/categories'
 
 import HeaderPage from './HeaderPage'
 import SubCategoriesAndFilters from './SubCategoriesAndFilters'
+import { authGuard } from '@/lib/authGuard'
 import { toast } from '@/lib/toast'
 
 import { useEffect, useState } from 'react'
@@ -21,9 +22,15 @@ export default function AdminCategoriesSection({ id }: Props) {
 	useEffect(() => {
 		getCategoriesByID({ id })
 			.then(data => setCategory(data))
-			.catch(err => {
-				console.error(err)
-				toast.error('Не вдалося завантажити категорію')
+			.catch((err: unknown) => {
+				const error = err as { isAuthError?: boolean }
+				console.error(error)
+
+				if (error?.isAuthError) {
+					authGuard.expireSession()
+				} else {
+					toast.error('Не вдалося завантажити категорію')
+				}
 			})
 			.finally(() => setLoading(false))
 	}, [id])

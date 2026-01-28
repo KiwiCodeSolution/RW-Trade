@@ -1,7 +1,5 @@
 'use client'
 
-import { BASE_IMG_URL } from '@/utils/config'
-
 import { Product } from '@/types/baseTypes'
 
 import SwiperBtn from '../commonUI/SwiperBtn'
@@ -22,11 +20,25 @@ const ImagesGallery = ({ images }: { images: Product['images'] }) => {
 		'/images/products/8.jpg'
 	]
 
+	// const imagesGallery: Product['images'] = images?.map(img => {
+	// 	if (img.startsWith('http://') || img.startsWith('https://')) {
+	// 		return img
+	// 	}
+	// 	return `${BASE_IMG_URL}${img.startsWith('/') ? img : `/${img}`}`
+	// })
+
 	const imagesGallery: Product['images'] = images?.map(img => {
 		if (img.startsWith('http://') || img.startsWith('https://')) {
 			return img
 		}
-		return `${BASE_IMG_URL}${img.startsWith('/') ? img : `/${img}`}`
+
+		// файли з беку
+		if (img.startsWith('/uploads')) {
+			return `/api${img}`
+		}
+
+		// fallback (на випадок, якщо прийде без слеша)
+		return `/api/uploads/${img}`
 	})
 
 	const imagesArray = images && images.length > 0 ? imagesGallery : testImages

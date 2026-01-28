@@ -1,7 +1,5 @@
 'use client'
 
-import { BASE_IMG_URL } from '@/utils/config'
-
 import { bannersStore } from '@/store/BannersStore'
 
 import Spinner from '../commonUI/loader/Spinner'
@@ -69,7 +67,7 @@ const AddSectionFirst = observer(() => {
 				{left.length > 0 ? (
 					<Link href={left[leftIndex].link}>
 						<Image
-							src={`${BASE_IMG_URL}${left[leftIndex].image}`}
+							src={`/api${left[leftIndex].image}`}
 							alt='left banner'
 							fill
 							className='object-cover rounded-2xl transition-opacity duration-500'
@@ -89,7 +87,7 @@ const AddSectionFirst = observer(() => {
 				{right.length > 0 ? (
 					<Link href={right[rightIndex].link}>
 						<Image
-							src={`${BASE_IMG_URL}${right[rightIndex].image}`}
+							src={`/api${right[rightIndex].image}`}
 							alt='right banner'
 							fill
 							className='object-cover rounded-2xl transition-opacity duration-500'

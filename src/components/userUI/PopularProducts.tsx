@@ -1,4 +1,4 @@
-import Icon from '@/assets/icons/btn-icon-01-32.svg'
+import { PopularProductsIcon } from '@/assets/icons'
 
 import BtnSolid from '../commonUI/BtnSolid'
 
@@ -18,7 +18,7 @@ const PopularProducts = () => {
 			<PopularProductsSectionWithCategory />
 			<div className='flex justify-center items-center'>
 				<BtnSolid size='m' variant='bronze' as='link' href='/catalog'>
-					<Icon />
+					<PopularProductsIcon />
 					<span>{t('btn')}</span>
 				</BtnSolid>
 			</div>

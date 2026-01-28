@@ -42,6 +42,7 @@ class CartStore {
 		comment: ''
 	}
 	totalSum = 0
+	orderNumber: string | null = null
 
 	constructor() {
 		makeAutoObservable(this)
@@ -178,6 +179,8 @@ class CartStore {
 	}
 
 	async createOrder(payload: OrderPayload): Promise<CreateOrderResult> {
+		this.orderNumber = null
+
 		try {
 			const response = await fetch(`${BASE_URL}/orders`, {
 				method: 'POST',
@@ -199,6 +202,7 @@ class CartStore {
 			this.items = []
 			this.totalSum = 0
 			this.saveToStorage()
+			this.orderNumber = data.orderNumber
 
 			return {
 				success: true,

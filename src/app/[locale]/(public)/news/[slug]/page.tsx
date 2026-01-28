@@ -1,4 +1,4 @@
-import NewsSection from '@/components/userUI/NewsSection'
+import NewsSectionServer from '@/components/userUI/NewsSectionServer'
 import VideoBlock from '@/components/userUI/VideoBlock'
 import BaseImageItem from '@/components/userUI/baseComponents/BaseImageItem'
 import BaseSection from '@/components/userUI/baseComponents/BaseSection'
@@ -16,7 +16,9 @@ type Params = { locale: Locale; slug: string }
 export async function generateMetadata({ params }: { params: Promise<Params> }) {
 	const { slug, locale } = await params
 
-	const res = await fetch(`${BASE_URL}/news/slug/${slug}`, { cache: 'no-cache' })
+	const res = await fetch(`${BASE_URL}/news/slug/${slug}`, {
+		next: { revalidate: 60 }
+	})
 	const post = (await res.json()) as NewsArticle
 	const seo = post.seo
 
@@ -39,13 +41,15 @@ export default async function OneNews({ params }: { params: Promise<Params> }) {
 		t('NewsSectionAllPages.title_newsPage')
 	]
 
-	const res = await fetch(`${BASE_URL}/news/slug/${slug}`, { cache: 'no-cache' })
+	const res = await fetch(`${BASE_URL}/news/slug/${slug}`, {
+		next: { revalidate: 60 }
+	})
 	const post = (await res.json()) as NewsArticle
 
 	if (!post) return null
 
 	return (
-		<BaseSection>
+		<BaseSection className='xl:max-w-[1280px]!'>
 			<div className='py-4 mb-4 mx-auto'>
 				<div className='flex items-center mb-4 lg:mb-8'>
 					<div className='w-[100px] h-[100px] min-w-[100px] flex justify-center items-center mr-8'>
@@ -70,7 +74,7 @@ export default async function OneNews({ params }: { params: Promise<Params> }) {
 				<HtmlContent html={post.content[locale]} className='mt-4' />
 			</div>
 
-			<NewsSection
+			<NewsSectionServer
 				section='news'
 				locale={locale}
 				title={titles}

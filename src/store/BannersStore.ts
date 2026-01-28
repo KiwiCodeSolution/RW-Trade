@@ -2,6 +2,7 @@ import { Banner, CreateBannerDto } from '@/types/baseTypes'
 
 import { createBanner, deleteBanner, getAllBanners, updateBanner } from '@/api/banners'
 
+import { authGuard } from '@/lib/authGuard'
 import { toast } from '@/lib/toast'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -12,16 +13,31 @@ class BannersStore {
 
 	constructor() {
 		makeAutoObservable(this)
-		this.fetchBanners()
+		this.fetchBanners({ pageType: 'client' })
 	}
 
-	async fetchBanners() {
+	async fetchBanners({ pageType }: { pageType: 'client' | 'admin' }) {
 		this.isLoading = true
 		try {
 			const data = await getAllBanners()
 			runInAction(() => (this.banners = data))
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (pageType === 'admin') {
+				if (error?.isAuthError) {
+					authGuard.expireSession()
+				} else {
+					toast.error('Не вдалося отримати промо-банер')
+				}
+			}
+
+			return null
 		} finally {
-			this.isLoading = false
+			runInAction(() => {
+				this.isLoading = false
+			})
 		}
 	}
 
@@ -42,8 +58,21 @@ class BannersStore {
 
 			toast.success(result.isPublished ? 'Банер показано' : 'Банер сховано')
 			return result
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося створити промо-банер')
+			}
+
+			return null
 		} finally {
-			this.isLoading = false
+			runInAction(() => {
+				this.isLoading = false
+			})
 		}
 	}
 
@@ -56,8 +85,21 @@ class BannersStore {
 			runInAction(() => this.banners.unshift(result))
 			toast.success('Банер створено')
 			return result
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося створити промо-банер')
+			}
+
+			return null
 		} finally {
-			this.isLoading = false
+			runInAction(() => {
+				this.isLoading = false
+			})
 		}
 	}
 
@@ -74,8 +116,21 @@ class BannersStore {
 
 			toast.success('Банер оновлено')
 			return result
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося створити промо-банер')
+			}
+
+			return null
 		} finally {
-			this.isLoading = false
+			runInAction(() => {
+				this.isLoading = false
+			})
 		}
 	}
 
@@ -92,11 +147,26 @@ class BannersStore {
 
 			toast.success('Банер видалено')
 			return true
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося створити промо-банер')
+			}
+
+			return null
 		} finally {
 			runInAction(() => {
 				this.isLoading = false
 			})
 		}
+	}
+
+	setBanners(banners: Banner[]) {
+		this.banners = banners
 	}
 }
 

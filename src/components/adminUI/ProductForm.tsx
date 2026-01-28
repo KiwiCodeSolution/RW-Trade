@@ -105,7 +105,8 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 	const router = useRouter()
 
 	useEffect(() => {
-		if (categoryStore.categories.length === 0) categoryStore.fetchCategories()
+		if (categoryStore.categories.length === 0)
+			categoryStore.fetchCategories({ pageType: 'admin' })
 		if (categoryId) {
 			setValue('categoryId', categoryId)
 		}
@@ -119,68 +120,6 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 	}, [categoryId, categoryStore.categories])
 
 	const images = watch('images')
-
-	// const onSubmit = async (data: ProductFormValues) => {
-	// 	const orderedFiles: File[] = []
-	// 	const orderedImages: string[] = []
-
-	// 	for (const item of data.images ?? []) {
-	// 		if (item.file) {
-	// 			const idx = orderedFiles.length
-	// 			orderedFiles.push(item.file)
-	// 			orderedImages.push(`__new__${idx}`) // плейсхолдер
-	// 		} else if (item.url) {
-	// 			orderedImages.push(item.url)
-	// 		}
-	// 	}
-
-	// 	// формуємо DTO для бекенду
-	// 	let prepared: CreateProductDto
-
-	// 	if (data.price && data.price !== 0) {
-	// 		prepared = {
-	// 			...data,
-	// 			images: orderedImages,
-	// 			price: data.price,
-	// 			priceCurrency: undefined, // для уніону TS
-
-	// 			inStock: status === ProductStatus.IN_STOCK ? Number(data.inStock) || 0 : 0
-	// 		} as CreateProductDto
-	// 	} else if (data.priceCurrency && data.priceCurrency !== 0) {
-	// 		prepared = {
-	// 			...data,
-	// 			images: orderedImages,
-	// 			price: undefined, // для уніону TS
-	// 			priceCurrency: data.priceCurrency,
-
-	// 			inStock: status === ProductStatus.IN_STOCK ? Number(data.inStock) || 0 : 0
-	// 		} as CreateProductDto
-	// 	} else {
-	// 		// якщо ціна не вказана взагалі
-	// 		throw new Error('Вкажіть або гривневу, або валютну ціну')
-	// 	}
-
-	// 	let result: Created = null
-
-	// 	if (product?._id) {
-	// 		result = await productStore.updateProduct({
-	// 			id: product._id,
-	// 			product: prepared,
-	// 			files: orderedFiles
-	// 		})
-	// 	} else {
-	// 		result = await productStore.createProduct({
-	// 			product: prepared,
-	// 			files: orderedFiles
-	// 		})
-	// 	}
-
-	// 	if (result) {
-	// 		reset()
-	// 		setValue('images', [])
-	// 		router.push('/manage-panel/products')
-	// 	}
-	// }
 
 	const onSubmit = async (data: ProductFormValues) => {
 		// ----------------------------------

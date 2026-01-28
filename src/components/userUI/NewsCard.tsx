@@ -66,9 +66,12 @@ const NewsCard = ({ article, locale, typePage }: NewsCardProps) => {
 
 					{article?.subtitle && (
 						<div className='flex flex-col lg:flex-row items-start lg:items-center gap-x-3'>
-							<div className='order-2 lg:order-1'>
-								{article.videoUrl && <YoutubeIcon />}
-							</div>
+							{article.videoUrl && (
+								<div className='order-2 lg:order-1'>
+									<YoutubeIcon />
+								</div>
+							)}
+
 							<p className='line-clamp-2 text-sm lg:text-base order-1 lg:order-2'>
 								{article?.subtitle[locale] ?? article.subtitle.uk}
 							</p>

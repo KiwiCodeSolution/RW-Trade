@@ -57,7 +57,7 @@ const CategoriesControlAdminPage = observer(() => {
 
 	/** 🔹 Фетч категорій лише один раз */
 	useEffect(() => {
-		if (categories.length === 0) categoryStore.fetchCategories()
+		if (categories.length === 0) categoryStore.fetchCategories({ pageType: 'admin' })
 	}, [categories.length])
 
 	/** 🔹 Активна категорія */

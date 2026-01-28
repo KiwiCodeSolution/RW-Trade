@@ -1,6 +1,10 @@
+'use client'
+
 import { Add } from '@/assets/icons'
 
 import { Link } from '@/i18n/navigation'
+
+import { useEffect, useState } from 'react'
 
 type Props = {
 	type: 'button' | 'link'
@@ -18,6 +22,16 @@ const AddBtnLink = ({ type, href, fnc, className, page, title }: Props) => {
 		promo: '',
 		slider: 'h-[176px] w-[342px] rounded-2xl'
 	}
+
+	const [mounted, setMounted] = useState(false)
+
+	useEffect(() => {
+		// eslint-disable-next-line react-hooks/set-state-in-effect
+		setMounted(true)
+	}, [])
+
+	if (!mounted) return null
+
 	return (
 		<article
 			className={`border-2 border-sc-1 flex flex-col gap-y-2 justify-center items-center relative product-card-shadow ${styles[page]} ${className}`}

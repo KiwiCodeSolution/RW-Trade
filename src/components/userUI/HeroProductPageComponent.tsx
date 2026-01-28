@@ -12,8 +12,8 @@ const HeroProductPageComponent = ({ product, locale }: ProductPrint) => {
 	const correctRating = product.rating ? parseFloat(Math.min(product.rating, 5).toFixed(1)) : 0
 
 	return (
-		<BaseSection>
-			<div className='w-full xl:w-[1280px] flex flex-col lg:flex-row items-center justify-between gap-y-4 gap-x-6 mx-auto'>
+		<BaseSection className='xl:max-w-[1280px]!'>
+			<div className='w-full flex flex-col lg:flex-row items-center justify-between gap-y-4 gap-x-6 mx-auto'>
 				<ImagesGallery images={product.images} />
 				<div className='w-full lg:w-[280px] flex flex-col gap-y-3 justify-between shrink-0'>
 					<div className='w-full h-12 rounded-xl bg-other-4 rating-shadow flex items-center justify-center gap-x-3 order-1'>

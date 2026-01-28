@@ -6,6 +6,7 @@ import { createSubCategory, updateSubCategory } from '@/api/categories'
 
 import Spinner from '../commonUI/loader/Spinner'
 
+import { authGuard } from '@/lib/authGuard'
 import { toast } from '@/lib/toast'
 
 import { useState } from 'react'
@@ -58,8 +59,21 @@ export default function CategoriesEditor({
 			setIsLoading(false)
 			onSuccess()
 			toast.success(initialData?._id ? 'Оновлено' : 'Створено')
-		} catch {
-			/* empty */
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error(
+					initialData?._id
+						? 'Не вдалося оновити підкатегорію'
+						: 'Не вдалося створити підкатегорію'
+				)
+			}
+		} finally {
+			setIsLoading(false)
 		}
 	}
 

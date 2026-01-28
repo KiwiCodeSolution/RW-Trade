@@ -1,5 +1,6 @@
 import { api } from '@/utils/axios'
 
+import { ApiError } from '@/types/apiError'
 import { Feedback, FeedbackStatus, Message } from '@/types/baseTypes'
 
 import { toast } from '@/lib/toast'
@@ -34,15 +35,14 @@ export const toggleStatusFeedback = async (
 	try {
 		const { data } = await api.patch<Message>(`/feedbacks/${id}/status`, { status })
 		return data
-	} catch (err: unknown) {
-		if (err instanceof AxiosError) {
-			toast.error(err.response?.data?.message ?? 'Помилка зміни статусу')
-		} else if (err instanceof Error) {
-			toast.error(err.message)
-		} else {
-			toast.error('Помилка зміни статусу')
+	} catch (err) {
+		const error = err as ApiError
+
+		if (error.isAuthError) {
+			throw error
 		}
-		throw err
+
+		throw error
 	}
 }
 
@@ -50,17 +50,16 @@ export const toggleStatusFeedback = async (
 export const getAllMessages = async (): Promise<Message[]> => {
 	try {
 		const { data } = await api.get<Message[]>('/feedbacks', { params: { cache: 'no-store' } })
+
 		return data
-	} catch (err: unknown) {
-		if (err instanceof AxiosError) {
-			toast.error(err.response?.data?.message ?? 'Не вдалося завантажити звернення')
-		} else if (err instanceof Error) {
-			toast.error(err.message)
-		} else {
-			toast.error('Не вдалося завантажити звернення')
+	} catch (err) {
+		const error = err as ApiError
+
+		if (error.isAuthError) {
+			throw error
 		}
-		console.error('Помилка при отриманні звернень:', err)
-		return []
+
+		throw error
 	}
 }
 
@@ -69,15 +68,13 @@ export const deleteMessage = async (id: string): Promise<boolean> => {
 	try {
 		await api.delete(`/feedbacks/${id}`)
 		return true
-	} catch (err: unknown) {
-		if (err instanceof AxiosError) {
-			toast.error(err.response?.data?.message ?? 'Не вдалося видалити звернення')
-		} else if (err instanceof Error) {
-			toast.error(err.message)
-		} else {
-			toast.error('Не вдалося видалити звернення')
+	} catch (err) {
+		const error = err as ApiError
+
+		if (error.isAuthError) {
+			throw error
 		}
-		console.error('Помилка при видаленні звернення:', err)
-		return false
+
+		throw error
 	}
 }

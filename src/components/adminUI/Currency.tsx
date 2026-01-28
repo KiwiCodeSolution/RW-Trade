@@ -5,12 +5,15 @@ import { OkIcon } from '@/assets/icons'
 import { productStore } from '@/store/ProductsStore'
 
 import { observer } from 'mobx-react-lite'
+import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 const Currency = observer(() => {
 	const { exchangeRate, setExchangeRate } = productStore
 	const [inputValue, setInputValue] = useState('')
 	const [mounted, setMounted] = useState(false)
+
+	const router = useRouter()
 
 	useEffect(() => {
 		setMounted(true)
@@ -24,6 +27,7 @@ const Currency = observer(() => {
 			return
 		}
 		await setExchangeRate(rate)
+		router.refresh()
 	}
 
 	if (!mounted) return null

@@ -15,7 +15,7 @@ const HeaderOfCreateProductPage = observer(() => {
 	// якщо categories ще не завантажені, можеш ініціалізувати
 	useEffect(() => {
 		if (categoryStore.categories.length === 0) {
-			categoryStore.fetchCategories()
+			categoryStore.fetchCategories({ pageType: 'admin' })
 		}
 	}, [])
 

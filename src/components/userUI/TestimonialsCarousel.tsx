@@ -1,7 +1,6 @@
 'use client'
 
-import LeftIcon from '@/assets/icons/chevron-left-32.svg'
-import RightIcon from '@/assets/icons/chevron-right-32.svg'
+import { LeftIcon, RightIcon } from '@/assets/icons'
 
 import { Locale } from '@/types/baseTypes'
 
@@ -51,9 +50,9 @@ const TestimonialsCarousel = ({ locale }: { locale: Locale }) => {
 				<button
 					onClick={handlePrev}
 					disabled={currentPage === 0}
-					className={`w-8 h-8 rounded-full bg-bronze flex justify-center items-center ${currentPage === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+					className={`w-8 h-8 rounded-full bg-bronze flex justify-center items-center ${currentPage === 0 ? 'opacity-50 cursor-not-allowed' : ''} text-white`}
 				>
-					<LeftIcon className='text-white' />
+					<LeftIcon />
 				</button>
 				<span className='text-gray-700'>
 					{currentLocale === 'uk' ? 'Наступні' : 'Next'}
@@ -61,9 +60,9 @@ const TestimonialsCarousel = ({ locale }: { locale: Locale }) => {
 				<button
 					onClick={handleNext}
 					disabled={currentPage === totalPages - 1}
-					className={`w-8 h-8 rounded-full bg-bronze flex justify-center items-center ${currentPage === totalPages - 1 ? 'opacity-50 cursor-not-allowed' : ''}`}
+					className={`w-8 h-8 rounded-full bg-bronze flex justify-center items-center ${currentPage === totalPages - 1 ? 'opacity-50 cursor-not-allowed' : ''} text-white`}
 				>
-					<RightIcon className='text-white' />
+					<RightIcon />
 				</button>
 			</div>
 		</div>

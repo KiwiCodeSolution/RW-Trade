@@ -23,9 +23,9 @@ const OtherInformation = ({
 	popularProducts?: Product[]
 }) => {
 	return (
-		<BaseSection className='flex flex-col gap-y-8 pt-9'>
+		<BaseSection className='flex flex-col gap-y-8 pt-9 xl:max-w-[1280px]!'>
 			<div className='flex flex-col lg:flex-row gap-x-14 items-start justify-between'>
-				<div className='w-full lg:w-[1280px] mx-auto'>
+				<div className='w-full mx-auto'>
 					<div className='flex flex-col w-full gap-4 lg:gap-5'>
 						{/* опис */}
 						<div className='flex flex-col gap-x-4 px-2 py-4 rounded-2xl bg-other-5 description'>

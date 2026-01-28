@@ -6,6 +6,7 @@ import { deleteSubCategory } from '@/api/categories'
 
 import BtnSolid from '../commonUI/BtnSolid'
 
+import { authGuard } from '@/lib/authGuard'
 import { toast } from '@/lib/toast'
 
 const RemoveSubCategories = ({
@@ -31,8 +32,15 @@ const RemoveSubCategories = ({
 
 				onSuccess()
 				toast.success('Підкатегорію видалено')
-			} catch {
-				/* empty */
+			} catch (err: unknown) {
+				const error = err as { isAuthError?: boolean }
+				console.error(error)
+
+				if (error?.isAuthError) {
+					authGuard.expireSession()
+				} else {
+					toast.error('Не вдалося видалити підкатегорію')
+				}
 			}
 		}
 	}

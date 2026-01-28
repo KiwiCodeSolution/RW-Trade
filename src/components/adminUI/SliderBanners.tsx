@@ -21,7 +21,7 @@ const SliderBanners = observer(() => {
 	const [currentBanner, setCurrentBanner] = useState<Banner | null>(null)
 
 	useEffect(() => {
-		if (banners.length === 0) bannersStore.fetchBanners()
+		if (banners.length === 0) bannersStore.fetchBanners({ pageType: 'client' })
 	}, [banners.length])
 
 	const handleOpenModal = (type: BannerType) => {

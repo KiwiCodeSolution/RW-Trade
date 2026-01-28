@@ -1,5 +1,6 @@
 import { api } from '@/utils/axios'
 
+import { ApiError } from '@/types/apiError'
 import { Order, OrderStatus, OrdersResponse } from '@/types/baseTypes'
 
 import { OrderSort } from '@/lib/sortOptions'
@@ -23,8 +24,13 @@ export async function getOrders(params: GetOrdersParams = {}): Promise<OrdersRes
 		const { data } = await api.get<OrdersResponse>(`/orders?${query.toString()}`)
 		return data
 	} catch (err) {
-		console.error('Помилка отримання ордерів', err)
-		throw err
+		const error = err as ApiError
+
+		if (error.isAuthError) {
+			throw error
+		}
+
+		throw error
 	}
 }
 
@@ -34,8 +40,13 @@ export async function deleteOrder(id: string): Promise<boolean> {
 		await api.delete(`/orders/${id}`)
 		return true
 	} catch (err) {
-		console.error('Помилка видалення ордеру', err)
-		return false
+		const error = err as ApiError
+
+		if (error.isAuthError) {
+			throw error
+		}
+
+		throw error
 	}
 }
 
@@ -45,7 +56,12 @@ export async function patchOrderStatus(id: string, status: OrderStatus): Promise
 		const { data } = await api.patch<Order>(`/orders/${id}/status`, { status })
 		return data
 	} catch (err) {
-		console.error('Помилка оновлення статусу ордеру', err)
-		return null
+		const error = err as ApiError
+
+		if (error.isAuthError) {
+			throw error
+		}
+
+		throw error
 	}
 }

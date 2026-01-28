@@ -37,13 +37,12 @@ const SignInForm = ({ pageType }: { pageType: PageContext }) => {
 
 	const onSubmit = async (data: SignInFormValues) => {
 		const formData = { ...data, roleContext: role }
-		console.log('formData', formData)
 
 		try {
 			// Використовуємо redirect: true — NextAuth сам зробить редірект
 			await signIn('credentials', {
 				...formData,
-				redirect: true,
+
 				callbackUrl
 			})
 
@@ -118,7 +117,7 @@ const SignInForm = ({ pageType }: { pageType: PageContext }) => {
 			</div>
 
 			{/* SUBMIT */}
-			<BtnSolid as='button' btnType='submit' variant='primary'>
+			<BtnSolid as='button' btnType='submit' variant='primary' size='xxxl'>
 				{isSubmitting ? 'Зачекайте...' : 'Увійти'}
 			</BtnSolid>
 		</form>

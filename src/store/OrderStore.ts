@@ -2,6 +2,7 @@ import { Order, OrderStatus } from '@/types/baseTypes'
 
 import { deleteOrder, getOrders, patchOrderStatus } from '@/api/orders'
 
+import { authGuard } from '@/lib/authGuard'
 import { OrderSort } from '@/lib/sortOptions'
 import { toast } from '@/lib/toast'
 
@@ -52,8 +53,16 @@ class OrdersStore {
 				this.totalPages = response.totalPages ?? 1
 				this.totalByStatus = response.totalByStatus ?? {}
 			})
-		} catch (err) {
-			console.error(err)
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося завантажити замовлення')
+			}
+
 			runInAction(() => {
 				this.orders = []
 				this.total = 0
@@ -90,16 +99,18 @@ class OrdersStore {
 	deleteOrder = async (id: string) => {
 		this.isLoading = true
 		try {
-			const success = await deleteOrder(id)
-			if (success) {
-				toast.success('Замовлення успішно видалено')
-				this.fetchOrders()
+			await deleteOrder(id)
+			toast.success('Замовлення успішно видалено')
+			this.fetchOrders()
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
 			} else {
 				toast.error('Не вдалося видалити замовлення')
 			}
-		} catch (err) {
-			console.error(err)
-			toast.error('Не вдалося видалити замовлення')
 		} finally {
 			runInAction(() => (this.isLoading = false))
 		}
@@ -108,16 +119,18 @@ class OrdersStore {
 	updateOrderStatus = async (id: string, status: OrderStatus) => {
 		this.isLoading = true
 		try {
-			const updated = await patchOrderStatus(id, status)
-			if (updated) {
-				toast.success('Статус замовлення оновлено')
-				this.fetchOrders() // важливо для лічильників
+			await patchOrderStatus(id, status)
+			toast.success('Статус замовлення оновлено')
+			this.fetchOrders() // важливо для лічильників
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
 			} else {
 				toast.error('Не вдалося оновити статус замовлення')
 			}
-		} catch (err) {
-			console.error(err)
-			toast.error('Не вдалося оновити статус замовлення')
 		} finally {
 			runInAction(() => (this.isLoading = false))
 		}

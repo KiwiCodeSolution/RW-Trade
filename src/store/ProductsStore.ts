@@ -2,6 +2,7 @@ import { CreateProductDto, ItemsFilterParams, Product, Subcategory } from '@/typ
 
 import * as productApi from '@/api/products'
 
+import { authGuard } from '@/lib/authGuard'
 import { toast } from '@/lib/toast'
 
 import { makeAutoObservable, runInAction } from 'mobx'
@@ -160,8 +161,15 @@ class ProductStore {
 				this.adminProducts = data.items
 				this.totalAdmin = data.totalItems
 			})
-		} catch (error) {
-			console.error('❌ Failed to fetch admin products:', error)
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося завантажити товари')
+			}
 		} finally {
 			runInAction(() => (this.isLoading = false))
 		}
@@ -196,8 +204,15 @@ class ProductStore {
 			toast.success('Товар успішно збережено')
 			return data
 		} catch (err: unknown) {
-			console.error('Create product error:', err)
-			toast.error('Помилка при збереженні товару')
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Помилка при збереженні товару')
+			}
+
 			return null
 		} finally {
 			runInAction(() => (this.isLoading = false))
@@ -223,8 +238,15 @@ class ProductStore {
 			toast.success('Товар успішно оновлено')
 			return data
 		} catch (err: unknown) {
-			console.error('Update product error:', err)
-			toast.error('Помилка при оновленні товару')
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Помилка при оновленні товару')
+			}
+
 			return null
 		} finally {
 			runInAction(() => (this.isLoading = false))
@@ -237,9 +259,16 @@ class ProductStore {
 			const data = await productApi.getProductByIdApi(id)
 			this.currentProduct = data
 			return data
-		} catch (err) {
-			console.error('Fetch product by ID error:', err)
-			toast.error('Помилка при завантаженні товару')
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Помилка при завантаженні товару')
+			}
+
 			return null
 		} finally {
 			runInAction(() => (this.isLoading = false))
@@ -252,9 +281,16 @@ class ProductStore {
 			await productApi.deleteProductApi(`${productId}/photos/${photoUrl}`)
 			toast.success('Фото успішно видалено')
 			return true
-		} catch (err) {
-			console.error('Remove photo error:', err)
-			toast.error('Помилка при видаленні фото')
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
+			console.error(error)
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Помилка при видаленні фото')
+			}
+
 			return null
 		} finally {
 			runInAction(() => (this.isLoading = false))
@@ -277,14 +313,21 @@ class ProductStore {
 	}
 
 	async toggleVisibility(product: Product) {
-		console.log('product', product, product.isPublished)
 		try {
 			const data = await productApi.updateProductVisibility(product._id, !product.isPublished)
+
 			runInAction(() => (product.isPublished = data.isPublished))
+
 			toast.success('Видимість товару оновлено')
-		} catch (error) {
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
 			console.error(error)
-			toast.error('Не вдалося змінити видимість товару')
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося змінити видимість товару')
+			}
 		}
 	}
 
@@ -293,9 +336,15 @@ class ProductStore {
 			const data = await productApi.updateProductStatus(product._id, status)
 			runInAction(() => (product.status = data.status))
 			toast.success('Статус товару оновлено')
-		} catch (error) {
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
 			console.error(error)
-			toast.error('Не вдалося змінити статус товару')
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося змінити видимість товару')
+			}
 		}
 	}
 
@@ -309,10 +358,28 @@ class ProductStore {
 				this.totalAdmin -= 1
 			})
 			toast.success('Товар видалено')
-		} catch (error) {
+		} catch (err: unknown) {
+			const error = err as { isAuthError?: boolean }
 			console.error(error)
-			toast.error('Не вдалося видалити товар')
+
+			if (error?.isAuthError) {
+				authGuard.expireSession()
+			} else {
+				toast.error('Не вдалося змінити видимість товару')
+			}
 		}
+	}
+
+	setDiscountProducts(products: Product[]) {
+		this.discountProducts = products
+	}
+
+	setDiscountSubcategories(subcategories: Subcategory[]) {
+		this.discountSubcategories = subcategories
+	}
+
+	setDiscountTotal(total: number) {
+		this.discountTotal = total
 	}
 }
 

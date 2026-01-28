@@ -1,21 +1,23 @@
 'use client'
 
-import ControlIconM from '@/assets/icons/control-m.svg'
-import ControlIcon from '@/assets/icons/control.svg'
-import DiagnosticsIcomM from '@/assets/icons/diagnostics-m.svg'
-import DiagnosticsIcom from '@/assets/icons/diagnostics.svg'
-import ElectricIconM from '@/assets/icons/electric-m.svg'
-import ElectricIcon from '@/assets/icons/electric.svg'
-import LightIconM from '@/assets/icons/light-m.svg'
-import LightIcon from '@/assets/icons/light.svg'
-import PersentIconM from '@/assets/icons/persent-m.svg'
-import PersentIcon from '@/assets/icons/persent.svg'
-import RadioIconM from '@/assets/icons/radio-m.svg'
-import RadioIcon from '@/assets/icons/radio.svg'
-import RepairIcomM from '@/assets/icons/repair-m.svg'
-import RepairIcom from '@/assets/icons/repair.svg'
-import ToolsIconM from '@/assets/icons/tools-m.svg'
-import ToolsIcon from '@/assets/icons/tools.svg'
+import {
+	ControlIcon,
+	ControlIconM,
+	DiagnosticsIcon,
+	DiagnosticsIconM,
+	ElectricIcon,
+	ElectricIconM,
+	LightIcon,
+	LightIconM,
+	PersentIcon,
+	PersentIconM,
+	RadioIcon,
+	RadioIconM,
+	RepairIcon,
+	RepairIconM,
+	ToolsIcon,
+	ToolsIconM
+} from '@/assets/icons'
 
 import { Category } from '@/types/baseTypes'
 
@@ -48,8 +50,8 @@ const CategoryIcon = ({
 			Tools: <ToolsIcon />,
 			Electric: <ElectricIcon />,
 			Control: <ControlIcon />,
-			Repair: <RepairIcom />,
-			Diagnostics: <DiagnosticsIcom />,
+			Repair: <RepairIcon />,
+			Diagnostics: <DiagnosticsIcon />,
 			Radio: <RadioIcon />,
 			Discounts: <PersentIcon />
 		},
@@ -58,8 +60,8 @@ const CategoryIcon = ({
 			Tools: <ToolsIconM />,
 			Electric: <ElectricIconM />,
 			Control: <ControlIconM />,
-			Repair: <RepairIcomM />,
-			Diagnostics: <DiagnosticsIcomM />,
+			Repair: <RepairIconM />,
+			Diagnostics: <DiagnosticsIconM />,
 			Radio: <RadioIconM />,
 			Discounts: <PersentIconM />
 		}
