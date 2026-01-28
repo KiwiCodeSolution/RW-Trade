@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies (Validation)
@@ -28,7 +28,7 @@ jobs:
         run: npm run build
         env:
            # Вказуємо змінні, щоб білд пройшов успішно (вони не потраплять на сервер, це тільки тест збірки)
-           NEXT_PUBLIC_API_URL: "https://devtestapps.online/rest"
+           NEXT_PUBLIC_API_URL: "https://rwavto.shop/rest"
 
       # --- Етап Деплою на сервер ---
       - name: Setup SSH Agent
