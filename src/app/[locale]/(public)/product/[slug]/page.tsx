@@ -8,6 +8,8 @@ import { BASE_URL } from '@/utils/config'
 
 import { LangField, Locale, Product } from '@/types/baseTypes'
 
+import { getTranslations } from 'next-intl/server'
+
 type Params = { locale: Locale; slug: string }
 
 export async function generateMetadata({ params }: { params: Promise<Params> }) {
@@ -31,6 +33,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 
 export default async function ProductPage({ params }: { params: Promise<Params> }) {
 	const { slug, locale } = await params
+
+	const t = await getTranslations({ locale })
 
 	const productRes = await fetch(`${BASE_URL}/products/slug/${slug}`, {
 		next: { revalidate: 60 }
@@ -69,6 +73,40 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 		)
 	const secondName = locale === 'uk' ? 'каталог' : 'catalog'
 
+	const deliveryMethods = [
+		{
+			title: t('PaymentAndDeliveryPage.delivery.novaPoshta.title'),
+			description: t('PaymentAndDeliveryPage.delivery.novaPoshta.desc')
+		},
+		{
+			title: t('PaymentAndDeliveryPage.delivery.ukrPoshta.title'),
+			description: t('PaymentAndDeliveryPage.delivery.ukrPoshta.desc')
+		},
+		{
+			title: t('PaymentAndDeliveryPage.delivery.pickup.title'),
+			description: t('PaymentAndDeliveryPage.delivery.pickup.desc')
+		},
+		{
+			title: t('PaymentAndDeliveryPage.delivery.meest.title'),
+			description: t('PaymentAndDeliveryPage.delivery.meest.desc')
+		}
+	]
+
+	const deliveryShortMethods = [
+		{
+			name: t(`DeliveryPayment.delivery.0`),
+			img: '/images/delivery/np.png'
+		},
+		{
+			name: t(`DeliveryPayment.delivery.1`),
+			img: '/images/delivery/up.png'
+		},
+		{
+			name: t(`DeliveryPayment.delivery.2`),
+			img: '/images/delivery/meest.png'
+		}
+	]
+
 	return (
 		<main className='w-full min-h-[80vh]'>
 			<BaseSection className='hidden lg:flex'>
@@ -89,6 +127,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 				locale={locale}
 				partnersProducts={partnerProducts}
 				popularProducts={popularProducts}
+				diliveryTexts={deliveryMethods}
 			/>
 		</main>
 	)

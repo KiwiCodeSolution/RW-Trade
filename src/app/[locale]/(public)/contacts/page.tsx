@@ -12,17 +12,20 @@ export default async function Contacts() {
 		{
 			number: '+380994445833',
 			display: '+380 (99) 444-58-33',
-			desc: t('contacts.0')
+			desc: t('contacts.0'),
+			type: 'viber'
 		},
 		{
 			number: '+380935090399',
 			display: '+380 (93) 509-03-99',
-			desc: t('contacts.1')
+			desc: t('contacts.1'),
+			type: 'phone'
 		},
 		{
 			number: '+380973368900',
 			display: '+380 (97) 336-89-00',
-			desc: t('contacts.2')
+			desc: t('contacts.2'),
+			type: 'phone'
 		}
 	]
 
@@ -53,7 +56,11 @@ export default async function Contacts() {
 							{contacts.map((c, idx) => (
 								<div key={idx} className='mb-6'>
 									<a
-										href={`tel:${c.number}`}
+										href={
+											c.type === 'viber'
+												? `viber://chat?number=${c.number}`
+												: `tel:${c.number}`
+										}
 										className='font-bold hover:underline'
 									>
 										{c.display}

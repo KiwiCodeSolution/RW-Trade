@@ -22,8 +22,8 @@ type Created = Product | null
 
 export type ProductFormValues = Omit<CreateProductDto, 'images' | 'price' | 'priceCurrency'> & {
 	images: PreviewItem[]
-	price?: number
-	priceCurrency?: number
+	price?: string | number
+	priceCurrency?: string | number
 }
 
 const toPreviewItems = (arr?: string[]) =>
@@ -142,23 +142,34 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		// ----------------------------------
 		const { images: _images, ...rest } = data
 
+		const normalizeNumber = (value?: string | number) => {
+			if (value === undefined || value === null) return undefined
+			return Number(String(value).replace(',', '.'))
+		}
 		// ----------------------------------
 		// 3. Формуємо DTO БЕЗ images
 		// ----------------------------------
+
+		const priceUAH = normalizeNumber(rest.price)
+		const priceUSD = normalizeNumber(rest.priceCurrency)
+		const wholesalePrice = normalizeNumber(rest.wholesalePrice)
+
 		let prepared: CreateProductDto
 
-		if (rest.price && rest.price !== 0) {
+		if (priceUAH != null && priceUAH !== 0) {
 			prepared = {
 				...rest,
-				price: rest.price,
+				price: priceUAH,
 				priceCurrency: undefined,
+				wholesalePrice,
 				inStock: status === ProductStatus.IN_STOCK ? Number(rest.inStock) || 0 : 0
 			}
-		} else if (rest.priceCurrency && rest.priceCurrency !== 0) {
+		} else if (priceUSD != null && priceUSD !== 0) {
 			prepared = {
 				...rest,
 				price: undefined,
-				priceCurrency: rest.priceCurrency,
+				priceCurrency: priceUSD,
+				wholesalePrice,
 				inStock: status === ProductStatus.IN_STOCK ? Number(rest.inStock) || 0 : 0
 			}
 		} else {
@@ -446,31 +457,49 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 					<BaseInput<ProductFormValues>
 						name='price'
 						label='Ціна, роздріб, ₴'
-						type='number'
-						register={register}
+						type='text'
+						// register={register}
+						register={(name, options) =>
+							register(name, {
+								...options,
+								onChange: e => {
+									options?.onChange?.(e)
+									setValue('priceCurrency', '') // 🔥 очищаємо грн
+								}
+							})
+						}
 						errors={errors}
 						placeholder='123456'
-						pattern={/^\d+$/}
+						pattern={/^\d+([.,]\d+)?$/}
 						patternMessage='Ціна повинна бути числом'
 					/>
 					<BaseInput<ProductFormValues>
 						name='priceCurrency'
 						label='Ціна, роздріб, $'
-						type='number'
-						register={register}
+						type='text'
+						// register={register}
+						register={(name, options) =>
+							register(name, {
+								...options,
+								onChange: e => {
+									options?.onChange?.(e)
+									setValue('price', '') // 🔥 очищаємо $
+								}
+							})
+						}
 						errors={errors}
 						placeholder='123456'
-						pattern={/^\d+$/}
+						pattern={/^\d+([.,]\d+)?$/}
 						patternMessage='Ціна повинна бути числом'
 					/>
 					<BaseInput<ProductFormValues>
 						name='wholesalePrice'
 						label='Ціна, гурт'
-						type='number'
+						type='text'
 						register={register}
 						errors={errors}
 						placeholder='123456'
-						pattern={/^\d+$/}
+						pattern={/^\d+([.,]\d+)?$/}
 						patternMessage='Ціна повинна бути числом'
 					/>
 
@@ -482,8 +511,6 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 						errors={errors}
 						placeholder='123456'
 						disabled={!isInStock}
-						isRequired={isInStock}
-						requiredMessage='Поле є обов’язковим'
 						pattern={/^\d+$/}
 						patternMessage='Кількість повинна бути числом'
 					/>

@@ -15,13 +15,16 @@ const OtherInformation = ({
 	product,
 	locale,
 	partnersProducts,
-	popularProducts
+	popularProducts,
+	diliveryTexts
 }: {
 	product: Product
 	locale: Locale
 	partnersProducts?: Product[]
 	popularProducts?: Product[]
+	diliveryTexts: { title: string; description: string }[]
 }) => {
+	console.log(product.deliveryTerms)
 	return (
 		<BaseSection className='flex flex-col gap-y-8 pt-9 xl:max-w-[1280px]!'>
 			<div className='flex flex-col lg:flex-row gap-x-14 items-start justify-between'>
@@ -82,16 +85,27 @@ const OtherInformation = ({
 							</Collapse>
 						)}
 
-						{product.deliveryTerms && product.deliveryTerms[locale] !== '' && (
-							<Collapse
-								title={locale === 'uk' ? 'Умови доставки' : 'Delivery terms'}
-								sectionType='base'
-							>
+						<Collapse
+							title={locale === 'uk' ? 'Умови доставки' : 'Delivery terms'}
+							sectionType='base'
+						>
+							{product.deliveryTerms && product.deliveryTerms[locale] !== '' ? (
 								<HtmlContent
 									html={product.deliveryTerms[locale] ?? product.deliveryTerms.uk}
 								/>
-							</Collapse>
-						)}
+							) : (
+								<>
+									<ul className='list-disc lg:ml-5 mb-10 space-y-7'>
+										{diliveryTexts.map((d, idx) => (
+											<li key={idx}>
+												<span className='font-semibold'>{d.title}</span>
+												<p>{d.description}</p>
+											</li>
+										))}
+									</ul>
+								</>
+							)}
+						</Collapse>
 					</div>
 					<div className='flex flex-col w-3/12'></div>
 					<div className='lg:hidden my-4'>

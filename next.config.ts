@@ -16,17 +16,13 @@ const nextConfig: NextConfig = {
 	images: {
 		remotePatterns: [
 			{
-				protocol: 'https',
-				hostname: 'rw-trade.netlify.app'
-			},
-			{
 				protocol: 'http',
 				hostname: 'localhost',
 				port: '5000'
 			},
 			{
 				protocol: 'https',
-				hostname: 'devtestapps.online',
+				hostname: 'rwavto.shop',
 				pathname: '/uploads/**'
 			}
 		]

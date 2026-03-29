@@ -45,7 +45,8 @@ const CategoriesSection = observer(
 					className={`grid ${section === 'client' ? 'grid-cols-2 lg:grid-cols-4' : 'grid-cols-4'} bg-sc-1/30 gap-0.5 pb-0.5`}
 				>
 					{categories.map((item, index) => (
-						<div
+						<Link
+							href={`/catalog/${item.slug}`}
 							key={index}
 							className='flex flex-col py-4 lg:pt-2 lg:py-8 pb-8 bg-bg-light'
 						>
@@ -133,7 +134,7 @@ const CategoriesSection = observer(
 									</div>
 								</>
 							)}
-						</div>
+						</Link>
 					))}
 				</div>
 			</BaseSection>
