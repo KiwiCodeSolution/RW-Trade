@@ -8,8 +8,11 @@ import Image from 'next/image'
 const UserFooterTop = ({ locale }: { locale: Locale }) => {
 	const footerNavLinks = [
 		...navLinks,
-		{ href: '/', title: { uk: 'Умови використання сайту', en: 'Terms of use' } },
-		{ href: '/', title: { uk: 'Політика конфіденційності', en: 'Privacy policy' } }
+		{ href: '/terms-of-use', title: { uk: 'Умови використання сайту', en: 'Terms of use' } },
+		{
+			href: '/privacy-policy',
+			title: { uk: 'Політика конфіденційності', en: 'Privacy policy' }
+		}
 	]
 	return (
 		<div className='grid grid-cols-1 xl:grid-cols-[3fr_3fr_3fr_3fr_1fr] py-5 gap-y-5 border-t-[2px] border-t-nav/30 lg:border-none'>

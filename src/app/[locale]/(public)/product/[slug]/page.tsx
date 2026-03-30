@@ -8,7 +8,7 @@ import { BASE_URL } from '@/utils/config'
 
 import { LangField, Locale, Product } from '@/types/baseTypes'
 
-import { getTranslations } from 'next-intl/server'
+import { getTranslations, setRequestLocale } from 'next-intl/server'
 
 type Params = { locale: Locale; slug: string }
 
@@ -34,6 +34,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 export default async function ProductPage({ params }: { params: Promise<Params> }) {
 	const { slug, locale } = await params
 
+	setRequestLocale(locale)
 	const t = await getTranslations({ locale })
 
 	const productRes = await fetch(`${BASE_URL}/products/slug/${slug}`, {
@@ -92,20 +93,24 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 		}
 	]
 
-	const deliveryShortMethods = [
-		{
-			name: t(`DeliveryPayment.delivery.0`),
-			img: '/images/delivery/np.png'
-		},
-		{
-			name: t(`DeliveryPayment.delivery.1`),
-			img: '/images/delivery/up.png'
-		},
-		{
-			name: t(`DeliveryPayment.delivery.2`),
-			img: '/images/delivery/meest.png'
-		}
-	]
+	const deliveryTextByComponent = {
+		title: t('DeliveryPayment.title'),
+		methods_title: t('DeliveryPayment.methods_title'),
+		methods: [
+			t('DeliveryPayment.methods.0'),
+			t('DeliveryPayment.methods.1'),
+			t('DeliveryPayment.methods.2'),
+			t('DeliveryPayment.methods.3')
+		],
+		guarantee_title: t('DeliveryPayment.guarantee_title'),
+		guarantee: [t('DeliveryPayment.guarantee.0')],
+		delivery_title: t('DeliveryPayment.delivery_title'),
+		delivery: [
+			t('DeliveryPayment.delivery.0'),
+			t('DeliveryPayment.delivery.1'),
+			t('DeliveryPayment.delivery.2')
+		]
+	}
 
 	return (
 		<main className='w-full min-h-[80vh]'>
@@ -121,13 +126,18 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 				</Title>
 			</BaseSection>
 
-			<HeroProductPageComponent product={product} locale={locale} />
+			<HeroProductPageComponent
+				product={product}
+				locale={locale}
+				deliveryTextByComponent={deliveryTextByComponent}
+			/>
 			<OtherInformation
 				product={product}
 				locale={locale}
 				partnersProducts={partnerProducts}
 				popularProducts={popularProducts}
-				diliveryTexts={deliveryMethods}
+				baseDeliveryTexts={deliveryMethods}
+				deliveryTextByComponent={deliveryTextByComponent}
 			/>
 		</main>
 	)

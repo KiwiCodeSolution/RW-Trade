@@ -13,6 +13,7 @@
 		"cache": "rm -rf .next"
 	},
 	"dependencies": {
+		"@tailwindcss/typography": "^0.5.19",
 		"@tinymce/tinymce-react": "^6.3.0",
 		"axios": "^1.12.2",
 		"date-fns": "^4.1.0",

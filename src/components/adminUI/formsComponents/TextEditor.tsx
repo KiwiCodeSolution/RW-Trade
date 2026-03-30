@@ -42,8 +42,25 @@ const TextEditor = <T extends FieldValues>({
 									'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
 								toolbar:
 									'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table | align lineheight | numlist bullist indent outdent | emoticons charmap | removeformat',
-								content_style:
-									'body { font-family:Inter,Arial,sans-serif; font-size:16px; line-height:1.4; }'
+								font_family_formats: 'Roboto=Roboto,Arial,sans-serif',
+								content_style: `
+  @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+  body {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.75;
+    color: #282828;
+  }
+
+  h1, h2, h3 {
+    font-weight: 700;
+  }
+
+  ul, ol {
+    padding-left: 1.5rem;
+  }
+`
 							}}
 						/>
 						{fieldState.error && (

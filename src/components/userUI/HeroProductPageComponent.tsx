@@ -1,14 +1,24 @@
-import { ProductPrint } from '@/types/baseTypes'
+import { Locale, Product } from '@/types/baseTypes'
 
 import CartButtons from './CartButtons'
 import ChangeCountBtn from './ChangeCountBtn'
-import DeliveryPayment from './DeliveryPayment'
+import DeliveryPayment, { DeliveryTextByComponent } from './DeliveryPayment'
 import ImagesGallery from './ImagesGallery'
 import ToggleFavoriteButton from './ToggleFavoriteButton'
 import BaseSection from './baseComponents/BaseSection'
 import RatingCOmponent from './baseComponents/RatingCOmponent'
 
-const HeroProductPageComponent = ({ product, locale }: ProductPrint) => {
+type HeroProductPageComponentProps = {
+	product: Product
+	locale: Locale
+	deliveryTextByComponent: DeliveryTextByComponent
+}
+
+const HeroProductPageComponent = ({
+	product,
+	locale,
+	deliveryTextByComponent
+}: HeroProductPageComponentProps) => {
 	const correctRating = product.rating ? parseFloat(Math.min(product.rating, 5).toFixed(1)) : 0
 
 	return (
@@ -50,7 +60,7 @@ const HeroProductPageComponent = ({ product, locale }: ProductPrint) => {
 					</div>
 				</div>
 				<div className='hidden lg:block'>
-					<DeliveryPayment />
+					<DeliveryPayment deliveryTextByComponent={deliveryTextByComponent} />
 				</div>
 			</div>
 		</BaseSection>

@@ -37,7 +37,10 @@ const CategoryCard = ({ category, locale }: CategoryCardProps) => {
 			?.slug ?? 'catalog'
 
 	return (
-		<div className='h-[505px] w-full min-w-[278px] max-w-[360px] rounded-md border-2 border-sc-1 p-3 flex flex-col justify-between'>
+		<Link
+			className='h-[505px] w-full min-w-[278px] max-w-[360px] rounded-md border-2 border-sc-1 p-3 flex flex-col justify-between'
+			href={`/catalog/${categoryHref}`}
+		>
 			{mounted ? (
 				<>
 					<div>
@@ -51,10 +54,7 @@ const CategoryCard = ({ category, locale }: CategoryCardProps) => {
 						/>
 					</div>
 					<div className='mb-3'>
-						<Link
-							href={`/catalog/${categoryHref}`}
-							className='gradient-text text-center font-semibold'
-						>
+						<div className='gradient-text text-center font-semibold'>
 							{subcategories.length > 7 ? (
 								<ExtraCategories count={subcategories.length - 7} />
 							) : (
@@ -64,7 +64,7 @@ const CategoryCard = ({ category, locale }: CategoryCardProps) => {
 										: 'Перейти у розділ --->'}
 								</span>
 							)}
-						</Link>
+						</div>
 					</div>
 				</>
 			) : (
@@ -72,7 +72,7 @@ const CategoryCard = ({ category, locale }: CategoryCardProps) => {
 					<Spinner />
 				</div>
 			)}
-		</div>
+		</Link>
 	)
 }
 

@@ -168,5 +168,86 @@
 			"Ukr Poshta (from 3 to 10 days)",
 			"Meest-express (from 3 to 10 days)"
 		]
+	},
+	"TermsOfUse": {
+		"title": "Terms of Use (Public Offer)",
+		"points": [
+			{
+				"title": "1. General Provisions",
+				"list": [
+					"This website serves as a showcase for an auto parts store. By using this site, you agree to these terms."
+				]
+			},
+			{
+				"title": "2. Pricing and Orders",
+				"list": [
+					"Two types of prices are available on the site: retail and wholesale. The choice of price type is made by the user independently.",
+					"Placing an order through the shopping cart is a preliminary request. The purchase agreement is considered concluded only after the order is confirmed by a manager.",
+					"For 'Pick-up' orders (Kharkiv, 38 Derzhavinska St.), placing a request on the website is mandatory, as not all items are displayed at the pick-up point."
+				]
+			},
+			{
+				"title": "3. Payment and Delivery",
+				"list": [
+					"Delivery is carried out by carriers: Nova Poshta, Ukrposhta (subject to 100% prepayment), Meest POST (courier in Kharkiv), or via self-pickup.",
+					"Payment methods include: cash on delivery (COD), transfer to a Privatbank card, cash, non-cash payment (for FOP 2-3 groups), and online payment via WayForPay.",
+					{
+						"text": "Full information regarding terms and costs is available on the ",
+						"linkText": "Payment & Delivery",
+						"href": "/payment_delivery"
+					}
+				]
+			},
+			{
+				"title": "4. Warranty Obligations and Returns",
+				"list": [
+					"Each product has an individual warranty period (from 2 weeks to 5 years).",
+					"The buyer is obliged to inspect the goods upon receipt (at the post office or from a courier) for mechanical damage and completeness. After signing the receipt documents, claims regarding appearance and completeness are not accepted.",
+					{
+						"text": "Detailed terms for replacement and returns are described on the ",
+						"linkText": "Warranty & Returns page.",
+						"href": "/warranty_return"
+					}
+				]
+			},
+			{
+				"title": "5. Liability",
+				"list": [
+					"We are not responsible for the loss of data in your LocalStorage (cart, favorites) due to clearing the browser cache or the technical features of your device."
+				]
+			}
+		]
+	},
+	"PrivacyPolicy": {
+		"title": "Privacy and Personal Data Protection Policy",
+		"description": "This Policy explains how we collect and use your data when using our website.",
+		"points": [
+			{
+				"title": "1. Data Collection Upon Ordering",
+				"desc": "Since there is no registration on our website, we collect personal data only during checkout via the 'Shopping Cart'. This is necessary to identify the recipient and deliver the goods. Such data includes:",
+				"list": [
+					"Full name;",
+					"Phone number (for confirmation and sending SMS with the declaration number);",
+					"Delivery address (city, post office, or address in Kharkiv)."
+				]
+			},
+			{
+				"title": "2. Use of LocalStorage",
+				"desc": "We use your browser's local storage (LocalStorage) to store technical information:",
+				"list": [
+					"Selected interface language;",
+					"Price display mode (Wholesale or Retail);",
+					"The 'Favorites' list and 'Shopping Cart' content. This data remains on your device and is not transmitted to us until the actual order is placed."
+				]
+			},
+			{
+				"title": "3. Data Transfer to Third Parties",
+				"desc": "We transfer your data (name, phone, city) exclusively to logistics partners for delivery purposes: Nova Poshta, Ukrposhta, Meest POST."
+			},
+			{
+				"title": "4. Payment Security",
+				"desc": "When choosing to pay via WayForPay, you enter card details on the secure page of the payment system. Our website does not collect or store your bank card data."
+			}
+		]
 	}
 }
