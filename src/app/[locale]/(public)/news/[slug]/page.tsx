@@ -71,7 +71,7 @@ export default async function OneNews({ params }: { params: Promise<Params> }) {
 				)}
 				{post.videoUrl && <VideoBlock videoUrl={post.videoUrl} />}
 
-				<HtmlContent html={post.content[locale]} className='mt-4' />
+				<HtmlContent html={post.content[locale]} className='prose max-w-none mt-4' />
 			</div>
 
 			<NewsSectionServer

@@ -1,6 +1,8 @@
 'use client'
 
-import { OrderItem } from '@/store/CartStore'
+import { Trash } from '@/assets/icons'
+
+import { OrderItem, cartStore } from '@/store/CartStore'
 
 import ChangeCountBtn from './ChangeCountBtn'
 
@@ -31,14 +33,20 @@ const ProductCartComponent = observer(({ item, locale }: Props) => {
 			</div>
 
 			{/* права частина */}
-			<div className=' grid grid-cols-2 justify-between lg:justify-normal gap-3'>
+			<div className='flex items-center justify-between lg:justify-normal gap-3'>
 				<ChangeCountBtn product={item} />
 				<div className='grid grid-cols-[1fr_3fr] items-center gap-1'>
-					<p className='text-right text-xl lg:text-2xl lg:font-medium'>
+					<p className='text-right text-xl lg:font-medium'>
 						{locale === 'en' ? 'Sum:' : 'Сума:'}
 					</p>
-					<p className='text-xl lg:text-2xl lg:font-medium'>{sum} ₴</p>
+					<p className='text-xl lg:font-medium'>{sum} ₴</p>
 				</div>
+				<button
+					onClick={() => cartStore.removeProduct(item.productId)}
+					className='w-9 h-9 rounded-full bg-sc-5 flex items-center justify-center hover:scale-103 transition-transform duration-300 shrink-0'
+				>
+					<Trash className='w-5 h-5 ' />
+				</button>
 			</div>
 		</div>
 	)

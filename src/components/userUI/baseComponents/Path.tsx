@@ -1,8 +1,8 @@
 import { ArrowGoBack, PathArrowIcon } from '@/assets/icons'
 
-import { Link } from '@/i18n/navigation'
+import { Locale } from '@/types/baseTypes'
 
-import { Locale } from 'next-intl'
+import { Link } from '@/i18n/navigation'
 
 type PathProps = {
 	firstName?: string

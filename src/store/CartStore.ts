@@ -144,7 +144,7 @@ class CartStore {
 		})
 	}
 
-	clearCart() {
+	clearCart = () => {
 		runInAction(() => {
 			this.items = []
 			this.saveToStorage()

@@ -4,7 +4,7 @@ import { Locale, Product } from '@/types/baseTypes'
 
 import Collapse from '../commonUI/Collapse'
 
-import DeliveryPayment from './DeliveryPayment'
+import DeliveryPayment, { DeliveryTextByComponent } from './DeliveryPayment'
 import PartnersProductsList from './PartnersProductsList'
 import PopularProductsList from './PopularProductsList'
 import VideoBlock from './VideoBlock'
@@ -15,12 +15,16 @@ const OtherInformation = ({
 	product,
 	locale,
 	partnersProducts,
-	popularProducts
+	popularProducts,
+	baseDeliveryTexts,
+	deliveryTextByComponent
 }: {
 	product: Product
 	locale: Locale
 	partnersProducts?: Product[]
 	popularProducts?: Product[]
+	baseDeliveryTexts: { title: string; description: string }[]
+	deliveryTextByComponent: DeliveryTextByComponent
 }) => {
 	return (
 		<BaseSection className='flex flex-col gap-y-8 pt-9 xl:max-w-[1280px]!'>
@@ -82,20 +86,33 @@ const OtherInformation = ({
 							</Collapse>
 						)}
 
-						{product.deliveryTerms && product.deliveryTerms[locale] !== '' && (
-							<Collapse
-								title={locale === 'uk' ? 'Умови доставки' : 'Delivery terms'}
-								sectionType='base'
-							>
+						<Collapse
+							title={locale === 'uk' ? 'Умови доставки' : 'Delivery terms'}
+							sectionType='base'
+						>
+							{product.deliveryTerms &&
+							Array.isArray(product.deliveryTerms) &&
+							product.deliveryTerms[locale] !== '' ? (
 								<HtmlContent
 									html={product.deliveryTerms[locale] ?? product.deliveryTerms.uk}
 								/>
-							</Collapse>
-						)}
+							) : (
+								<>
+									<ul className='list-disc lg:ml-5 mb-10 space-y-7'>
+										{baseDeliveryTexts.map((d, idx) => (
+											<li key={idx}>
+												<span className='font-semibold'>{d.title}</span>
+												<p>{d.description}</p>
+											</li>
+										))}
+									</ul>
+								</>
+							)}
+						</Collapse>
 					</div>
 					<div className='flex flex-col w-3/12'></div>
 					<div className='lg:hidden my-4'>
-						<DeliveryPayment />
+						<DeliveryPayment deliveryTextByComponent={deliveryTextByComponent} />
 					</div>
 				</div>
 				{partnersProducts && partnersProducts.length > 0 && (

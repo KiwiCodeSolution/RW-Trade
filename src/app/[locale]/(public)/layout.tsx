@@ -9,6 +9,7 @@ import '@/styles/globals.css'
 
 import { Metadata } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
+import { setRequestLocale } from 'next-intl/server'
 import 'swiper/css'
 import 'swiper/css/a11y'
 import 'swiper/css/navigation'
@@ -29,10 +30,20 @@ export default async function RootLayout({ children, params }: RootLayoutProps) 
 
 	const safeLocale: Locale = locale === 'uk' ? 'uk' : 'en'
 
+	// ВАЖЛИВО: ініціалізація локалі для серверних запитів
+	setRequestLocale(safeLocale)
+
+	// Ваш поточний спосіб завантаження повідомлень
+	const messagesMap = {
+		en: () => import('../../../../messages/en.json'),
+		uk: () => import('../../../../messages/uk.json')
+	}
+	const messages = (await messagesMap[safeLocale]()).default
+
 	return (
 		<html lang={safeLocale} suppressHydrationWarning className={roboto.className}>
 			<body className='bg-bg-light relative'>
-				<NextIntlClientProvider>
+				<NextIntlClientProvider locale={safeLocale} messages={messages}>
 					<UserHeader locale={safeLocale} />
 					<div className='min-h-[50vh] flex flex-col justify-between'>{children}</div>
 					<UserFooter locale={safeLocale} />

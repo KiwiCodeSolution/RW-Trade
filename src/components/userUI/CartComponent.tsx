@@ -23,7 +23,7 @@ type Props = {
 
 const CartComponent = observer(({ step = 1, onClose, type = 'base' }: Props) => {
 	const locale = useLocale() as Locale
-	const { items, oneStepBuyItem, totalSum, orderNumber } = cartStore
+	const { items, oneStepBuyItem, totalSum, orderNumber, clearCart } = cartStore
 
 	const [currentStep, setCurrentStep] = useState(step)
 	const [orderSuccess, setOrderSuccess] = useState(false)
@@ -64,13 +64,22 @@ const CartComponent = observer(({ step = 1, onClose, type = 'base' }: Props) => 
 					{items.map(item => (
 						<ProductCartComponent key={item.productId} item={item} locale={locale} />
 					))}
-					<div className='flex ml-auto pr-1'>
-						<p className='text-xl font-bold mr-1'>
-							{locale === 'en' ? 'Total amount:' : 'Всього на суму:'}
-						</p>
-						<p className='text-xl font-bold'>{totalSum} ₴</p>
+					<div className='flex flex-col gap-y-2 ml-auto pr-1'>
+						<div className='flex'>
+							<p className='text-xl font-bold mr-1'>
+								{locale === 'en' ? 'Total amount:' : 'Всього на суму:'}
+							</p>
+							<p className='text-xl font-bold'>{totalSum} ₴</p>
+						</div>
+						{/* очистити кошик */}
+						<button
+							onClick={() => clearCart()}
+							className='text-xl font-bold hover:scale-103 hover:text-gr-4 transition-all duration-300 text-right'
+						>
+							{locale === 'en' ? 'Clear cart' : 'Очистити кошик'}
+						</button>
 					</div>
-					<div className='flex flex-col gap-y-4 mx-auto'>
+					<div className='flex flex-col gap-4 mx-auto'>
 						<BtnSolid
 							size='l'
 							variant='bronze'

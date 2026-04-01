@@ -8,6 +8,8 @@ import { BASE_URL } from '@/utils/config'
 
 import { LangField, Locale, Product } from '@/types/baseTypes'
 
+import { getTranslations, setRequestLocale } from 'next-intl/server'
+
 type Params = { locale: Locale; slug: string }
 
 export async function generateMetadata({ params }: { params: Promise<Params> }) {
@@ -31,6 +33,9 @@ export async function generateMetadata({ params }: { params: Promise<Params> }) 
 
 export default async function ProductPage({ params }: { params: Promise<Params> }) {
 	const { slug, locale } = await params
+
+	setRequestLocale(locale)
+	const t = await getTranslations({ locale })
 
 	const productRes = await fetch(`${BASE_URL}/products/slug/${slug}`, {
 		next: { revalidate: 60 }
@@ -69,6 +74,44 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 		)
 	const secondName = locale === 'uk' ? 'каталог' : 'catalog'
 
+	const deliveryMethods = [
+		{
+			title: t('PaymentAndDeliveryPage.delivery.novaPoshta.title'),
+			description: t('PaymentAndDeliveryPage.delivery.novaPoshta.desc')
+		},
+		{
+			title: t('PaymentAndDeliveryPage.delivery.ukrPoshta.title'),
+			description: t('PaymentAndDeliveryPage.delivery.ukrPoshta.desc')
+		},
+		{
+			title: t('PaymentAndDeliveryPage.delivery.pickup.title'),
+			description: t('PaymentAndDeliveryPage.delivery.pickup.desc')
+		},
+		{
+			title: t('PaymentAndDeliveryPage.delivery.meest.title'),
+			description: t('PaymentAndDeliveryPage.delivery.meest.desc')
+		}
+	]
+
+	const deliveryTextByComponent = {
+		title: t('DeliveryPayment.title'),
+		methods_title: t('DeliveryPayment.methods_title'),
+		methods: [
+			t('DeliveryPayment.methods.0'),
+			t('DeliveryPayment.methods.1'),
+			t('DeliveryPayment.methods.2'),
+			t('DeliveryPayment.methods.3')
+		],
+		guarantee_title: t('DeliveryPayment.guarantee_title'),
+		guarantee: [t('DeliveryPayment.guarantee.0')],
+		delivery_title: t('DeliveryPayment.delivery_title'),
+		delivery: [
+			t('DeliveryPayment.delivery.0'),
+			t('DeliveryPayment.delivery.1'),
+			t('DeliveryPayment.delivery.2')
+		]
+	}
+
 	return (
 		<main className='w-full min-h-[80vh]'>
 			<BaseSection className='hidden lg:flex'>
@@ -83,12 +126,18 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 				</Title>
 			</BaseSection>
 
-			<HeroProductPageComponent product={product} locale={locale} />
+			<HeroProductPageComponent
+				product={product}
+				locale={locale}
+				deliveryTextByComponent={deliveryTextByComponent}
+			/>
 			<OtherInformation
 				product={product}
 				locale={locale}
 				partnersProducts={partnerProducts}
 				popularProducts={popularProducts}
+				baseDeliveryTexts={deliveryMethods}
+				deliveryTextByComponent={deliveryTextByComponent}
 			/>
 		</main>
 	)

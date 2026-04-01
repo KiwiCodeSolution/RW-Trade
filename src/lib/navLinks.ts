@@ -1,4 +1,5 @@
 export const navLinks = [
+	{ title: { uk: 'Каталог', en: 'Catalog' }, href: '/catalog' },
 	{ title: { uk: 'Про компанію', en: 'About us' }, href: '/about' },
 	{
 		title: { uk: 'Оплата та доставка', en: 'Payment & Delivery' },

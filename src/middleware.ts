@@ -4,8 +4,10 @@ import type { Locale } from '@/types/baseTypes'
 import { auth } from '@/auth'
 import { routing } from '@/i18n/routing'
 
+import createIntlMiddleware from 'next-intl/middleware'
 import { NextRequest, NextResponse } from 'next/server'
 
+const intlMiddleware = createIntlMiddleware(routing)
 export async function middleware(request: NextRequest) {
 	const { pathname, search } = request.nextUrl
 
@@ -43,6 +45,11 @@ export async function middleware(request: NextRequest) {
 			return NextResponse.redirect(new URL(`/${locale}/signin`, request.url))
 		}
 	}
+
+	const intlResponse = intlMiddleware(request)
+
+	// якщо next-intl вже хоче редірект — віддаємо його
+	if (intlResponse) return intlResponse
 
 	// 5️⃣ Якщо локаль є в URL — просто пропускаємо
 	if (firstSegment && routing.locales.includes(firstSegment as Locale)) {
