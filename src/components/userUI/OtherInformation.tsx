@@ -26,9 +26,6 @@ const OtherInformation = ({
 	baseDeliveryTexts: { title: string; description: string }[]
 	deliveryTextByComponent: DeliveryTextByComponent
 }) => {
-	console.log(product.deliveryTerms)
-	console.log(product)
-	console.log(locale)
 	return (
 		<BaseSection className='flex flex-col gap-y-8 pt-9 xl:max-w-[1280px]!'>
 			<div className='flex flex-col lg:flex-row gap-x-14 items-start justify-between'>

@@ -23,5 +23,10 @@
 	// ⚡ Примусове використання конфігу Prettier
 	"prettier.requireConfig": true,
 	// 💡 Якщо потрібна сумісність з ESLint
-	"eslint.format.enable": true
+	"eslint.format.enable": true,
+	"i18n-ally.localesPaths": [
+		"messages",
+		"src/i18n",
+		"src/app/[locale]/(admin)/manage-panel/messages"
+	]
 }
