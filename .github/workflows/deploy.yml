@@ -55,6 +55,7 @@ jobs:
 
             echo '🔹 4. Встановлюємо залежності та збираємо...' &&
             npm install &&
+            rm -rf .next &&
             npm run build &&
 
             echo '🔹 5. Перезапускаємо PM2...' &&
