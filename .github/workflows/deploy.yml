@@ -26,9 +26,6 @@ jobs:
 
       - name: Run Build (Validation)
         run: npm run build
-        env:
-           # Вказуємо змінні, щоб білд пройшов успішно (вони не потраплять на сервер, це тільки тест збірки)
-           NEXT_PUBLIC_API_URL: "https://rwavto.shop/rest"
 
       # --- Етап Деплою на сервер ---
       - name: Setup SSH Agent
@@ -67,7 +64,7 @@ jobs:
         if: always()
         run: |
           if [ "${{ job.status }}" = "success" ]; then
-            MESSAGE="✅ *Frontend* Успішно задеплоєно для репозиторія RW-Trade!%0ABranch: dev%0AUrl: https://devtestapps.online";
+            MESSAGE="✅ *Frontend* Успішно задеплоєно для репозиторія RW-Trade!%0ABranch: dev%0AUrl: https://rwtrade.com.ua";
           else
             MESSAGE="❌ *Frontend* Помилка деплою для репо RW-Trade";
           fi
