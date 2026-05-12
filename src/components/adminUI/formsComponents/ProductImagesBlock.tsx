@@ -2,6 +2,8 @@
 
 import { Add, Trash } from '@/assets/icons'
 
+import { toast } from '@/lib/toast'
+
 import Image from 'next/image'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { ReactSortable } from 'react-sortablejs'
@@ -29,13 +31,6 @@ const ProductImagesBlock = ({ images = [], onChange }: ProductImagesBlockProps) 
 		images.length ? [...images, ...createEmptySlots()].slice(0, 10) : createEmptySlots()
 	)
 
-	// const resolveImageUrl = (url?: string) => {
-	// 	if (!url) return ''
-	// 	if (url.startsWith('blob:') || url.startsWith('http://') || url.startsWith('https://'))
-	// 		return url
-	// 	return `${BASE_IMG_URL}${url.startsWith('/') ? url : `/${url}`}`
-	// }
-
 	const resolveImageUrl = (url?: string) => {
 		if (!url) return ''
 
@@ -60,9 +55,45 @@ const ProductImagesBlock = ({ images = [], onChange }: ProductImagesBlockProps) 
 		onChange?.(filled)
 	}, [local, onChange])
 
+	const MAX_FILE_SIZE_MB = 20
+	const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024
+
+	// const handleAdd = (e: ChangeEvent<HTMLInputElement>) => {
+	// 	const files = e.target.files
+	// 	if (!files) return
+
+	// 	const newImgs = Array.from(files).map(f => ({
+	// 		id: `img-${Date.now()}-${Math.random()}`,
+	// 		file: f,
+	// 		url: URL.createObjectURL(f)
+	// 	}))
+
+	// 	setLocal(prev => {
+	// 		const updated = [...prev]
+	// 		for (const img of newImgs) {
+	// 			const emptyIndex = updated.findIndex(i => !i.url)
+	// 			if (emptyIndex === -1) break
+	// 			updated[emptyIndex] = img
+	// 		}
+	// 		return updated
+	// 	})
+	// }
+
 	const handleAdd = (e: ChangeEvent<HTMLInputElement>) => {
 		const files = e.target.files
 		if (!files) return
+
+		const oversized = Array.from(files).filter(f => f.size > MAX_FILE_SIZE_BYTES)
+
+		if (oversized.length) {
+			oversized.forEach(f =>
+				toast.error(
+					`"${f.name}" перевищує ліміт ${MAX_FILE_SIZE_MB}MB (${(f.size / 1024 / 1024).toFixed(1)}MB)`
+				)
+			)
+			e.target.value = ''
+			return
+		}
 
 		const newImgs = Array.from(files).map(f => ({
 			id: `img-${Date.now()}-${Math.random()}`,
