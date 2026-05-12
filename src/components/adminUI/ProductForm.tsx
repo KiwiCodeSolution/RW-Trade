@@ -10,6 +10,7 @@ import { productStore } from '@/store/ProductsStore'
 import Collapse from '../commonUI/Collapse'
 
 import { BaseInput } from './BaseInput'
+import DescriptionCreatedText from './DescriptionCreatedText'
 import ProductImagesBlock from './formsComponents/ProductImagesBlock'
 import TextEditor from './formsComponents/TextEditor'
 
@@ -83,8 +84,6 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 			priceCurrency: product.priceCurrency ?? 0
 		})
 	}, [product?._id, reset])
-
-	console.log(product)
 
 	const searchParams = useSearchParams()
 	const categoryIdFromQuery = searchParams.get('category')
@@ -226,21 +225,35 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 	const status = watch('status')
 	const isInStock = status === ProductStatus.IN_STOCK
 
+	const descText = [
+		'Ви можете додати до 10 зображень в одну картку товару',
+		'Зображення під номером «1» буде головним і відображатиметься першим при відкритті сторінки з товаром',
+		'Фон зображень повинен бути білим або прозорим для коректного відображення картки',
+		'Максимальний розмір 1 зображення 20 МБ. Якщо ваше зображення більше, спробуйте стиснути його за допомогою онлайн-сервісів або програм для редагування фото'
+	]
+
 	return (
 		<div>
 			<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 pt-3'>
-				{/* блок додавання / редагування фото */}
-				<ProductImagesBlock
-					images={images ?? []}
-					onChange={imgs => {
-						const prev = images ?? []
-						const changed =
-							prev.length !== imgs.length || prev.some((p, i) => p.id !== imgs[i]?.id)
+				<div className='flex flex-col lg:flex-row gap-6 lg:items-start lg:justify-between'>
+					{/* блок додавання / редагування фото */}
+					<ProductImagesBlock
+						images={images ?? []}
+						onChange={imgs => {
+							const prev = images ?? []
+							const changed =
+								prev.length !== imgs.length ||
+								prev.some((p, i) => p.id !== imgs[i]?.id)
 
-						if (changed)
-							setValue('images', imgs, { shouldDirty: true, shouldValidate: true })
-					}}
-				/>
+							if (changed)
+								setValue('images', imgs, {
+									shouldDirty: true,
+									shouldValidate: true
+								})
+						}}
+					/>
+					<DescriptionCreatedText texts={descText} />
+				</div>
 				<Collapse title='SEO-блок' sectionType='form'>
 					<div className='grid grid-cols-1 2xl:grid-cols-2 gap-4'>
 						<BaseInput<ProductFormValues>

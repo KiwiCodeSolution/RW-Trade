@@ -58,7 +58,7 @@ const AdminHeader = observer(() => {
 	}
 
 	return (
-		<header className='flex flex-col gap-4 bg-[#3C4447] text-txt-white px-2 py-3 min-h-screen rounded-tr-4xl rounded-br-4xl justify-center sticky top-0 overflow-y-auto'>
+		<header className='flex flex-col gap-4 bg-[#3C4447] text-txt-white px-2 py-3 h-screen rounded-tr-4xl rounded-br-4xl sticky top-0 overflow-y-auto'>
 			<div className='flex flex-col gap-6 '>
 				{/* <div className='mt-4'>
 					<Link

@@ -9,6 +9,7 @@ import { CreateNewsDto, NewsArticle } from '@/types/baseTypes'
 import { newsStore } from '@/store/NewsStore'
 
 import { BaseInput } from '../BaseInput'
+import DescriptionCreatedText from '../DescriptionCreatedText'
 
 import SingleImageUpload from './SingleImageUpload'
 import TextEditor from './TextEditor'
@@ -110,38 +111,46 @@ const NewsForm = observer(({ news }: { news?: NewsArticle }) => {
 			toast.error('Не вдалося зберегти новину')
 		}
 	}
+	const descText = [
+		'Картинка попереднього перегляду повинна бути квадратної форми для коректного відображення',
+		'Бажаний розмір не менше 200px',
+		'Максимальний розмір 1 зображення 20 МБ. Якщо ваше зображення більше, спробуйте стиснути його за допомогою онлайн-сервісів або програм для редагування фото'
+	]
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col gap-6 pt-3'>
-			<div className='flex items-start gap-x-3'>
-				<SingleImageUpload
-					image={image ? { id: 'main', url: image } : undefined}
-					onChange={preview => {
-						setValue('image', preview?.url || '')
-						setValue('imageFile', preview?.file || null)
-					}}
-					className='border-2 border-sc-1 product-card-shadow w-[162px] h-[162px]'
-				/>
-				<div className='flex flex-col gap-y-2 w-4/5'>
-					<BaseInput<NewsFormValues>
-						name='title.uk'
-						label='Назва запису'
-						type='text'
-						register={register}
-						errors={errors}
-						isRequired
-						requiredMessage='Назва запису є обов’язковою'
+			<div className='flex flex-col lg:flex-row gap-6 lg:items-start lg:justify-between'>
+				<div className='w-full flex items-start gap-x-3'>
+					<SingleImageUpload
+						image={image ? { id: 'main', url: image } : undefined}
+						onChange={preview => {
+							setValue('image', preview?.url || '')
+							setValue('imageFile', preview?.file || null)
+						}}
+						className='border-2 border-sc-1 product-card-shadow w-[162px] h-[162px]'
 					/>
-					<BaseInput<NewsFormValues>
-						name='title.en'
-						label='Назва запису (англійською)'
-						type='text'
-						register={register}
-						errors={errors}
-						isRequired
-						requiredMessage='Назва запису є обов’язковою'
-					/>
+					<div className='flex flex-col gap-y-2 w-4/5'>
+						<BaseInput<NewsFormValues>
+							name='title.uk'
+							label='Назва запису'
+							type='text'
+							register={register}
+							errors={errors}
+							isRequired
+							requiredMessage='Назва запису є обов’язковою'
+						/>
+						<BaseInput<NewsFormValues>
+							name='title.en'
+							label='Назва запису (англійською)'
+							type='text'
+							register={register}
+							errors={errors}
+							isRequired
+							requiredMessage='Назва запису є обов’язковою'
+						/>
+					</div>
 				</div>
+				<DescriptionCreatedText texts={descText} />
 			</div>
 
 			<Collapse title='SEO-блок' sectionType='form'>
