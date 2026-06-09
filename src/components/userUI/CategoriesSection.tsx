@@ -58,7 +58,7 @@ const CategoriesSection = observer(
 							>
 								<div className='flex flex-col items-center'>
 									<CategoryIcon
-										category={item.title['en']}
+										category={item.slug}
 										size='m'
 										bg={categories.length === index + 1 ? 'bronze' : 'primary'}
 									/>

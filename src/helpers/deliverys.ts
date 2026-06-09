@@ -5,12 +5,12 @@ export const servicesList = [
 		img: '/images/delivery/np.png'
 	},
 	{
-		id: 'Ukrposhta',
+		id: 'ukrposhta',
 		title: { uk: 'Укрпошта', en: 'Ukrposhta' },
 		img: '/images/delivery/up.png'
 	},
 	{
-		id: 'Meest',
+		id: 'meest',
 		title: { uk: 'Meest-express', en: 'Meest-express' },
 		img: '/images/delivery/meest.png'
 	}

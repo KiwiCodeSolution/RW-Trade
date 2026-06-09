@@ -1,122 +1,122 @@
 [
 	{
 		"uk": {
+			"name": "Наталия С.",
+			"imgUrl": "",
+			"text": "Ну що сказати мені менше ніж за добу відправили камеру, в належному стані, все працює, наразі в мене зауважень немає."
+		},
+		"en": {
+			"name": "Natalia S.",
+			"imgUrl": "",
+			"text": "Well, what can I say, the camera was sent to me in less than a day, it is in good condition, everything works, I have no comments at the moment."
+		}
+	},
+	{
+		"uk": {
+			"name": "Антон Ж.",
+			"imgUrl": "",
+			"text": "Порядний продавець, рекомендую)"
+		},
+		"en": {
+			"name": "Anton Zh.",
+			"imgUrl": "",
+			"text": "A decent seller, I recommend)"
+		}
+	},
+	{
+		"uk": {
+			"name": "Вадим Ш.",
+			"imgUrl": "",
+			"text": "Топ продавець, комунікабельний, відправили у день замовлення."
+		},
+		"en": {
+			"name": "Vadim Sh.",
+			"imgUrl": "",
+			"text": "Top seller, sociable, shipped on the day of order."
+		}
+	},
+	{
+		"uk": {
 			"name": "Олександр К.",
 			"imgUrl": "",
-			"text": "Дуже задоволений сервісом, все пройшло швидко та якісно."
+			"text": "Швидко та якістно."
 		},
 		"en": {
-			"name": "Alexander K.",
+			"name": "Olexander K.",
 			"imgUrl": "",
-			"text": "Very satisfied with the service, everything was fast and high-quality."
+			"text": "Fast and high quality."
 		}
 	},
 	{
 		"uk": {
-			"name": "Марія П.",
+			"name": "Олександр Л.",
 			"imgUrl": "",
-			"text": "Платформа зручна та інтуїтивно зрозуміла. Рекомендую!"
+			"text": "Взяв таку саму для перевірки у друга. Після цього замовив собі. Тест проводив на Volvo XC70. Результатом задоволений на всі 100%. Діагностичний адаптер OBD2 Vgate VLinker MC+ Bluetooth 4.0 для Android/iOS оновлений."
 		},
 		"en": {
-			"name": "Maria P.",
+			"name": "Olexander L.",
 			"imgUrl": "",
-			"text": "The platform is convenient and intuitive. Highly recommend!"
+			"text": "I took the same one for testing from a friend. After that I ordered it for myself. I tested it on a Volvo XC70. I am 100% satisfied with the result. The OBD2 diagnostic adapter Vgate VLinker MC+ Bluetooth 4.0 for Android/iOS has been updated."
 		}
 	},
 	{
 		"uk": {
-			"name": "Іван С.",
+			"name": "Віталій М.",
 			"imgUrl": "",
-			"text": "Відчутно покращив свої навички завдяки навчальним матеріалам."
+			"text": "Супер , швидко , актуально , товаром задоволений."
 		},
 		"en": {
-			"name": "Ivan S.",
+			"name": "Vitaly M.",
 			"imgUrl": "",
-			"text": "Significantly improved my skills thanks to the learning materials."
+			"text": "Super, fast, relevant, satisfied with the product."
 		}
 	},
 	{
 		"uk": {
-			"name": "Анна Л.",
+			"name": "Віктор В.",
 			"imgUrl": "",
-			"text": "Підтримка користувачів на високому рівні, завжди швидко відповідають."
+			"text": "Дуже сподобалося з Вами мати справу. Все чітко. Дякую 👌"
 		},
 		"en": {
-			"name": "Anna L.",
+			"name": "Victor V.",
 			"imgUrl": "",
-			"text": "User support is top-notch, always responds quickly."
+			"text": "I really enjoyed dealing with you. Everything is clear. Thank you 👌"
 		}
 	},
 	{
 		"uk": {
-			"name": "Дмитро К.",
+			"name": "Тгорь А.",
 			"imgUrl": "",
-			"text": "Навчальні сесії добре структуровані і цікаві."
+			"text": "Товар гарний рекомендую продавець вічливий обсліговуе на всі 100."
 		},
 		"en": {
-			"name": "Dmytro K.",
+			"name": "Igor A.",
 			"imgUrl": "",
-			"text": "Learning sessions are well-structured and interesting."
+			"text": "Good product, I recommend it, the seller is polite, he provides 100% service."
 		}
 	},
 	{
 		"uk": {
-			"name": "Ольга Т.",
+			"name": "Елена И.",
 			"imgUrl": "",
-			"text": "Легко знайти потрібну інформацію та взаємодіяти з іншими учасниками."
+			"text": "Як і казав продавець, Три балона буди без наклейки фірми один був як на фото, код на балонах схожий, підключили до пальника, газ працює ідентично, при кімнатній температурі. Висновок: кому наклейка фірми Некритично, то можна брать і користуватися. Вага нових балонів ~ 295г."
 		},
 		"en": {
-			"name": "Olga T.",
+			"name": "Elena I.",
 			"imgUrl": "",
-			"text": "Easy to find the needed information and interact with other participants."
+			"text": "As the seller said, Three cylinders were without a company sticker, one was like in the photo, the code on the cylinders is similar, connected to the burner, the gas works identically, at room temperature. Conclusion: to whom the company sticker is not critical, then you can take and use. The weight of the new cylinders is ~ 295g."
 		}
 	},
 	{
 		"uk": {
-			"name": "Сергій М.",
+			"name": "Олексій Г.",
 			"imgUrl": "",
-			"text": "Дуже корисний ресурс для розвитку професійних навичок."
+			"text": "Товар прийшов швидко . Встановив , перевірив все працює . Поки задоволений."
 		},
 		"en": {
-			"name": "Serhiy M.",
+			"name": "Alexey G.",
 			"imgUrl": "",
-			"text": "Very useful resource for developing professional skills."
-		}
-	},
-	{
-		"uk": {
-			"name": "Катерина Ф.",
-			"imgUrl": "",
-			"text": "Інтерфейс красивий і зручний, приємно користуватися."
-		},
-		"en": {
-			"name": "Kateryna F.",
-			"imgUrl": "",
-			"text": "The interface is beautiful and convenient, pleasant to use."
-		}
-	},
-	{
-		"uk": {
-			"name": "Володимир Я.",
-			"imgUrl": "",
-			"text": "Матеріали оновлюються регулярно, що дуже важливо."
-		},
-		"en": {
-			"name": "Volodymyr Y.",
-			"imgUrl": "",
-			"text": "Materials are updated regularly, which is very important."
-		}
-	},
-	{
-		"uk": {
-			"name": "Людмила Р.",
-			"imgUrl": "",
-			"text": "Всі функції працюють стабільно, немає жодних проблем."
-		},
-		"en": {
-			"name": "Lyudmyla R.",
-			"imgUrl": "",
-			"text": "All functions work stably, no issues at all."
+			"text": "The goods arrived quickly. Installed, checked everything works. So far satisfied."
 		}
 	}
 ]

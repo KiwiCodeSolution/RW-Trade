@@ -47,10 +47,10 @@ export default function DeliverySection({ value, onChange }: Props) {
 			{value.method === 'nova_poshta' && (
 				<NPFields value={{ ...value, comment }} onChange={handleChange} />
 			)}
-			{value.method === 'Ukrposhta' && (
+			{value.method === 'ukrposhta' && (
 				<UkrPoshtaFields value={{ ...value, comment }} onChange={handleChange} />
 			)}
-			{value.method === 'Meest' && (
+			{value.method === 'meest' && (
 				<MeestFields value={{ ...value, comment }} onChange={handleChange} />
 			)}
 		</div>

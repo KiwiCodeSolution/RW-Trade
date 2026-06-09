@@ -56,7 +56,7 @@ const FormSection = () => {
 									alt={`icon-${index}`}
 									width={33}
 									height={33}
-									className='h-auto'
+									className='h-8'
 								/>
 								<p className='lg:text-xl leading-[1.5] lg:leading-8'>{text}</p>
 							</div>

@@ -11,7 +11,7 @@ const TestimonialsCard = ({ testimonial }: { testimonial: Testimonial }) => {
 	if (!testimonial) return null
 
 	return (
-		<div className='min-w-[240px] max-w-[340px] h-[152px] p-4 bg-primary rounded-2xl'>
+		<div className='min-w-[240px] max-w-[340px] min-h-[152px] p-4 bg-primary rounded-2xl'>
 			<div className='flex gap-2 items-center mb-4'>
 				<div className='w-8 h-8 min-w-8 flex items-center justify-center rounded-full overflow-hidden'>
 					{testimonial?.imgUrl ? (

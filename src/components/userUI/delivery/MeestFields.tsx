@@ -111,7 +111,7 @@ export default function MeestFields({ value, onChange }: Props) {
 		const branch = selected?.num_showcase ? String(selected.num_showcase) : selected?.num || ''
 
 		changeRef.current({
-			method: 'Meest',
+			method: 'meest',
 			city,
 			branch,
 			address: fullAddress(selected),

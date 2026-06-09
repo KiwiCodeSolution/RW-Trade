@@ -51,7 +51,7 @@ export default function UkrPoshtaFields({ value, onChange }: Props) {
 			: undefined
 
 		changeRef.current({
-			method: 'Ukrposhta',
+			method: 'ukrposhta',
 			city: selected?.city || '',
 			branch: selected?.zip || '',
 			address: address || selected?.address || '',
