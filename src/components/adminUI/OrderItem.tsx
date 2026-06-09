@@ -71,7 +71,7 @@ const OrderItemComponent = observer(({ order }: OrderItemProps) => {
 
 	const delivery = servicesList.find(s => s.id === order.delivery.method)!
 
-	const place = order.delivery.method !== 'Ukrposhta' ? 'відділення # ' : ''
+	const place = order.delivery.method !== 'ukrposhta' ? 'відділення # ' : ''
 	const address =
 		order.delivery.method !== 'nova_poshta'
 			? place +

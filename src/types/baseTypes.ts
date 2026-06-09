@@ -115,7 +115,7 @@ export interface Message {
 	updatedAt?: string
 }
 
-export type DeliveryMethod = 'nova_poshta' | 'Ukrposhta' | 'Meest' | 'courier' // або точний перелік з бекенду, якщо є enum
+export type DeliveryMethod = 'nova_poshta' | 'ukrposhta' | 'meest' | 'pickup'
 
 export interface NPAddressItem {
 	Ref: string

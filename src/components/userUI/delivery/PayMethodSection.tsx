@@ -22,10 +22,7 @@ const paymentMethodList: PaymentMethod[] = [
 		id: 'card_privatbank',
 		title: { uk: 'Оплата на картку Приватбанку', en: 'Payment to a PrivatBank card' }
 	},
-	{
-		id: 'cash',
-		title: { uk: 'Готівкою', en: 'In cash' }
-	},
+	{ id: 'cash', title: { uk: 'Готівкою', en: 'In cash' } },
 	{
 		id: 'fop_2_3',
 		title: {
@@ -36,7 +33,8 @@ const paymentMethodList: PaymentMethod[] = [
 	{
 		id: 'wayforpay',
 		title: { uk: 'Оплата картою Visa, Mastercard', en: 'Payment by Visa, Mastercard' }
-	}
+	},
+	{ id: 'cash_on_delivery', title: { uk: 'Післяплата', en: 'Cash on delivery' } } // ← додати
 ]
 
 export default function PayMethodSection({ value, onChange }: Props) {

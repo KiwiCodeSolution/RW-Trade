@@ -6,8 +6,7 @@ import { BASE_URL } from '@/utils/config'
 
 import { Locale } from '@/types/baseTypes'
 
-import { Link } from '@/i18n/navigation'
-import '@/styles/globals.css'
+import { Link, useRouter } from '@/i18n/navigation'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
@@ -28,6 +27,7 @@ const HeaderSearch = ({ locale }: { locale: Locale }) => {
 	const [isOpen, setIsOpen] = useState(false)
 	const [loading, setLoading] = useState(false)
 
+	const router = useRouter()
 	const timerRef = useRef<NodeJS.Timeout | null>(null)
 	const controllerRef = useRef<AbortController | null>(null)
 
@@ -39,7 +39,7 @@ const HeaderSearch = ({ locale }: { locale: Locale }) => {
 		compatibility: { uk: 'Сумісність', en: 'Compatibility' },
 		kit: { uk: 'Комплект', en: 'Kit' },
 		brand: { uk: 'Бренд', en: 'Brand' },
-		country: { uk: 'Країна', en: 'Country' },
+		country: { uk: 'Країна', en: 'Country' },
 		deliveryTerms: { uk: 'Умови доставки', en: 'Delivery terms' },
 		subtitle: { uk: 'Підзаголовок', en: 'Subtitle' },
 		content: { uk: 'Зміст', en: 'Content' }
@@ -93,6 +93,17 @@ const HeaderSearch = ({ locale }: { locale: Locale }) => {
 		fetchResultsDebounced(query)
 	}, [query, fetchResultsDebounced])
 
+	const goToSearchPage = useCallback(() => {
+		if (!query.trim()) return
+		setIsOpen(false)
+		setResults([])
+		router.push(`/search?q=${encodeURIComponent(query.trim())}`)
+	}, [query, router])
+
+	const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+		if (e.key === 'Enter') goToSearchPage()
+	}
+
 	const handleBlur = () => setTimeout(() => setIsOpen(false), 150)
 
 	const getUrl = (item: SearchResultItem) =>
@@ -113,9 +124,13 @@ const HeaderSearch = ({ locale }: { locale: Locale }) => {
 					onChange={e => setQuery(e.target.value)}
 					onFocus={() => results.length > 0 && setIsOpen(true)}
 					onBlur={handleBlur}
+					onKeyDown={handleKeyDown}
 				/>
 				<div className='rounded-r-full bg-bg-light'>
-					<button className='w-[44px] h-[44px] rounded-full p-2 text-gr-2 cursor-pointer'>
+					<button
+						className='w-[44px] h-[44px] rounded-full p-2 text-gr-2 cursor-pointer'
+						onClick={goToSearchPage}
+					>
 						<SearchIcon />
 					</button>
 				</div>

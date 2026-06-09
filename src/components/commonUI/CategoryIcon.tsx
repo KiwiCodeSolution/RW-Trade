@@ -21,8 +21,6 @@ import {
 
 import { Category } from '@/types/baseTypes'
 
-import '@/styles/globals.css'
-
 import { JSX } from 'react'
 
 type Size = 's' | 'm'
@@ -30,7 +28,7 @@ type Size = 's' | 'm'
 type Background = 'primary' | 'bronze' | 'green'
 
 type PropsCategoryIcon = {
-	category: Category['title']['en']
+	category: Category['slug']
 	size?: Size
 	bg?: Background
 	isActive?: boolean
@@ -44,26 +42,26 @@ const CategoryIcon = ({
 }: PropsCategoryIcon) => {
 	const baseStyle = 'flex justify-center items-center rounded-2xl'
 
-	const categories: Record<Size, Record<Category['title']['en'], JSX.Element>> = {
+	const categories: Record<Size, Record<Category['slug'], JSX.Element>> = {
 		s: {
-			Lighting: <LightIcon />,
-			Tools: <ToolsIcon />,
-			Electric: <ElectricIcon />,
-			Control: <ControlIcon />,
-			Repair: <RepairIcon />,
-			Diagnostics: <DiagnosticsIcon />,
-			Radio: <RadioIcon />,
-			Discounts: <PersentIcon />
+			lighting: <LightIcon />,
+			tools: <ToolsIcon />,
+			electric: <ElectricIcon />,
+			control: <ControlIcon />,
+			repair: <RepairIcon />,
+			diagnostics: <DiagnosticsIcon />,
+			radio: <RadioIcon />,
+			discounts: <PersentIcon />
 		},
 		m: {
-			Lighting: <LightIconM />,
-			Tools: <ToolsIconM />,
-			Electric: <ElectricIconM />,
-			Control: <ControlIconM />,
-			Repair: <RepairIconM />,
-			Diagnostics: <DiagnosticsIconM />,
-			Radio: <RadioIconM />,
-			Discounts: <PersentIconM />
+			lighting: <LightIconM />,
+			tools: <ToolsIconM />,
+			electric: <ElectricIconM />,
+			control: <ControlIconM />,
+			repair: <RepairIconM />,
+			diagnostics: <DiagnosticsIconM />,
+			radio: <RadioIconM />,
+			discounts: <PersentIconM />
 		}
 	}
 
