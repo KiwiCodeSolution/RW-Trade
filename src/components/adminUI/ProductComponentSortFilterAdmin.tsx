@@ -108,7 +108,7 @@ const ProductComponentSortFilterAdmin = observer(
 					</div>
 				) : (
 					<ProductWrapper
-						categoryId={categoryId ?? ''}
+						categoryId={categoryId}
 						products={adminProducts.slice(0, gridLimit)}
 					/>
 				)}

@@ -35,9 +35,9 @@ const DeliveryPayment = ({
 			<div>
 				<p className='font-medium leading-[1.1]'>{deliveryTextByComponent.methods_title}</p>
 				<ul>
-					{[...Array(4)].map((_, i) => (
+					{deliveryTextByComponent.methods.map((method, i) => (
 						<li key={i} className='leading-[1.15]'>
-							{deliveryTextByComponent.methods[i]}
+							{method}
 						</li>
 					))}
 				</ul>

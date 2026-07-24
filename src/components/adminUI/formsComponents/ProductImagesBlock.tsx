@@ -142,7 +142,7 @@ const ProductImagesBlock = ({ images = [], onChange }: ProductImagesBlockProps) 
 								alt=''
 								width={72}
 								height={72}
-								className='object-cover w-full h-full'
+								className='object-contain w-full h-full'
 							/>
 						) : (
 							<div className='w-8 h-8 flex items-center justify-center rounded-full bg-primary'>

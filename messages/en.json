@@ -158,7 +158,8 @@
 			"Cash (for self-pickup from stores)",
 			"Cashless payment (FOP 2-3 group)",
 			"Online payment to PrivatBank card",
-			"Payment by Visa, Mastercard - WayForPay"
+			"Payment by Visa, Mastercard - WayForPay",
+			"Cash on delivery"
 		],
 		"guarantee_title": "Warranty and return",
 		"guarantee": ["Return of goods within 14 days"],

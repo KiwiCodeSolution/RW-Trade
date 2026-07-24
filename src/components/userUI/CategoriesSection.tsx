@@ -44,7 +44,9 @@ const CategoriesSection = observer(
 				<div
 					className={`grid ${section === 'client' ? 'grid-cols-2 lg:grid-cols-4' : 'grid-cols-4'} bg-sc-1/30 gap-0.5 pb-0.5`}
 				>
-					{categories.map((item, index) => {
+					{categories
+						.filter(item => section !== 'admin' || !item.isSystem)
+						.map((item, index) => {
 						const href =
 							section === 'admin'
 								? `/manage-panel/categories_filters/${item._id}`

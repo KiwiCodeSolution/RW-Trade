@@ -78,6 +78,7 @@ export interface Category {
 	description?: LangField
 	subcategories?: Subcategory[]
 	slug: string
+	isSystem?: boolean
 }
 
 export interface Subcategory {
