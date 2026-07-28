@@ -57,8 +57,9 @@ const CartStepTwo = observer(
 					? delivery.branch
 					: delivery.branch?.number || ''
 
-			const rawCity = delivery.city?.raw
-			const rawWarehouse = delivery.branch?.raw
+			const rawCity = typeof delivery.city === 'string' ? undefined : delivery.city?.raw
+			const rawWarehouse =
+				typeof delivery.branch === 'string' ? undefined : delivery.branch?.raw
 
 			const novaposhtaBlock =
 				delivery.method === 'nova_poshta'
@@ -76,6 +77,9 @@ const CartStepTwo = observer(
 						}
 					: undefined
 
+			const ukrposhtaBlock = delivery.method === 'ukrposhta' ? delivery.ukrposhta : undefined
+			const meestBlock = delivery.method === 'meest' ? delivery.meest : undefined
+
 			return {
 				method: delivery.method,
 				city: cityName,
@@ -84,9 +88,9 @@ const CartStepTwo = observer(
 				comment: delivery.comment,
 
 				novaposhta: novaposhtaBlock,
-				ukrposhta: undefined,
-				meest: undefined,
-				payer: cityName ? 'recipient' : undefined
+				ukrposhta: ukrposhtaBlock,
+				meest: meestBlock,
+				payer: delivery.payer || (cityName ? 'recipient' : undefined)
 			}
 		}
 
