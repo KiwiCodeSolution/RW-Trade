@@ -78,6 +78,7 @@ export interface Category {
 	description?: LangField
 	subcategories?: Subcategory[]
 	slug: string
+	isSystem?: boolean
 }
 
 export interface Subcategory {
@@ -134,10 +135,13 @@ export interface DeliveryAPI {
 
 export type DeliveryData = {
 	method: DeliveryMethod
-	city: DeliveryCity | null
-	branch?: DeliveryWarehouse | null
+	city: DeliveryCity | string | null
+	branch?: DeliveryWarehouse | string | null
 	address?: string
 	comment?: string
+	payer?: string
+	ukrposhta?: Record<string, unknown>
+	meest?: Record<string, unknown>
 	raw?: {
 		city?: NPAddressItem
 		warehouse?: NPWarehouseItem

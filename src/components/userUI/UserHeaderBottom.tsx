@@ -2,6 +2,7 @@ import { HeartIcon, PhoneIcon } from '@/assets/icons'
 
 import { Locale } from '@/types/baseTypes'
 
+import FavoritesCount from './FavoritesCount'
 import HeaderCartButton from './HeaderCartButton'
 import HeaderSearch from './HeaderSearch'
 import { Link } from '@/i18n/navigation'
@@ -28,9 +29,10 @@ const UserHeaderBottom = ({ locale }: { locale: Locale }) => {
 					<div className='hidden sm:flex items-center gap-6'>
 						<Link
 							href='/favorites'
-							className='rounded-full hover:shadow-lg hover:scale-102 duration-200'
+							className='relative rounded-full hover:shadow-lg hover:scale-102 duration-200'
 						>
 							<HeartIcon />
+							<FavoritesCount />
 						</Link>
 						<div className='rounded-full hover:shadow-lg hover:scale-102 duration-200'>
 							<Link

@@ -5,20 +5,38 @@ import { Locale, Product } from '@/types/baseTypes'
 import { productStore } from '@/store/ProductsStore'
 
 import BtnGost from '../commonUI/BtnGost'
+import Spinner from '../commonUI/loader/Spinner'
 
 import ProductCard from './ProductCard'
 import BaseSection from './baseComponents/BaseSection'
 import Title from './baseComponents/Title'
 
 import { observer } from 'mobx-react-lite'
+import { useEffect, useState } from 'react'
 
 const FavoritesSection = observer(({ locale }: { locale: Locale }) => {
+	const [mounted, setMounted] = useState(false)
+
+	useEffect(() => {
+		setMounted(true)
+	}, [])
+
 	const favoriteProducts: Product[] = productStore.favoriteProducts
 
 	const text = locale === 'uk' ? 'Немає улюблених товарів' : 'No favorite products'
 	const textLink = locale === 'uk' ? 'Повернутись до каталогу' : 'Go to catalog page'
 
 	const pageTitle = locale === 'uk' ? 'Улюблені товари' : 'Favorite products'
+
+	if (!mounted) {
+		return (
+			<BaseSection>
+				<div className='my-10'>
+					<Spinner />
+				</div>
+			</BaseSection>
+		)
+	}
 
 	if (!favoriteProducts.length) {
 		return (
@@ -40,7 +58,7 @@ const FavoritesSection = observer(({ locale }: { locale: Locale }) => {
 				</Title>
 			</BaseSection>
 			<BaseSection>
-				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-6 gap-4'>
+				<div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-4'>
 					{favoriteProducts.map(product => (
 						<ProductCard
 							key={product._id}

@@ -82,7 +82,7 @@ const CategoriesAdminContainer: React.FC<Props> = observer(({ locale, initialCat
 			<ProductComponentSortFilterAdmin
 				categorySlug={isDiscountsCategory ? undefined : activeCategory?.slug}
 				subCategorySlug={subCategorySlug !== 'all' ? subCategorySlug : undefined}
-				categoryId={activeCategory?._id}
+				categoryId={isDiscountsCategory ? undefined : activeCategory?._id}
 			/>
 		</section>
 	)

@@ -50,7 +50,7 @@ const Categories = observer(
 				{/* 🔹 КАТЕГОРІЇ */}
 				<ScrollableTrack thumbWidth={80} sectionType='admin'>
 					{categoryStore.categories
-						.filter(cat => cat.title.en !== 'Discounts')
+						.filter(cat => !cat.isSystem)
 						.map(item => (
 							<button
 								key={item._id}

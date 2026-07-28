@@ -100,7 +100,8 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 			t('DeliveryPayment.methods.0'),
 			t('DeliveryPayment.methods.1'),
 			t('DeliveryPayment.methods.2'),
-			t('DeliveryPayment.methods.3')
+			t('DeliveryPayment.methods.3'),
+			t('DeliveryPayment.methods.4')
 		],
 		guarantee_title: t('DeliveryPayment.guarantee_title'),
 		guarantee: [t('DeliveryPayment.guarantee.0')],

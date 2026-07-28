@@ -9,6 +9,7 @@ import { makeAutoObservable, runInAction } from 'mobx'
 
 class ProductStore {
 	products: Product[] = []
+	favoritesList: Product[] = []
 	adminProducts: Product[] = []
 	discountProducts: Product[] = []
 	discountSubcategories: Subcategory[] = []
@@ -37,7 +38,7 @@ class ProductStore {
 			if (savedFavorites) {
 				try {
 					const favProducts: Product[] = JSON.parse(savedFavorites)
-					this.products = favProducts.map(p => ({ ...p, isFavorite: true }))
+					this.favoritesList = favProducts.map(p => ({ ...p, isFavorite: true }))
 				} catch {
 					console.warn('Favorites parse error')
 				}
@@ -48,19 +49,27 @@ class ProductStore {
 	}
 
 	get favoriteProducts() {
-		return this.products.filter(p => p.isFavorite)
+		return this.favoritesList
 	}
 
 	toggleFavorite(product: Product) {
+		const favIndex = this.favoritesList.findIndex(p => p._id === product._id)
+		const nowFavorite = favIndex === -1
+
+		if (nowFavorite) {
+			this.favoritesList.push({ ...product, isFavorite: true })
+		} else {
+			this.favoritesList.splice(favIndex, 1)
+		}
+
 		const exists = this.products.find(p => p._id === product._id)
-		if (exists) exists.isFavorite = !exists.isFavorite
-		else this.products.push({ ...product, isFavorite: true })
+		if (exists) exists.isFavorite = nowFavorite
+
 		this.updateFavoritesStorage()
 	}
 
 	updateFavoritesStorage() {
-		const favorites = this.products.filter(p => p.isFavorite)
-		localStorage.setItem('favorites-RWTrade', JSON.stringify(favorites))
+		localStorage.setItem('favorites-RWTrade', JSON.stringify(this.favoritesList))
 	}
 
 	getFavoritesFromStorage(): Product[] {

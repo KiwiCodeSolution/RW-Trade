@@ -27,7 +27,7 @@ const AdminProductCard = ({ type, product }: ProductCardProps) => {
 
 	return (
 		<article
-			className={`h-[317px] w-full min-w-[162px] max-w-[162px] rounded-md border-2 border-sc-1 flex flex-col justify-between items-center relative product-card-shadow `}
+			className={`h-auto w-full min-w-[162px] max-w-[162px] rounded-md border-2 border-sc-1 flex flex-col justify-between items-center relative product-card-shadow `}
 		>
 			{!product.isPublished && (
 				<div className='flex justify-center absolute top-0 left-0 w-full h-full bg-black/60 z-[11]'>
@@ -70,7 +70,7 @@ const AdminProductCard = ({ type, product }: ProductCardProps) => {
 					className={`w-full min-w-[162px] xl:min-w-[278px] max-w-[330px] object-cover min-h-[162px] xl:h-full`}
 				/>
 			</div>
-			<div className={`w-full h-[147px] p-2 flex flex-col justify-center ${bgColor}`}>
+			<div className={`w-full h-auto p-2 flex flex-col justify-center ${bgColor}`}>
 				<Link
 					href={`/product/${product.slugUk}`}
 					className='cursor-pointer group h-[80px] xl:h-[72px]'

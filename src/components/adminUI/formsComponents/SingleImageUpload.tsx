@@ -90,7 +90,7 @@ const SingleImageUpload = ({
 				<div
 					className={`relative rounded-md border-2 border-sc-1 overflow-hidden product-card-shadow ${className}`}
 				>
-					<Image src={resolveImageUrl(local.url)} alt='' fill className='object-cover' />
+					<Image src={resolveImageUrl(local.url)} alt='' fill className='object-contain' />
 
 					<button
 						type='button'
