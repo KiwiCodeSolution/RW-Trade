@@ -61,13 +61,13 @@ const AdminProductCard = ({ type, product }: ProductCardProps) => {
 				</button>
 			</div>
 			{isShowSettings && <EditProductCard product={product} />}
-			<div className={`h-[162px] w-full overflow-hidden`}>
+			<div className={`h-[162px] w-full overflow-hidden bg-white`}>
 				<BaseImageItem
 					src={product.images && product.images[0]}
 					alt={product.title[locale]}
 					width={162}
 					height={162}
-					className={`w-full min-w-[162px] xl:min-w-[278px] max-w-[330px] object-cover min-h-[162px] xl:h-full`}
+					className={`w-full min-w-[162px] xl:min-w-[278px] max-w-[330px] object-contain min-h-[162px] xl:h-full`}
 				/>
 			</div>
 			<div className={`w-full h-auto p-2 flex flex-col justify-center ${bgColor}`}>

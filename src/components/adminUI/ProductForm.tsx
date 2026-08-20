@@ -83,6 +83,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 			price: product.price ?? 0,
 			priceCurrency: product.priceCurrency ?? 0
 		})
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [product?._id, reset])
 
 	const searchParams = useSearchParams()
@@ -139,6 +140,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		// ----------------------------------
 		// 2. Виймаємо images з form data
 		// ----------------------------------
+		// eslint-disable-next-line @typescript-eslint/no-unused-vars
 		const { images: _images, ...rest } = data
 
 		const normalizeNumber = (value?: string | number) => {
@@ -229,6 +231,7 @@ const ProductForm = observer(({ product }: { product?: Product }) => {
 		'Ви можете додати до 10 зображень в одну картку товару',
 		'Зображення під номером «1» буде головним і відображатиметься першим при відкритті сторінки з товаром',
 		'Фон зображень повинен бути білим або прозорим для коректного відображення картки',
+		'Бажані пропорції зображення — квадрат (1:1), наприклад 1000×1000 px. Витягнуті фото (дуже вузькі або довгі) на картці товару виглядатимуть з великими білими полями',
 		'Максимальний розмір 1 зображення 20 МБ. Якщо ваше зображення більше, спробуйте стиснути його за допомогою онлайн-сервісів або програм для редагування фото'
 	]
 

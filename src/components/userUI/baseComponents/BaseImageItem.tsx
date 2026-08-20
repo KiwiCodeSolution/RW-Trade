@@ -44,7 +44,7 @@ const BaseImageItem = ({
 			alt={alt}
 			width={width}
 			height={height}
-			className={`h-full w-full object-cover ${className || ''}`}
+			className={`h-full w-full ${className || 'object-cover'}`}
 		/>
 	)
 }
