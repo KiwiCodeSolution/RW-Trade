@@ -1,0 +1,254 @@
+{
+	"news": { "title": "News and Articles", "viewAll": "More News and Articles" },
+	"Root": { "nav": {} },
+	"HomePage": {
+		"popular_products": { "title": "Popular products", "btn": "View catalog" },
+		"advertising": { "btn": "Catalog" },
+		"discounts": { "title": "Promotions and discounts", "btn": "View all" },
+		"popular_categories": {
+			"title": "Popular categories",
+			"btn": "All categories",
+			"categories": [
+				{
+					"name": "Autolight",
+					"text": "Headlights, lamps, LED lighting, running lights. Everything for safety and style."
+				},
+				{
+					"name": "Tools and Equipment",
+					"text": "Tools, sets, keys, heads and much more for car service."
+				},
+				{
+					"name": "Tyre monitoring systems",
+					"text": "Pressure sensors, temperature indicators, TPMS kits."
+				},
+				{
+					"name": "Autoelectronics",
+					"text": "Cameras, parking sensors, alarms, gadgets for comfort and safety."
+				}
+			]
+		},
+		"form_section": {
+			"title": "Car products",
+			"item_1": "Prices / wholesale prices",
+			"item_2": "Cooperation / dropshipping",
+			"item_3": "Custom-made spare parts / accessories",
+			"item_4": "Help in choosing / selection for a specific car brand",
+			"form_fields": {
+				"title": "Fill in the details",
+
+				"item_0": "Surname",
+				"placeholder_0": "Enter your surname",
+				"item_1": "Name",
+				"placeholder_1": "Enter your name",
+				"item_2": "Email",
+				"placeholder_2": "Enter your email",
+				"item_3": "Message",
+				"placeholder_3": "Type your message here",
+				"btnText": "Send"
+			}
+		}
+	},
+	"NewsSectionAllPages": {
+		"title_homePage": "News & Articles",
+		"subtitle_homePage": "Various interests and news in the world of cars, novelties, technologies, life hacks",
+		"title_newsPage": "Read our other articles",
+		"btn_homePage": "All news"
+	},
+	"AboutPage": {
+		"title": "About the company",
+		"welcome": "Welcome to our online store 'RWTrade'!",
+		"p1": "Our store specializes in wholesale and retail sales of auto products, auto electronics and auto tools. Our activities began more than nine years ago as an online auto electronics store. Gradually developing, we have significantly expanded the range of our store, adding relevant and popular products. The result of our many years of work was the creation of a number of online stores with different themes and assortment.",
+		"h2_1": "Automotive products wholesale and retail",
+		"p2": "In our online store, we offer high-quality and popular auto electronics at competitive prices!",
+		"h2_2": "Assortment of our store",
+		"list_products": [
+			"Car radios",
+			"Xenon, LED lamps LED beams",
+			"Transitional frames for car radios",
+			"Video recorders",
+			"Navigators",
+			"Car compressors and car vacuum cleaners",
+			"Portable DVD and TV players",
+			"Auxiliary car electronics and accessories",
+			"Car tools and many other products..."
+		],
+		"h2_3": "Features and advantages of buying from us",
+		"list_advantages": [
+			"All products presented only from trusted suppliers",
+			"We work both wholesale and retail without restrictions",
+			"Individual warranty for goods from 14 days to a year",
+			"Individual approach to each client",
+			"Wide updated range of popular products",
+			"We value and respect each client",
+			"Possibility of working with non-cash payments",
+			"Prompt delivery - usually takes no more than 2-3 days"
+		]
+	},
+	"ContactsPage": {
+		"title": "Contacts",
+		"slogan": "RW Trade - high quality products!",
+		"office": "Sales department",
+		"address": "38 Dmytra Kotsiubayl (Derzhavinska) st., 2nd floor, office 215, Kharkiv, Ukraine",
+		"contacts": [
+			"Consultation, order (Viber)",
+			"Order, quality of service",
+			"Consultation, order"
+		]
+	},
+	"PaymentAndDeliveryPage": {
+		"title": "Payment and delivery",
+		"delivery": {
+			"title": "Delivery methods:",
+			"novaPoshta": {
+				"title": "Nova Poshta",
+				"desc": "Delivery from 1 to 5 days (depending on the remoteness of the settlement). To receive the parcel, you must present your passport and provide the declaration number, which we will send as an SMS message to the specified phone number."
+			},
+			"ukrPoshta": {
+				"title": "Ukrposhta",
+				"desc": "Free for orders over 1500 ₴. We send parcels via Ukrposhta subject to 100% prepayment, including the cost of delivery (approximately 30 UAH). Shipping time 1-2 days + delivery approximately from 3 to 7 days (depending on the remoteness of the settlement)."
+			},
+			"pickup": {
+				"title": "Pickup",
+				"desc": "38 Derzhavinska Street (near the Metrobustovniky metro station). The store is open Mon-Fri from 10:00 to 17:00, Sat from 10:00 to 16:00. Sun is a day off. MANDATORY! You must place an order in advance, as not the entire assortment is presented in the store."
+			},
+			"meest": {
+				"title": "Meest MAIL",
+				"desc": "Delivery by courier (Kharkiv). Delivery cost 100 UAH. Our courier delivers orders 6 days a week from 9:00 to 20:00. A more accurate time is discussed with the manager when placing an order. The cost of delivery in Kharkiv is 100 UAH (by region is discussed individually)."
+			}
+		},
+		"payment": {
+			"title": "Payment methods:",
+			"cashOnDelivery": {
+				"title": "After payment",
+				"desc": "Payment upon receipt of the order."
+			},
+			"privatBank": {
+				"title": "Payment to a PrivatBank card",
+				"desc": "When choosing payment to a bank card, the client pays the specified amount for the goods to the store's card account (the card number for payment comes by SMS after processing the order). After confirming receipt of the money, we send the package to the client."
+			},
+			"cash": {
+				"title": "In cash",
+				"desc": "Payment is made in cash in our store, or, when delivered by courier, directly to the courier."
+			},
+			"nonCash": {
+				"title": "Non-cash payment (PP EP 2-3 groups)",
+				"desc": "After receiving the order, we will provide an invoice, which you can pay from your account or at any bank branch."
+			},
+			"card": {
+				"title": "Payment by Visa, Mastercard - WayForPay",
+				"desc": "Before paying for the order, check the availability of the goods in stock!"
+			}
+		}
+	},
+	"WarrantyAndReturnPage": {
+		"title_main": "Warranty and return",
+		"title_warranty": "Warranty:",
+		"text_1": "Warranty obligations:",
+		"text_2": "All goods in our online store have a warranty period! The warranty for each product is individual and ranges from 2 weeks (accessories, chargers, etc.) to 5 years, depending on the product.",
+		"text_3": "During the warranty period, we undertake to replace (repair) the goods purchased in our online store. If during the warranty period the product purchased from us fails due to the manufacturer's fault and cannot be repaired in a service center, we will exchange the goods for a similar product.",
+		"text_4": "At the time of transfer or receipt of the goods (by mail, from a courier), the buyer is obliged to check the appearance of the goods, the complete set and the absence of mechanical damage. Check the goods for switching on and off. After receiving The ownership of the goods, as well as the risk of accidental loss or damage, passes to the Buyer, after which the Seller does not accept claims regarding the appearance and completeness of the goods."
+	},
+	"categories": {
+		"extra": "And {count} more {count, plural, one {category} other {categories}} in this section"
+	},
+	"DeliveryPayment": {
+		"title": "Delivery and payment",
+		"methods_title": "Payment methods",
+		"methods": [
+			"Cash (for self-pickup from stores)",
+			"Cashless payment (FOP 2-3 group)",
+			"Online payment to PrivatBank card",
+			"Payment by Visa, Mastercard - WayForPay",
+			"Cash on delivery"
+		],
+		"guarantee_title": "Warranty and return",
+		"guarantee": ["Return of goods within 14 days"],
+		"delivery_title": "Delivery is carried out the next day after payment for the goods.",
+		"delivery": [
+			"Nova Poshta (from 1 to 5 days)",
+			"Ukr Poshta (from 3 to 10 days)",
+			"Meest-express (from 3 to 10 days)"
+		]
+	},
+	"TermsOfUse": {
+		"title": "Terms of Use (Public Offer)",
+		"points": [
+			{
+				"title": "1. General Provisions",
+				"list": [
+					"This website serves as a showcase for an auto parts store. By using this site, you agree to these terms."
+				]
+			},
+			{
+				"title": "2. Pricing and Orders",
+				"list": [
+					"Two types of prices are available on the site: retail and wholesale. The choice of price type is made by the user independently.",
+					"Placing an order through the shopping cart is a preliminary request. The purchase agreement is considered concluded only after the order is confirmed by a manager.",
+					"For 'Pick-up' orders (Kharkiv, 38 Derzhavinska St.), placing a request on the website is mandatory, as not all items are displayed at the pick-up point."
+				]
+			},
+			{
+				"title": "3. Payment and Delivery",
+				"list": [
+					"Delivery is carried out by carriers: Nova Poshta, Ukrposhta (subject to 100% prepayment), Meest POST (courier in Kharkiv), or via self-pickup.",
+					"Payment methods include: cash on delivery (COD), transfer to a Privatbank card, cash, non-cash payment (for FOP 2-3 groups), and online payment via WayForPay.",
+					{
+						"text": "Full information regarding terms and costs is available on the ",
+						"linkText": "Payment & Delivery",
+						"href": "/payment_delivery"
+					}
+				]
+			},
+			{
+				"title": "4. Warranty Obligations and Returns",
+				"list": [
+					"Each product has an individual warranty period (from 2 weeks to 5 years).",
+					"The buyer is obliged to inspect the goods upon receipt (at the post office or from a courier) for mechanical damage and completeness. After signing the receipt documents, claims regarding appearance and completeness are not accepted.",
+					{
+						"text": "Detailed terms for replacement and returns are described on the ",
+						"linkText": "Warranty & Returns page.",
+						"href": "/warranty_return"
+					}
+				]
+			},
+			{
+				"title": "5. Liability",
+				"list": [
+					"We are not responsible for the loss of data in your LocalStorage (cart, favorites) due to clearing the browser cache or the technical features of your device."
+				]
+			}
+		]
+	},
+	"PrivacyPolicy": {
+		"title": "Privacy and Personal Data Protection Policy",
+		"description": "This Policy explains how we collect and use your data when using our website.",
+		"points": [
+			{
+				"title": "1. Data Collection Upon Ordering",
+				"desc": "Since there is no registration on our website, we collect personal data only during checkout via the 'Shopping Cart'. This is necessary to identify the recipient and deliver the goods. Such data includes:",
+				"list": [
+					"Full name;",
+					"Phone number (for confirmation and sending SMS with the declaration number);",
+					"Delivery address (city, post office, or address in Kharkiv)."
+				]
+			},
+			{
+				"title": "2. Use of LocalStorage",
+				"desc": "We use your browser's local storage (LocalStorage) to store technical information:",
+				"list": [
+					"Selected interface language;",
+					"Price display mode (Wholesale or Retail);",
+					"The 'Favorites' list and 'Shopping Cart' content. This data remains on your device and is not transmitted to us until the actual order is placed."
+				]
+			},
+			{
+				"title": "3. Data Transfer to Third Parties",
+				"desc": "We transfer your data (name, phone, city) exclusively to logistics partners for delivery purposes: Nova Poshta, Ukrposhta, Meest POST."
+			},
+			{
+				"title": "4. Payment Security",
+				"desc": "When choosing to pay via WayForPay, you enter card details on the secure page of the payment system. Our website does not collect or store your bank card data."
+			}
+		]
+	}
+}

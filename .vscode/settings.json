@@ -1,0 +1,32 @@
+{
+	// 🔧 Prettier — головний форматтер
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	// 🪄 Автоформат при збереженні для JS/TS/React
+	"[javascript]": {
+		"editor.formatOnSave": true
+	},
+	"[javascriptreact]": {
+		"editor.formatOnSave": true
+	},
+	"[typescript]": {
+		"editor.formatOnSave": true
+	},
+	"[typescriptreact]": {
+		"editor.formatOnSave": true
+	},
+	// ⚙️ Дії при збереженні
+	"editor.codeActionsOnSave": {
+		"source.fixAll": "explicit",
+		"source.organizeImports": "explicit",
+		"source.sortMembers": "explicit"
+	},
+	// ⚡ Примусове використання конфігу Prettier
+	"prettier.requireConfig": true,
+	// 💡 Якщо потрібна сумісність з ESLint
+	"eslint.format.enable": true,
+	"i18n-ally.localesPaths": [
+		"messages",
+		"src/i18n",
+		"src/app/[locale]/(admin)/manage-panel/messages"
+	]
+}

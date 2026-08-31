@@ -1,0 +1,36 @@
+'use client'
+
+import Title from '@/components/userUI/baseComponents/Title'
+
+import Image from 'next/image'
+import { useEffect } from 'react'
+
+export default function Error({
+	error,
+	reset
+}: {
+	error: Error & { digest?: string }
+	reset: () => void
+}) {
+	useEffect(() => {
+		console.error(error)
+	}, [error])
+
+	return (
+		<div className='flex items-center justify-center min-h-[60vh]'>
+			<Image
+				src='/icons/car-crash.svg'
+				alt='зображення автомобіля, що врізався у ліхтар'
+				width={600}
+				height={600}
+			/>
+
+			<div className='min-w-[400px] flex flex-col items-center gap-y-12'>
+				<Title tag='h2' styles=''>
+					Something went wrong!
+				</Title>
+				<button onClick={() => reset()}>Try again</button>
+			</div>
+		</div>
+	)
+}
